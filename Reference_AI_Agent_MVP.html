@@ -72,6 +72,26 @@ p{color:var(--ink-mid);margin-bottom:12px}
 .ch-green .config-header{background:var(--green-light);color:#15803d;border-bottom-color:#86efac}
 .ch-gray .config-header{background:#f8f7f4;color:#3a3a3a;border-bottom-color:var(--rule)}
 footer{background:#1e1b4b;color:rgba(255,255,255,.45);text-align:center;padding:28px;font-size:11px;letter-spacing:.5px;margin-top:40px}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: #1d3557;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; height: 52px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.18);
+  gap: 20px;
+}
+.nav-logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; opacity: 1; transition: opacity .2s; }
+.nav-logo:hover { opacity: .75; }
+.nav-links { display: flex; align-items: center; gap: 2px; flex: 1; justify-content: flex-end; overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-links a { font-size: 11px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: rgba(255,255,255,.8); text-decoration: none; transition: color .15s, background .15s; padding: 5px 9px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; }
+.nav-links a:hover { color: #fff; background: rgba(255,255,255,.12); }
+.nav-links a.nav-active { color: #fff; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25); }
+.nav-links a.nav-templates { color: #fcd34d; border: 1px solid rgba(252,211,77,.35); }
+.nav-links a.nav-templates:hover { background: rgba(252,211,77,.12); }
+.nav-div { width: 1px; height: 16px; background: rgba(255,255,255,.2); margin: 0 6px; flex-shrink: 0; }
 </style>
 </head>
 <body>
