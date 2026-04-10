@@ -52,17 +52,24 @@ nav {
   padding: 0 40px; height: 52px;
   box-shadow: 0 2px 12px rgba(0,0,0,.18);
 }
-.nav-logo {
-  font-family: 'DM Serif Display', serif;
-  font-size: 17px; color: #fff; letter-spacing: .4px;
-}
-.nav-links { display: flex; gap: 24px; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 17px; color: #fff; letter-spacing: .4px; text-decoration: none; }
+.nav-links { display: flex; gap: 4px; align-items: center; }
 .nav-links a {
-  font-size: 11px; font-weight: 600; letter-spacing: 1px;
+  font-size: 11px; font-weight: 600; letter-spacing: .8px;
   text-transform: uppercase; color: rgba(255,255,255,.65);
-  text-decoration: none; transition: color .2s;
+  text-decoration: none; transition: color .2s, background .2s;
+  padding: 5px 10px; border-radius: 4px;
 }
-.nav-links a:hover { color: #fff; }
+.nav-links a:hover { color: #fff; background: rgba(255,255,255,.08); }
+.nav-links .nav-home {
+  color: rgba(255,255,255,.9);
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.2);
+}
+.nav-links .nav-home:hover { background: rgba(255,255,255,.18); color: #fff; }
+.nav-divider { width: 1px; height: 16px; background: rgba(255,255,255,.2); margin: 0 6px; }
+.nav-meta { font-size: 11px; color: rgba(255,255,255,.45); letter-spacing: .5px; }
+
 
 /* ── HERO ── */
 .hero {
@@ -397,13 +404,14 @@ footer strong { color: rgba(255,255,255,.7); }
 
 <!-- NAV -->
 <nav>
-  <div class="nav-logo">Concepta</div>
+  <a href="Index.html" class="nav-logo">Concepta</a>
   <div class="nav-links">
+    <a href="Index.html" class="nav-home">← Home</a>
+    <div class="nav-divider"></div>
     <a href="#overview">Overview</a>
     <a href="#guidelines">Guidelines</a>
-    <a href="#stages">Workflow Stages</a>
+    <a href="#stages">Stages</a>
     <a href="#reference-docs">Reference Docs</a>
-    <a href="#diagrams">Diagrams</a>
   </div>
 </nav>
 

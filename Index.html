@@ -32,13 +32,30 @@ body {
 
 /* ── NAV ── */
 nav {
+  position: sticky; top: 0; z-index: 100;
   background: var(--blue);
   display: flex; align-items: center; justify-content: space-between;
   padding: 0 40px; height: 52px;
   box-shadow: 0 2px 12px rgba(0,0,0,.18);
 }
-.nav-logo { font-family: 'DM Serif Display', serif; font-size: 17px; color: #fff; letter-spacing: .4px; }
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 17px; color: #fff; letter-spacing: .4px; text-decoration: none; }
+.nav-links { display: flex; gap: 4px; align-items: center; }
+.nav-links a {
+  font-size: 11px; font-weight: 600; letter-spacing: .8px;
+  text-transform: uppercase; color: rgba(255,255,255,.65);
+  text-decoration: none; transition: color .2s, background .2s;
+  padding: 5px 10px; border-radius: 4px;
+}
+.nav-links a:hover { color: #fff; background: rgba(255,255,255,.08); }
+.nav-links .nav-home {
+  color: rgba(255,255,255,.9);
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.2);
+}
+.nav-links .nav-home:hover { background: rgba(255,255,255,.18); color: #fff; }
+.nav-divider { width: 1px; height: 16px; background: rgba(255,255,255,.2); margin: 0 6px; }
 .nav-meta { font-size: 11px; color: rgba(255,255,255,.45); letter-spacing: .5px; }
+
 
 /* ── HERO ── */
 .hero {
@@ -253,103 +270,23 @@ footer {
 .doc-card:nth-child(3) { animation-delay: .15s; }
 .doc-card:nth-child(4) { animation-delay: .20s; }
 .doc-card:nth-child(5) { animation-delay: .25s; }
-
-/* ── QUICK NAV ── */
-.quick-nav {
-  background: var(--white);
-  border-bottom: 1.5px solid var(--rule);
-  position: sticky; top: 52px; z-index: 99;
-  box-shadow: 0 2px 8px rgba(0,0,0,.06);
-}
-.quick-nav-inner {
-  max-width: 1100px; margin: 0 auto;
-  padding: 0 40px;
-  display: flex; align-items: stretch;
-  gap: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-.quick-nav-inner::-webkit-scrollbar { display: none; }
-
-.qn-divider {
-  width: 1px; background: var(--rule);
-  margin: 8px 4px; flex-shrink: 0;
-}
-.qn-label {
-  font-size: 9px; font-weight: 700; letter-spacing: 1.2px;
-  text-transform: uppercase; color: var(--ink-light);
-  padding: 0 10px; display: flex; align-items: center;
-  white-space: nowrap; flex-shrink: 0;
-}
-.qn-link {
-  display: flex; align-items: center; gap: 7px;
-  padding: 10px 13px;
-  text-decoration: none;
-  font-size: 11px; font-weight: 500; color: var(--ink-mid);
-  white-space: nowrap; flex-shrink: 0;
-  border-bottom: 2.5px solid transparent;
-  transition: color .15s, border-color .15s, background .15s;
-}
-.qn-link:hover {
-  color: var(--ink);
-  background: var(--paper);
-}
-.qn-link .qn-icon { font-size: 14px; line-height: 1; }
-
-.qn-link.brief:hover   { border-color: #2563eb; color: #1d4ed8; }
-.qn-link.d1:hover      { border-color: #4c1d95; color: #4c1d95; }
-.qn-link.d2:hover      { border-color: #15803d; color: #15803d; }
-.qn-link.d3:hover      { border-color: #991b1b; color: #991b1b; }
-.qn-link.billing:hover { border-color: #b45309; color: #b45309; }
-.qn-link.ref-a:hover   { border-color: #2563eb; color: #1d4ed8; }
-.qn-link.ref-b:hover   { border-color: #15803d; color: #15803d; }
-.qn-link.ref-c:hover   { border-color: #4c1d95; color: #4c1d95; }
-.qn-link.ref-d:hover   { border-color: #b45309; color: #b45309; }
-
 </style>
 </head>
 <body>
 
 <nav>
-  <div class="nav-logo">Concepta</div>
-  <div class="nav-meta">Intake & Request Processing Initiative · March 2026</div>
-</nav>
-
-<div class="quick-nav">
-  <div class="quick-nav-inner">
-    <span class="qn-label">Core</span>
-    <a href="Concepta_Intake_Process_Executive_Brief.html" target="_blank" class="qn-link brief">
-      <span class="qn-icon">📄</span> Executive Brief
-    </a>
-    <a href="Diagram_1_Intake_Request.html" target="_blank" class="qn-link d1">
-      <span class="qn-icon">🗺️</span> Diagram 1 — Intake
-    </a>
-    <a href="Diagram_2_New_Request.html" target="_blank" class="qn-link d2">
-      <span class="qn-icon">✨</span> Diagram 2 — New Request
-    </a>
-    <a href="Diagram_3_Production_Issue.html" target="_blank" class="qn-link d3">
-      <span class="qn-icon">🐛</span> Diagram 3 — Prod Issue
-    </a>
-    <a href="Client_Billing_View.html" target="_blank" class="qn-link billing">
-      <span class="qn-icon">💰</span> Client Billing View
-    </a>
-    <div class="qn-divider"></div>
-    <span class="qn-label">Reference</span>
-    <a href="Reference_Intake_Form.html" target="_blank" class="qn-link ref-a">
-      <span class="qn-icon">📋</span> Intake Form
-    </a>
-    <a href="Reference_Budget_Model.html" target="_blank" class="qn-link ref-b">
-      <span class="qn-icon">💰</span> Budget Model
-    </a>
-    <a href="Reference_AI_Agent_MVP.html" target="_blank" class="qn-link ref-c">
-      <span class="qn-icon">🤖</span> AI Agent MVP
-    </a>
-    <a href="Reference_Prerequisites_GoLive.html" target="_blank" class="qn-link ref-d">
-      <span class="qn-icon">✅</span> Go-Live Checklist
-    </a>
+  <a href="Index.html" class="nav-logo">Concepta</a>
+  <div class="nav-links">
+    <a href="#presentation-flow">Flow</a>
+    <a href="#all-documents">Docs</a>
+    <a href="#reference-docs">Reference</a>
+    <div class="nav-divider"></div>
+    <a href="Concepta_Intake_Process_Executive_Brief.html" target="_blank">Brief</a>
+    <a href="Diagram_1_Intake_Request.html" target="_blank">Diagram 1</a>
+    <a href="Diagram_2_New_Request.html" target="_blank">Diagram 2</a>
+    <a href="Diagram_3_Production_Issue.html" target="_blank">Diagram 3</a>
   </div>
-</div>
-
+</nav>
 
 <div class="hero">
   <div class="hero-inner">
