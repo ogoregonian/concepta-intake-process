@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concepta – New Request Workflow</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Inter",sans-serif;
+  background:#eceae6;padding:28px 24px 60px;
+}
+
+.page-title{font-size:15px;font-weight:700;color:#111;margin-bottom:6px}
+.page-sub{font-size:11px;color:#6b7280;margin-bottom:8px}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.tag{font-size:9px;font-weight:600;padding:2px 8px;border-radius:20px;border:1px solid}
+.tb{background:#eff6ff;color:#1e40af;border-color:#bfdbfe}
+.tg{background:#f0fdf4;color:#166534;border-color:#86efac}
+.tv{background:#f5f3ff;color:#5b21b6;border-color:#c4b5fd}
+
+/* ── Swimlane wrapper ── */
+.sw{border:1.5px solid #d1cfc8;border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+
+/* ── Lane ── */
+.lane{display:flex;flex-direction:column;border-bottom:1.5px solid #dde1e8}
+.lane:last-child{border-bottom:none}
+.lane-head{display:flex;width:100%}
+.lane-label{
+  width:44px;min-width:44px;display:flex;align-items:center;justify-content:center;
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  border-right:1.5px solid #dde1e8;
+}
+.lane-r  .lane-label{background:#dbeafe;color:#1e40af}
+.lane-ai .lane-label{background:#ede9fe;color:#5b21b6}
+.lane-at .lane-label{background:#dcfce7;color:#14532d}
+.lane-content{flex:1;display:flex;flex-direction:column}
+
+/* ── Prereq bar ── */
+.prereq{padding:10px 16px;font-size:8.5px;line-height:1.6;border-bottom:1px solid}
+.prereq strong{font-weight:700;display:block;margin-bottom:4px;font-size:9px}
+.prereq ul{margin-left:14px;display:flex;flex-direction:column;gap:2px}
+.prereq li{list-style:disc}
+.prereq-r {background:#fffbf0;border-color:#f5c842;color:#7c5c00}
+.prereq-r strong{color:#b45309}
+.prereq-ai{background:#fdf4ff;border-color:#e9d5ff;color:#4c1d95}
+.prereq-ai strong{color:#7c3aed}
+.prereq-at{background:#f0fdf4;border-color:#bbf7d0;color:#14532d}
+.prereq-at strong{color:#166534}
+
+/* ── Flow row ── */
+.flow{display:flex;align-items:center;padding:20px;gap:0;overflow-x:auto;flex-wrap:nowrap}
+
+/* ── Boxes ── */
+.box{
+  border-radius:7px;padding:9px 11px;
+  font-size:9px;font-weight:500;line-height:1.5;
+  border:1.5px solid;text-align:center;
+  min-width:120px;max-width:160px;flex-shrink:0;
+}
+.box strong{font-weight:700}
+.box .sub{font-size:8px;color:#6b7280;margin-top:3px;font-weight:400;display:block}
+
+.box-r  {background:#eff6ff;border-color:#3b82f6;color:#1e3a5f}
+.box-ai {background:#f5f3ff;border-color:#7c3aed;color:#2e1065}
+.box-at {background:#f0fdf4;border-color:#16a34a;color:#14532d}
+.box-err{background:#fef2f2;border-color:#dc2626;color:#7f1d1d}
+.box-ntf{background:#fef9c3;border-color:#ca8a04;color:#78350f}
+.box-ref{background:#eff6ff;border-color:#3b82f6;border-style:dashed;color:#1e3a5f}
+
+/* ── Diamonds ── */
+.diamond{width:84px;height:84px;position:relative;flex-shrink:0}
+.diamond-bg{width:84px;height:84px;border:1.5px solid #64748b;transform:rotate(45deg);position:absolute;top:0;left:0;background:#fff}
+.diamond-green .diamond-bg{border-color:#16a34a}
+.diamond-text{position:absolute;top:0;left:0;width:84px;height:84px;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;color:#1e293b;text-align:center;padding:14px;line-height:1.3;z-index:1}
+
+/* ── Arrows ── */
+.arr    {padding:0 7px;color:#94a3b8;font-size:16px;flex-shrink:0;display:flex;align-items:center}
+.arr-yes{padding:0 7px;font-size:8px;font-weight:700;color:#16a34a;flex-shrink:0;white-space:nowrap}
+.arr-no {padding:0 7px;font-size:8px;font-weight:700;color:#dc2626;flex-shrink:0;white-space:nowrap}
+
+/* ── Capsules ── */
+.capsule{border-radius:999px;padding:6px 14px;font-size:10px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.cap-start    {background:#1e293b;color:#fff}
+.cap-end-green{background:#14532d;color:#fff}
+.cap-end-blue {background:#1e40af;color:#fff}
+
+/* ── Loop badge ── */
+.loop{display:inline-flex;align-items:center;gap:4px;background:#fef2f2;border:1.5px dashed #dc2626;border-radius:5px;padding:4px 8px;font-size:8px;font-weight:700;color:#dc2626;white-space:nowrap;flex-shrink:0}
+
+/* ── Divider ── */
+.divider{display:flex;align-items:center;gap:8px;padding:6px 16px 6px calc(44px + 16px);background:#f8fafc;border-bottom:1px dashed #d1cfc8;font-size:9px;color:#64748b;font-style:italic}
+
+/* ── AI summary bar ── */
+.ai-summary{padding:8px 16px;background:#f5f3ff;border-bottom:1px solid #e9d5ff;font-size:8.5px;color:#4c1d95;line-height:1.6}
+.ai-summary strong{font-weight:700;color:#7c3aed}
+
+/* ── No detour block ── */
+.no-detour{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px;padding-top:5px;border-top:1px dashed #dc2626}
+
+/* ── Monitor block ── */
+.monitor-block{
+  background:#f0f9ff;border:1.5px dashed #0ea5e9;border-radius:7px;
+  padding:10px 12px;font-size:9px;color:#0c4a6e;line-height:1.5;
+  max-width:240px;flex-shrink:0;
+}
+.monitor-block strong{font-weight:700;display:block;margin-bottom:6px;color:#0369a1;font-size:9px}
+.trigger{
+  display:flex;align-items:flex-start;gap:5px;
+  font-size:8px;color:#0c4a6e;margin-top:5px;line-height:1.4;
+  padding-top:5px;border-top:1px solid #bae6fd;
+}
+.trigger:first-of-type{border-top:none;margin-top:2px;padding-top:0}
+.trigger-icon{flex-shrink:0;font-size:9px}
+</style>
+</head>
+<body>
+
+<div class="page-title">New Request Workflow — Analysis · Scoping · Estimation · Client Review</div>
+<div class="page-sub">Workflow · Processing a New Request or Enhancement through analysis to scope deliverable</div>
+<div class="tags">
+  <span class="tag tb">New Feature</span>
+  <span class="tag tb">Enhancement</span>
+  <span class="tag tv">AI Agent</span>
+  <span class="tag tg">Analysis Team</span>
+  <span class="tag tb">Basecamp 4</span>
+  <span class="tag tb">Zoho Sprints</span>
+  <span class="tag tb">Smartsheet</span>
+  <span class="tag tb">Slack</span>
+</div>
+
+<div class="sw">
+
+  <!-- ════════════ REQUESTOR LANE ════════════ -->
+  <div class="lane lane-r">
+    <div class="lane-head">
+      <div class="lane-label">Requestor</div>
+      <div class="lane-content">
+
+        <div class="prereq prereq-r">
+          <strong>📌 Prerequisites</strong>
+          <ul>
+            <li>Internal &amp; external alignment on new operational structure for processing requests</li>
+            <li>Account budget structure established to support new requests</li>
+            <li>Client Request Board configured and set up per account</li>
+            <li>Intake forms for each request type linked on board</li>
+            <li>SLA definitions agreed with client stakeholders</li>
+            <li>Planning ceremony schedule defined and communicated to client</li>
+          </ul>
+        </div>
+
+        <div class="flow">
+          <div class="capsule cap-start">START</div>
+          <div class="arr">→</div>
+
+          <a href="Diagram_1_Intake_Request.html" target="_blank" style="text-decoration:none;flex-shrink:0">
+            <div class="box box-ref" style="cursor:pointer" onmouseover="this.style.background='#dbeafe'" onmouseout="this.style.background=''">
+              <strong>↗ See: Intake Request Diagram</strong>
+              <span class="sub">Request submitted via Basecamp · AI Agent validates + categorises as New Request</span>
+            </div>
+          </a>
+          <div class="arr">→</div>
+
+          <div class="box box-ntf">
+            <strong>📧 Notification received</strong>
+            <span class="sub">"Request validated &amp; assigned to analysis team. Track progress on your Request Board."</span>
+          </div>
+          <div class="arr">→</div>
+
+          <div class="box box-r" style="max-width:170px">
+            <strong>⏳ Awaiting scope deliverable</strong>
+            <span class="sub">Monitor Request Board · Respond to clarifying questions from Analysis Team if raised · AI Agent will notify when scope is ready</span>
+          </div>
+          <div class="arr">→</div>
+
+          <div class="box box-ntf" style="max-width:165px">
+            <strong>📧 Scope ready for review</strong>
+            <span class="sub">"Your scope deliverable is ready. Please review on your Request Board and approve or provide feedback."</span>
+          </div>
+          <div class="arr">→</div>
+
+          <div class="box box-r">
+            Reviews scope deliverable on Request Board
+          </div>
+          <div class="arr">→</div>
+
+          <!-- Approve / Revision diamond -->
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+            <div class="diamond diamond-green">
+              <div class="diamond-bg"></div>
+              <div class="diamond-text">Approve or request revision?</div>
+            </div>
+            <div class="no-detour">
+              <div class="arr-no">REVISION ↓</div>
+              <div class="box box-err" style="max-width:165px;margin-top:2px">
+                Submit feedback via Request Board
+                <span class="sub">AI Agent picks up · notifies Analysis Team · moves card back · logs revision on ticket</span>
+              </div>
+              <div style="font-size:8px;color:#dc2626;margin-top:2px">↑ re-enters analysis flow</div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;align-self:flex-start;padding-top:36px">
+            <div class="arr-yes">APPROVED →</div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+            <div class="capsule cap-end-green">END</div>
+            <div style="font-size:8px;color:#6b7280;text-align:center;max-width:120px;margin-top:2px">Scope approved · proceeds to delivery planning</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ DIVIDER ════════════ -->
+  <div class="divider">
+    <svg width="14" height="14" viewBox="0 0 16 16"><path d="M8 2v12M4 10l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    AI Agent picks up — hands off to Analysis Team and monitors throughout
+  </div>
+
+  <!-- ════════════ AI AGENT LANE ════════════ -->
+  <div class="lane lane-ai">
+    <div class="lane-head">
+      <div class="lane-label">AI Agent</div>
+      <div class="lane-content">
+
+        <div class="prereq prereq-ai">
+          <strong>📌 Prerequisites</strong>
+          <ul>
+            <li>Zoho Sprints: New Requests backlog sprint bucket configured · Planning/Ops/New Requests epic active with baselined budget hours</li>
+            <li>Basecamp Request Board: "Analyzing / Scoping / Estimating" and "Review Scope / Approve / Prioritize" columns active</li>
+            <li>Slack channel active with Analysis Team (PDM · SA) as primary assignees</li>
+            <li>Planning ceremony schedule loaded — used to determine expected activity windows and flag inactivity</li>
+            <li>SLA response definitions and notification templates configured per account</li>
+            <li>Budget threshold alert level defined — percentage of Planning/Ops budget that triggers a PDM flag</li>
+          </ul>
+        </div>
+
+        <div class="ai-summary">
+          <strong>🤖 AI Agent scope in this lane:</strong> Handles the initial handoff to the Analysis Team, then runs a lightweight continuous monitoring role throughout the workflow — tracking ticket activity, nudging stalled steps, relaying requestor feedback, and flagging budget thresholds. All actions are rule-based triggers, not autonomous decisions. The goal is to remove coordination overhead from the PDM and SA so they stay focused on the analysis work itself.
+        </div>
+
+        <div class="flow" style="align-items:flex-start;padding-top:24px;padding-bottom:24px">
+
+          <!-- Initial handoff -->
+          <div style="display:flex;flex-direction:column;gap:8px;align-self:flex-start;flex-shrink:0">
+            <div class="box box-ai" style="max-width:175px">
+              <strong>Initial handoff</strong>
+              <span class="sub">Triggered by Diagram 1 — Basecamp item already in "Analyzing / Scoping / Estimating" · Zoho ticket assigned · PDM + SA tagged in Slack · Confirms handoff is complete before monitoring begins</span>
+            </div>
+            <div style="display:flex;justify-content:center"><div class="arr">↓</div></div>
+            <div class="box box-ntf" style="max-width:175px">
+              <strong>📧 Notify requestor</strong>
+              <span class="sub">"Your request is now being analyzed and scoped. The team will be in touch per the agreed SLA schedule. Track progress on your Request Board."</span>
+            </div>
+          </div>
+
+          <div class="arr" style="align-self:center;padding:0 16px">→</div>
+
+          <!-- Continuous monitoring block -->
+          <div class="monitor-block">
+            <strong>🔄 Continuous monitoring — active throughout analysis</strong>
+            <div class="trigger"><span class="trigger-icon">⚡</span>Ticket inactive beyond planning ceremony window → flag to PDM + SA in Slack</div>
+            <div class="trigger"><span class="trigger-icon">⚡</span>Scope deliverable moved to review column → automatically notify requestor</div>
+            <div class="trigger"><span class="trigger-icon">⚡</span>No requestor response within SLA window → send automated reminder to requestor</div>
+            <div class="trigger"><span class="trigger-icon">⚡</span>Revision submitted by requestor → notify Analysis Team · move card back · log revision on ticket</div>
+            <div class="trigger"><span class="trigger-icon">⚡</span>Planning/Ops budget approaching defined threshold → flag to PDM before overage occurs</div>
+          </div>
+
+          <div class="arr" style="align-self:center;padding:0 16px">→</div>
+
+          <!-- Scope approved close out -->
+          <div style="display:flex;flex-direction:column;gap:8px;align-self:flex-start;flex-shrink:0">
+            <div class="box box-ai" style="max-width:175px">
+              <strong>Scope approved — close out</strong>
+              <span class="sub">Move Basecamp item to "Approved / Prioritize" column · Update Zoho ticket status · Log approval on ticket</span>
+            </div>
+            <div style="display:flex;justify-content:center"><div class="arr">↓</div></div>
+            <div class="box box-ntf" style="max-width:175px">
+              <strong>📧 Notify Analysis Team</strong>
+              <span class="sub">"Scope approved by requestor. Item is ready for delivery planning and prioritisation."</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ DIVIDER ════════════ -->
+  <div class="divider">
+    <svg width="14" height="14" viewBox="0 0 16 16"><path d="M8 2v12M4 10l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Analysis Team picks up — PDM · SA lead, Dev · QA · UX/UI engaged as needed
+  </div>
+
+  <!-- ════════════ ANALYSIS TEAM LANE ════════════ -->
+  <div class="lane lane-at">
+    <div class="lane-head">
+      <div class="lane-label">Analysis Team</div>
+      <div class="lane-content">
+
+        <div class="prereq prereq-at">
+          <strong>📌 Prerequisites</strong>
+          <ul>
+            <li>DoD (Definition of Done) defined and aligned with all stakeholders</li>
+            <li>Internal &amp; external alignment on new operational structure for processing requests</li>
+            <li>Account budget structure established · Planning/Ops/New Requests bucket active</li>
+            <li>Planning ceremony schedule defined with committed resources</li>
+            <li>Smartsheet Project Plan template configured per account — initiated at the start of analysis to track scope, activities, timeline, resource allocation, and delivery milestones</li>
+            <li>Smartsheet Estimator template configured — must account for all activities required to achieve DoD (scoping, development, QA, UAT, deployment, documentation, etc.)</li>
+            <li>Zoho Sprints access to manage ticket lifecycle and log activities</li>
+            <li>Basecamp Request Board access to manage column movement and associate artifacts</li>
+          </ul>
+        </div>
+
+        <div class="flow" style="align-items:flex-start;padding-top:24px;padding-bottom:24px">
+
+          <!-- Step 1 -->
+          <div class="box box-at" style="max-width:155px">
+            <strong>PDM · SA</strong>
+            <span class="sub">Pick up from Diagram 1 handoff · Confirm request category and ticket details are accurate · Open activity log on Zoho ticket · <strong>Initiate Smartsheet Project Plan</strong></span>
+          </div>
+          <div class="arr" style="align-self:center">→</div>
+
+          <!-- Is request clear? -->
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+            <div class="diamond diamond-green">
+              <div class="diamond-bg"></div>
+              <div class="diamond-text">Is the request clear?</div>
+            </div>
+            <div class="no-detour">
+              <div class="arr-no">NO ↓</div>
+              <div class="box box-err" style="max-width:155px;margin-top:2px">
+                Clarify with client · document questions · request additional info via Basecamp
+              </div>
+              <div style="font-size:8px;color:#dc2626;margin-top:2px">↑ re-review after info received</div>
+            </div>
+            <div style="margin-top:8px;max-width:170px;background:#f0fdf4;border:1px dashed #16a34a;border-radius:6px;padding:6px 8px;font-size:8px;color:#14532d;line-height:1.5;text-align:center">
+              <strong style="color:#166534">Note:</strong> Team is encouraged to collaborate openly with the requestor throughout analysis — the goal is to mitigate confusion and misalignment before scope is finalised.
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;align-self:flex-start;padding-top:36px">
+            <div class="arr-yes">YES →</div>
+          </div>
+
+          <!-- Team familiar? -->
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+            <div class="diamond diamond-green">
+              <div class="diamond-bg"></div>
+              <div class="diamond-text">Team familiar enough to estimate scope?</div>
+            </div>
+            <div class="no-detour">
+              <div class="arr-no">NO ↓</div>
+              <div style="display:flex;flex-direction:column;align-items:center;gap:6px;margin-top:4px">
+                <div class="box box-err" style="max-width:170px">
+                  <strong>POC Required — Analysis Team</strong>
+                  <span class="sub">Collaborate to t-shirt size / timebox the POC · Estimate POC effort + timing (not DoD-based)</span>
+                </div>
+                <div class="box box-ntf" style="max-width:170px">
+                  <strong>📧 Notify requestor</strong>
+                  <span class="sub">"A POC is required to validate this request. We will provide a t-shirt size / timeboxed estimate with a delivery plan to set expectations on scope, budget, and timing. Your approval is required before we proceed."</span>
+                </div>
+                <div class="box box-r" style="max-width:170px">
+                  <strong>⏳ Awaiting requestor approval</strong>
+                  <span class="sub">Requestor reviews delivery plan · Confirms budget, scope &amp; timing · Approval required before POC begins</span>
+                </div>
+                <div class="box box-err" style="max-width:170px">
+                  <strong>Execute POC</strong>
+                  <span class="sub">Delivery team works closely with requestor throughout · Manage expectations, budget &amp; timing actively · Document findings &amp; learnings · Validate feasibility · Findings inform scope + estimate</span>
+                </div>
+                <div style="font-size:8px;color:#dc2626">↑ POC complete → re-enters analysis flow</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;align-self:flex-start;padding-top:36px">
+            <div class="arr-yes">YES →</div>
+          </div>
+
+          <!-- Analysis activities -->
+          <div class="box box-at" style="max-width:215px">
+            <strong>Analysis Team — collab w/ stakeholders</strong>
+            <span class="sub">
+              · Technical assessment / feasibility / impact analysis<br>
+              · Scope high-level requirements<br>
+              · Create supportive artifacts<br>
+              · Define AC scenarios (not full BDD)<br>
+              · Log all activities in Zoho ticket throughout<br>
+              <br>
+              <strong style="color:#166534">Team composition is fluid:</strong> PDM &amp; SA lead — Dev, QA, UX/UI engaged as needed based on request type and impact area (e.g. FE, BE, full-stack)<br>
+              <br>
+              <strong style="color:#166534">Planning ceremonies are standing commitments</strong> for all team members regardless of involvement in the active request. Non-active disciplines use the ceremony to surface maintenance, tech debt, or optimisation items.<br>
+              <br>
+              <em>Budget: Planning/Ops/New Requests</em>
+            </span>
+          </div>
+          <div class="arr" style="align-self:center">→</div>
+
+          <!-- Team aligned? -->
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+            <div class="diamond diamond-green">
+              <div class="diamond-bg"></div>
+              <div class="diamond-text">Team aligned on analysis &amp; scope?</div>
+            </div>
+            <div class="no-detour">
+              <div class="arr-no">NO ↓</div>
+              <div class="box box-err" style="max-width:155px;margin-top:2px">
+                Revisit analysis · address gaps / concerns with team and stakeholders
+              </div>
+              <div style="font-size:8px;color:#dc2626;margin-top:2px">↑ re-enters analysis</div>
+            </div>
+          </div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;align-self:flex-start;padding-top:36px">
+            <div class="arr-yes">YES →</div>
+          </div>
+
+          <!-- Finalize scope -->
+          <div class="box box-at" style="max-width:175px">
+            <strong>Analysis &amp; Delivery Team</strong>
+            <span class="sub">
+              Finalise scope<br>
+              Estimate effort using Smartsheet Estimator<br>
+              Define delivery timing based on DoD &amp; resource capacity
+            </span>
+          </div>
+          <div class="arr" style="align-self:center">→</div>
+
+          <!-- Associate artifacts -->
+          <div class="box box-at" style="max-width:165px">
+            <strong>PDM</strong>
+            <span class="sub">
+              Associate all artifacts to Basecamp item<br>
+              Move to <strong>"Review Scope / Approve / Prioritize"</strong> column<br>
+              <span style="color:#166534;font-style:italic">AI Agent notifies requestor automatically</span>
+            </span>
+          </div>
+          <div class="arr" style="align-self:center">→</div>
+
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+            <div class="capsule cap-end-green">END</div>
+            <div style="font-size:8px;color:#6b7280;text-align:center;max-width:140px;margin-top:2px">Scope submitted · AI Agent handles requestor notification + revision loop if needed</div>
+          </div>
+
+          <!-- Revision exception -->
+          <div style="margin-left:32px;padding-left:20px;border-left:2px dashed #dc2626;display:flex;flex-direction:column;gap:6px;align-self:center">
+            <div class="loop">↩ Revision requested — AI Agent routes back to Analysis Team</div>
+            <div class="box box-err" style="max-width:215px">
+              Receive feedback via Zoho ticket · Revise scope / estimate · Re-associate artifacts · Move card back to "Review Scope" column
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Diagram navigation -->
+<div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap">
+  <a href="Diagram_1_Intake_Request.html" target="_blank" style="text-decoration:none">
+    <div style="background:#fff;border:1.5px solid #3b82f6;border-radius:7px;padding:8px 14px;font-size:9px;font-weight:700;color:#1e40af;cursor:pointer" onmouseover="this.style.background='#eff6ff'" onmouseout="this.style.background='#fff'">← Diagram 1: Intake Request</div>
+  </a>
+  <a href="Diagram_3_Production_Issue.html" target="_blank" style="text-decoration:none">
+    <div style="background:#fff;border:1.5px solid #dc2626;border-radius:7px;padding:8px 14px;font-size:9px;font-weight:700;color:#991b1b;cursor:pointer" onmouseover="this.style.background='#fef2f2'" onmouseout="this.style.background='#fff'">Diagram 3: Production Issue Workflow →</div>
+  </a>
+</div>
+
+</body>
+</html>

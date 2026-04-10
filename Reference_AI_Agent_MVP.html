@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concepta — AI Agent MVP Definition</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0f0f0f;--ink-mid:#3a3a3a;--ink-light:#6b7280;--rule:#e2ddd8;
+  --paper:#f7f5f1;--white:#ffffff;--blue:#1d3557;--blue-mid:#2563eb;
+  --blue-light:#dbeafe;--violet:#4c1d95;--violet-light:#ede9fe;
+  --green:#14532d;--green-light:#dcfce7;--amber:#92400e;--amber-light:#fef3c7;
+  --red:#991b1b;--red-light:#fee2e2;--orange:#c2410c;--orange-light:#fff7ed;
+  --gap:40px;--col:820px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.7}
+nav{position:sticky;top:0;z-index:100;background:#1e1b4b;display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:17px;color:#fff}
+.nav-back{font-size:11px;color:rgba(255,255,255,.6);text-decoration:none}
+.nav-back:hover{color:#fff}
+.hero{background:linear-gradient(135deg,#1e1b4b 0%,#1d3557 100%);color:#fff;padding:48px 40px 40px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 40%,rgba(109,40,217,.25) 0%,transparent 65%);pointer-events:none}
+.hero-inner{max-width:var(--col);margin:0 auto;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;margin-bottom:16px}
+.hero-eyebrow span{width:6px;height:6px;border-radius:50%;background:#a78bfa}
+h1{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.2;color:#fff;margin-bottom:10px}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.65);max-width:560px;line-height:1.6}
+.page{max-width:var(--col);margin:0 auto;padding:var(--gap) 40px 80px}
+.section{margin-bottom:40px}
+.section-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink-light);display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--rule)}
+.section-label .num{width:22px;height:22px;border-radius:50%;background:var(--violet);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0}
+h2{font-family:'DM Serif Display',serif;font-size:24px;line-height:1.25;color:var(--ink);margin-bottom:8px}
+h3{font-size:14px;font-weight:700;color:var(--ink);margin:28px 0 12px}
+p{color:var(--ink-mid);margin-bottom:12px}
+.callout{border-radius:8px;padding:14px 18px;margin:16px 0;display:flex;gap:12px;font-size:13px}
+.callout-icon{font-size:18px;flex-shrink:0}
+.callout-body strong{display:block;font-size:12px;font-weight:700;margin-bottom:3px}
+.callout-info{background:var(--blue-light);border-left:3px solid var(--blue-mid)}
+.callout-warn{background:var(--amber-light);border-left:3px solid #f59e0b}
+.callout-flag{background:var(--red-light);border-left:3px solid #dc2626}
+.callout-violet{background:var(--violet-light);border-left:3px solid var(--violet)}
+.divider{border:none;border-top:1px solid var(--rule);margin:32px 0}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--violet);text-decoration:none;margin-bottom:24px;font-weight:600}
+.back-link:hover{text-decoration:underline}
+.mvp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+.mvp-card{background:var(--white);border:1.5px solid var(--rule);border-radius:10px;padding:18px}
+.mvp-card.phase1{border-color:#c4b5fd;background:var(--violet-light)}
+.mvp-card.phase2{border-color:var(--rule)}
+.mvp-phase{font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--violet);margin-bottom:10px}
+.mvp-card.phase2 .mvp-phase{color:var(--ink-light)}
+.mvp-card h5{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:10px}
+.mvp-card ul{padding-left:16px;font-size:12.5px;color:var(--ink-mid)}
+.mvp-card ul li{margin-bottom:6px;line-height:1.5}
+.field-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.field-card{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start}
+.field-num{width:28px;height:28px;border-radius:50%;background:var(--violet);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px}
+.field-body{flex:1}
+.field-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.field-desc{font-size:12px;color:var(--ink-mid)}
+.config-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:20px 0}
+.config-card{background:var(--white);border:1.5px solid var(--rule);border-radius:8px;overflow:hidden}
+.config-header{padding:10px 14px;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;border-bottom:1px solid var(--rule)}
+.config-body{padding:12px 14px;display:flex;flex-direction:column;gap:7px;font-size:12px;color:var(--ink-mid)}
+.ch-violet .config-header{background:var(--violet-light);color:var(--violet);border-bottom-color:#c4b5fd}
+.ch-blue .config-header{background:var(--blue-light);color:#1d4ed8;border-bottom-color:#93c5fd}
+.ch-red .config-header{background:var(--red-light);color:#991b1b;border-bottom-color:#fca5a5}
+.ch-amber .config-header{background:var(--amber-light);color:#92400e;border-bottom-color:#fcd34d}
+.ch-green .config-header{background:var(--green-light);color:#15803d;border-bottom-color:#86efac}
+.ch-gray .config-header{background:#f8f7f4;color:#3a3a3a;border-bottom-color:var(--rule)}
+footer{background:#1e1b4b;color:rgba(255,255,255,.45);text-align:center;padding:28px;font-size:11px;letter-spacing:.5px;margin-top:40px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Concepta</div>
+  <a href="Concepta_Intake_Process_Executive_Brief.html" class="nav-back">← Back to Executive Brief</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span></span> Reference Document · AI Agent</div>
+    <h1>AI Agent — MVP Definition &<br>Per-Account Configuration</h1>
+    <p class="hero-sub">What the AI Agent does in Phase 1, the acceptance criteria it must meet, and the per-account data and configuration it requires to operate correctly. Built and owned by Concepta's internal labs team.</p>
+  </div>
+</div>
+
+<div class="page">
+
+  <a href="Concepta_Intake_Process_Executive_Brief.html" class="back-link">← Executive Brief</a>
+
+  <div class="callout callout-violet">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <strong>The AI Agent cannot operate without documentation and account configuration</strong>
+      <p>The agent reads from explicitly defined workflows and account-specific content models. If those do not exist — or are incomplete — the agent routes incorrectly, notifies the wrong people, and fires against the wrong thresholds. Documentation and configuration are not optional prerequisites. They are the infrastructure the agent runs on. The manual process must be validated through the corporate site pilot before the AI Agent is enabled on any live account.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- PHASE OVERVIEW -->
+  <div class="section">
+    <div class="section-label"><div class="num">1</div> Phase Overview</div>
+    <h2>What the AI Agent Does — Phase 1 vs. Phase 2</h2>
+    <p>The AI Agent is being introduced as a scoped MVP. Phase 1 focuses exclusively on intake validation, ticket creation, routing, and continuous monitoring. Phase 2 will expand capabilities as the manual process is validated and stabilized.</p>
+
+    <div class="mvp-grid">
+      <div class="mvp-card phase1">
+        <div class="mvp-phase">Phase 1 — MVP (Current Scope)</div>
+        <h5>What the AI Agent Does Now</h5>
+        <ul>
+          <li>Reads the form type selected by the requestor — New Request or Reported Issue — and reads the severity level assigned on reported issues</li>
+          <li>Validates required fields for the request type; notifies the requestor of missing data and holds the item in the Validate & Assign column until all gaps are resolved</li>
+          <li>Creates the item on the account's Basecamp 4 Request Board in the correct column based on request type</li>
+          <li>Assigns the item to the correct internal team — Analysis Team for new requests, Production Support Team for reported issues</li>
+          <li>Creates the corresponding Zoho Sprint backlog ticket in the correct bucket with the correct ticket type (Task for new requests, Bug for production issues)</li>
+          <li>Tags the ticket with the correct billing epic — Planning/Ops/New Requests or Production Support</li>
+          <li>Notifies the account Slack channel with ticket link, request summary, requestor name, confirmed category, severity (if applicable), and assigned epic</li>
+          <li>Sends receipt confirmation to the requestor with SLA response times per severity level</li>
+          <li>Runs continuous monitoring throughout the full workflow — inactivity nudges, requestor reminders, budget threshold flags, SLA breach escalation, revision routing, and resolution notifications</li>
+        </ul>
+      </div>
+      <div class="mvp-card phase2">
+        <div class="mvp-phase">Phase 2 — Future (Post-MVP)</div>
+        <h5>Planned Expansions</h5>
+        <ul>
+          <li>Assist with deeper request categorization beyond the two MVP request types</li>
+          <li>Surface relevant historical requests or documentation during the analysis stage</li>
+          <li>Identify inconsistencies or quality gaps in request submissions before they reach the team</li>
+          <li>Recommend implementation approaches based on precedent from similar prior requests</li>
+          <li>Expand monitoring triggers as the process matures and new patterns are identified</li>
+        </ul>
+        <p style="font-size:11px;color:var(--ink-light);margin-top:12px;margin-bottom:0">Phase 2 capabilities will only be scoped once Phase 1 is validated and stable across at least one live account.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ACCEPTANCE CRITERIA -->
+  <div class="section">
+    <div class="section-label"><div class="num">2</div> MVP Acceptance Criteria</div>
+    <h2>Eight Criteria the Agent Must Meet Before Go-Live</h2>
+    <p>The AI Agent is considered ready for live account operation only when all eight criteria are met and validated through the corporate site pilot. Each criterion must be tested explicitly — not assumed.</p>
+
+    <div class="field-list">
+      <div class="field-card">
+        <div class="field-num">1</div>
+        <div class="field-body">
+          <div class="field-title">Request category and severity correctly read from submitted data</div>
+          <div class="field-desc">The agent correctly reads the form type selected by the requestor and the severity level assigned on reported issues — routing to the correct workflow without any manual input from the PDM on standard submissions.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num">2</div>
+        <div class="field-body">
+          <div class="field-title">Field validation works for both request types</div>
+          <div class="field-desc">The agent correctly validates required fields for the confirmed request type — 4 fields for New Requests, 10 fields for Production Issues. Missing fields trigger a direct notification to the requestor before any ticket is created. The item remains held in the Validate & Assign column until all gaps are resolved.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num">3</div>
+        <div class="field-body">
+          <div class="field-title">Basecamp 4 item created in the correct column</div>
+          <div class="field-desc">The item lands in the correct Basecamp Request Board column — "Analyzing / Scoping / Estimating" for new requests, "Triage / Troubleshooting" for production issues. The account must have Basecamp 4 active with a configured Request Board using the standardized column structure.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num">4</div>
+        <div class="field-body">
+          <div class="field-title">Item assigned to the correct internal team</div>
+          <div class="field-desc">The Basecamp item and Zoho ticket are assigned to the correct team automatically — Analysis Team (PDM + SA) for new requests, Production Support Team (Dev + QA) for reported issues. The assigned team receives a Slack notification and can begin review immediately.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num">5</div>
+        <div class="field-body">
+          <div class="field-title">Correct billing epic and ticket type assigned</div>
+          <div class="field-desc">New requests and enhancements → Planning/Ops/New Requests epic + Task ticket type. Production issues → Production Support epic + Bug ticket type. Each epic must have the account's baseline budget hours loaded so remaining budget is visible at ticket creation.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num">6</div>
+        <div class="field-body">
+          <div class="field-title">Slack notification sent with complete and accurate content</div>
+          <div class="field-desc">The account Slack channel receives the ticket link, request summary, requestor name, confirmed request category, severity level (if applicable), and assigned billing epic — within the defined SLA acknowledgment window for that account.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num">7</div>
+        <div class="field-body">
+          <div class="field-title">PDM human oversight confirms before the request advances</div>
+          <div class="field-desc">The PDM reviews the AI Agent's ticket output for accuracy — confirmed category, epic assignment, field completeness, and correct Basecamp column — before triage or analysis begins. This is a mandatory oversight step, not an optional one.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num">8</div>
+        <div class="field-body">
+          <div class="field-title">All continuous monitoring triggers fire correctly</div>
+          <div class="field-desc">Every rule-based monitoring trigger — inactivity flags, requestor reminders, SLA breach escalation, budget threshold alerts, revision routing, and resolution notification — fires at the correct threshold and reaches the correct recipient via Slack or requestor notification. Each trigger must be tested individually during the pilot.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- PER-ACCOUNT CONFIGURATION -->
+  <div class="section">
+    <div class="section-label"><div class="num">3</div> Per-Account Configuration Requirements</div>
+    <h2>What the Agent Needs from Each Account to Operate</h2>
+    <p>The AI Agent is account-aware — it reads from configuration data that is defined per account before go-live. Every account the agent operates on requires its own full configuration pass. Values differ per account — a single shared configuration does not exist.</p>
+
+    <div class="callout callout-flag">
+      <div class="callout-icon">📌</div>
+      <div class="callout-body">
+        <strong>Joint responsibility — internal labs team and PDM</strong>
+        <p>The internal labs team owns the technical configuration — Zoho and Basecamp integrations, Slack webhook setup, threshold loading, and notification template wiring. The PDM owns the account-specific values — SLA definitions, severity criteria, team assignments, escalation contacts, and stakeholder sign-off. Both must be complete and validated before the agent is enabled on any account.</p>
+      </div>
+    </div>
+
+    <div class="config-grid" style="margin-top:20px">
+      <div class="config-card ch-violet">
+        <div class="config-header">Routing & Categorisation</div>
+        <div class="config-body">
+          <div>📋 <strong>Intake form links</strong> — New Request form and Reported Issue form URLs linked directly on the account's Basecamp Request Board</div>
+          <div>🏷️ <strong>Request type mapping</strong> — confirms the two valid form types and their corresponding routing destinations for this account</div>
+          <div>⚡ <strong>Severity level definitions (Sev 1–4)</strong> — impact criteria and examples per level, agreed with client stakeholders, loaded so the agent can reference them accurately in notifications</div>
+        </div>
+      </div>
+      <div class="config-card ch-blue">
+        <div class="config-header">Ticket & Epic Assignment</div>
+        <div class="config-body">
+          <div>📋 <strong>Zoho project ID</strong> — the account's Zoho Sprint project where all tickets are created</div>
+          <div>🏷️ <strong>Backlog Sprint Bucket IDs</strong> — Reported Issues bucket · New Requests: Analysis bucket</div>
+          <div>💰 <strong>Billing Epic IDs</strong> — Production Support epic · Planning/Ops/New Requests epic — with baseline budget hours loaded against each</div>
+          <div>👤 <strong>Default assignee mappings</strong> — Analysis Team (PDM · SA) for new requests · Production Support Team (Dev · QA) for reported issues</div>
+        </div>
+      </div>
+      <div class="config-card ch-red">
+        <div class="config-header">SLA & Monitoring Thresholds</div>
+        <div class="config-body">
+          <div>⏱️ <strong>SLA response times per severity</strong> — initial response, update cadence, and resolution target for Sev 1–4</div>
+          <div>⏱️ <strong>Planning ceremony cadence</strong> — used to detect new request ticket inactivity and trigger PDM nudge</div>
+          <div>⏱️ <strong>SLA update cadence per severity</strong> — used to detect production issue inactivity and trigger Production Support nudge</div>
+          <div>⚠️ <strong>SLA breach threshold</strong> — the point at which the agent re-escalates in Slack and flags to the PDM</div>
+          <div>💰 <strong>Budget threshold alert level</strong> — percentage of each service epic that triggers a proactive flag before overage occurs</div>
+          <div>👤 <strong>Budget overage escalation contacts</strong> — stakeholder name and Slack channel to notify when overage sign-off is required</div>
+        </div>
+      </div>
+      <div class="config-card ch-amber">
+        <div class="config-header">Notifications & Slack</div>
+        <div class="config-body">
+          <div>💬 <strong>Account Slack channel ID</strong> — where all agent handoff notifications, nudges, and escalations are posted</div>
+          <div>💬 <strong>Slack assignee handles</strong> — individual Slack handles for PDM, SA, and Production Support team members per account</div>
+          <div>📧 <strong>Requestor notification templates</strong> — receipt confirmation · SLA acknowledgement by severity · scope ready for review · clarification request · resolution confirmation · no-response reminder</div>
+          <div>📧 <strong>Internal notification templates</strong> — handoff summary · inactivity nudge · SLA breach escalation · budget threshold flag · overage approval request</div>
+        </div>
+      </div>
+      <div class="config-card ch-green">
+        <div class="config-header">Production Support Specifics</div>
+        <div class="config-body">
+          <div>🕐 <strong>Production support office hours</strong> — days and hours when the Production Support team is actively covering this account</div>
+          <div>📞 <strong>On-call protocol</strong> — escalation path for Sev 1 issues that occur outside defined office hours</div>
+          <div>🔖 <strong>RCA trigger criteria</strong> — which severity levels and business impact thresholds require RCA initiation for this account</div>
+          <div>🚀 <strong>Release versioning approach</strong> — hotfix vs. scheduled release per severity level, confirmed with client stakeholders</div>
+        </div>
+      </div>
+      <div class="config-card ch-gray">
+        <div class="config-header">Basecamp Board Configuration</div>
+        <div class="config-body">
+          <div>🗂️ <strong>Basecamp project ID</strong> — the account's Basecamp 4 project where the Request Board lives</div>
+          <div>🗂️ <strong>Request Board column IDs</strong> — Validate & Assign · Analyzing / Scoping / Estimating · Triage / Troubleshooting · Review Scope / Approve / Prioritize · Done / Closed</div>
+          <div>🔗 <strong>Intake forms embedded on board</strong> — New Request form and Reported Issue form pinned and accessible to the requestor directly from the board — no separate link needed</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="callout callout-info">
+    <div class="callout-icon">🔗</div>
+    <div class="callout-body">
+      <strong>Related Reference Documents</strong>
+      <p>
+        <a href="Concepta_Intake_Process_Executive_Brief.html" style="color:#1d4ed8;font-weight:600">← Executive Brief</a> &nbsp;·&nbsp;
+        <a href="Reference_Intake_Form.html" style="color:#1d4ed8;font-weight:600">Intake Form Reference →</a> &nbsp;·&nbsp;
+        <a href="Reference_Budget_Model.html" style="color:#15803d;font-weight:600">Budget & Service Bucket Model →</a> &nbsp;·&nbsp;
+        <a href="Reference_Prerequisites_GoLive.html" style="color:#92400e;font-weight:600">Prerequisites for Go-Live →</a>
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<footer>Concepta — Intake & Request Processing Initiative · AI Agent MVP Definition · March 2026 · Internal Use</footer>
+
+</body>
+</html>

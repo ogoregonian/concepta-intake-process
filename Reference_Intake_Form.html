@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concepta — Intake Form Reference</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0f0f0f;--ink-mid:#3a3a3a;--ink-light:#6b7280;--rule:#e2ddd8;
+  --paper:#f7f5f1;--white:#ffffff;--blue:#1d3557;--blue-mid:#2563eb;
+  --blue-light:#dbeafe;--violet:#4c1d95;--violet-light:#ede9fe;
+  --green:#14532d;--green-light:#dcfce7;--amber:#92400e;--amber-light:#fef3c7;
+  --red:#991b1b;--red-light:#fee2e2;--orange:#c2410c;--orange-light:#fff7ed;
+  --gap:40px;--col:760px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.7}
+nav{position:sticky;top:0;z-index:100;background:var(--blue);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:17px;color:#fff;letter-spacing:.4px}
+.nav-back{font-size:11px;color:rgba(255,255,255,.6);text-decoration:none;display:flex;align-items:center;gap:6px}
+.nav-back:hover{color:#fff}
+.hero{background:var(--blue);color:#fff;padding:48px 40px 40px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(37,99,235,.2) 0%,transparent 65%);pointer-events:none}
+.hero-inner{max-width:var(--col);margin:0 auto;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;margin-bottom:16px}
+.hero-eyebrow span{width:6px;height:6px;border-radius:50%;background:#f59e0b}
+h1{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.2;color:#fff;margin-bottom:10px}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.65);max-width:520px;line-height:1.6}
+.page{max-width:var(--col);margin:0 auto;padding:var(--gap) 40px 80px}
+.section{margin-bottom:40px}
+.section-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink-light);display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--rule)}
+.section-label .num{width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0}
+h2{font-family:'DM Serif Display',serif;font-size:24px;line-height:1.25;color:var(--ink);margin-bottom:8px}
+h3{font-size:14px;font-weight:700;color:var(--ink);margin:28px 0 12px}
+p{color:var(--ink-mid);margin-bottom:12px}
+.callout{border-radius:8px;padding:14px 18px;margin:16px 0;display:flex;gap:12px;font-size:13px}
+.callout-icon{font-size:18px;flex-shrink:0}
+.callout-body strong{display:block;font-size:12px;font-weight:700;margin-bottom:3px}
+.callout-info{background:var(--blue-light);border-left:3px solid var(--blue-mid)}
+.callout-warn{background:var(--amber-light);border-left:3px solid #f59e0b}
+.callout-flag{background:var(--red-light);border-left:3px solid #dc2626}
+.tag{display:inline-flex;align-items:center;font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;border:1px solid;margin:2px}
+.tag-blue{background:var(--blue-light);color:#1d4ed8;border-color:#93c5fd}
+.tag-red{background:var(--red-light);color:#dc2626;border-color:#fca5a5}
+.tag-gray{background:#f3f4f6;color:#374151;border-color:#d1d5db}
+.field-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.field-card{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start}
+.field-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px}
+.field-num.opt{background:var(--ink-light)}
+.field-body{flex:1}
+.field-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.field-desc{font-size:12px;color:var(--ink-mid);margin-bottom:4px}
+.field-example{font-size:11px;color:var(--ink-light);font-style:italic;border-left:2px solid var(--rule);padding-left:8px;margin-top:6px}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:20px}
+.form-card{background:var(--white);border:1.5px solid var(--rule);border-radius:10px;overflow:hidden}
+.form-card-header{padding:12px 16px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.form-card-body{padding:14px 16px;font-size:12px;color:var(--ink-mid)}
+.fc-blue .form-card-header{background:var(--blue-light);color:#1d4ed8;border-bottom:1px solid #93c5fd}
+.fc-red .form-card-header{background:var(--red-light);color:#991b1b;border-bottom:1px solid #fca5a5}
+.divider{border:none;border-top:1px solid var(--rule);margin:32px 0}
+footer{background:var(--ink);color:rgba(255,255,255,.45);text-align:center;padding:28px;font-size:11px;letter-spacing:.5px;margin-top:40px}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--blue-mid);text-decoration:none;margin-bottom:24px;font-weight:600}
+.back-link:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Concepta</div>
+  <a href="Concepta_Intake_Process_Executive_Brief.html" class="nav-back">← Back to Executive Brief</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span></span> Reference Document · Intake & Request Processing</div>
+    <h1>Intake Request Form</h1>
+    <p class="hero-sub">Required and optional fields for both request types — the form the requestor submits is the routing mechanism. The AI Agent reads these fields to validate completeness, assign the correct billing epic, and route to the right workflow.</p>
+  </div>
+</div>
+
+<div class="page">
+
+  <a href="Concepta_Intake_Process_Executive_Brief.html" class="back-link">← Executive Brief</a>
+
+  <div class="callout callout-info">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>Two forms. One entry point.</strong>
+      <p>Two separate forms are available directly on the account's Basecamp Request Board. The requestor selects the appropriate form for their submission type. The required fields differ between the two forms — the AI Agent reads the submitted fields to validate completeness and confirm the request category. The PDM confirms accuracy during the oversight step. Neither the requestor nor the PDM manually labels the category — the form selection and field data determine routing.</p>
+    </div>
+  </div>
+
+  <div class="two-col">
+    <div class="form-card fc-blue">
+      <div class="form-card-header">New Request / Enhancement Form</div>
+      <div class="form-card-body">
+        <p>Used when a requestor wants to introduce new functionality, enhance an existing feature, or request work that is not an active production issue.</p>
+        <p style="margin-top:8px"><strong>Routes to:</strong> New Request workflow (Diagram 2) · Analyzing / Scoping / Estimating column · Planning/Ops/New Requests epic</p>
+        <p style="margin-top:8px"><strong>Required fields:</strong> 4 (see below)</p>
+      </div>
+    </div>
+    <div class="form-card fc-red">
+      <div class="form-card-header">Reported Issue Form</div>
+      <div class="form-card-body">
+        <p>Used when a requestor is reporting an active defect, incident, or production-impacting problem that requires triage and resolution.</p>
+        <p style="margin-top:8px"><strong>Routes to:</strong> Production Issue workflow (Diagram 3) · Triage / Troubleshooting column · Production Support epic</p>
+        <p style="margin-top:8px"><strong>Required fields:</strong> 10 (see below) — includes severity level assigned by requestor at submission</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- NEW REQUEST FORM FIELDS -->
+  <div class="section">
+    <div class="section-label"><div class="num">1</div> New Request / Enhancement — Required Fields</div>
+    <h2>4 Fields Required Before Ticket Creation</h2>
+    <p>All four fields must be present and complete before the AI Agent creates a ticket. If any are missing, the agent notifies the requestor and holds the submission in the Validate & Assign column until the gaps are resolved.</p>
+
+    <div class="field-list">
+      <div class="field-card">
+        <div class="field-num">1</div>
+        <div class="field-body">
+          <div class="field-title">Request Title</div>
+          <div class="field-desc">A short, clear summary of the request. Used as the ticket title in Zoho and the card title on the Basecamp Request Board.</div>
+          <div class="field-example">e.g. "Export capability for dealer reporting dashboard" · "Add MFA to borrower app login"</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num">2</div>
+        <div class="field-body">
+          <div class="field-title">Problem Being Solved OR Goal Being Pursued <span style="color:#dc2626;font-size:11px;font-weight:700">(Most critical field)</span></div>
+          <div class="field-desc">The requestor must describe the underlying need — not the prescribed solution. The delivery team evaluates the best implementation approach. A solution-first description leads to scope creep and missed requirements.</div>
+          <div class="field-example">Problem: "Dealers cannot export monthly reporting data needed for compliance reviews." / Goal: "Improve reporting visibility so dealers can monitor loan performance trends in real time."</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num">3</div>
+        <div class="field-body">
+          <div class="field-title">Who Is Impacted?</div>
+          <div class="field-desc">The primary users or stakeholder groups affected by this request. Helps the team understand scope, testing requirements, and communication needs.</div>
+          <div class="field-example">e.g. "All dealers" · "Internal finance team" · "All end users of the borrower app"</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num">4</div>
+        <div class="field-body">
+          <div class="field-title">Where Does This Occur? (Platform or System)</div>
+          <div class="field-desc">The specific system, platform, or product where this request applies. Used to assign the correct development resources and confirm the implementation scope.</div>
+          <div class="field-example">e.g. "SFC Dealer Mobile App" · "Mobile Back Office (Web)" · "SFC RN Mobile API" · "Admin portal"</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Optional Fields <span class="tag tag-gray" style="font-size:9px;vertical-align:middle">Helpful but not required for ticket creation</span></h3>
+    <div class="field-list">
+      <div class="field-card">
+        <div class="field-num opt">5</div>
+        <div class="field-body">
+          <div class="field-title">Timeline or Deadline</div>
+          <div class="field-desc">Is this tied to a specific initiative, compliance requirement, event, or hard deadline? Helps the team understand urgency and prioritization weight.</div>
+          <div class="field-example">e.g. "Required before the next dealer reporting cycle" · "M&A migration requires completion by November 2026"</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num opt">6</div>
+        <div class="field-body">
+          <div class="field-title">Supporting Materials</div>
+          <div class="field-desc">Screenshots, screen recordings, error messages, mockups, or any documentation that helps explain the request or illustrates the desired outcome.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num opt">7</div>
+        <div class="field-body">
+          <div class="field-title">Business Impact if Not Addressed</div>
+          <div class="field-desc">What happens if this request is not resolved or deprioritized? Helps the team and stakeholders understand risk and make informed prioritization decisions.</div>
+          <div class="field-example">e.g. "Compliance reporting will be delayed, risking audit findings" · "Client will lose approximately $X per day until resolved"</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num opt">8</div>
+        <div class="field-body">
+          <div class="field-title">Additional Context</div>
+          <div class="field-desc">Any other information that helps the team better understand the request — history, constraints, related prior work, or known dependencies.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- REPORTED ISSUE FORM FIELDS -->
+  <div class="section">
+    <div class="section-label"><div class="num">2</div> Reported Issue — Required Fields</div>
+    <h2>10 Fields Required Before Ticket Creation</h2>
+    <p>Production issues require more information at intake because the AI Agent uses the submitted data — particularly the severity level — to fire the correct SLA notification immediately upon receipt. All 10 fields must be present before the ticket is created. Missing fields trigger the same Validate & Assign hold state as new requests.</p>
+
+    <div class="callout callout-flag">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body">
+        <strong>Severity level is assigned by the requestor at submission — not by the team</strong>
+        <p>Severity definitions (Sev 1–4) are agreed with client stakeholders per account before go-live and are available to the requestor directly on the intake form. The AI Agent reads the submitted severity level and fires the pre-configured SLA notification for that severity level immediately. If the Production Support team determines the severity is incorrect after review, they reassign it and the AI Agent updates the notification accordingly.</p>
+      </div>
+    </div>
+
+    <div class="field-list" style="margin-top:16px">
+      <div class="field-card">
+        <div class="field-num" style="background:#991b1b">1</div>
+        <div class="field-body">
+          <div class="field-title">Issue Title</div>
+          <div class="field-desc">A short, clear summary of the issue. Used as the ticket title in Zoho and the card title on the Basecamp Request Board.</div>
+          <div class="field-example">e.g. "Dealer app crashing on iOS 17 for iPad users" · "USPS API returning 500 errors on address validation"</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#991b1b">2</div>
+        <div class="field-body">
+          <div class="field-title">Severity Level (Sev 1–4) <span style="color:#dc2626;font-size:11px;font-weight:700">(Assigned by requestor)</span></div>
+          <div class="field-desc">The severity level must be selected from the pre-agreed definitions for this account. Severity determines the SLA response time the AI Agent communicates to the requestor and governs the production support team's triage priority.</div>
+          <div class="field-example">Sev 1: Critical — system down, no workaround · Sev 2: High — major function impaired · Sev 3: Medium — function degraded, workaround available · Sev 4: Low — minor issue, cosmetic</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#991b1b">3</div>
+        <div class="field-body">
+          <div class="field-title">Problem Description</div>
+          <div class="field-desc">A clear description of what is happening and what the expected behavior should be. Describe the issue — not a proposed fix.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#991b1b">4</div>
+        <div class="field-body">
+          <div class="field-title">Steps to Reproduce</div>
+          <div class="field-desc">A numbered sequence of steps that consistently produce the issue. Without this, the production support team cannot reliably reproduce and diagnose the problem.</div>
+          <div class="field-example">1. Open the dealer app on iOS · 2. Navigate to application submission · 3. Tap "Submit" — app crashes</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#991b1b">5</div>
+        <div class="field-body">
+          <div class="field-title">Expected Behavior vs. Actual Behavior</div>
+          <div class="field-desc">What should happen vs. what is actually happening. This confirms the issue is a defect and not a misunderstanding of intended functionality.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#991b1b">6</div>
+        <div class="field-body">
+          <div class="field-title">Impacted Platform and Version</div>
+          <div class="field-desc">The specific application, platform, and version number where the issue is occurring. Required for the dev team to reproduce the issue in the correct environment.</div>
+          <div class="field-example">e.g. "SFC Dealer App v3.10.3 · iOS 17.4 · iPhone 13" · "SFC Borrower App v2.3.0 · Android 14"</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#991b1b">7</div>
+        <div class="field-body">
+          <div class="field-title">Impacted Components</div>
+          <div class="field-desc">Which features, modules, or integrations are affected by this issue. Helps the team scope the investigation and identify related dependencies.</div>
+          <div class="field-example">e.g. "Application submission flow, USPS address validation API, iOS keyboard navigation"</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#991b1b">8</div>
+        <div class="field-body">
+          <div class="field-title">Number of Users or Reports</div>
+          <div class="field-desc">How many users are experiencing this issue and over what timeframe. Helps the team assess severity accuracy and prioritization relative to other active issues.</div>
+          <div class="field-example">e.g. "Reported by 12 dealers since the 2/9 release" · "Single report — unable to determine broader impact"</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#991b1b">9</div>
+        <div class="field-body">
+          <div class="field-title">Console Logs or Error Messages (if available)</div>
+          <div class="field-desc">Any error codes, stack traces, or console output captured at the time of the issue. Significantly accelerates diagnosis for the development team.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#991b1b">10</div>
+        <div class="field-body">
+          <div class="field-title">Who Is Impacted?</div>
+          <div class="field-desc">The specific user group or stakeholder group experiencing this issue. Helps determine business impact, communication requirements, and escalation path.</div>
+          <div class="field-example">e.g. "All dealers using the iOS app" · "Internal SFC QA team" · "Specific dealer accounts in the Southeast region"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="callout callout-info">
+    <div class="callout-icon">🔗</div>
+    <div class="callout-body">
+      <strong>Related Reference Documents</strong>
+      <p>
+        <a href="Concepta_Intake_Process_Executive_Brief.html" style="color:#1d4ed8;font-weight:600">← Executive Brief</a> &nbsp;·&nbsp;
+        <a href="Reference_AI_Agent_MVP.html" style="color:#6d28d9;font-weight:600">AI Agent MVP Definition →</a> &nbsp;·&nbsp;
+        <a href="Reference_Budget_Model.html" style="color:#15803d;font-weight:600">Budget & Service Bucket Model →</a> &nbsp;·&nbsp;
+        <a href="Reference_Prerequisites_GoLive.html" style="color:#92400e;font-weight:600">Prerequisites for Go-Live →</a>
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<footer>Concepta — Intake & Request Processing Initiative · Intake Form Reference · March 2026 · Internal Use</footer>
+
+</body>
+</html>

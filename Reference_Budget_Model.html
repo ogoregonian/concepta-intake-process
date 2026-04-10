@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concepta — Budget & Service Bucket Model</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0f0f0f;--ink-mid:#3a3a3a;--ink-light:#6b7280;--rule:#e2ddd8;
+  --paper:#f7f5f1;--white:#ffffff;--blue:#1d3557;--blue-mid:#2563eb;
+  --blue-light:#dbeafe;--violet:#4c1d95;--violet-light:#ede9fe;
+  --green:#14532d;--green-light:#dcfce7;--amber:#92400e;--amber-light:#fef3c7;
+  --red:#991b1b;--red-light:#fee2e2;--orange:#c2410c;--orange-light:#fff7ed;
+  --gap:40px;--col:820px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.7}
+nav{position:sticky;top:0;z-index:100;background:var(--blue);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:17px;color:#fff}
+.nav-back{font-size:11px;color:rgba(255,255,255,.6);text-decoration:none}
+.nav-back:hover{color:#fff}
+.hero{background:var(--blue);color:#fff;padding:48px 40px 40px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(37,99,235,.2) 0%,transparent 65%);pointer-events:none}
+.hero-inner{max-width:var(--col);margin:0 auto;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;margin-bottom:16px}
+.hero-eyebrow span{width:6px;height:6px;border-radius:50%;background:#f59e0b}
+h1{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.2;color:#fff;margin-bottom:10px}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.65);max-width:560px;line-height:1.6}
+.page{max-width:var(--col);margin:0 auto;padding:var(--gap) 40px 80px}
+.section{margin-bottom:40px}
+.section-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink-light);display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--rule)}
+.section-label .num{width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0}
+h2{font-family:'DM Serif Display',serif;font-size:24px;line-height:1.25;color:var(--ink);margin-bottom:8px}
+h3{font-size:14px;font-weight:700;color:var(--ink);margin:28px 0 12px}
+p{color:var(--ink-mid);margin-bottom:12px}
+.callout{border-radius:8px;padding:14px 18px;margin:16px 0;display:flex;gap:12px;font-size:13px}
+.callout-icon{font-size:18px;flex-shrink:0}
+.callout-body strong{display:block;font-size:12px;font-weight:700;margin-bottom:3px}
+.callout-info{background:var(--blue-light);border-left:3px solid var(--blue-mid)}
+.callout-warn{background:var(--amber-light);border-left:3px solid #f59e0b}
+.callout-flag{background:var(--red-light);border-left:3px solid #dc2626}
+.callout-green{background:var(--green-light);border-left:3px solid #16a34a}
+.callout-orange{background:var(--orange-light);border-left:3px solid #ea580c}
+.divider{border:none;border-top:1px solid var(--rule);margin:32px 0}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--blue-mid);text-decoration:none;margin-bottom:24px;font-weight:600}
+.back-link:hover{text-decoration:underline}
+/* Budget table */
+.budget-table{width:100%;border-collapse:collapse;font-size:12.5px;margin-bottom:16px}
+.budget-table thead tr{background:var(--blue);color:#fff}
+.budget-table th{padding:10px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.5px}
+.budget-table td{padding:10px 14px;border-bottom:1px solid var(--rule);color:var(--ink-mid);vertical-align:top}
+.budget-table tr:last-child td{border-bottom:none}
+.budget-table tr.highlight{background:#fffbeb}
+.bucket-name{font-weight:700;color:var(--ink)}
+.pct{font-weight:700;color:var(--blue)}
+.flag{color:#dc2626;font-weight:700}
+/* Epic cards */
+.epic-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+.epic-card{background:var(--white);border:1.5px solid var(--rule);border-radius:8px;padding:16px;position:relative;overflow:hidden}
+.epic-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:4px}
+.ec-blue::before{background:#2563eb}
+.ec-red::before{background:#dc2626}
+.ec-green::before{background:#16a34a}
+.ec-violet::before{background:#6d28d9}
+.ec-amber::before{background:#f59e0b}
+.epic-label{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:6px}
+.ec-blue .epic-label{color:#1d4ed8}
+.ec-red .epic-label{color:#991b1b}
+.ec-green .epic-label{color:#15803d}
+.ec-violet .epic-label{color:#6d28d9}
+.ec-amber .epic-label{color:#92400e}
+.epic-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.epic-desc{font-size:12px;color:var(--ink-mid);line-height:1.55}
+.field-list{display:flex;flex-direction:column;gap:10px;margin-bottom:20px}
+.field-card{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start}
+.field-num{width:28px;height:28px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px}
+.field-body{flex:1}
+.field-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:3px}
+.field-desc{font-size:12px;color:var(--ink-mid)}
+footer{background:var(--ink);color:rgba(255,255,255,.45);text-align:center;padding:28px;font-size:11px;letter-spacing:.5px;margin-top:40px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Concepta</div>
+  <a href="Concepta_Intake_Process_Executive_Brief.html" class="nav-back">← Back to Executive Brief</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span></span> Reference Document · Intake & Request Processing</div>
+    <h1>Budget & Service Bucket Model</h1>
+    <p class="hero-sub">How hours are allocated, tracked, and reported across service epics each billing cycle. Every ticket must be assigned to the correct service epic — this is the source of truth for client billing visibility and org-level resource planning.</p>
+  </div>
+</div>
+
+<div class="page">
+
+  <a href="Concepta_Intake_Process_Executive_Brief.html" class="back-link">← Executive Brief</a>
+
+  <div class="callout callout-info">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>The ticket → epic → budget chain is the source of truth</strong>
+      <p>Every activity logged to a Zoho ticket rolls up to a service epic. Every service epic is tracked against a pre-defined baseline hour allocation per billing cycle. This chain — Ticket → Epic → Budget → Insight — is what enables data-informed decisions for both the client and the Concepta team. Without clean, consistent epic assignment on every ticket, the entire budget visibility model breaks down.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SERVICE EPICS -->
+  <div class="section">
+    <div class="section-label"><div class="num">1</div> Service Epics</div>
+    <h2>The Five Service Buckets</h2>
+    <p>All client accounts are structured around five service epics. Every ticket — whether a new request, production issue, maintenance task, or deployment — is assigned to one of these epics at intake. The epic assignment is made by the AI Agent at ticket creation based on the request type submitted.</p>
+
+    <div class="epic-grid">
+      <div class="epic-card ec-blue">
+        <div class="epic-label">Epic 1</div>
+        <div class="epic-title">Planning / Ops / New Requests</div>
+        <div class="epic-desc">Covers all discovery, sprint planning, stakeholder calls, and new request analysis. New requests and enhancements are baked into this epic — reflecting the time required to analyze, scope, estimate, and route the request before any development begins. This is not a separate line item from new feature work.</div>
+      </div>
+      <div class="epic-card ec-red">
+        <div class="epic-label">Epic 2</div>
+        <div class="epic-title">Production Support</div>
+        <div class="epic-desc">Covers all active production incidents, bug triage, hotfix implementation, SLA-bound emergency response, and post-release monitoring. Operates against defined office hours with a dedicated Dev + QA resource per account. SLA response times are defined per severity level (Sev 1–4) and agreed with client stakeholders before go-live.</div>
+      </div>
+      <div class="epic-card ec-green">
+        <div class="epic-label">Epic 3</div>
+        <div class="epic-title">Maintenance / Development</div>
+        <div class="epic-desc">Covers approved feature development, enhancements, security and vulnerability remediation, dependency upgrades, and ongoing system maintenance. Work enters this epic only after passing through the intake and scoping process and receiving client scope approval. This is typically the largest budget bucket.</div>
+      </div>
+      <div class="epic-card ec-violet">
+        <div class="epic-label">Epic 4</div>
+        <div class="epic-title">Deployments / Releases</div>
+        <div class="epic-desc">Covers all staging preparation, QA coordination for release builds, production deployments, App Store submissions, post-release monitoring, and release documentation. App Store submissions must follow the agreed submission window (Monday–Wednesday) per account protocol.</div>
+      </div>
+      <div class="epic-card ec-amber" style="grid-column:1/-1">
+        <div class="epic-label">Epic 5 — Safety Net</div>
+        <div class="epic-title">Buffer</div>
+        <div class="epic-desc">A reserved allocation that absorbs unplanned ad hoc requests, coordination overhead, and overruns in any other service epic during the billing cycle. If any service bucket trends over its baseline, buffer hours are reallocated to it. The buffer utilization data informs the baseline reset conversation with the client at the next contract renewal. <strong>Clients must understand this mechanism</strong> — it is what enables continuous operation without disruption when unexpected work emerges.</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- REFERENCE MODEL -->
+  <div class="section">
+    <div class="section-label"><div class="num">2</div> Reference Allocation Model</div>
+    <h2>Service Finance — 4-Week Cycle Baseline</h2>
+    <p>The following allocation model is based on the Service Finance account operating on a 4-week billing cycle with a 519-hour total baseline. This serves as the reference model for structuring other accounts. Highlighted rows reflect buckets that require proactive client discussion.</p>
+    <p style="font-size:12px;color:var(--ink-light);margin-bottom:16px">Note: Bucket names in this model are standardized to match the epic naming convention used across all Concepta accounts and tooling.</p>
+
+    <table class="budget-table">
+      <thead>
+        <tr>
+          <th>Service Epic</th>
+          <th>Purpose</th>
+          <th>% of Baseline</th>
+          <th>Hours (519 baseline)</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="bucket-name">Planning / Ops / New Requests</td>
+          <td>Discovery, sprint planning, stakeholder calls, new request analysis and scoping</td>
+          <td class="pct">10%</td>
+          <td>52 hrs</td>
+          <td>New request analysis is baked into this epic — not a separate line item</td>
+        </tr>
+        <tr>
+          <td class="bucket-name">Production Support</td>
+          <td>Incidents, hotfixes, SLA-bound emergency triage and response</td>
+          <td class="pct">9%</td>
+          <td>45 hrs</td>
+          <td>Dedicated Dev + QA with defined office hours per account</td>
+        </tr>
+        <tr class="highlight">
+          <td class="bucket-name">Maintenance / Development</td>
+          <td>Approved feature development, enhancements, security work, maintenance</td>
+          <td class="pct flag">40%</td>
+          <td class="flag">207 hrs</td>
+          <td>Largest bucket — monitor closely. Significant year-over-year increase requires client discussion</td>
+        </tr>
+        <tr class="highlight">
+          <td class="bucket-name">Deployments / Releases</td>
+          <td>Staging, QA coordination, production deployments, App Store submissions</td>
+          <td class="pct flag">16%</td>
+          <td class="flag">83 hrs</td>
+          <td>Increased from prior year — flag for client review at next contract cycle</td>
+        </tr>
+        <tr class="highlight">
+          <td class="bucket-name">Buffer</td>
+          <td>Absorbs ad hoc requests and overruns; reallocated to overrun buckets as needed</td>
+          <td class="pct flag">25%</td>
+          <td class="flag">132 hrs</td>
+          <td>Safety net — clients must understand this mechanism. Buffer utilization informs next-cycle baseline recalibration</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-orange">
+      <div class="callout-icon">📈</div>
+      <div class="callout-body">
+        <strong>Year-Over-Year Observation — Use as a Conversation Starter</strong>
+        <p>Total average monthly burn dropped from approximately 650–660 hours (2025) to 500–510 hours (2026), while the Maintenance / Development epic grew to 40% of the total mix. The 103% utilization observed in 2026 indicates buffer is being actively consumed — this pattern must be discussed with client stakeholders to determine whether baseline reallocation is appropriate for the next contract cycle. Data-informed baseline conversations remove opinion and bias from the discussion.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- SETUP REQUIREMENTS -->
+  <div class="section">
+    <div class="section-label"><div class="num">3</div> Per-Account Setup Requirements</div>
+    <h2>What Must Be Defined Before Budget Tracking Can Begin</h2>
+    <p>The following must be confirmed with client stakeholders before any tickets are tracked against service epics. Without this alignment, budget tracking is unreliable and the data-informed conversation model breaks down.</p>
+
+    <div class="field-list">
+      <div class="field-card">
+        <div class="field-num" style="background:#1d3557">✓</div>
+        <div class="field-body">
+          <div class="field-title">Baseline Hours Per Service Epic</div>
+          <div class="field-desc">Starting hour allocations per service epic agreed with client stakeholders based on historical usage and anticipated workload. Reviewed and adjusted at each contract cycle based on observed burn rate data.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#1d3557">✓</div>
+        <div class="field-body">
+          <div class="field-title">Billing Cycle Cadence (3-week vs. 4-week)</div>
+          <div class="field-desc">Board open and close cadence confirmed per account. All time tracking must fall within the active board period. Board close dates must align with client billing dates.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#1d3557">✓</div>
+        <div class="field-body">
+          <div class="field-title">SLA Response Times by Epic and Severity</div>
+          <div class="field-desc">Acknowledgment and resolution SLAs defined for Production Support (Sev 1–4). Standard new request analysis and response targets defined for the Planning / Ops epic. All SLAs agreed with client stakeholders before go-live and loaded into the AI Agent's notification configuration.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#1d3557">✓</div>
+        <div class="field-body">
+          <div class="field-title">Production Support Office Hours and Resource Assignment</div>
+          <div class="field-desc">A dedicated Dev + QA resource assigned per account with defined monitoring windows for triage and incident response. Production support resources must not be double-booked against delivery or planning activities during their coverage windows.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#1d3557">✓</div>
+        <div class="field-body">
+          <div class="field-title">Budget Threshold Alert Level and Overage Escalation Path</div>
+          <div class="field-desc">The percentage of each service epic that triggers a proactive flag to the PDM — before the overage occurs — must be defined and loaded into the AI Agent. The stakeholder contact and approval process for any overage requiring sign-off must also be confirmed per account.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout callout-green">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <strong>The Buffer Epic is the Budget Safety Net — Clients Must Understand This</strong>
+        <p>If any service epic trends over its baseline during a billing cycle, buffer hours are reallocated to it to maintain continuous operation. This is by design — it prevents work from stopping mid-cycle due to budget exhaustion. The buffer utilization data is then reviewed with the client at the next contract cycle to determine whether the baseline for that epic should be adjusted. Clients who understand this mechanism are more receptive to proactive budget conversations and less reactive when unexpected work emerges.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="callout callout-info">
+    <div class="callout-icon">🔗</div>
+    <div class="callout-body">
+      <strong>Related Reference Documents</strong>
+      <p>
+        <a href="Concepta_Intake_Process_Executive_Brief.html" style="color:#1d4ed8;font-weight:600">← Executive Brief</a> &nbsp;·&nbsp;
+        <a href="Reference_Intake_Form.html" style="color:#1d4ed8;font-weight:600">Intake Form Reference →</a> &nbsp;·&nbsp;
+        <a href="Reference_AI_Agent_MVP.html" style="color:#6d28d9;font-weight:600">AI Agent MVP Definition →</a> &nbsp;·&nbsp;
+        <a href="Reference_Prerequisites_GoLive.html" style="color:#92400e;font-weight:600">Prerequisites for Go-Live →</a> &nbsp;·&nbsp;
+        <a href="Client_Billing_View.html" style="color:#15803d;font-weight:600">Client Billing View (Draft) →</a>
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<footer>Concepta — Intake & Request Processing Initiative · Budget & Service Bucket Model · March 2026 · Internal Use</footer>
+
+</body>
+</html>

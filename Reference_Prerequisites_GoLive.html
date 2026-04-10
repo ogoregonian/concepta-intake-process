@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concepta — Prerequisites for Go-Live</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0f0f0f;--ink-mid:#3a3a3a;--ink-light:#6b7280;--rule:#e2ddd8;
+  --paper:#f7f5f1;--white:#ffffff;--blue:#1d3557;--blue-mid:#2563eb;
+  --blue-light:#dbeafe;--violet:#4c1d95;--violet-light:#ede9fe;
+  --green:#14532d;--green-light:#dcfce7;--amber:#92400e;--amber-light:#fef3c7;
+  --red:#991b1b;--red-light:#fee2e2;--orange:#c2410c;--orange-light:#fff7ed;
+  --gap:40px;--col:820px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.7}
+nav{position:sticky;top:0;z-index:100;background:var(--blue);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:17px;color:#fff}
+.nav-back{font-size:11px;color:rgba(255,255,255,.6);text-decoration:none}
+.nav-back:hover{color:#fff}
+.hero{background:var(--blue);color:#fff;padding:48px 40px 40px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(37,99,235,.2) 0%,transparent 65%);pointer-events:none}
+.hero-inner{max-width:var(--col);margin:0 auto;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;margin-bottom:16px}
+.hero-eyebrow span{width:6px;height:6px;border-radius:50%;background:#f59e0b}
+h1{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.2;color:#fff;margin-bottom:10px}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.65);max-width:560px;line-height:1.6}
+.page{max-width:var(--col);margin:0 auto;padding:var(--gap) 40px 80px}
+.section{margin-bottom:40px}
+.section-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink-light);display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--rule)}
+.section-label .num{width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0}
+h2{font-family:'DM Serif Display',serif;font-size:24px;line-height:1.25;color:var(--ink);margin-bottom:8px}
+h3{font-size:13px;font-weight:700;letter-spacing:.5px;color:var(--ink-light);text-transform:uppercase;margin:28px 0 12px;display:flex;align-items:center;gap:10px}
+h3 .cat-icon{width:26px;height:26px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+p{color:var(--ink-mid);margin-bottom:12px}
+.callout{border-radius:8px;padding:14px 18px;margin:16px 0;display:flex;gap:12px;font-size:13px}
+.callout-icon{font-size:18px;flex-shrink:0}
+.callout-body strong{display:block;font-size:12px;font-weight:700;margin-bottom:3px}
+.callout-info{background:var(--blue-light);border-left:3px solid var(--blue-mid)}
+.callout-warn{background:var(--amber-light);border-left:3px solid #f59e0b}
+.callout-flag{background:var(--red-light);border-left:3px solid #dc2626}
+.divider{border:none;border-top:1px solid var(--rule);margin:32px 0}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--blue-mid);text-decoration:none;margin-bottom:24px;font-weight:600}
+.back-link:hover{text-decoration:underline}
+.field-list{display:flex;flex-direction:column;gap:8px;margin-bottom:8px}
+.field-card{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:12px 16px;display:flex;gap:12px;align-items:flex-start}
+.field-num{width:26px;height:26px;border-radius:50%;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:2px}
+.field-body{flex:1}
+.field-title{font-size:12.5px;font-weight:700;color:var(--ink);margin-bottom:2px}
+.field-desc{font-size:11.5px;color:var(--ink-mid);line-height:1.5}
+.prereq-section{margin-bottom:24px}
+footer{background:var(--ink);color:rgba(255,255,255,.45);text-align:center;padding:28px;font-size:11px;letter-spacing:.5px;margin-top:40px}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Concepta</div>
+  <a href="Concepta_Intake_Process_Executive_Brief.html" class="nav-back">← Back to Executive Brief</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span></span> Reference Document · Intake & Request Processing</div>
+    <h1>Prerequisites for Go-Live</h1>
+    <p class="hero-sub">Everything that must be in place — at the account level — before this framework can move from a directional standard to a fully operational and enforceable process. These are the foundational agreements, structures, and tools the workflow, the AI Agent, and the team all depend on.</p>
+  </div>
+</div>
+
+<div class="page">
+
+  <a href="Concepta_Intake_Process_Executive_Brief.html" class="back-link">← Executive Brief</a>
+
+  <div class="callout callout-warn">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <strong>Until these prerequisites are in place, the workflow operates on a best-effort basis only</strong>
+      <p>The framework can be used as a directional guide and reference standard, but enforceable SLAs, accurate budget tracking, and AI Agent operation cannot be guaranteed without account-level alignment on everything below. The corporate site pilot should be used to validate the framework and identify any gaps before prerequisites are required on live client accounts.</p>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- CATEGORY 1 -->
+  <div class="prereq-section">
+    <h3><span class="cat-icon" style="background:#dbeafe">🤝</span> <span style="color:#1d4ed8">1 — Client & Stakeholder Alignment</span></h3>
+    <div class="field-list">
+      <div class="field-card">
+        <div class="field-num" style="background:#1d4ed8">✓</div>
+        <div class="field-body">
+          <div class="field-title">Budget attribution and allocation agreed per service epic</div>
+          <div class="field-desc">Client stakeholders must confirm the hour allocation per service epic — Planning/Ops/New Requests, Production Support, Maintenance/Development, Deployments/Releases, Buffer — for each billing cycle before any work is tracked against those epics.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#1d4ed8">✓</div>
+        <div class="field-body">
+          <div class="field-title">Severity level definitions agreed and documented (Sev 1–4)</div>
+          <div class="field-desc">What constitutes Sev 1 through Sev 4 must be defined, agreed, and documented with each client stakeholder per account — covering impact criteria, examples, and ownership of severity assignment at intake. These definitions are loaded into the AI Agent so it can reference them accurately in notifications.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#1d4ed8">✓</div>
+        <div class="field-body">
+          <div class="field-title">SLA response times defined per severity level</div>
+          <div class="field-desc">Initial response time, update cadence, and resolution target must be defined per severity level and agreed with client stakeholders. These are the commitments the AI Agent communicates to the requestor at intake and monitors against continuously throughout the production issue workflow.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#1d4ed8">✓</div>
+        <div class="field-body">
+          <div class="field-title">Communication channels and escalation paths confirmed</div>
+          <div class="field-desc">Which tools are used for what (Slack, Basecamp, email), who gets notified at each stage, and the escalation path for Sev 1 issues and budget overages — all confirmed per account and loaded into the AI Agent's notification configuration.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#1d4ed8">✓</div>
+        <div class="field-body">
+          <div class="field-title">RCA trigger criteria agreed per account</div>
+          <div class="field-desc">Which severity levels and business impact thresholds require a Root Cause Analysis document must be agreed with client stakeholders before the production issue workflow goes live. RCA is initiated alongside the fix — it does not block resolution or deployment.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#1d4ed8">✓</div>
+        <div class="field-body">
+          <div class="field-title">Release versioning approach agreed per account</div>
+          <div class="field-desc">Hotfix vs. scheduled release protocol per severity level must be confirmed with client stakeholders. This governs how and when production fixes are deployed and aligns with any app store submission windows or client-specific deployment constraints.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY 2 -->
+  <div class="prereq-section">
+    <h3><span class="cat-icon" style="background:#fee2e2">🛠️</span> <span style="color:#991b1b">2 — Production Support Operational Structure</span></h3>
+    <div class="field-list">
+      <div class="field-card">
+        <div class="field-num" style="background:#991b1b">✓</div>
+        <div class="field-body">
+          <div class="field-title">Dedicated production support team assigned per account</div>
+          <div class="field-desc">A dedicated Dev + QA resource must be assigned to each account's production support function — with clearly defined coverage windows and escalation ownership. These resources must not be double-booked against delivery or planning activities during their coverage windows.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#991b1b">✓</div>
+        <div class="field-body">
+          <div class="field-title">Production support scheduler configured</div>
+          <div class="field-desc">Office hours, triage windows, and on-call coverage defined per account and loaded into the AI Agent so it can monitor SLA adherence correctly. The scheduler must be visible to the AI Agent — it is the reference point for inactivity detection and SLA cadence monitoring on production issues.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#991b1b">✓</div>
+        <div class="field-body">
+          <div class="field-title">Budget overage escalation path defined</div>
+          <div class="field-desc">Stakeholder contacts and the approval process for production support budget overages must be identified per account before the workflow goes live. This is required for the AI Agent's overage escalation trigger to reach the correct person when the Production Support epic approaches its baseline threshold.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY 3 -->
+  <div class="prereq-section">
+    <h3><span class="cat-icon" style="background:#dcfce7">📅</span> <span style="color:#14532d">3 — Planning & Delivery Operational Structure</span></h3>
+    <div class="field-list">
+      <div class="field-card">
+        <div class="field-num" style="background:#14532d">✓</div>
+        <div class="field-body">
+          <div class="field-title">Planning ceremony schedule established per account</div>
+          <div class="field-desc">Cadence, attendees, and committed resources for all planning ceremonies must be defined and confirmed per account. This schedule governs when new requests are picked up by the analysis team and is used by the AI Agent to detect inactivity on new request tickets.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#14532d">✓</div>
+        <div class="field-body">
+          <div class="field-title">Activity and resource allocation scheduling confirmed — no double-booking</div>
+          <div class="field-desc">All ceremonies, analysis activities, and active delivery work must be mapped across accounts to prevent double-booking of shared resources. Capacity must be confirmed before any new request is picked up — accounting for meeting load, ceremony commitments, and active delivery work simultaneously across all accounts.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#14532d">✓</div>
+        <div class="field-body">
+          <div class="field-title">Definition of Done (DoD) defined and agreed with all stakeholders</div>
+          <div class="field-desc">What can be confidently called "complete and delivered" within Concepta's control must be defined and aligned with all stakeholders per account. The DoD governs estimation inputs, delivery timing, and the DoD checkpoint in the delivery pipeline — without it, estimation is unreliable and delivery commitments cannot be made with confidence.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY 4 -->
+  <div class="prereq-section">
+    <h3><span class="cat-icon" style="background:#fef3c7">🧰</span> <span style="color:#92400e">4 — Delivery Toolkit</span></h3>
+    <div class="field-list">
+      <div class="field-card">
+        <div class="field-num" style="background:#92400e">✓</div>
+        <div class="field-body">
+          <div class="field-title">Scope document template configured per account</div>
+          <div class="field-desc">A standardized scope document template must be in place and ready to be populated at the start of analysis for every new request. This is the deliverable presented to the client for review and approval before any development work begins.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#92400e">✓</div>
+        <div class="field-body">
+          <div class="field-title">Smartsheet Estimator template configured per account</div>
+          <div class="field-desc">The estimator must account for all activities required to reach the Definition of Done — scoping, development, QA, UAT, deployment, documentation, and any account-specific activities. Configured and validated per account before estimation work begins.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#92400e">✓</div>
+        <div class="field-body">
+          <div class="field-title">Smartsheet Project Plan template configured per account</div>
+          <div class="field-desc">Initiated at the start of analysis on every new request — tracks scope, activities, timeline, resource allocation, and delivery milestones. Template must be configured per account and ready to launch at the point the PDM initiates Diagram 2 (New Request Workflow).</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#92400e">✓</div>
+        <div class="field-body">
+          <div class="field-title">RCA documentation template configured per account</div>
+          <div class="field-desc">The RCA template must be in place and ready to initiate when a qualifying production issue is identified. Covers: timeline of events, root cause analysis, business impact scope, contributing factors, resolution summary, and preventive actions. Initiated alongside the fix — does not block deployment.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CATEGORY 5 -->
+  <div class="prereq-section">
+    <h3><span class="cat-icon" style="background:#ede9fe">🤖</span> <span style="color:#4c1d95">5 — Tooling & AI Agent Configuration</span></h3>
+    <div class="field-list">
+      <div class="field-card">
+        <div class="field-num" style="background:#4c1d95">✓</div>
+        <div class="field-body">
+          <div class="field-title">Basecamp 4 upgrade and Request Board configured per account</div>
+          <div class="field-desc">All accounts must be on Basecamp 4 with a Request Board created using the standardized column structure: Validate & Assign · Analyzing / Scoping / Estimating · Triage / Troubleshooting · Review Scope / Approve / Prioritize · Done / Closed. Both intake forms must be built and linked directly on the board.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#4c1d95">✓</div>
+        <div class="field-body">
+          <div class="field-title">Zoho Sprints configured — backlog buckets, epics, and budget hours</div>
+          <div class="field-desc">Backlog Sprint Buckets (Reported Issues · New Requests: Analysis) and Billing Epics (Production Support · Planning/Ops/New Requests) must be created with baseline budget hours associated before any tickets are generated by the AI Agent.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#4c1d95">✓</div>
+        <div class="field-body">
+          <div class="field-title">Slack channels active with correct team and account mappings</div>
+          <div class="field-desc">Account Slack channels must be active with the correct team members mapped per request type. All Slack handles for PDM, SA, and Production Support team members must be loaded into the AI Agent configuration.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#4c1d95">✓</div>
+        <div class="field-body">
+          <div class="field-title">AI Agent monitoring thresholds configured per account</div>
+          <div class="field-desc">Inactivity windows (planning ceremony cadence · SLA update cadence per severity), budget threshold alert levels, and SLA breach thresholds must all be defined and loaded per account before the AI Agent's continuous monitoring role activates.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#4c1d95">✓</div>
+        <div class="field-body">
+          <div class="field-title">Notification templates configured and reviewed per account</div>
+          <div class="field-desc">All AI Agent notification templates must be configured and reviewed with the PDM per account before go-live: receipt confirmation · SLA acknowledgement by severity · scope ready for review · clarification request · resolution confirmation · inactivity nudge · SLA breach escalation · budget threshold flag · overage approval request.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div class="callout callout-info">
+    <div class="callout-icon">🔗</div>
+    <div class="callout-body">
+      <strong>Related Reference Documents</strong>
+      <p>
+        <a href="Concepta_Intake_Process_Executive_Brief.html" style="color:#1d4ed8;font-weight:600">← Executive Brief</a> &nbsp;·&nbsp;
+        <a href="Reference_Intake_Form.html" style="color:#1d4ed8;font-weight:600">Intake Form Reference →</a> &nbsp;·&nbsp;
+        <a href="Reference_Budget_Model.html" style="color:#15803d;font-weight:600">Budget & Service Bucket Model →</a> &nbsp;·&nbsp;
+        <a href="Reference_AI_Agent_MVP.html" style="color:#6d28d9;font-weight:600">AI Agent MVP Definition →</a>
+      </p>
+    </div>
+  </div>
+
+</div>
+
+<footer>Concepta — Intake & Request Processing Initiative · Prerequisites for Go-Live · March 2026 · Internal Use</footer>
+
+</body>
+</html>

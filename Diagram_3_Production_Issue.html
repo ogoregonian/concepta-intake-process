@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concepta – Production Issue Workflow</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Inter",sans-serif;
+  background:#eceae6;padding:28px 24px 60px;
+}
+
+.page-title{font-size:15px;font-weight:700;color:#111;margin-bottom:6px}
+.page-sub{font-size:11px;color:#6b7280;margin-bottom:8px}
+.tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px}
+.tag{font-size:9px;font-weight:600;padding:2px 8px;border-radius:20px;border:1px solid}
+.tr{background:#fef2f2;color:#991b1b;border-color:#fca5a5}
+.tb{background:#eff6ff;color:#1e40af;border-color:#bfdbfe}
+.tg{background:#f0fdf4;color:#166534;border-color:#86efac}
+.tv{background:#f5f3ff;color:#5b21b6;border-color:#c4b5fd}
+
+/* ── Swimlane wrapper ── */
+.sw{border:1.5px solid #d1cfc8;border-radius:10px;overflow:hidden;background:#fff;box-shadow:0 2px 10px rgba(0,0,0,.07)}
+
+/* ── Lane ── */
+.lane{display:flex;flex-direction:column;border-bottom:1.5px solid #dde1e8;position:relative}
+.lane:last-child{border-bottom:none}
+
+/* Lane header row */
+.lane-head{display:flex;width:100%}
+.lane-label{
+  width:44px;min-width:44px;display:flex;align-items:center;justify-content:center;
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  border-right:1.5px solid #dde1e8;
+}
+.lane-r  .lane-label{background:#dbeafe;color:#1e40af}
+.lane-ai .lane-label{background:#ede9fe;color:#5b21b6}
+.lane-ps .lane-label{background:#fef2f2;color:#991b1b}
+
+/* Lane content area */
+.lane-content{flex:1;display:flex;flex-direction:column}
+
+/* ── Prereq bar ── */
+.prereq{
+  padding:10px 16px;font-size:8.5px;line-height:1.6;
+  border-bottom:1px solid;
+}
+.prereq strong{font-weight:700;display:block;margin-bottom:4px;font-size:9px}
+.prereq ul{margin-left:14px;display:flex;flex-direction:column;gap:2px}
+.prereq li{list-style:disc}
+
+.prereq-r {background:#fffbf0;border-color:#f5c842;color:#7c5c00}
+.prereq-r strong{color:#b45309}
+.prereq-ai{background:#fdf4ff;border-color:#e9d5ff;color:#4c1d95}
+.prereq-ai strong{color:#7c3aed}
+.prereq-ps{background:#fef2f2;border-color:#fca5a5;color:#7f1d1d}
+.prereq-ps strong{color:#991b1b}
+
+/* ── Flow row ── */
+.flow{display:flex;align-items:center;padding:20px 20px;gap:0;flex-wrap:nowrap;overflow-x:auto}
+
+/* ── Boxes ── */
+.box{
+  border-radius:7px;padding:9px 11px;
+  font-size:9px;font-weight:500;line-height:1.5;
+  border:1.5px solid;text-align:center;
+  min-width:120px;max-width:160px;flex-shrink:0;
+}
+.box strong{font-weight:700}
+.box .sub{font-size:8px;color:#6b7280;margin-top:3px;font-weight:400;display:block}
+
+.box-r  {background:#eff6ff;border-color:#3b82f6;color:#1e3a5f}
+.box-ai {background:#f5f3ff;border-color:#7c3aed;color:#2e1065}
+.box-ps {background:#fef2f2;border-color:#dc2626;color:#7f1d1d}
+.box-err{background:#fef2f2;border-color:#dc2626;color:#7f1d1d}
+.box-ntf{background:#fef9c3;border-color:#ca8a04;color:#78350f}
+.box-ok {background:#f0fdf4;border-color:#16a34a;color:#14532d}
+.box-ref{background:#eff6ff;border-color:#3b82f6;border-style:dashed;color:#1e3a5f}
+
+/* ── Diamonds ── */
+.diamond{width:84px;height:84px;position:relative;flex-shrink:0}
+.diamond-bg{
+  width:84px;height:84px;
+  border:1.5px solid #64748b;
+  transform:rotate(45deg);
+  position:absolute;top:0;left:0;background:#fff;
+}
+.diamond-red    .diamond-bg{border-color:#dc2626}
+.diamond-green  .diamond-bg{border-color:#16a34a}
+.diamond-text{
+  position:absolute;top:0;left:0;width:84px;height:84px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:8px;font-weight:700;color:#1e293b;
+  text-align:center;padding:14px;line-height:1.3;z-index:1;
+}
+
+/* ── Arrows ── */
+.arr    {padding:0 7px;color:#94a3b8;font-size:16px;flex-shrink:0;display:flex;align-items:center}
+.arr-yes{padding:0 7px;font-size:8px;font-weight:700;color:#16a34a;flex-shrink:0;white-space:nowrap}
+.arr-no {padding:0 7px;font-size:8px;font-weight:700;color:#dc2626;flex-shrink:0;white-space:nowrap}
+
+/* ── Capsules ── */
+.capsule{border-radius:999px;padding:6px 14px;font-size:10px;font-weight:700;white-space:nowrap;flex-shrink:0}
+.cap-start    {background:#1e293b;color:#fff}
+.cap-end-red  {background:#991b1b;color:#fff}
+.cap-end-green{background:#14532d;color:#fff}
+
+/* ── Loop badge ── */
+.loop{
+  display:inline-flex;align-items:center;gap:4px;
+  background:#fef2f2;border:1.5px dashed #dc2626;border-radius:5px;
+  padding:4px 8px;font-size:8px;font-weight:700;color:#dc2626;white-space:nowrap;flex-shrink:0;
+}
+
+/* ── No detour block ── */
+.no-detour{display:flex;flex-direction:column;align-items:center;gap:3px;margin-top:6px;padding-top:5px;border-top:1px dashed #dc2626}
+
+/* ── Cross-lane divider ── */
+.divider{
+  display:flex;align-items:center;gap:8px;
+  padding:6px 16px 6px calc(44px + 16px);
+  background:#f8fafc;border-bottom:1px dashed #d1cfc8;
+  font-size:9px;color:#64748b;font-style:italic;
+}
+
+/* ── Severity table ── */
+.sev-table{border-collapse:collapse;font-size:8px;margin-top:6px;width:100%;max-width:320px;flex-shrink:0}
+.sev-table th{background:#fef2f2;color:#991b1b;font-weight:700;padding:4px 8px;border:1px solid #fca5a5;text-align:left}
+.sev-table td{padding:4px 8px;border:1px solid #fecaca;color:#1e293b;vertical-align:top}
+.sev-table tr:nth-child(even) td{background:#fff5f5}
+
+/* ── Severity badge ── */
+.sev{display:inline-block;padding:1px 6px;border-radius:999px;font-size:7.5px;font-weight:700;white-space:nowrap}
+.sev-1{background:#991b1b;color:#fff}
+.sev-2{background:#dc2626;color:#fff}
+.sev-3{background:#f97316;color:#fff}
+.sev-4{background:#ca8a04;color:#fff}
+
+/* ── Exception block ── */
+.exception{
+  display:flex;flex-direction:column;align-items:center;gap:6px;
+  margin-left:24px;padding-left:20px;
+  border-left:2px dashed #dc2626;
+}
+
+/* ── AI summary bar ── */
+.ai-summary{padding:8px 16px;background:#f5f3ff;border-bottom:1px solid #e9d5ff;font-size:8.5px;color:#4c1d95;line-height:1.6}
+.ai-summary strong{font-weight:700;color:#7c3aed}
+
+/* ── Monitor block ── */
+.monitor-block{
+  background:#f0f9ff;border:1.5px dashed #0ea5e9;border-radius:7px;
+  padding:10px 12px;font-size:9px;color:#0c4a6e;line-height:1.5;
+  max-width:240px;flex-shrink:0;
+}
+.monitor-block strong{font-weight:700;display:block;margin-bottom:6px;color:#0369a1;font-size:9px}
+.trigger{
+  display:flex;align-items:flex-start;gap:5px;
+  font-size:8px;color:#0c4a6e;margin-top:5px;line-height:1.4;
+  padding-top:5px;border-top:1px solid #bae6fd;
+}
+.trigger:first-of-type{border-top:none;margin-top:2px;padding-top:0}
+.trigger-icon{flex-shrink:0;font-size:9px}
+</style>
+</head>
+<body>
+
+<div class="page-title">Production Issue Workflow — Triage · Troubleshoot · Resolve · Close</div>
+<div class="page-sub">Workflow · Processing a Reported Production Issue from triage to resolution and closure · The Production Support Team (Dev + QA) is the internal team for this workflow</div>
+<div class="tags">
+  <span class="tag tr">Production Issue</span>
+  <span class="tag tv">AI Agent</span>
+  <span class="tag tr">Production Support Team</span>
+  <span class="tag tb">Basecamp 4</span>
+  <span class="tag tb">Zoho Sprints</span>
+  <span class="tag tb">Slack</span>
+</div>
+
+<div class="sw">
+
+  <!-- ════════════ REQUESTOR LANE ════════════ -->
+  <div class="lane lane-r">
+    <div class="lane-head">
+      <div class="lane-label">Requestor</div>
+      <div class="lane-content">
+
+        <div class="prereq prereq-r">
+          <strong>📌 Prerequisites</strong>
+          <ul>
+            <li>Internal &amp; external alignment on new operational structure for processing requests</li>
+            <li>Severity level definitions (Sev 1–4) agreed and documented with client stakeholders — covers impact criteria, examples, and ownership of assignment</li>
+            <li>SLA response times defined per severity level — includes initial response, update cadence, and resolution target</li>
+            <li>Communication channels and escalation paths agreed per severity level</li>
+            <li>Production support office hours defined and communicated to client</li>
+            <li>Intake form for Reported Issues includes severity level field — linked on the Request Board</li>
+            <li>Client Request Board configured with "Triage / Troubleshooting" column active</li>
+          </ul>
+        </div>
+
+        <div class="flow">
+
+          <div class="capsule cap-start">START</div>
+          <div class="arr">→</div>
+
+          <a href="Diagram_1_Intake_Request.html" target="_blank" style="text-decoration:none;flex-shrink:0">
+            <div class="box box-ref" style="cursor:pointer" onmouseover="this.style.background='#dbeafe'" onmouseout="this.style.background=''">
+              <strong>↗ See: Intake Request Diagram</strong>
+              <span class="sub">Issue submitted via Basecamp · AI Agent validates + categorises as Prod Issue</span>
+            </div>
+          </a>
+          <div class="arr">→</div>
+
+          <div class="box box-r" style="max-width:160px;border-color:#dc2626;background:#fef2f2;color:#7f1d1d">
+            <strong>Assign severity level</strong>
+            <span class="sub">Requestor selects Sev 1–4 on the intake form · Based on pre-agreed definitions &amp; SLA response times</span>
+          </div>
+          <div class="arr">→</div>
+
+          <div class="box box-ntf">
+            <strong>📧 Notification received</strong>
+            <span class="sub">"Your reported issue has been assigned to the Production Support team. Track progress on your Request Board."</span>
+          </div>
+          <div class="arr">→</div>
+
+          <div class="box box-r" style="max-width:170px">
+            <strong>⏳ Awaiting triage &amp; resolution</strong>
+            <span class="sub">Monitor Request Board · Respond to clarifying questions from Prod Support team if raised</span>
+          </div>
+          <div class="arr">→</div>
+
+          <!-- Loop exception: clarification requested -->
+          <div style="display:flex;flex-direction:column;align-items:center;gap:6px">
+            <div style="font-size:8px;color:#6b7280;text-align:center;max-width:150px;margin-bottom:4px">END = requestor confirms issue resolved · Prod Support team handles the rest</div>
+            <div class="capsule cap-end-red">END</div>
+          </div>
+
+          <!-- Exception: clarification loop -->
+          <div class="exception">
+            <div class="loop">↩ Loop — Prod Support: clarification needed</div>
+            <div class="box box-err" style="max-width:160px">
+              <strong>Provide clarification or additional info</strong>
+              <span class="sub">Respond via Basecamp thread or Slack as directed by team</span>
+            </div>
+            <div style="font-size:8px;color:#dc2626;margin-top:2px">↑ re-enters triage flow</div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ DIVIDER ════════════ -->
+  <div class="divider">
+    <svg width="14" height="14" viewBox="0 0 16 16"><path d="M8 2v12M4 10l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Bug ticket created in Zoho Sprints — AI Agent hands off to Production Support team
+  </div>
+
+  <!-- ════════════ AI AGENT LANE ════════════ -->
+  <div class="lane lane-ai">
+    <div class="lane-head">
+      <div class="lane-label">AI Agent</div>
+      <div class="lane-content">
+
+        <div class="prereq prereq-ai">
+          <strong>📌 Prerequisites</strong>
+          <ul>
+            <li>Zoho Sprints: Backlog Sprint bucket for Reported Issues configured · Bug ticket template defined</li>
+            <li>Slack channel active with Production Support team tagged as assignees</li>
+            <li>Severity level definitions (Sev 1–4) agreed and documented by client stakeholders — includes response times, communication channels, escalation paths, and office hours per severity</li>
+            <li>All severity + SLA definitions loaded into the intake form and Bug ticket template so they are captured at submission and available on the ticket for the AI Agent to read</li>
+            <li>SLA update cadence defined per severity — used to detect ticket inactivity and trigger Slack nudges</li>
+            <li>Budget threshold alert level defined — percentage of Prod Support budget that triggers a PDM flag</li>
+            <li>Notification templates configured per severity and trigger type (clarification request, SLA breach, fix verified, etc.)</li>
+            <li>Basecamp Request Board: "Triage / Troubleshooting" and "Done / Closed" columns active</li>
+          </ul>
+        </div>
+
+        <div class="ai-summary">
+          <strong>🤖 AI Agent scope in this lane:</strong> Handles the initial handoff to the Production Support team — reads severity and all associated details from the ticket, fires the corresponding pre-defined notification, and tags the assignee in Slack. Then steps into a continuous monitoring role throughout triage and resolution — nudging stalled steps, relaying clarification requests, flagging SLA breaches and budget thresholds, closing the loop on stakeholder approvals, and notifying the requestor automatically when the fix is live.
+        </div>
+
+        <div class="flow" style="align-items:flex-start;padding-top:24px;padding-bottom:24px">
+
+          <div class="box box-ai" style="max-width:170px">
+            <strong>Confirm handoff from Diagram 1</strong>
+            <span class="sub">Basecamp item already in "Triage / Troubleshooting" · Bug ticket assigned to Prod Support team · Confirms handoff is complete before monitoring begins</span>
+          </div>
+          <div class="arr" style="align-self:center">→</div>
+
+          <div class="box box-ai" style="max-width:190px">
+            <strong>Read severity level from ticket</strong>
+            <span class="sub">Severity + SLA response time, communication channel, escalation path &amp; office hours are all pre-defined by client stakeholders and captured on the ticket at intake</span>
+          </div>
+          <div class="arr" style="align-self:center">→</div>
+
+          <!-- Severity branches -->
+          <div style="display:flex;flex-direction:column;gap:10px;padding-left:12px;align-self:flex-start;padding-top:0">
+
+            <div style="display:flex;align-items:center;gap:6px">
+              <span class="sev sev-1">SEV 1</span>
+              <div class="arr-no" style="color:#991b1b">→</div>
+              <div class="box box-ntf" style="max-width:210px">
+                <strong>📧 Notify requestor immediately</strong>
+                <span class="sub">Sev 1 — Critical outage. Response time: [per SLA]. Production Support team has been alerted and is initiating triage now.</span>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:6px">
+              <span class="sev sev-2">SEV 2</span>
+              <div class="arr-no" style="color:#dc2626">→</div>
+              <div class="box box-ntf" style="max-width:210px">
+                <strong>📧 Notify requestor</strong>
+                <span class="sub">Sev 2 — High impact. Response time: [per SLA]. Production Support team has been assigned and will begin triage within the SLA window.</span>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:6px">
+              <span class="sev sev-3">SEV 3</span>
+              <div class="arr-no" style="color:#f97316">→</div>
+              <div class="box box-ntf" style="max-width:210px">
+                <strong>📧 Notify requestor</strong>
+                <span class="sub">Sev 3 — Medium impact. Response time: [per SLA]. Your issue has been assigned and will be reviewed during next available support window.</span>
+              </div>
+            </div>
+
+            <div style="display:flex;align-items:center;gap:6px">
+              <span class="sev sev-4">SEV 4</span>
+              <div class="arr-no" style="color:#ca8a04">→</div>
+              <div class="box box-ntf" style="max-width:210px">
+                <strong>📧 Notify requestor</strong>
+                <span class="sub">Sev 4 — Low impact. Response time: [per SLA]. Your issue has been logged and will be reviewed in the next available sprint cycle.</span>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Converge + continuous monitoring -->
+          <div style="display:flex;flex-direction:column;gap:8px;padding-left:24px;align-self:flex-start;padding-top:0">
+            <div class="arr" style="align-self:center">→</div>
+            <div class="box box-ai" style="max-width:190px">
+              <strong>Tag assignee in Slack</strong>
+              <span class="sub">Prod Support channel · include ticket link, summary, severity, requestor &amp; SLA response window</span>
+            </div>
+            <div class="arr" style="align-self:center">→</div>
+
+            <!-- Continuous monitoring block -->
+            <div class="monitor-block" style="max-width:260px">
+              <strong>🔄 Continuous monitoring — active throughout triage &amp; resolution</strong>
+              <div class="trigger"><span class="trigger-icon">⚡</span>Ticket inactive beyond SLA update cadence → flag to Prod Support team in Slack</div>
+              <div class="trigger"><span class="trigger-icon">⚡</span>Prod Support requests clarification from requestor → notify requestor automatically · log on ticket</div>
+              <div class="trigger"><span class="trigger-icon">⚡</span>No requestor response to clarification within SLA window → send automated reminder to requestor</div>
+              <div class="trigger"><span class="trigger-icon">⚡</span>SLA breach threshold reached → re-escalate in Slack · flag to PDM</div>
+              <div class="trigger"><span class="trigger-icon">⚡</span>Budget overage approved by stakeholder → notify Prod Support team they are clear to proceed</div>
+              <div class="trigger"><span class="trigger-icon">⚡</span>Prod Support budget approaching defined threshold → flag to PDM before overage occurs</div>
+              <div class="trigger"><span class="trigger-icon">⚡</span>Fix verified in production → notify requestor automatically · prompt to confirm resolution on Request Board</div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ DIVIDER ════════════ -->
+  <div class="divider">
+    <svg width="14" height="14" viewBox="0 0 16 16"><path d="M8 2v12M4 10l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Prod Support team picks up — initiates triage per SLA &amp; office hours
+  </div>
+
+  <!-- ════════════ PRODUCTION SUPPORT TEAM LANE ════════════ -->
+  <div class="lane lane-ps">
+    <div class="lane-head">
+      <div class="lane-label">Production Support Team</div>
+      <div class="lane-content">
+
+        <div class="prereq prereq-ps">
+          <strong>📌 Prerequisites</strong>
+          <ul>
+            <li>Dedicated production support team assigned (Dev + QA)</li>
+            <li>Production support office hours defined and communicated to client</li>
+            <li>Account SLA definitions and severity response times agreed with client stakeholders</li>
+            <li>Account budget structure defined — production support bucket, deployment budget, and buffer allocation established</li>
+            <li>Budget overage escalation path defined — stakeholder contacts identified per account</li>
+            <li>Release versioning approach agreed — defines how and when fixes are deployed (hotfix vs. scheduled release)</li>
+            <li>RCA criteria defined per account — specifies which severity levels and business impact thresholds require a Root Cause Analysis document</li>
+            <li>Zoho Sprints access to manage Bug ticket lifecycle, activity logging, and sprint assignment</li>
+            <li>Basecamp Request Board access to manage column movement</li>
+            <li>Escalation path defined for Sev 1 issues (e.g. on-call protocol)</li>
+          </ul>
+        </div>
+
+        <div class="flow" style="align-items:flex-start;padding-top:24px;padding-bottom:28px">
+
+          <!-- Step 1: Acknowledge -->
+          <div class="box box-ps" style="max-width:150px">
+            <strong>Acknowledge ticket</strong>
+            <span class="sub">Review Bug ticket in Zoho · Confirm severity level · Check SLA response window · Open activity log on ticket</span>
+          </div>
+          <div class="arr" style="align-self:center">→</div>
+
+          <!-- Severity accurate? -->
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+            <div class="diamond diamond-red">
+              <div class="diamond-bg"></div>
+              <div class="diamond-text">Severity accurate?</div>
+            </div>
+            <div class="no-detour">
+              <div class="arr-no">NO ↓</div>
+              <div class="box box-err" style="max-width:160px;margin-top:2px">
+                Reassign severity · Update ticket + notify requestor of reclassification via AI Agent
+              </div>
+              <div style="font-size:8px;color:#dc2626;margin-top:2px">↑ re-enters triage</div>
+            </div>
+          </div>
+
+          <!-- YES arrow -->
+          <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;align-self:flex-start;padding-top:36px">
+            <div class="arr-yes">YES →</div>
+          </div>
+
+          <!-- Enough info? -->
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+            <div class="diamond diamond-red">
+              <div class="diamond-bg"></div>
+              <div class="diamond-text">Enough info to begin triage?</div>
+            </div>
+            <div class="no-detour">
+              <div class="arr-no">NO ↓</div>
+              <div class="box box-err" style="max-width:160px;margin-top:2px">
+                Request clarification from requestor via Basecamp or Slack
+                <span class="sub">↩ Loop — awaiting requestor response</span>
+              </div>
+              <div style="font-size:8px;color:#dc2626;margin-top:2px">↑ re-enters once info received</div>
+            </div>
+          </div>
+
+          <!-- YES arrow -->
+          <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;align-self:flex-start;padding-top:36px">
+            <div class="arr-yes">YES →</div>
+          </div>
+
+          <!-- Triage & troubleshoot -->
+          <div class="box box-ps" style="max-width:195px">
+            <strong>Triage &amp; Troubleshoot</strong>
+            <span class="sub">
+              · Reproduce issue<br>
+              · Isolate root cause<br>
+              · Assess scope of impact<br>
+              · Determine fix approach<br>
+              · <strong>Capture all activities in Zoho ticket throughout</strong><br>
+              · Post update in Zoho ticket + Basecamp<br>
+              <em>Budget: Production Support bucket</em>
+            </span>
+          </div>
+          <div class="arr" style="align-self:center">→</div>
+
+          <!-- Resolvable? -->
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+            <div class="diamond diamond-red">
+              <div class="diamond-bg"></div>
+              <div class="diamond-text">Resolvable within Prod Support scope?</div>
+            </div>
+            <!-- NO path: escalate / new request -->
+            <div class="no-detour">
+              <div class="arr-no">NO ↓</div>
+              <div class="box box-err" style="max-width:180px;margin-top:2px">
+                <strong>Escalate or re-classify</strong>
+                <span class="sub">Scope requires dev work beyond a fix → convert to New Request via Analysis team · Notify requestor · Update ticket + Basecamp</span>
+              </div>
+              <div style="font-size:8px;color:#dc2626;margin-top:2px">→ routes to New Request workflow</div>
+            </div>
+          </div>
+
+          <!-- YES arrow -->
+          <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;align-self:flex-start;padding-top:36px">
+            <div class="arr-yes">YES →</div>
+          </div>
+
+          <!-- Budget check -->
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+            <div class="diamond diamond-red">
+              <div class="diamond-bg"></div>
+              <div class="diamond-text">Sufficient budget remaining to action?</div>
+            </div>
+            <div class="no-detour">
+              <div class="arr-no">NO ↓</div>
+              <div class="box box-err" style="max-width:185px;margin-top:2px">
+                <strong>Check deployment budget + buffer</strong>
+                <span class="sub">Assess if deployment budget or buffer can cover the overage · If yes → proceed with approval · If no → escalate to stakeholder, inform of overage needed and await sign-off before proceeding</span>
+              </div>
+              <div style="font-size:8px;color:#dc2626;margin-top:2px">↑ re-enters once approved</div>
+            </div>
+          </div>
+
+          <!-- YES arrow -->
+          <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;align-self:flex-start;padding-top:36px">
+            <div class="arr-yes">YES →</div>
+          </div>
+
+          <!-- RCA check -->
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+            <div class="diamond diamond-red">
+              <div class="diamond-bg"></div>
+              <div class="diamond-text">RCA required per severity &amp; impact criteria?</div>
+            </div>
+            <div class="no-detour">
+              <div class="arr-no">NO ↓</div>
+              <div style="font-size:8px;color:#6b7280;margin-top:4px;text-align:center;max-width:130px">Not all issues require RCA — proceed to release alignment &amp; fix</div>
+            </div>
+          </div>
+
+          <!-- YES arrow -->
+          <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;align-self:flex-start;padding-top:36px">
+            <div class="arr-yes">YES →</div>
+          </div>
+
+          <!-- RCA doc -->
+          <div class="box box-ps" style="max-width:175px">
+            <strong>Initiate RCA documentation</strong>
+            <span class="sub">
+              · Open RCA doc per account template<br>
+              · Log initial timeline, impact scope &amp; contributing factors<br>
+              · <strong>RCA runs alongside the fix — completed and finalised at ticket close</strong><br>
+              · Does not block release alignment or fix implementation
+            </span>
+          </div>
+          <div class="arr" style="align-self:center">→</div>
+
+          <!-- Release version -->
+          <div class="box box-ps" style="max-width:170px">
+            <strong>Align on release version</strong>
+            <span class="sub">
+              · Confirm target release version for the fix<br>
+              · Hotfix vs. scheduled release per severity &amp; client agreement<br>
+              · Update ticket with version details
+            </span>
+          </div>
+          <div class="arr" style="align-self:center">→</div>
+
+          <!-- Fix & deploy -->
+          <div class="box box-ps" style="max-width:175px">
+            <strong>Implement &amp; deploy fix</strong>
+            <span class="sub">
+              · Assign sprint (Reported Issues bucket)<br>
+              · Dev implements fix<br>
+              · QA validates in staging<br>
+              · Deploy to production per agreed release version<br>
+              · Confirm fix live · Log all activities in ticket
+            </span>
+          </div>
+          <div class="arr" style="align-self:center">→</div>
+
+          <!-- Fix verified? -->
+          <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+            <div class="diamond diamond-red">
+              <div class="diamond-bg"></div>
+              <div class="diamond-text">Fix verified in production?</div>
+            </div>
+            <div class="no-detour">
+              <div class="arr-no">NO ↓</div>
+              <div class="box box-err" style="max-width:160px;margin-top:2px">
+                Re-investigate · Revise fix · Re-deploy
+              </div>
+              <div style="font-size:8px;color:#dc2626;margin-top:2px">↑ re-enters fix cycle</div>
+            </div>
+          </div>
+
+          <!-- YES arrow -->
+          <div style="display:flex;flex-direction:column;align-items:center;padding:0 4px;align-self:flex-start;padding-top:36px">
+            <div class="arr-yes">YES →</div>
+          </div>
+
+          <!-- Close & notify -->
+          <div style="display:flex;flex-direction:column;gap:10px;align-self:flex-start;padding-top:0">
+            <div class="box box-ok" style="max-width:175px">
+              <strong>Close ticket &amp; update board</strong>
+              <span class="sub">
+                · Mark Zoho ticket as Resolved<br>
+                · Move Basecamp item to "Done / Closed" column<br>
+                · Finalise activity log + resolution notes in ticket<br>
+                · Complete RCA doc if applicable
+              </span>
+            </div>
+            <div class="arr" style="align-self:center">→</div>
+            <div class="box box-ntf" style="max-width:175px">
+              <strong>📧 AI Agent notifies requestor</strong>
+              <span class="sub">"Your reported issue has been resolved and verified in production. Please confirm on your Request Board. Ticket closed."</span>
+            </div>
+            <div class="arr" style="align-self:center">→</div>
+
+            <!-- Requestor confirms? -->
+            <div style="display:flex;flex-direction:column;align-items:center;flex-shrink:0">
+              <div class="diamond diamond-green">
+                <div class="diamond-bg"></div>
+                <div class="diamond-text">Requestor confirms resolved?</div>
+              </div>
+              <div class="no-detour">
+                <div class="arr-no">NO ↓</div>
+                <div class="box box-err" style="max-width:160px;margin-top:2px">
+                  Re-open ticket · Re-investigate with additional context from requestor
+                </div>
+                <div style="font-size:8px;color:#dc2626;margin-top:2px">↑ re-enters triage</div>
+              </div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;align-items:center;padding:4px 4px 0;align-self:center">
+              <div class="arr-yes">YES →</div>
+            </div>
+
+            <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+              <div class="capsule cap-end-red">END</div>
+              <div style="font-size:8px;color:#6b7280;text-align:center;max-width:120px;margin-top:2px">Issue resolved &amp; closed</div>
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- Severity reference table -->
+<div style="margin-top:28px;background:#fff;border:1.5px solid #fca5a5;border-radius:10px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.06)">
+  <div style="background:#fef2f2;padding:10px 16px;border-bottom:1px solid #fca5a5;display:flex;align-items:center;gap:8px">
+    <span style="font-size:13px;font-weight:700;color:#991b1b">Severity Level Reference</span>
+    <span style="font-size:9px;color:#7f1d1d">Defined and agreed by client stakeholders before go-live — the AI Agent reads severity from the ticket and triggers the corresponding pre-configured response</span>
+  </div>
+  <div style="padding:16px;overflow-x:auto">
+    <table class="sev-table">
+      <thead>
+        <tr>
+          <th>Level</th>
+          <th>Description</th>
+          <th>Example</th>
+          <th>SLA Response Target</th>
+          <th>Outside Office Hours?</th>
+          <th>Escalation Protocol</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="sev sev-1">SEV 1</span></td>
+          <td>Critical — production system fully down or data loss occurring. All users impacted.</td>
+          <td>Application unreachable, data corruption, complete service outage</td>
+          <td><strong>[per account SLA]</strong></td>
+          <td>Yes — on-call applies</td>
+          <td>Immediate on-call escalation · Stakeholder notification required</td>
+        </tr>
+        <tr>
+          <td><span class="sev sev-2">SEV 2</span></td>
+          <td>High — major feature broken or significantly degraded. Large subset of users impacted.</td>
+          <td>Core workflow blocked, critical API failing, major performance degradation</td>
+          <td><strong>[per account SLA]</strong></td>
+          <td>Yes — SLA window governs</td>
+          <td>Response within SLA window · Stakeholder informed</td>
+        </tr>
+        <tr>
+          <td><span class="sev sev-3">SEV 3</span></td>
+          <td>Medium — functionality impaired but workaround exists. Limited user impact.</td>
+          <td>Non-critical feature broken, UI bug affecting subset of users, minor data display issue</td>
+          <td><strong>[per account SLA]</strong></td>
+          <td>No — office hours only</td>
+          <td>Reviewed during next available support window</td>
+        </tr>
+        <tr>
+          <td><span class="sev sev-4">SEV 4</span></td>
+          <td>Low — cosmetic issue or minor inconvenience. No business impact.</td>
+          <td>Typo in UI, minor styling issue, low-priority enhancement flagged as a bug</td>
+          <td><strong>[per account SLA]</strong></td>
+          <td>No — office hours only</td>
+          <td>Reviewed in next available sprint cycle</td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:8px;font-size:8px;color:#6b7280;font-style:italic">* All severity definitions, SLA response targets, communication channels, escalation paths, and office hours are defined and agreed by the client and internal stakeholders before go-live. This table is the structural template — values are populated per account during onboarding.</div>
+  </div>
+</div>
+
+<!-- Diagram navigation -->
+<div style="margin-top:20px;display:flex;gap:10px;flex-wrap:wrap">
+  <a href="Diagram_1_Intake_Request.html" target="_blank" style="text-decoration:none">
+    <div style="background:#fff;border:1.5px solid #3b82f6;border-radius:7px;padding:8px 14px;font-size:9px;font-weight:700;color:#1e40af;cursor:pointer" onmouseover="this.style.background='#eff6ff'" onmouseout="this.style.background='#fff'">← Diagram 1: Intake Request</div>
+  </a>
+  <a href="Diagram_2_New_Request.html" target="_blank" style="text-decoration:none">
+    <div style="background:#fff;border:1.5px solid #16a34a;border-radius:7px;padding:8px 14px;font-size:9px;font-weight:700;color:#14532d;cursor:pointer" onmouseover="this.style.background='#f0fdf4'" onmouseout="this.style.background='#fff'">← Diagram 2: New Request Workflow</div>
+  </a>
+</div>
+
+</body>
+</html>

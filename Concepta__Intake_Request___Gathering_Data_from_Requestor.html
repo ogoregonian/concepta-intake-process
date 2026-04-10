@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#f0f2f5;padding:32px;min-width:1200px}
+h1{font-size:17px;font-weight:700;color:#1a1a2e;margin-bottom:24px;letter-spacing:.3px}
+
+.swimlane-wrap{border:2px solid #c8cdd6;border-radius:12px;overflow:visible;background:#fff;box-shadow:0 2px 12px rgba(0,0,0,.08);position:relative}
+
+.lane{display:flex;border-bottom:1.5px solid #dde1e8;min-height:160px;position:relative}
+.lane:last-child{border-bottom:none}
+
+.lane-header{
+  width:44px;min-width:44px;display:flex;align-items:center;justify-content:center;
+  writing-mode:vertical-rl;text-orientation:mixed;transform:rotate(180deg);
+  font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  padding:16px 0;border-right:1.5px solid #dde1e8;
+}
+.lane-r .lane-header{background:#DBEAFE;color:#1e40af}
+.lane-ai .lane-header{background:#EDE9FE;color:#5b21b6}
+.lane-it .lane-header{background:#DCFCE7;color:#14532d}
+
+.lane-body{flex:1;padding:24px 20px;display:flex;align-items:center;gap:0;position:relative;overflow:visible}
+
+.capsule{background:#1e293b;color:#fff;border-radius:999px;padding:7px 16px;font-size:11px;font-weight:700;white-space:nowrap}
+
+.box{
+  border-radius:8px;padding:10px 12px;font-size:11px;font-weight:500;line-height:1.45;
+  border:1.5px solid;min-width:110px;max-width:145px;text-align:center;
+}
+.box-r{background:#EFF6FF;border-color:#3B82F6;color:#1e3a5f}
+.box-ai{background:#F5F3FF;border-color:#7C3AED;color:#2e1065}
+.box-it{background:#F0FDF4;border-color:#16A34A;color:#14532d}
+.box-err{background:#FEF2F2;border-color:#DC2626;color:#7f1d1d}
+
+.diamond-outer{width:88px;height:88px;position:relative;flex-shrink:0}
+.diamond-inner{width:88px;height:88px;background:#fff;border:1.5px solid #64748b;transform:rotate(45deg);position:absolute;top:0;left:0}
+.diamond-label{position:absolute;top:0;left:0;width:88px;height:88px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#1e293b;text-align:center;padding:18px;line-height:1.3;z-index:1}
+
+.note{border-radius:6px;padding:7px 10px;font-size:10px;line-height:1.45;border:1.5px dashed;max-width:160px;text-align:left}
+.note-warn{background:#FEF3C7;border-color:#F59E0B;color:#78350F}
+.note-req{background:#FEE2E2;border-color:#EF4444;color:#7f1d1d}
+.note-pre{background:#FFF7ED;border-color:#F97316;color:#7c2d12}
+
+.arr{display:flex;align-items:center;padding:0 6px;flex-shrink:0;color:#64748b;font-size:18px;line-height:1}
+.arr-lbl{font-size:9px;font-weight:700;white-space:nowrap}
+
+.cross-lane{
+  width:100%;display:flex;justify-content:flex-start;align-items:center;
+  padding:0 20px 0 calc(44px + 20px);gap:6px;
+  border-bottom:1px dashed #c8cdd6;background:#f8fafc;
+  font-size:10px;color:#64748b;font-style:italic;min-height:28px;
+}
+
+.sub{font-size:9px;color:#64748b;margin-top:3px;font-weight:400}
+
+/* Loop back badges */
+.loop-badge{
+  display:inline-flex;align-items:center;gap:4px;
+  background:#FEF2F2;border:1.5px dashed #DC2626;border-radius:6px;
+  padding:5px 8px;font-size:9px;color:#DC2626;font-weight:700;white-space:nowrap;
+}
+
+/* Feedback loop lines drawn with SVG overlay */
+.svg-overlay{position:absolute;top:0;left:0;width:100%;pointer-events:none;overflow:visible;z-index:10}
+</style>
+</head>
+<body>
+
+<h1>Intake Request — Gathering Data from Requestor</h1>
+
+<div class="swimlane-wrap" id="diagram">
+
+  <!-- REQUESTOR LANE -->
+  <div class="lane lane-r" id="lane-r">
+    <div class="lane-header">Requestor</div>
+    <div class="lane-body" style="gap:0;align-items:center">
+
+      <div id="start" class="n" style="display:flex;flex-direction:column;align-items:center">
+        <div class="capsule">START</div>
+      </div>
+      <div class="arr">→</div>
+
+      <div id="submit" style="display:flex;flex-direction:column;align-items:center">
+        <div class="box box-r">Submit new feature / function request<div class="sub">(Basecamp / Email)</div></div>
+      </div>
+      <div class="arr">→</div>
+
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px">
+        <div style="font-size:10px;font-weight:700;color:#64748b">Conditional</div>
+        <div class="note note-warn" style="max-width:175px">📌 If submitted via chatbot — AI Agent steps may be skipped and PDM/PM handles intake manually</div>
+      </div>
+      <div class="arr" style="padding:0 14px">→</div>
+
+      <!-- Provide additional info box — used by BOTH feedback loops -->
+      <div id="provide-info" style="display:flex;flex-direction:column;align-items:center;gap:6px">
+        <div style="display:flex;gap:6px;margin-bottom:4px">
+          <div class="loop-badge">↩ Loop 1: AI Agent — missing data</div>
+          <div class="loop-badge">↩ Loop 2: Internal Team — unclear request</div>
+        </div>
+        <div class="box box-r" style="border-color:#DC2626;background:#FEF2F2;color:#7f1d1d;max-width:155px">
+          <strong>Provide additional information</strong>
+          <div class="sub" style="color:#991b1b">Triggered by either feedback loop</div>
+        </div>
+      </div>
+      <div class="arr">→</div>
+
+      <div style="display:flex;flex-direction:column;align-items:center">
+        <div class="box box-r">Resubmit request</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- cross lane -->
+  <div class="cross-lane">
+    <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 2v12M4 10l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Request received — AI Agent picks up
+  </div>
+
+  <!-- AI AGENT LANE -->
+  <div class="lane lane-ai" id="lane-ai" style="min-height:230px">
+    <div class="lane-header">AI Agent</div>
+    <div class="lane-body" style="flex-direction:column;align-items:flex-start;gap:16px;padding:20px">
+
+      <div style="display:flex;align-items:flex-start;gap:0">
+
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <div class="note note-req" style="margin-bottom:6px">📌 Requires SLA response definitions</div>
+          <div class="box box-ai">Send confirmation to client<div class="sub">Received + pending assignment with SLA info</div></div>
+        </div>
+        <div class="arr" style="margin-top:40px">→</div>
+
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <div class="box box-ai" style="max-width:155px">Scan submission for required fields<div class="sub">Feature name · desired outcome · urgency · current behavior · proposed change</div></div>
+        </div>
+        <div class="arr" style="margin-top:40px">→</div>
+
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <div class="diamond-outer">
+            <div class="diamond-inner"></div>
+            <div class="diamond-label">Required data present?</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px;padding-left:8px">
+          <!-- YES -->
+          <div style="display:flex;align-items:center;gap:0">
+            <div style="padding:0 6px;display:flex;flex-direction:column;align-items:center">
+              <div class="arr-lbl" style="color:#16a34a">YES →</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center">
+              <div class="note note-req" style="margin-bottom:6px">📌 Requires Zoho Sprint Backlog<br>Titled: New Request – Analysis / Scope / Estimation</div>
+              <div class="box box-ai">Create Zoho ticket in Backlog</div>
+            </div>
+            <div class="arr">→</div>
+            <div style="display:flex;flex-direction:column;align-items:center">
+              <div class="note note-req" style="margin-bottom:6px">📌 Requires Basecamp + Board</div>
+              <div class="box box-ai">Create Basecamp item → assign to New Request column</div>
+            </div>
+            <div class="arr">→</div>
+            <div style="display:flex;flex-direction:column;align-items:center">
+              <div class="box box-ai">Associate request to bucket</div>
+            </div>
+            <div class="arr">→</div>
+            <div style="display:flex;flex-direction:column;align-items:center">
+              <div class="box box-ai">Assign to PDM</div>
+            </div>
+            <div class="arr">→</div>
+            <div style="display:flex;flex-direction:column;align-items:center">
+              <div class="note note-req" style="margin-bottom:6px">📌 Requires Account Slack Channel</div>
+              <div class="box box-ai">Notify Slack channel + tag assignee</div>
+            </div>
+          </div>
+
+          <!-- NO — Loop 1 -->
+          <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+            <div style="padding:0 6px;display:flex;flex-direction:column;align-items:center">
+              <div class="arr-lbl" style="color:#dc2626">NO ↑</div>
+            </div>
+            <div class="loop-badge">↩ Loop 1 — Routes to Requestor: Provide additional information</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- cross lane -->
+  <div class="cross-lane">
+    <svg width="16" height="16" viewBox="0 0 16 16"><path d="M8 2v12M4 10l4 4 4-4" stroke="#94a3b8" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    Ticket created + assigned — Internal Team picks up
+  </div>
+
+  <!-- INTERNAL TEAM LANE -->
+  <div class="lane lane-it" id="lane-it" style="min-height:210px">
+    <div class="lane-header">Internal Team (PDM · SA · Dev · QA · UX/UI)</div>
+    <div class="lane-body" style="flex-direction:column;align-items:flex-start;gap:14px;padding:20px">
+
+      <div class="note note-pre" style="max-width:680px">📌 Prerequisites: New Request Processing Budget · Timebased Allocation from Budget · Scheduled planning calls with necessary resources from PM · Account SLA response definitions</div>
+
+      <div style="display:flex;align-items:center;gap:0">
+
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <div class="box box-it" style="max-width:180px">Review request → move to "Analyzing Request" column → inform client of any emerging questions</div>
+        </div>
+        <div class="arr">→</div>
+
+        <div style="display:flex;flex-direction:column;align-items:center">
+          <div class="diamond-outer">
+            <div class="diamond-inner" style="border-color:#16a34a"></div>
+            <div class="diamond-label">Is the request clear?</div>
+          </div>
+        </div>
+
+        <div style="display:flex;flex-direction:column;gap:12px;padding-left:8px">
+          <!-- YES -->
+          <div style="display:flex;align-items:center;gap:0">
+            <div style="padding:0 6px;display:flex;flex-direction:column;align-items:center">
+              <div class="arr-lbl" style="color:#16a34a">YES →</div>
+            </div>
+            <div style="display:flex;flex-direction:column;align-items:center">
+              <div class="box box-it">Collab with SA as needed to evaluate request type</div>
+            </div>
+            <div class="arr">→</div>
+            <div style="display:flex;flex-direction:column;align-items:center">
+              <div class="box box-it">Categorize request type</div>
+            </div>
+            <div class="arr">→</div>
+            <div style="display:flex;flex-direction:column;align-items:center">
+              <div class="capsule" style="background:#14532d">END</div>
+            </div>
+          </div>
+
+          <!-- NO — Loop 2 -->
+          <div style="display:flex;align-items:center;gap:6px;margin-top:4px">
+            <div style="padding:0 6px;display:flex;flex-direction:column;align-items:center">
+              <div class="arr-lbl" style="color:#dc2626">NO ↑</div>
+            </div>
+            <div class="loop-badge">↩ Loop 2 — Routes to Requestor: Provide additional information</div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="note note-pre" style="max-width:680px">📌 Tooling: Notion · Mermaid / Lucid · Figma · Smartsheet Project Plan</div>
+
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

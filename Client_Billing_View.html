@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concepta — Client Billing View · Service Finance</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:        #0f0f0f;
+  --ink-mid:    #3a3a3a;
+  --ink-light:  #6b7280;
+  --rule:       #e2ddd8;
+  --paper:      #f7f5f1;
+  --white:      #ffffff;
+  --blue:       #1d3557;
+  --blue-mid:   #2563eb;
+  --blue-light: #dbeafe;
+  --violet:     #4c1d95;
+  --violet-light:#ede9fe;
+  --green:      #14532d;
+  --green-light:#dcfce7;
+  --amber:      #92400e;
+  --amber-light:#fef3c7;
+  --red:        #991b1b;
+  --red-light:  #fee2e2;
+  --orange:     #c2410c;
+  --orange-light:#fff7ed;
+  --col: 820px;
+  --gap: 40px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: var(--blue);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 52px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.18);
+}
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 17px; color: #fff; letter-spacing: .4px; }
+.nav-meta { font-size: 11px; color: rgba(255,255,255,.5); letter-spacing: .5px; }
+.nav-badge {
+  font-size: 10px; font-weight: 600; letter-spacing: .5px;
+  background: rgba(245,158,11,.2); border: 1px solid rgba(245,158,11,.4);
+  color: #fbbf24; border-radius: 4px; padding: 3px 8px;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--blue);
+  color: #fff;
+  padding: 52px 40px 44px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(37,99,235,.25) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-inner { max-width: var(--col); margin: 0 auto; position: relative; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase; color: rgba(255,255,255,.5);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 20px; padding: 4px 12px; margin-bottom: 16px;
+}
+.hero-eyebrow span { width: 6px; height: 6px; border-radius: 50%; background: #f59e0b; }
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 34px; line-height: 1.2; color: #fff;
+  margin-bottom: 10px;
+}
+.hero-sub { font-size: 14px; color: rgba(255,255,255,.6); margin-bottom: 28px; max-width: 480px; }
+.hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+.hero-meta-item { display: flex; flex-direction: column; gap: 2px; }
+.hero-meta-item .label { font-size: 9px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,.4); }
+.hero-meta-item .value { font-size: 13px; font-weight: 500; color: rgba(255,255,255,.85); }
+.draft-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(245,158,11,.15); border: 1px solid rgba(245,158,11,.4);
+  border-radius: 4px; padding: 6px 12px;
+  font-size: 11px; font-weight: 600; color: #fbbf24;
+  margin-top: 20px;
+}
+
+/* ── LAYOUT ── */
+.page { max-width: var(--col); margin: 0 auto; padding: var(--gap) 40px 80px; }
+
+/* ── CYCLE SUMMARY ── */
+.cycle-summary {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  overflow: hidden;
+  margin-bottom: 36px;
+  box-shadow: 0 2px 8px rgba(0,0,0,.05);
+}
+.cycle-summary-header {
+  background: var(--blue);
+  color: #fff;
+  padding: 14px 20px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.cycle-summary-header h3 { font-size: 13px; font-weight: 600; letter-spacing: .3px; }
+.cycle-summary-header span { font-size: 11px; color: rgba(255,255,255,.6); }
+.cycle-buckets {
+  display: grid; grid-template-columns: repeat(5, 1fr);
+  border-bottom: 1px solid var(--rule);
+}
+.cycle-bucket {
+  padding: 16px 18px;
+  border-right: 1px solid var(--rule);
+  position: relative;
+}
+.cycle-bucket:last-child { border-right: none; }
+.cb-label { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-light); margin-bottom: 6px; }
+.cb-hrs { font-family: 'DM Serif Display', serif; font-size: 22px; color: var(--ink); line-height: 1; margin-bottom: 4px; }
+.cb-baseline { font-size: 11px; color: var(--ink-light); }
+.cb-bar { height: 4px; border-radius: 2px; background: #e5e7eb; margin-top: 10px; overflow: hidden; }
+.cb-fill { height: 100%; border-radius: 2px; transition: width .4s ease; }
+.cb-fill.safe    { background: #16a34a; }
+.cb-fill.warn    { background: #f59e0b; }
+.cb-fill.over    { background: #dc2626; }
+.cycle-totals {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  padding: 14px 20px; gap: 0;
+}
+.ct-item { display: flex; flex-direction: column; gap: 2px; }
+.ct-label { font-size: 9px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-light); }
+.ct-value { font-size: 15px; font-weight: 700; color: var(--ink); }
+.ct-value.green { color: #15803d; }
+.ct-value.red   { color: #dc2626; }
+.ct-value.amber { color: #b45309; }
+
+/* ── EPIC SECTION ── */
+.epic-section { margin-bottom: 28px; }
+.epic-header {
+  display: flex; align-items: center; gap: 12px;
+  padding: 12px 18px;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  user-select: none;
+}
+.epic-icon { width: 32px; height: 32px; border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.epic-title { font-size: 13px; font-weight: 700; flex: 1; }
+.epic-meta { display: flex; align-items: center; gap: 16px; }
+.epic-hrs { font-size: 12px; font-weight: 600; }
+.epic-budget { font-size: 11px; color: var(--ink-light); }
+.epic-pill {
+  font-size: 10px; font-weight: 700; padding: 3px 10px;
+  border-radius: 20px; white-space: nowrap;
+}
+.epic-toggle { font-size: 11px; color: var(--ink-light); margin-left: 8px; transition: transform .2s; }
+.epic-toggle.open { transform: rotate(180deg); }
+
+/* Epic colour themes */
+.epic-planning .epic-header { background: #eff6ff; border: 1px solid #bfdbfe; }
+.epic-planning .epic-icon   { background: var(--blue-light); }
+.epic-planning .epic-title  { color: #1d4ed8; }
+.epic-planning .epic-hrs    { color: #1d4ed8; }
+.epic-planning .epic-pill   { background: #dbeafe; color: #1d4ed8; border: 1px solid #93c5fd; }
+
+.epic-prodsupport .epic-header { background: #fef2f2; border: 1px solid #fca5a5; }
+.epic-prodsupport .epic-icon   { background: var(--red-light); }
+.epic-prodsupport .epic-title  { color: #991b1b; }
+.epic-prodsupport .epic-hrs    { color: #991b1b; }
+.epic-prodsupport .epic-pill   { background: #fee2e2; color: #991b1b; border: 1px solid #fca5a5; }
+
+.epic-maintenance .epic-header { background: #f0fdf4; border: 1px solid #86efac; }
+.epic-maintenance .epic-icon   { background: var(--green-light); }
+.epic-maintenance .epic-title  { color: #15803d; }
+.epic-maintenance .epic-hrs    { color: #15803d; }
+.epic-maintenance .epic-pill   { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+
+.epic-deployments .epic-header { background: #f5f3ff; border: 1px solid #c4b5fd; }
+.epic-deployments .epic-icon   { background: var(--violet-light); }
+.epic-deployments .epic-title  { color: #6d28d9; }
+.epic-deployments .epic-hrs    { color: #6d28d9; }
+.epic-deployments .epic-pill   { background: #ede9fe; color: #6d28d9; border: 1px solid #c4b5fd; }
+
+.epic-buffer .epic-header { background: var(--amber-light); border: 1px solid #fcd34d; }
+.epic-buffer .epic-icon   { background: #fef3c7; }
+.epic-buffer .epic-title  { color: #b45309; }
+.epic-buffer .epic-hrs    { color: #b45309; }
+.epic-buffer .epic-pill   { background: #fef3c7; color: #b45309; border: 1px solid #fcd34d; }
+
+/* ── TICKET TABLE ── */
+.ticket-table {
+  width: 100%; border-collapse: collapse;
+  border: 1px solid var(--rule); border-top: none;
+  border-radius: 0 0 8px 8px; overflow: hidden;
+  font-size: 12px;
+}
+.ticket-table th {
+  background: #f8f7f4;
+  font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--ink-light);
+  padding: 9px 14px; text-align: left;
+  border-bottom: 1px solid var(--rule);
+}
+.ticket-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #f0ede8;
+  vertical-align: top;
+  color: var(--ink-mid);
+}
+.ticket-table tr:last-child td { border-bottom: none; }
+.ticket-table tr:hover td { background: #fafaf8; }
+.ticket-id { font-size: 10px; font-weight: 700; color: var(--ink-light); white-space: nowrap; font-family: monospace; }
+.ticket-desc { color: var(--ink); font-weight: 500; }
+.ticket-desc .sub { font-size: 11px; color: var(--ink-light); font-weight: 400; display: block; margin-top: 2px; }
+.ticket-status {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10px; font-weight: 600; padding: 2px 8px;
+  border-radius: 20px; white-space: nowrap;
+}
+.s-done     { background: #dcfce7; color: #15803d; }
+.s-progress { background: #dbeafe; color: #1d4ed8; }
+.s-review   { background: #fef3c7; color: #b45309; }
+.s-blocked  { background: #fee2e2; color: #991b1b; }
+.hrs { font-weight: 700; color: var(--ink); text-align: right; white-space: nowrap; }
+.at-risk { color: #dc2626; font-size: 11px; font-weight: 700; }
+
+/* ── EPIC PROGRESS BAR ── */
+.epic-progress {
+  height: 3px; background: #e5e7eb;
+  border-radius: 0; overflow: hidden;
+}
+.epic-progress-fill { height: 100%; transition: width .5s ease; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink); color: rgba(255,255,255,.45);
+  text-align: center; padding: 28px;
+  font-size: 11px; letter-spacing: .5px;
+  margin-top: 40px;
+}
+
+/* ── DIVIDER ── */
+hr { border: none; border-top: 1px solid var(--rule); margin: 32px 0; }
+
+/* ── COLLAPSED STATE ── */
+.epic-body { display: block; }
+.epic-body.collapsed { display: none; }
+
+/* ── NOTES CALLOUT ── */
+.callout {
+  border-radius: 8px; padding: 14px 18px;
+  margin: 24px 0; display: flex; gap: 12px;
+  font-size: 13px;
+}
+.callout-icon { font-size: 18px; flex-shrink: 0; }
+.callout-body strong { display: block; font-size: 12px; font-weight: 700; margin-bottom: 3px; }
+.callout-info  { background: var(--blue-light); border-left: 3px solid var(--blue-mid); }
+.callout-warn  { background: var(--amber-light); border-left: 3px solid #f59e0b; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Concepta</div>
+  <div class="nav-meta">Client Billing View · Service Finance Company</div>
+  <div class="nav-badge">⚠ Draft · Work In Progress</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span></span> Client Billing View · Billing Cycle Report</div>
+    <h1>Service Finance Company<br><em style="color:rgba(255,255,255,.65)">Activity & Budget Summary</em></h1>
+    <p class="hero-sub">Itemized log of all activities completed this billing cycle, organized by service epic — giving you clear visibility into where your budget was spent and what was delivered.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="label">Billing Cycle</span>
+        <span class="value">March 3 – March 28, 2026</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Cycle Duration</span>
+        <span class="value">4 Weeks</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Total Budget</span>
+        <span class="value">519 hrs</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Account PDM</span>
+        <span class="value">Anne Shrake</span>
+      </div>
+    </div>
+    <div class="draft-badge">⚠ Draft · Placeholder data — structure and format subject to change</div>
+  </div>
+</div>
+
+<div class="page">
+
+  <div class="callout callout-info">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>How to read this view</strong>
+      Each section below represents a service epic — a pre-agreed budget allocation for a specific type of work. Expand any epic to see the itemized activity log with hours logged per ticket. Budget bars show utilization against your baseline allocation for this cycle.
+    </div>
+  </div>
+
+  <!-- ── CYCLE BUDGET SUMMARY ── -->
+  <div class="cycle-summary">
+    <div class="cycle-summary-header">
+      <h3>Cycle Budget Summary — March 3 – March 28, 2026</h3>
+      <span>519 hrs total baseline</span>
+    </div>
+    <div class="cycle-buckets">
+
+      <div class="cycle-bucket">
+        <div class="cb-label">Planning / Ops</div>
+        <div class="cb-hrs">38</div>
+        <div class="cb-baseline">of 52 hrs baseline</div>
+        <div class="cb-bar"><div class="cb-fill safe" style="width:73%"></div></div>
+      </div>
+
+      <div class="cycle-bucket">
+        <div class="cb-label">Prod Support</div>
+        <div class="cb-hrs">41</div>
+        <div class="cb-baseline">of 45 hrs baseline</div>
+        <div class="cb-bar"><div class="cb-fill warn" style="width:91%"></div></div>
+      </div>
+
+      <div class="cycle-bucket">
+        <div class="cb-label">Maintenance / Dev</div>
+        <div class="cb-hrs">187</div>
+        <div class="cb-baseline">of 207 hrs baseline</div>
+        <div class="cb-bar"><div class="cb-fill safe" style="width:90%"></div></div>
+      </div>
+
+      <div class="cycle-bucket">
+        <div class="cb-label">Deployments</div>
+        <div class="cb-hrs">62</div>
+        <div class="cb-baseline">of 83 hrs baseline</div>
+        <div class="cb-bar"><div class="cb-fill safe" style="width:75%"></div></div>
+      </div>
+
+      <div class="cycle-bucket">
+        <div class="cb-label">Buffer</div>
+        <div class="cb-hrs">18</div>
+        <div class="cb-baseline">of 132 hrs baseline</div>
+        <div class="cb-bar"><div class="cb-fill safe" style="width:14%"></div></div>
+      </div>
+
+    </div>
+    <div class="cycle-totals">
+      <div class="ct-item">
+        <div class="ct-label">Total Hours Logged</div>
+        <div class="ct-value">346 hrs</div>
+      </div>
+      <div class="ct-item">
+        <div class="ct-label">Remaining This Cycle</div>
+        <div class="ct-value green">173 hrs</div>
+      </div>
+      <div class="ct-item">
+        <div class="ct-label">Budget Utilization</div>
+        <div class="ct-value amber">67%</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════ -->
+  <!-- EPIC 1: PLANNING / OPS / NEW REQUESTS -->
+  <!-- ══════════════════════════════════════ -->
+  <div class="epic-section epic-planning">
+    <div class="epic-header" onclick="toggleEpic(this)">
+      <div class="epic-icon">📋</div>
+      <div class="epic-title">Planning / Ops / New Requests</div>
+      <div class="epic-meta">
+        <div class="epic-hrs">38 hrs logged</div>
+        <div class="epic-budget">of 52 hrs baseline</div>
+        <div class="epic-pill">73% utilized</div>
+        <div class="epic-toggle open">▾</div>
+      </div>
+    </div>
+    <div class="epic-progress"><div class="epic-progress-fill safe" style="width:73%;background:#2563eb"></div></div>
+    <div class="epic-body">
+      <table class="ticket-table">
+        <thead>
+          <tr>
+            <th style="width:100px">Ticket ID</th>
+            <th>Description</th>
+            <th style="width:120px">Assignee</th>
+            <th style="width:110px">Status</th>
+            <th style="width:80px;text-align:right">Hrs Logged</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="ticket-id">PLN-0041</span></td>
+            <td class="ticket-desc">MVP Prequal: Requirements analysis and scoping session
+              <span class="sub">New Request — v3.11.0 · Standard prequal flow applicant and co-applicant</span></td>
+            <td>Anne Shrake</td>
+            <td><span class="ticket-status s-progress">In Progress</span></td>
+            <td class="hrs">12.0</td>
+          </tr>
+          <tr>
+            <td><span class="ticket-id">PLN-0042</span></td>
+            <td class="ticket-desc">App Store Age Requirements — T-shirt sizing and scope estimation
+              <span class="sub">New Request · SFC Borrower App + SFC Dealer App</span></td>
+            <td>Anne Shrake, Andre Neto</td>
+            <td><span class="ticket-status s-review">In Review</span></td>
+            <td class="hrs">8.5</td>
+          </tr>
+          <tr>
+            <td><span class="ticket-id">PLN-0043</span></td>
+            <td class="ticket-desc">Billing cycle planning ceremonies — sprint planning, backlog grooming
+              <span class="sub">4-week cycle · All workstreams</span></td>
+            <td>Anne Shrake</td>
+            <td><span class="ticket-status s-done">Done</span></td>
+            <td class="hrs">10.0</td>
+          </tr>
+          <tr>
+            <td><span class="ticket-id">PLN-0044</span></td>
+            <td class="ticket-desc">Maintenance Mode capability — feasibility review and estimation
+              <span class="sub">New Request · SFC Dealer App + SFC Borrower App</span></td>
+            <td>Anne Shrake, Emanuel Andrade</td>
+            <td><span class="ticket-status s-review">In Review</span></td>
+            <td class="hrs">7.5</td>
+          </tr>
+          <tr>
+            <td><span class="ticket-id">PLN-0045</span></td>
+            <td class="ticket-desc">Weekly status updates and stakeholder communications
+              <span class="sub">Ongoing · PDM coordination</span></td>
+            <td>Anne Shrake</td>
+            <td><span class="ticket-status s-done">Done</span></td>
+            <td class="hrs">0 hrs <span style="font-size:10px;font-weight:400;color:var(--ink-light)">(ops)</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- EPIC 2: PRODUCTION SUPPORT         -->
+  <!-- ══════════════════════════════════ -->
+  <div class="epic-section epic-prodsupport">
+    <div class="epic-header" onclick="toggleEpic(this)">
+      <div class="epic-icon">🛠️</div>
+      <div class="epic-title">Production Support</div>
+      <div class="epic-meta">
+        <div class="epic-hrs">41 hrs logged</div>
+        <div class="epic-budget">of 45 hrs baseline</div>
+        <div class="epic-pill" style="background:#fee2e2;color:#991b1b;border-color:#fca5a5">91% utilized ⚠</div>
+        <div class="epic-toggle open">▾</div>
+      </div>
+    </div>
+    <div class="epic-progress"><div class="epic-progress-fill" style="width:91%;background:#dc2626"></div></div>
+    <div class="epic-body">
+      <table class="ticket-table">
+        <thead>
+          <tr>
+            <th style="width:100px">Ticket ID</th>
+            <th>Description</th>
+            <th style="width:120px">Assignee</th>
+            <th style="width:110px">Status</th>
+            <th style="width:80px;text-align:right">Hrs Logged</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="ticket-id">PS-0088</span></td>
+            <td class="ticket-desc">v3.10.1 post-PROD monitoring — Android rooted device access issues
+              <span class="sub">Sev 2 · SFC Dealer App · Reported by dealers post 2/9 release</span></td>
+            <td>Jay Chulliyot, Andre Neto</td>
+            <td><span class="ticket-status s-done">Resolved</span></td>
+            <td class="hrs">14.5</td>
+          </tr>
+          <tr>
+            <td><span class="ticket-id">PS-0089</span></td>
+            <td class="ticket-desc">iOS app freeze — iPad users (7th gen and older)
+              <span class="sub">Sev 3 · SFC Dealer App · Keyboard navigation fix deployed in v3.10.3</span></td>
+            <td>Jay Chulliyot, Flavio Rodrigues</td>
+            <td><span class="ticket-status s-done">Resolved</span></td>
+            <td class="hrs">11.0</td>
+          </tr>
+          <tr>
+            <td><span class="ticket-id">PS-0090</span></td>
+            <td class="ticket-desc">Loan Pipeline disparity — triage and SFC coordination
+              <span class="sub">Sev 3 · Ongoing · SFC optimizing response time on their end</span></td>
+            <td>Jay Chulliyot, Sankar</td>
+            <td><span class="ticket-status s-progress">In Progress</span></td>
+            <td class="hrs">9.0</td>
+          </tr>
+          <tr>
+            <td><span class="ticket-id">PS-0091</span></td>
+            <td class="ticket-desc">Elevated prod support triage — USPS API and general support requests
+              <span class="sub">Sev 4 · Multiple minor reported issues · office hours coverage</span></td>
+            <td>Jay Chulliyot</td>
+            <td><span class="ticket-status s-done">Resolved</span></td>
+            <td class="hrs">6.5</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="padding:10px 14px;background:#fff8f8;border-top:1px solid #fecaca;font-size:11px;color:#991b1b;font-weight:600;border-radius:0 0 8px 8px">
+        ⚠ Production Support budget at 91% utilization with 1 week remaining in cycle. PDM has been notified. Buffer hours available if overage is required.
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- EPIC 3: MAINTENANCE / DEVELOPMENT  -->
+  <!-- ══════════════════════════════════ -->
+  <div class="epic-section epic-maintenance">
+    <div class="epic-header" onclick="toggleEpic(this)">
+      <div class="epic-icon">⚙️</div>
+      <div class="epic-title">Maintenance / Development</div>
+      <div class="epic-meta">
+        <div class="epic-hrs">187 hrs logged</div>
+        <div class="epic-budget">of 207 hrs baseline</div>
+        <div class="epic-pill">90% utilized</div>
+        <div class="epic-toggle open">▾</div>
+      </div>
+    </div>
+    <div class="epic-progress"><div class="epic-progress-fill" style="width:90%;background:#16a34a"></div></div>
+    <div class="epic-body">
+      <table class="ticket-table">
+        <thead>
+          <tr>
+            <th style="width:100px">Ticket ID</th>
+            <th>Description</th>
+            <th style="width:120px">Assignee</th>
+            <th style="width:110px">Status</th>
+            <th style="width:80px;text-align:right">Hrs Logged</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="ticket-id">DEV-0201</span></td>
+            <td class="ticket-desc">v3.10.3 — Prove/Prefill workflow fix + iOS landscape mode improvement
+              <span class="sub">SFC Dealer App · iOS only · Live since 3/10/26</span></td>
+            <td>Andre Neto, Flavio Rodrigues</td>
+            <td><span class="ticket-status s-done">Done</span></td>
+            <td class="hrs">42.0</td>
+          </tr>
+          <tr>
+            <td><span class="ticket-id">DEV-0202</span></td>
+            <td class="ticket-desc">v3.11.0 — MVP Prequal standard flow (applicant + co-applicant) — Dev
+              <span class="sub">SFC Dealer App + API · Business Workstream · In active development</span></td>
+            <td>Emanuel Andrade, Flavio Rodrigues</td>
+            <td><span class="ticket-status s-progress">In Progress</span></td>
+            <td class="hrs">68.0</td>
+          </tr>
+          <tr>
+            <td><span class="ticket-id">DEV-0203</span></td>
+            <td class="ticket-desc">Borrower App — Akamai SDK Bot Attack Prevention
+              <span class="sub">SFC Borrower App · DC Migration Workstream · In Dev</span></td>
+            <td>Benjamin Apple</td>
+            <td><span class="ticket-status s-progress">In Progress</span></td>
+            <td class="hrs">28.0</td>
+          </tr>
+          <tr>
+            <td><span class="ticket-id">DEV-0204</span></td>
+            <td class="ticket-desc">Borrower App — Pen Test items iOS and Android (Sev High/Med)
+              <span class="sub">SFC Borrower App · Securities & Vulnerabilities Workstream</span></td>
+            <td>Benjamin Apple</td>
+            <td><span class="ticket-status s-progress">In Progress</span></td>
+            <td class="hrs">31.0</td>
+          </tr>
+          <tr>
+            <td><span class="ticket-id">DEV-0205</span></td>
+            <td class="ticket-desc">Home Depot push campaign — March 2026 series
+              <span class="sub">SFC Dealer App · Business Workstream · 3 campaigns delivered</span></td>
+            <td>Emanuel Andrade</td>
+            <td><span class="ticket-status s-done">Done</span></td>
+            <td class="hrs">18.0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- EPIC 4: DEPLOYMENTS / RELEASES     -->
+  <!-- ══════════════════════════════════ -->
+  <div class="epic-section epic-deployments">
+    <div class="epic-header" onclick="toggleEpic(this)">
+      <div class="epic-icon">🚀</div>
+      <div class="epic-title">Deployments / Releases</div>
+      <div class="epic-meta">
+        <div class="epic-hrs">62 hrs logged</div>
+        <div class="epic-budget">of 83 hrs baseline</div>
+        <div class="epic-pill">75% utilized</div>
+        <div class="epic-toggle open">▾</div>
+      </div>
+    </div>
+    <div class="epic-progress"><div class="epic-progress-fill" style="width:75%;background:#6d28d9"></div></div>
+    <div class="epic-body">
+      <table class="ticket-table">
+        <thead>
+          <tr>
+            <th style="width:100px">Ticket ID</th>
+            <th>Description</th>
+            <th style="width:120px">Assignee</th>
+            <th style="width:110px">Status</th>
+            <th style="width:80px;text-align:right">Hrs Logged</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="ticket-id">REL-0055</span></td>
+            <td class="ticket-desc">v3.10.3 — iOS release · QA staging validation + App Store submission
+              <span class="sub">SFC Dealer App · iOS only · App Store submission Mon–Wed window</span></td>
+            <td>Raquel Comunale, SFC QA</td>
+            <td><span class="ticket-status s-progress">In Progress</span></td>
+            <td class="hrs">24.0</td>
+          </tr>
+          <tr>
+            <td><span class="ticket-id">REL-0056</span></td>
+            <td class="ticket-desc">v3.10.1 Android — hotfix PROD release validation + post-release monitoring
+              <span class="sub">SFC Dealer App · Released 2/23/26 · Post-release monitoring complete</span></td>
+            <td>Raquel Comunale, Andre Neto</td>
+            <td><span class="ticket-status s-done">Done</span></td>
+            <td class="hrs">18.0</td>
+          </tr>
+          <tr>
+            <td><span class="ticket-id">REL-0057</span></td>
+            <td class="ticket-desc">Truist Migration testing coordination — Android compiled builds
+              <span class="sub">SFC Borrower App + Dealer App · DC Migration · Distributed to Truist test team</span></td>
+            <td>Selvakumar</td>
+            <td><span class="ticket-status s-progress">In Progress</span></td>
+            <td class="hrs">12.0</td>
+          </tr>
+          <tr>
+            <td><span class="ticket-id">REL-0058</span></td>
+            <td class="ticket-desc">OTP/MFA audit artifacts — NYDFS compliance evidence
+              <span class="sub">All SFC apps · Truist NYDFS Workstream · Shipped to Keshav 10/10</span></td>
+            <td>Flavio Rodrigues, Jefferson Bruno</td>
+            <td><span class="ticket-status s-review">In Review</span></td>
+            <td class="hrs">8.0</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════ -->
+  <!-- EPIC 5: BUFFER                     -->
+  <!-- ══════════════════════════════════ -->
+  <div class="epic-section epic-buffer">
+    <div class="epic-header" onclick="toggleEpic(this)">
+      <div class="epic-icon">🛡️</div>
+      <div class="epic-title">Buffer</div>
+      <div class="epic-meta">
+        <div class="epic-hrs">18 hrs logged</div>
+        <div class="epic-budget">of 132 hrs baseline</div>
+        <div class="epic-pill">14% utilized</div>
+        <div class="epic-toggle open">▾</div>
+      </div>
+    </div>
+    <div class="epic-progress"><div class="epic-progress-fill" style="width:14%;background:#b45309"></div></div>
+    <div class="epic-body">
+      <table class="ticket-table">
+        <thead>
+          <tr>
+            <th style="width:100px">Ticket ID</th>
+            <th>Description</th>
+            <th style="width:120px">Assignee</th>
+            <th style="width:110px">Status</th>
+            <th style="width:80px;text-align:right">Hrs Logged</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="ticket-id">BUF-0012</span></td>
+            <td class="ticket-desc">Auditor Demo Call — Truist audit team walkthrough of mobile apps
+              <span class="sub">SFC Dealer App · Unplanned · Screenshots captured by audit team</span></td>
+            <td>Anne Shrake, Andre Neto</td>
+            <td><span class="ticket-status s-done">Done</span></td>
+            <td class="hrs">6.0</td>
+          </tr>
+          <tr>
+            <td><span class="ticket-id">BUF-0013</span></td>
+            <td class="ticket-desc">SFC QA coordination — unplanned test environment support requests
+              <span class="sub">Ad hoc · Multiple minor coordination items</span></td>
+            <td>Raquel Comunale</td>
+            <td><span class="ticket-status s-done">Done</span></td>
+            <td class="hrs">12.0</td>
+          </tr>
+        </tbody>
+      </table>
+      <div style="padding:10px 14px;background:#fffbeb;border-top:1px solid #fcd34d;font-size:11px;color:#92400e;border-radius:0 0 8px 8px">
+        💡 Buffer is at 14% utilization. Remaining buffer hours are available to absorb any Production Support overage this cycle if required.
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="callout callout-warn">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <strong>Draft — Structure & Data Subject to Change</strong>
+      This is a working draft of the client billing view format. Placeholder data has been used to illustrate the structure. Final implementation will pull from Zoho Sprint activity logs per billing cycle. Epic baselines, ticket IDs, and hour allocations will reflect each account's confirmed service bucket structure.
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <svg width="80" height="13" viewBox="0 0 201 33" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:6px;opacity:.6">
+    <path d="M41.4673 22.6537C39.8187 20.8428 38.9963 18.2178 39 14.7786C39.0038 11.3394 39.8262 8.71248 41.4673 6.89787C43.1122 5.08697 45.5118 4.18152 48.666 4.18152C50.7555 4.16768 52.8286 4.54703 54.775 5.29941V8.882C53.0032 8.00664 51.0527 7.54403 49.0725 7.52949H48.9653C47.0569 7.52949 45.5607 8.01757 44.4767 8.99384C43.3926 9.97 42.8525 11.889 42.8563 14.7506C42.8268 16.0424 42.9944 17.3313 43.3531 18.5736C43.5809 19.4472 44.0783 20.2287 44.7759 20.8092C45.3445 21.2551 46.0029 21.5753 46.7069 21.7483C47.4616 21.9236 48.2353 22.0063 49.0104 21.9941C51.0147 21.9922 52.9927 21.5433 54.7976 20.6807V24.2354C52.8505 24.9853 50.7779 25.3646 48.6886 25.3532C45.5344 25.3532 43.1348 24.4478 41.4899 22.6369" fill="white"/>
+    <path d="M62.804 11.0065C62.4684 12.2414 62.3144 13.5176 62.3467 14.796C62.3155 16.0706 62.4695 17.3431 62.804 18.5742C63.0131 19.4422 63.4907 20.2238 64.1704 20.8099C64.7114 21.2542 65.3402 21.5817 66.0167 21.7712C67.505 22.0908 69.0452 22.0908 70.5335 21.7712C71.2106 21.5834 71.8398 21.2557 72.3797 20.8099C73.0592 20.2227 73.5384 19.4417 73.7517 18.5742C74.0824 17.3385 74.2345 16.0628 74.2035 14.7848C74.2345 13.5069 74.0824 12.231 73.7517 10.9954C73.537 10.1284 73.0581 9.34786 72.3797 8.75968C71.8415 8.31452 71.2142 7.98693 70.5391 7.79836C69.0508 7.47879 67.5106 7.47879 66.0223 7.79836C65.346 7.98793 64.717 8.31533 64.1761 8.75968C63.4978 9.34696 63.0205 10.1281 62.8098 10.9954L62.804 11.0065ZM59.343 20.1001C58.719 18.4018 58.4222 16.6026 58.468 14.796C58.4222 12.9893 58.719 11.1903 59.343 9.4919C59.8068 8.19677 60.6355 7.06011 61.7314 6.21665C62.6613 5.52686 63.7067 5.00467 64.8198 4.67407C67.0829 4.07023 69.4673 4.07023 71.7305 4.67407C72.8447 5.00567 73.8919 5.52776 74.8245 6.21665C75.9143 7.06222 76.737 8.19867 77.1959 9.4919C77.8246 11.1892 78.1235 12.9888 78.0766 14.796C78.1235 16.6032 77.8246 18.4029 77.1959 20.1001C76.734 21.3947 75.9071 22.5312 74.8132 23.3753C73.8806 24.0642 72.8335 24.5863 71.7191 24.918C69.4559 25.5217 67.0716 25.5217 64.8084 24.918C63.6954 24.5873 62.65 24.0651 61.72 23.3753C60.6243 22.5318 59.7955 21.3953 59.3318 20.1001" fill="white"/>
+    <path d="M81.605 25.0514V6.27751C84.3483 4.90344 87.3777 4.18195 90.4523 4.17041C93.0872 4.17041 95.146 4.84676 96.629 6.19927C98.1121 7.55188 98.8649 9.42798 98.8875 11.8276V25.0514H95.0087V11.509C95.0663 10.473 94.7322 9.45276 94.0714 8.64731C93.4428 7.95059 92.1875 7.60033 90.3055 7.59662C88.648 7.5912 86.9999 7.84397 85.4217 8.34549V25.0514H81.605Z" fill="white"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0499 5.45796C29.0515 5.29712 29.0196 5.13765 28.9589 4.9887C28.8982 4.83977 28.8072 4.70433 28.6922 4.59018C28.5772 4.47603 28.4415 4.38544 28.2914 4.32362C28.1413 4.2618 27.9816 4.22998 27.8187 4.22998H8.86133V14.2229H17.175C17.6525 14.2229 18.1093 14.4105 18.4462 14.7442C18.7832 15.078 18.9732 15.5306 18.9732 16.0026V24.2426H29.0675V5.45796H29.0499Z" fill="#4d6eff"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.86109 14.223H1.10311C0.911479 14.2234 0.72464 14.1676 0.563348 14.0626C0.403653 13.9576 0.279093 13.8081 0.205633 13.6329C0.132174 13.4577 0.111396 13.2648 0.148126 13.0784C0.184856 12.892 0.275895 12.7205 0.411636 12.5856L8.86109 4.22998" fill="#a0b0ff"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0675 24.2427L20.6181 32.6073C20.4839 32.7416 20.3115 32.8333 20.1246 32.8705C19.9362 32.9079 19.743 32.8889 19.5657 32.8164C19.39 32.7439 19.2383 32.6209 19.1329 32.4631C19.0275 32.3055 18.9716 32.1201 18.9732 31.931V24.2427" fill="#a0b0ff"/>
+  </svg>
+  — Client Billing View · Service Finance Company · March 2026 &nbsp;·&nbsp; Draft · Internal Use
+</footer>
+
+<script>
+function toggleEpic(header) {
+  const body = header.closest('.epic-section').querySelector('.epic-body');
+  const toggle = header.querySelector('.epic-toggle');
+  body.classList.toggle('collapsed');
+  toggle.classList.toggle('open');
+}
+</script>
+
+</body>
+</html>

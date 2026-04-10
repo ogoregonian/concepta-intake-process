@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concepta — Intake & Request Processing · Presentation Suite</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:        #0f0f0f;
+  --ink-mid:    #3a3a3a;
+  --ink-light:  #6b7280;
+  --rule:       #e2ddd8;
+  --paper:      #f7f5f1;
+  --white:      #ffffff;
+  --blue:       #1d3557;
+  --blue-mid:   #2563eb;
+  --blue-light: #dbeafe;
+  --col: 780px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.7;
+  min-height: 100vh;
+}
+
+/* ── NAV ── */
+nav {
+  background: var(--blue);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 52px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.18);
+}
+.nav-logo { font-family: 'DM Serif Display', serif; font-size: 17px; color: #fff; letter-spacing: .4px; }
+.nav-meta { font-size: 11px; color: rgba(255,255,255,.45); letter-spacing: .5px; }
+
+/* ── HERO ── */
+.hero {
+  background: var(--blue);
+  color: #fff;
+  padding: 64px 40px 56px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 75% 50%, rgba(37,99,235,.3) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '';
+  position: absolute; bottom: -1px; left: 0; right: 0; height: 40px;
+  background: var(--paper);
+  clip-path: ellipse(55% 100% at 50% 100%);
+}
+.hero-inner { max-width: var(--col); margin: 0 auto; position: relative; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase; color: rgba(255,255,255,.5);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 20px; padding: 4px 12px; margin-bottom: 20px;
+}
+.hero-eyebrow span { width: 6px; height: 6px; border-radius: 50%; background: #f59e0b; }
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 40px; line-height: 1.15; color: #fff;
+  margin-bottom: 14px;
+}
+.hero h1 em { font-style: italic; color: rgba(255,255,255,.65); }
+.hero-sub {
+  font-size: 15px; color: rgba(255,255,255,.6);
+  max-width: 520px; margin-bottom: 32px; line-height: 1.65;
+}
+.hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+.hero-meta-item { display: flex; flex-direction: column; gap: 2px; }
+.hero-meta-item .label { font-size: 9px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,.4); }
+.hero-meta-item .value { font-size: 13px; font-weight: 500; color: rgba(255,255,255,.85); }
+.wip-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(245,158,11,.15); border: 1px solid rgba(245,158,11,.4);
+  border-radius: 4px; padding: 6px 12px;
+  font-size: 11px; font-weight: 600; color: #fbbf24;
+  margin-top: 24px;
+}
+
+/* ── LAYOUT ── */
+.page { max-width: var(--col); margin: 0 auto; padding: 48px 40px 80px; }
+
+/* ── SECTION LABEL ── */
+.section-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--ink-light);
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px;
+}
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.section-label .num {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--ink); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; flex-shrink: 0;
+}
+
+h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 24px; line-height: 1.25; color: var(--ink);
+  margin-bottom: 8px;
+}
+p { color: var(--ink-mid); margin-bottom: 12px; }
+
+/* ── FLOW STEPS ── */
+.flow-steps {
+  display: flex; align-items: flex-start; gap: 0;
+  margin: 24px 0 40px; flex-wrap: wrap;
+}
+.flow-step {
+  display: flex; flex-direction: column; align-items: center;
+  flex: 1; min-width: 120px; position: relative;
+}
+.flow-step:not(:last-child)::after {
+  content: '→';
+  position: absolute; right: -10px; top: 14px;
+  font-size: 16px; color: #94a3b8;
+}
+.fs-num {
+  width: 32px; height: 32px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; margin-bottom: 8px;
+  flex-shrink: 0;
+}
+.fs-label { font-size: 11px; font-weight: 600; text-align: center; color: var(--ink); line-height: 1.3; }
+.fs-sub { font-size: 10px; color: var(--ink-light); text-align: center; margin-top: 3px; line-height: 1.3; }
+
+.fs-1 .fs-num { background: #1d3557; color: #fff; }
+.fs-2 .fs-num { background: #dbeafe; color: #1d4ed8; }
+.fs-3 .fs-num { background: #dcfce7; color: #15803d; }
+.fs-4 .fs-num { background: #fee2e2; color: #991b1b; }
+.fs-5 .fs-num { background: #fef3c7; color: #b45309; }
+
+/* ── DOC CARDS ── */
+.doc-cards { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
+
+.doc-card {
+  display: flex; align-items: flex-start; gap: 16px;
+  background: var(--white);
+  border: 1.5px solid var(--rule);
+  border-radius: 10px; padding: 20px;
+  text-decoration: none;
+  transition: box-shadow .2s, border-color .2s, transform .15s;
+  cursor: pointer;
+  position: relative; overflow: hidden;
+}
+.doc-card::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+}
+.doc-card:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,.1);
+  transform: translateY(-1px);
+}
+
+.doc-card.brief { border-color: #93c5fd; }
+.doc-card.brief::before { background: #2563eb; }
+.doc-card.brief:hover { border-color: #2563eb; }
+
+.doc-card.d1 { border-color: #a5b4fc; }
+.doc-card.d1::before { background: #4c1d95; }
+.doc-card.d1:hover { border-color: #4c1d95; }
+
+.doc-card.d2 { border-color: #86efac; }
+.doc-card.d2::before { background: #15803d; }
+.doc-card.d2:hover { border-color: #15803d; }
+
+.doc-card.d3 { border-color: #fca5a5; }
+.doc-card.d3::before { background: #991b1b; }
+.doc-card.d3:hover { border-color: #991b1b; }
+
+.doc-card.billing { border-color: #fcd34d; }
+.doc-card.billing::before { background: #b45309; }
+.doc-card.billing:hover { border-color: #b45309; }
+
+.doc-icon {
+  width: 48px; height: 48px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; flex-shrink: 0;
+}
+.brief .doc-icon  { background: #dbeafe; }
+.d1 .doc-icon     { background: #ede9fe; }
+.d2 .doc-icon     { background: #dcfce7; }
+.d3 .doc-icon     { background: #fee2e2; }
+.billing .doc-icon { background: #fef3c7; }
+
+.doc-content { flex: 1; }
+.doc-step {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; color: var(--ink-light); margin-bottom: 4px;
+}
+.doc-title { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 4px; line-height: 1.3; }
+.doc-desc { font-size: 12.5px; color: var(--ink-light); line-height: 1.55; margin-bottom: 10px; }
+.doc-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.tag {
+  display: inline-flex; align-items: center;
+  font-size: 10px; font-weight: 600; padding: 2px 8px;
+  border-radius: 20px; border: 1px solid;
+}
+.tag-blue   { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
+.tag-violet { background: #ede9fe; color: #6d28d9; border-color: #c4b5fd; }
+.tag-green  { background: #dcfce7; color: #15803d; border-color: #86efac; }
+.tag-red    { background: #fee2e2; color: #dc2626; border-color: #fca5a5; }
+.tag-amber  { background: #fef3c7; color: #b45309; border-color: #fcd34d; }
+.tag-gray   { background: #f3f4f6; color: #374151; border-color: #d1d5db; }
+.tag-wip    { background: #fff7ed; color: #c2410c; border-color: #fdba74; }
+
+.doc-arrow {
+  font-size: 13px; font-weight: 700; color: var(--blue-mid);
+  flex-shrink: 0; align-self: center; margin-left: 8px;
+  opacity: 0; transition: opacity .2s;
+}
+.doc-card:hover .doc-arrow { opacity: 1; }
+
+/* ── TIPS ── */
+.tips {
+  background: var(--white); border: 1px solid var(--rule);
+  border-radius: 10px; padding: 20px 24px;
+  margin-top: 36px;
+}
+.tips h3 { font-size: 13px; font-weight: 700; margin-bottom: 14px; color: var(--ink); }
+.tip { display: flex; gap: 12px; margin-bottom: 10px; font-size: 13px; color: var(--ink-mid); }
+.tip:last-child { margin-bottom: 0; }
+.tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink); color: rgba(255,255,255,.45);
+  text-align: center; padding: 28px;
+  font-size: 11px; letter-spacing: .5px;
+}
+
+/* ── ANIMATE IN ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.doc-card { animation: fadeUp .4s ease both; }
+.doc-card:nth-child(1) { animation-delay: .05s; }
+.doc-card:nth-child(2) { animation-delay: .10s; }
+.doc-card:nth-child(3) { animation-delay: .15s; }
+.doc-card:nth-child(4) { animation-delay: .20s; }
+.doc-card:nth-child(5) { animation-delay: .25s; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Concepta</div>
+  <div class="nav-meta">Intake & Request Processing Initiative · March 2026</div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span></span> Leadership Review · March 2026</div>
+    <h1>Intake & Request<br><em>Processing Initiative</em></h1>
+    <p class="hero-sub">A structured framework for capturing, validating, categorizing, and routing client requests — with AI-assisted automation, budget-aligned operations, and client-visible billing transparency across all accounts.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="label">Status</span>
+        <span class="value">🚧 Work In Progress</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Owner</span>
+        <span class="value">Product Delivery Team</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Scope</span>
+        <span class="value">All Client Accounts</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="label">Presented</span>
+        <span class="value">March 24, 2026</span>
+      </div>
+    </div>
+    <div class="wip-badge">⚠ This suite is being actively refined — content reflects current working definitions</div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- ── PRESENTATION FLOW ── -->
+  <div class="section-label"><div class="num">1</div> Suggested Presentation Flow</div>
+  <h2>Walk Through in This Order</h2>
+  <p>Start with the brief to set context, then walk through each diagram in sequence. Close with the billing view to show the direction on client visibility and budget transparency.</p>
+
+  <div class="flow-steps">
+    <div class="flow-step fs-1">
+      <div class="fs-num">1</div>
+      <div class="fs-label">Executive Brief</div>
+      <div class="fs-sub">Context, goals & AI Agent story</div>
+    </div>
+    <div class="flow-step fs-2">
+      <div class="fs-num">2</div>
+      <div class="fs-label">Diagram 1</div>
+      <div class="fs-sub">Intake & routing</div>
+    </div>
+    <div class="flow-step fs-3">
+      <div class="fs-num">3</div>
+      <div class="fs-label">Diagram 2</div>
+      <div class="fs-sub">New request workflow</div>
+    </div>
+    <div class="flow-step fs-4">
+      <div class="fs-num">4</div>
+      <div class="fs-label">Diagram 3</div>
+      <div class="fs-sub">Production issue workflow</div>
+    </div>
+    <div class="flow-step fs-5">
+      <div class="fs-num">5</div>
+      <div class="fs-label">Billing View</div>
+      <div class="fs-sub">Client budget transparency</div>
+    </div>
+  </div>
+
+  <!-- ── DOCUMENTS ── -->
+  <div class="section-label"><div class="num">2</div> All Documents</div>
+  <h2>Open Any File Below</h2>
+  <p style="margin-bottom:20px">Click any card to open that document. All files are self-contained — navigation links between diagrams work when all files are in the same folder.</p>
+
+  <div class="doc-cards">
+
+    <!-- Executive Brief -->
+    <a href="Concepta_Intake_Process_Executive_Brief.html" target="_blank" class="doc-card brief">
+      <div class="doc-icon">📄</div>
+      <div class="doc-content">
+        <div class="doc-step">Start Here · Step 1 of 5</div>
+        <div class="doc-title">Executive Brief — Intake & Request Processing Initiative</div>
+        <div class="doc-desc">The strategic document covering background, goals, operational guidelines (including documentation discipline), workflow stages, data & visibility principles, next steps, and links to all four operational reference documents. Brief by design — detail lives in the reference docs.</div>
+        <div class="doc-tags">
+          <span class="tag tag-blue">Executive Brief</span>
+          <span class="tag tag-violet">AI Agent</span>
+          <span class="tag tag-green">Process Framework</span>
+          <span class="tag tag-amber">Budget Model</span>
+          <span class="tag tag-wip">Work In Progress</span>
+        </div>
+      </div>
+      <div class="doc-arrow">↗</div>
+    </a>
+
+    <!-- Diagram 1 -->
+    <a href="Diagram_1_Intake_Request.html" target="_blank" class="doc-card d1">
+      <div class="doc-icon">🗺️</div>
+      <div class="doc-content">
+        <div class="doc-step">Step 2 of 5 · Entry Point for All Requests</div>
+        <div class="doc-title">Diagram 1 — Intake Request Workflow</div>
+        <div class="doc-desc">Three-lane swimlane covering the full intake flow across Requestor, AI Agent, and Internal Team lanes. Covers form selection, severity assignment, data validation, ticket creation, Basecamp card moves, requestor notifications, and routing to Diagram 2 or 3 based on request type.</div>
+        <div class="doc-tags">
+          <span class="tag tag-blue">New Request</span>
+          <span class="tag tag-red">Production Issue</span>
+          <span class="tag tag-violet">AI Agent</span>
+          <span class="tag tag-green">Internal Team</span>
+          <span class="tag tag-blue">Basecamp 4</span>
+          <span class="tag tag-blue">Zoho Sprints</span>
+        </div>
+      </div>
+      <div class="doc-arrow">↗</div>
+    </a>
+
+    <!-- Diagram 2 -->
+    <a href="Diagram_2_New_Request.html" target="_blank" class="doc-card d2">
+      <div class="doc-icon">✨</div>
+      <div class="doc-content">
+        <div class="doc-step">Step 3 of 5 · New Request Path</div>
+        <div class="doc-title">Diagram 2 — New Request Workflow</div>
+        <div class="doc-desc">Three-lane swimlane covering the full new request processing workflow across Requestor, AI Agent, and Analysis Team lanes — from Diagram 1 handoff through analysis, scoping, estimation, POC (if required), and client scope approval. AI Agent runs continuous monitoring throughout.</div>
+        <div class="doc-tags">
+          <span class="tag tag-blue">New Feature</span>
+          <span class="tag tag-blue">Enhancement</span>
+          <span class="tag tag-violet">AI Agent · Continuous Monitoring</span>
+          <span class="tag tag-green">Analysis Team</span>
+          <span class="tag tag-blue">Smartsheet</span>
+        </div>
+      </div>
+      <div class="doc-arrow">↗</div>
+    </a>
+
+    <!-- Diagram 3 -->
+    <a href="Diagram_3_Production_Issue.html" target="_blank" class="doc-card d3">
+      <div class="doc-icon">🐛</div>
+      <div class="doc-content">
+        <div class="doc-step">Step 4 of 5 · Production Issue Path</div>
+        <div class="doc-title">Diagram 3 — Production Issue Workflow</div>
+        <div class="doc-desc">Three-lane swimlane covering the full production issue workflow across Requestor, AI Agent, and Production Support Team lanes — including severity-based notifications, budget check with deployment budget and buffer fallback, stakeholder overage escalation, RCA initiation, release version alignment, fix deployment, and requestor resolution confirmation.</div>
+        <div class="doc-tags">
+          <span class="tag tag-red">Production Issue</span>
+          <span class="tag tag-violet">AI Agent · Continuous Monitoring</span>
+          <span class="tag tag-red">Prod Support Team</span>
+          <span class="tag tag-amber">RCA</span>
+          <span class="tag tag-gray">Severity Sev 1–4</span>
+        </div>
+      </div>
+      <div class="doc-arrow">↗</div>
+    </a>
+
+    <!-- Client Billing View -->
+    <a href="Client_Billing_View.html" target="_blank" class="doc-card billing">
+      <div class="doc-icon">💰</div>
+      <div class="doc-content">
+        <div class="doc-step">Step 5 of 5 · Client Visibility · Draft</div>
+        <div class="doc-title">Client Billing View — Epic-Based Budget & Activity Summary</div>
+        <div class="doc-desc">Draft client-facing billing view showing all logged activities organized by service epic — Planning/Ops, Production Support, Maintenance/Dev, Deployments, Buffer. Each epic shows hours logged vs baseline allocation with itemized ticket activity. Placeholder data using Service Finance as the reference account.</div>
+        <div class="doc-tags">
+          <span class="tag tag-amber">Client Facing</span>
+          <span class="tag tag-amber">Budget Transparency</span>
+          <span class="tag tag-green">Epic-Based</span>
+          <span class="tag tag-gray">SFC Reference Model</span>
+          <span class="tag tag-wip">Draft</span>
+        </div>
+      </div>
+      <div class="doc-arrow">↗</div>
+    </a>
+
+  </div>
+
+  <hr style="border:none;border-top:1px solid var(--rule);margin:36px 0">
+
+  <!-- ── REFERENCE DOCS ── -->
+  <div class="section-label"><div class="num">3</div> Operational Reference Documents</div>
+  <h2 style="font-family:'DM Serif Display',serif;font-size:22px;color:var(--ink);margin-bottom:6px">Detail Lives Here</h2>
+  <p style="font-size:13px;color:var(--ink-light);margin-bottom:20px">The brief points here. Each document covers one operational area in full depth — use these during account setup, configuration, and training.</p>
+
+  <div class="doc-cards">
+
+    <a href="Reference_Intake_Form.html" target="_blank" class="doc-card brief" style="border-color:#93c5fd">
+      <div class="doc-icon">📋</div>
+      <div class="doc-content">
+        <div class="doc-step">Reference A · Intake & Routing</div>
+        <div class="doc-title">Intake Request Form — Required & Optional Fields</div>
+        <div class="doc-desc">Full field definitions for both the New Request form (4 required fields) and the Reported Issue form (10 required fields including severity level). Use when training requestors or configuring intake forms on Basecamp.</div>
+        <div class="doc-tags">
+          <span class="tag tag-blue">New Request Form</span>
+          <span class="tag tag-red">Reported Issue Form</span>
+          <span class="tag tag-blue">Field Definitions</span>
+        </div>
+      </div>
+      <div class="doc-arrow">↗</div>
+    </a>
+
+    <a href="Reference_Budget_Model.html" target="_blank" class="doc-card d2" style="border-color:#86efac">
+      <div class="doc-icon" style="background:#dcfce7">💰</div>
+      <div class="doc-content">
+        <div class="doc-step">Reference B · Budget & Tracking</div>
+        <div class="doc-title">Budget & Service Bucket Model</div>
+        <div class="doc-desc">The five service epics, how hours are allocated per billing cycle, the buffer mechanism, the Service Finance reference allocation model, and per-account setup requirements. Use during account onboarding and client budget alignment conversations.</div>
+        <div class="doc-tags">
+          <span class="tag tag-green">5 Service Epics</span>
+          <span class="tag tag-green">Budget Allocation</span>
+          <span class="tag tag-green">SFC Reference Model</span>
+        </div>
+      </div>
+      <div class="doc-arrow">↗</div>
+    </a>
+
+    <a href="Reference_AI_Agent_MVP.html" target="_blank" class="doc-card d1" style="border-color:#c4b5fd">
+      <div class="doc-icon">🤖</div>
+      <div class="doc-content">
+        <div class="doc-step">Reference C · AI Agent</div>
+        <div class="doc-title">AI Agent MVP Definition & Per-Account Configuration</div>
+        <div class="doc-desc">Phase 1 and Phase 2 scope, 8 MVP acceptance criteria, and the complete per-account configuration checklist for the internal labs team and PDM. Use when configuring the agent on a new account.</div>
+        <div class="doc-tags">
+          <span class="tag tag-violet">Phase 1 Scope</span>
+          <span class="tag tag-violet">8 Acceptance Criteria</span>
+          <span class="tag tag-violet">Per-Account Config</span>
+        </div>
+      </div>
+      <div class="doc-arrow">↗</div>
+    </a>
+
+    <a href="Reference_Prerequisites_GoLive.html" target="_blank" class="doc-card billing" style="border-color:#fcd34d">
+      <div class="doc-icon" style="background:#fef3c7">✅</div>
+      <div class="doc-content">
+        <div class="doc-step">Reference D · Go-Live Checklist</div>
+        <div class="doc-title">Prerequisites for Go-Live</div>
+        <div class="doc-desc">The complete per-account go-live checklist across five categories — Client Alignment, Production Support Structure, Planning & Delivery Ops, Delivery Toolkit, and Tooling & AI Agent Config. Every item must be complete before the framework is operational on a live account.</div>
+        <div class="doc-tags">
+          <span class="tag tag-amber">5 Categories</span>
+          <span class="tag tag-amber">Per-Account Checklist</span>
+          <span class="tag tag-amber">Go-Live Gate</span>
+        </div>
+      </div>
+      <div class="doc-arrow">↗</div>
+    </a>
+
+  </div>
+
+  <!-- ── PRESENTATION TIPS ── -->
+  <div class="tips">
+    <h3>💡 Presentation Tips</h3>
+    <div class="tip">
+      <div class="tip-icon">1️⃣</div>
+      <div>Start with the <strong>Executive Brief</strong> — use sections 1 and 2 (Background & Goals) to frame the problem before showing any diagrams. Leadership needs the why before the how.</div>
+    </div>
+    <div class="tip">
+      <div class="tip-icon">2️⃣</div>
+      <div>When walking <strong>Diagram 1</strong> — emphasize that the AI Agent owns the handoff, not the PDM. The internal team confirms, not executes. This is the key operational shift.</div>
+    </div>
+    <div class="tip">
+      <div class="tip-icon">3️⃣</div>
+      <div>On <strong>Diagrams 2 and 3</strong> — point to the continuous monitoring block in the AI Agent lane. This is the lean, rule-based automation story that addresses the "foundation before optimization" action item.</div>
+    </div>
+    <div class="tip">
+      <div class="tip-icon">4️⃣</div>
+      <div>Close with the <strong>Billing View</strong> as the answer to Raul's client visibility ask. Frame it as a draft direction — the structure is right, the data will come from Zoho once the process is live.</div>
+    </div>
+    <div class="tip">
+      <div class="tip-icon">5️⃣</div>
+      <div>If asked about the AI Agent build — <strong>"Our internal labs team owns it. We're starting lean — rule-based triggers and automations — and expanding as we build confidence."</strong></div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <svg width="80" height="13" viewBox="0 0 201 33" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:6px;opacity:.6">
+    <path d="M41.4673 22.6537C39.8187 20.8428 38.9963 18.2178 39 14.7786C39.0038 11.3394 39.8262 8.71248 41.4673 6.89787C43.1122 5.08697 45.5118 4.18152 48.666 4.18152C50.7555 4.16768 52.8286 4.54703 54.775 5.29941V8.882C53.0032 8.00664 51.0527 7.54403 49.0725 7.52949H48.9653C47.0569 7.52949 45.5607 8.01757 44.4767 8.99384C43.3926 9.97 42.8525 11.889 42.8563 14.7506C42.8268 16.0424 42.9944 17.3313 43.3531 18.5736C43.5809 19.4472 44.0783 20.2287 44.7759 20.8092C45.3445 21.2551 46.0029 21.5753 46.7069 21.7483C47.4616 21.9236 48.2353 22.0063 49.0104 21.9941C51.0147 21.9922 52.9927 21.5433 54.7976 20.6807V24.2354C52.8505 24.9853 50.7779 25.3646 48.6886 25.3532C45.5344 25.3532 43.1348 24.4478 41.4899 22.6369" fill="white"/>
+    <path d="M62.804 11.0065C62.4684 12.2414 62.3144 13.5176 62.3467 14.796C62.3155 16.0706 62.4695 17.3431 62.804 18.5742C63.0131 19.4422 63.4907 20.2238 64.1704 20.8099C64.7114 21.2542 65.3402 21.5817 66.0167 21.7712C67.505 22.0908 69.0452 22.0908 70.5335 21.7712C71.2106 21.5834 71.8398 21.2557 72.3797 20.8099C73.0592 20.2227 73.5384 19.4417 73.7517 18.5742C74.0824 17.3385 74.2345 16.0628 74.2035 14.7848C74.2345 13.5069 74.0824 12.231 73.7517 10.9954C73.537 10.1284 73.0581 9.34786 72.3797 8.75968C71.8415 8.31452 71.2142 7.98693 70.5391 7.79836C69.0508 7.47879 67.5106 7.47879 66.0223 7.79836C65.346 7.98793 64.717 8.31533 64.1761 8.75968C63.4978 9.34696 63.0205 10.1281 62.8098 10.9954L62.804 11.0065ZM59.343 20.1001C58.719 18.4018 58.4222 16.6026 58.468 14.796C58.4222 12.9893 58.719 11.1903 59.343 9.4919C59.8068 8.19677 60.6355 7.06011 61.7314 6.21665C62.6613 5.52686 63.7067 5.00467 64.8198 4.67407C67.0829 4.07023 69.4673 4.07023 71.7305 4.67407C72.8447 5.00567 73.8919 5.52776 74.8245 6.21665C75.9143 7.06222 76.737 8.19867 77.1959 9.4919C77.8246 11.1892 78.1235 12.9888 78.0766 14.796C78.1235 16.6032 77.8246 18.4029 77.1959 20.1001C76.734 21.3947 75.9071 22.5312 74.8132 23.3753C73.8806 24.0642 72.8335 24.5863 71.7191 24.918C69.4559 25.5217 67.0716 25.5217 64.8084 24.918C63.6954 24.5873 62.65 24.0651 61.72 23.3753C60.6243 22.5318 59.7955 21.3953 59.3318 20.1001" fill="white"/>
+    <path d="M81.605 25.0514V6.27751C84.3483 4.90344 87.3777 4.18195 90.4523 4.17041C93.0872 4.17041 95.146 4.84676 96.629 6.19927C98.1121 7.55188 98.8649 9.42798 98.8875 11.8276V25.0514H95.0087V11.509C95.0663 10.473 94.7322 9.45276 94.0714 8.64731C93.4428 7.95059 92.1875 7.60033 90.3055 7.59662C88.648 7.5912 86.9999 7.84397 85.4217 8.34549V25.0514H81.605Z" fill="white"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0499 5.45796C29.0515 5.29712 29.0196 5.13765 28.9589 4.9887C28.8982 4.83977 28.8072 4.70433 28.6922 4.59018C28.5772 4.47603 28.4415 4.38544 28.2914 4.32362C28.1413 4.2618 27.9816 4.22998 27.8187 4.22998H8.86133V14.2229H17.175C17.6525 14.2229 18.1093 14.4105 18.4462 14.7442C18.7832 15.078 18.9732 15.5306 18.9732 16.0026V24.2426H29.0675V5.45796H29.0499Z" fill="#4d6eff"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.86109 14.223H1.10311C0.911479 14.2234 0.72464 14.1676 0.563348 14.0626C0.403653 13.9576 0.279093 13.8081 0.205633 13.6329C0.132174 13.4577 0.111396 13.2648 0.148126 13.0784C0.184856 12.892 0.275895 12.7205 0.411636 12.5856L8.86109 4.22998" fill="#a0b0ff"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0675 24.2427L20.6181 32.6073C20.4839 32.7416 20.3115 32.8333 20.1246 32.8705C19.9362 32.9079 19.743 32.8889 19.5657 32.8164C19.39 32.7439 19.2383 32.6209 19.1329 32.4631C19.0275 32.3055 18.9716 32.1201 18.9732 31.931V24.2427" fill="#a0b0ff"/>
+  </svg>
+  — Intake & Request Processing Initiative · Leadership Review · March 2026
+</footer>
+
+</body>
+</html>
