@@ -195,10 +195,10 @@ footer { background: var(--ink); color: rgba(255,255,255,.45); text-align: cente
     </div>
   </div>
 
-  <!-- SECTION 1: DELIVERY PLANNING -->
-  <div class="section-label"><div class="num">1</div> Delivery Planning</div>
+  <!-- SECTION 1: DELIVERY EXECUTION -->
+  <div class="section-label"><div class="num">1</div> Delivery Execution</div>
   <h2>Project Plans & Estimation</h2>
-  <p style="margin-bottom:20px">Standard templates for scoping, estimating, and tracking initiatives across all accounts.</p>
+  <p style="margin-bottom:20px">Templates used to plan, estimate, and track delivery work. Duplicate per account and update the title before use.</p>
 
   <div class="template-grid">
 
@@ -235,20 +235,9 @@ footer { background: var(--ink); color: rgba(255,255,255,.45); text-align: cente
       </div>
     </div>
 
-    <div class="template-card green">
-      <div class="tc-icon">✅</div>
-      <div class="tc-category">Go-Live · Checklist</div>
-      <div class="tc-title">Per-Account Go-Live Checklist</div>
-      <div class="tc-desc">5-category checklist covering Client Alignment, Prod Support Structure, Planning & Delivery Ops, Delivery Toolkit, and Tooling & AI Agent Config.</div>
-      <div class="tc-footer">
-        <span class="tc-status status-live">Live</span>
-        <a href="Reference_Prerequisites_GoLive.html" class="tc-link">Open →</a>
-      </div>
-    </div>
-
     <div class="template-card amber">
       <div class="tc-icon">📊</div>
-      <div class="tc-category">Reporting · Excel / Smartsheet</div>
+      <div class="tc-category">Reporting · Smartsheet</div>
       <div class="tc-title">Client Account Tracker</div>
       <div class="tc-desc">Two-format client-facing tracker (Detailed + Simple view) showing initiative status, queue, on-hold items, and delivery speed scenarios. SFC reference model available.</div>
       <div class="tc-footer">
@@ -259,10 +248,41 @@ footer { background: var(--ink); color: rgba(255,255,255,.45); text-align: cente
 
   </div>
 
-  <!-- SECTION 2: PROCESS & INTAKE -->
-  <div class="section-label"><div class="num">2</div> Process & Intake</div>
-  <h2>Intake Forms & Workflow Standards</h2>
-  <p style="margin-bottom:20px">Standard definitions for intake, categorization, and request handling across all accounts.</p>
+  <!-- SECTION 2: ACCOUNT SETUP & GO-LIVE -->
+  <div class="section-label"><div class="num">2</div> Account Setup & Go-Live</div>
+  <h2>Configure Before You Start</h2>
+  <p style="margin-bottom:20px">Use these when onboarding a new account or setting up an existing account to run on this framework. Every item must be complete before the process is fully operational.</p>
+
+  <div class="template-grid">
+
+    <div class="template-card green">
+      <div class="tc-icon">✅</div>
+      <div class="tc-category">Go-Live · Checklist</div>
+      <div class="tc-title">Per-Account Go-Live Checklist</div>
+      <div class="tc-desc">5-category checklist covering Client Alignment, Prod Support Structure, Planning & Delivery Ops, Delivery Toolkit, and Tooling & AI Agent Config. Every item must be complete before the framework is live on a client account.</div>
+      <div class="tc-footer">
+        <span class="tc-status status-live">Live</span>
+        <a href="Reference_Prerequisites_GoLive.html" class="tc-link">Open →</a>
+      </div>
+    </div>
+
+    <div class="template-card amber">
+      <div class="tc-icon">⚙️</div>
+      <div class="tc-category">Planning · Ceremonies</div>
+      <div class="tc-title">Planning Ceremonies — Per-Account Template</div>
+      <div class="tc-desc">Standard planning ceremony structure including sprint planning, backlog grooming, and retrospective cadence. Template to be completed per account.</div>
+      <div class="tc-footer">
+        <span class="tc-status status-wip">Work In Progress</span>
+        <span style="font-size:11px;color:var(--ink-light)">Outstanding — all accounts</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SECTION 3: INTAKE & REQUEST PROCESSING -->
+  <div class="section-label"><div class="num">3</div> Intake & Request Processing</div>
+  <h2>How Requests Are Captured & Routed</h2>
+  <p style="margin-bottom:20px">Reference documents for intake configuration, AI Agent setup, and budget tracking. Use during account setup and as day-to-day operational references.</p>
 
   <div class="template-grid">
 
@@ -299,25 +319,25 @@ footer { background: var(--ink); color: rgba(255,255,255,.45); text-align: cente
       </div>
     </div>
 
-    <div class="template-card amber">
-      <div class="tc-icon">⚙️</div>
-      <div class="tc-category">Planning · Ceremonies</div>
-      <div class="tc-title">Planning Ceremonies — Per-Account Template</div>
-      <div class="tc-desc">Standard planning ceremony structure including sprint planning, backlog grooming, and retrospective cadence. Template to be completed per account.</div>
-      <div class="tc-footer">
-        <span class="tc-status status-wip">Work In Progress</span>
-        <span style="font-size:11px;color:var(--ink-light)">Outstanding — all accounts</span>
-      </div>
-    </div>
-
   </div>
 
-  <!-- SECTION 3: DEFINITIONS & STANDARDS -->
-  <div class="section-label"><div class="num">3</div> Definitions & Standards</div>
-  <h2>Team Standards & Reference Definitions</h2>
-  <p style="margin-bottom:20px">Shared definitions the team uses consistently across all accounts and tooling.</p>
+  <!-- SECTION 4: TEAM STANDARDS -->
+  <div class="section-label"><div class="num">4</div> Team Standards</div>
+  <h2>Shared Definitions & Guidelines</h2>
+  <p style="margin-bottom:20px">Definitions the full team uses consistently across all accounts and tooling. These keep everyone aligned when communicating internally and with clients.</p>
 
   <div class="template-grid">
+
+    <div class="template-card violet">
+      <div class="tc-icon">👕</div>
+      <div class="tc-category">Standards · Estimation</div>
+      <div class="tc-title">T-Shirt Sizing Standards</div>
+      <div class="tc-desc">Team-agreed size bands for quick effort classification at intake — before full LOE analysis begins. XS: up to 25 hrs · S: 25–75 hrs · M: 75–200 hrs · L: 200–500 hrs · XL: 500–1000+ hrs. Sizing is a collective analysis team activity done at planning ceremonies. The T-shirt size is recorded on the external request board and used to sequence work and inform prioritization — it is not shared directly with the client.</div>
+      <div class="tc-footer">
+        <span class="tc-status status-live">Live</span>
+        <span style="font-size:11px;color:var(--ink-light)">Recorded on external request board</span>
+      </div>
+    </div>
 
     <div class="template-card blue">
       <div class="tc-icon">🏷️</div>
@@ -349,17 +369,6 @@ footer { background: var(--ink); color: rgba(255,255,255,.45); text-align: cente
       <div class="tc-footer">
         <span class="tc-status status-wip">Work In Progress</span>
         <span style="font-size:11px;color:var(--ink-light)">Add link when ready</span>
-      </div>
-    </div>
-
-    <div class="template-card violet">
-      <div class="tc-icon">👕</div>
-      <div class="tc-category">Standards · Estimation</div>
-      <div class="tc-title">T-Shirt Sizing Standards</div>
-      <div class="tc-desc">Team-agreed size bands for quick effort classification at intake — before full LOE analysis begins. XS: up to 25 hrs · S: 25–75 hrs · M: 75–200 hrs · L: 200–500 hrs · XL: 500–1000+ hrs. Sizing is a collective analysis team activity done at planning ceremonies. The T-shirt size is recorded on the external request board (T-Shirt Size column) and used to sequence work and inform prioritization — it is not shared directly with the client.</div>
-      <div class="tc-footer">
-        <span class="tc-status status-live">Live</span>
-        <span style="font-size:11px;color:var(--ink-light)">Recorded on external request board</span>
       </div>
     </div>
 
