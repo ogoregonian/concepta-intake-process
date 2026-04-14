@@ -153,7 +153,7 @@ nav {
       <div class="field-card">
         <div class="field-num" style="background:#1d4ed8">✓</div>
         <div class="field-body">
-          <div class="field-title">SLA response times defined per severity level</div>
+          <div class="field-title">SLA response times defined per severity level <span style="display:inline-block;margin-left:6px;font-size:9px;font-weight:600;padding:1px 7px;border-radius:10px;background:#fef9c3;border:1px solid #fbbf24;color:#78350f">Future phase</span></div>
           <div class="field-desc">Initial response time, update cadence, and resolution target must be defined per severity level and agreed with client stakeholders. These are the commitments the AI Agent communicates to the requestor at intake and monitors against continuously throughout the production issue workflow.</div>
         </div>
       </div>
@@ -167,7 +167,7 @@ nav {
       <div class="field-card">
         <div class="field-num" style="background:#1d4ed8">✓</div>
         <div class="field-body">
-          <div class="field-title">RCA trigger criteria agreed per account</div>
+          <div class="field-title">RCA trigger criteria agreed per account <span style="display:inline-block;margin-left:6px;font-size:9px;font-weight:600;padding:1px 7px;border-radius:10px;background:#fef9c3;border:1px solid #fbbf24;color:#78350f">Future phase</span></div>
           <div class="field-desc">Which severity levels and business impact thresholds require a Root Cause Analysis document must be agreed with client stakeholders before the production issue workflow goes live. RCA is initiated alongside the fix — it does not block resolution or deployment.</div>
         </div>
       </div>
@@ -195,7 +195,7 @@ nav {
       <div class="field-card">
         <div class="field-num" style="background:#991b1b">✓</div>
         <div class="field-body">
-          <div class="field-title">Production support scheduler configured</div>
+          <div class="field-title">Production support scheduler configured <span style="display:inline-block;margin-left:6px;font-size:9px;font-weight:600;padding:1px 7px;border-radius:10px;background:#fef9c3;border:1px solid #fbbf24;color:#78350f">Future phase</span></div>
           <div class="field-desc">Office hours, triage windows, and on-call coverage defined per account and loaded into the AI Agent so it can monitor SLA adherence correctly. The scheduler must be visible to the AI Agent — it is the reference point for inactivity detection and SLA cadence monitoring on production issues.</div>
         </div>
       </div>
@@ -246,6 +246,20 @@ nav {
         <div class="field-body">
           <div class="field-title">Scope document template configured per account</div>
           <div class="field-desc">A standardized scope document template must be in place and ready to be populated at the start of analysis for every new request. This is the deliverable presented to the client for review and approval before any development work begins.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#92400e">✓</div>
+        <div class="field-body">
+          <div class="field-title">Notion internal board configured per account</div>
+          <div class="field-desc">A Notion workspace per account must be set up as the internal analysis board — used by the PDM and Analysis Team to capture request definition, requirements, T-shirt sizing, LOE estimates, and supporting artifacts. The PDM creates the board item during the AI Agent handoff confirmation step.</div>
+        </div>
+      </div>
+      <div class="field-card">
+        <div class="field-num" style="background:#92400e">✓</div>
+        <div class="field-body">
+          <div class="field-title">Smartsheet external request board active per account</div>
+          <div class="field-desc">The Smartsheet external request board must be active for the account. The AI Agent logs a row for every request at intake — providing a consistent, structured data record of all requests received, independent of the card-based Basecamp view.</div>
         </div>
       </div>
       <div class="field-card">

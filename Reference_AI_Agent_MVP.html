@@ -166,10 +166,11 @@ nav {
           <li>Creates the item on the account's Basecamp 4 Request Board in the correct column based on request type</li>
           <li>Assigns the item to the correct internal team — Analysis Team for new requests, Production Support Team for reported issues</li>
           <li>Creates the corresponding Zoho Sprint backlog ticket in the correct bucket with the correct ticket type (Task for new requests, Bug for production issues)</li>
+          <li>Logs a row on the Smartsheet external request board — mirrors intake data so all requests are captured in a consistent, structured grid per account</li>
           <li>Tags the ticket with the correct billing epic — Planning/Ops/New Requests or Production Support</li>
           <li>Notifies the account Slack channel with ticket link, request summary, requestor name, confirmed category, severity (if applicable), and assigned epic</li>
-          <li>Sends receipt confirmation to the requestor with SLA response times per severity level</li>
-          <li>Runs continuous monitoring throughout the full workflow — inactivity nudges, requestor reminders, budget threshold flags, SLA breach escalation, revision routing, and resolution notifications</li>
+          <li>Sends receipt confirmation to the requestor — includes ticket reference, assigned team, and next steps</li>
+          <li>Runs continuous monitoring throughout the full workflow — requestor reminders, budget threshold flags, revision routing, and resolution notifications · <em>SLA cadence monitoring and breach escalation are future phase — active once SLA definitions are agreed per account</em></li>
         </ul>
       </div>
       <div class="mvp-card phase2">

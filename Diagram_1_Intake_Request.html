@@ -172,6 +172,8 @@ body{
   <span class="tag tb">Basecamp 4</span>
   <span class="tag tb">Zoho Sprints</span>
   <span class="tag tb">Slack</span>
+  <span class="tag tv">Notion</span>
+  <span class="tag tg">Smartsheet</span>
 </div>
 
 <div class="sw">
@@ -256,7 +258,7 @@ body{
         </div>
 
         <div class="ai-summary">
-          <strong>🤖 AI Agent scope in this lane:</strong> Picks up all new submissions from the Request Board · Validates completeness of intake data · Loops back to requestor if data is missing · Categorises the request type from the data values · Generates the appropriate ticket in Zoho Sprints · Moves the Basecamp card to the correct column · Notifies the requestor and tags the assigned team in Slack · Hands off to the Internal Team for verification. All actions are rule-based — no autonomous decisions.
+          <strong>🤖 AI Agent scope in this lane:</strong> Picks up all new submissions from the Request Board · Validates completeness of intake data · Loops back to requestor if data is missing · Categorises the request type from the data values · Generates the appropriate ticket in Zoho Sprints · Creates a row on the Smartsheet external request board · Moves the Basecamp card to the correct column · Notifies the requestor and tags the assigned team in Slack · Hands off to the Internal Team for verification. All actions are rule-based — no autonomous decisions.
         </div>
 
         <div class="flow" style="align-items:flex-start;padding-top:24px;padding-bottom:24px">
@@ -315,7 +317,7 @@ body{
               <div class="arr">→</div>
               <div class="box box-err" style="max-width:185px">
                 <strong>Generate Bug ticket</strong>
-                <span class="sub">Epic: Production Support · Assign: Prod Support team · Include all data values + severity level · Backlog Sprint Bucket: Reported Issues</span>
+                <span class="sub">Epic: Production Support · Assign: Prod Support team · Include all data values + severity level · Backlog Sprint Bucket: Reported Issues · Log row on Smartsheet external request board</span>
               </div>
               <div class="arr">→</div>
               <div class="box box-ai" style="max-width:165px">
@@ -331,12 +333,12 @@ body{
               <div class="arr-yes" style="white-space:nowrap">New Request →</div>
               <div class="box box-ntf" style="max-width:175px">
                 <strong>📧 Notify requestor</strong>
-                <span class="sub">"Your request has been received and assigned to the Analysis team. You will be updated per the agreed SLA schedule."</span>
+                <span class="sub">"Your request has been received and assigned to the Analysis team. The team will follow up as work progresses."</span>
               </div>
               <div class="arr">→</div>
               <div class="box box-ai" style="max-width:185px">
                 <strong>Generate New Request ticket</strong>
-                <span class="sub">Epic: Planning/Ops/New Requests · Assign: Analysis team · Include all data values · Backlog Sprint Bucket: New Requests: Analysis</span>
+                <span class="sub">Epic: Planning/Ops/New Requests · Assign: Analysis team · Include all data values · Backlog Sprint Bucket: New Requests: Analysis · Log row on Smartsheet external request board</span>
               </div>
               <div class="arr">→</div>
               <div class="box box-ai" style="max-width:165px">
@@ -382,7 +384,7 @@ body{
 
           <div class="box box-it" style="max-width:160px">
             <strong>Confirm AI handoff</strong>
-            <span class="sub">Verify ticket, epic, sprint bucket &amp; assignee are correct in Zoho · Confirm Basecamp card is in the right column</span>
+            <span class="sub">Verify ticket, epic, sprint bucket &amp; assignee are correct in Zoho · Confirm Basecamp card is in the right column · Create Notion internal board item for this request</span>
           </div>
           <div class="arr" style="align-self:center">→</div>
 

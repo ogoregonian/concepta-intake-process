@@ -215,6 +215,7 @@ body{
   <span class="tag tb">Basecamp 4</span>
   <span class="tag tb">Zoho Sprints</span>
   <span class="tag tb">Slack</span>
+  <span class="tag tg">Smartsheet</span>
 </div>
 
 <div class="sw">
@@ -387,10 +388,8 @@ body{
             <!-- Continuous monitoring block -->
             <div class="monitor-block" style="max-width:260px">
               <strong>🔄 Continuous monitoring — active throughout triage &amp; resolution</strong>
-              <div class="trigger"><span class="trigger-icon">⚡</span>Ticket inactive beyond SLA update cadence → flag to Prod Support team in Slack</div>
               <div class="trigger"><span class="trigger-icon">⚡</span>Prod Support requests clarification from requestor → notify requestor automatically · log on ticket</div>
-              <div class="trigger"><span class="trigger-icon">⚡</span>No requestor response to clarification within SLA window → send automated reminder to requestor</div>
-              <div class="trigger"><span class="trigger-icon">⚡</span>SLA breach threshold reached → re-escalate in Slack · flag to PDM</div>
+              <div style="margin-top:6px;padding:5px 7px;background:#fef9c3;border:1px solid #fbbf24;border-radius:4px;font-size:8px;color:#78350f;line-height:1.4"><strong>⚠ Future phase — requires SLA definitions per account</strong><br>Inactivity detection · SLA cadence nudges · SLA breach escalation — active once response times are defined and agreed with client stakeholders</div>
               <div class="trigger"><span class="trigger-icon">⚡</span>Budget overage approved by stakeholder → notify Prod Support team they are clear to proceed</div>
               <div class="trigger"><span class="trigger-icon">⚡</span>Prod Support budget approaching defined threshold → flag to PDM before overage occurs</div>
               <div class="trigger"><span class="trigger-icon">⚡</span>Fix verified in production → notify requestor automatically · prompt to confirm resolution on Request Board</div>
