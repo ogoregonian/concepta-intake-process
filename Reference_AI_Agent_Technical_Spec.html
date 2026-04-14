@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concepta — AI Agent Technical Specification</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:        #0f0f0f;
+  --ink-mid:    #3a3a3a;
+  --ink-light:  #6b7280;
+  --rule:       #e2ddd8;
+  --paper:      #f7f5f1;
+  --white:      #ffffff;
+  --blue:       #1d3557;
+  --blue-mid:   #2563eb;
+  --blue-light: #dbeafe;
+  --violet:     #4c1d95;
+  --violet-light:#ede9fe;
+  --green:      #14532d;
+  --green-light:#dcfce7;
+  --amber:      #92400e;
+  --amber-light:#fef3c7;
+  --red:        #991b1b;
+  --red-light:  #fee2e2;
+  --col: 820px;
+  --gap: 40px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); font-size: 14px; line-height: 1.7; }
+
+/* ── NAV ── */
+nav { position: sticky; top: 0; z-index: 100; background: var(--blue); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; height: 52px; box-shadow: 0 2px 12px rgba(0,0,0,.18); }
+.nav-logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; opacity: 1; transition: opacity .2s; }
+.nav-logo:hover { opacity: .75; }
+.nav-links { display: flex; align-items: center; gap: 2px; flex: 1; justify-content: flex-end; overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-links a { font-size: 11px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; color: rgba(255,255,255,.8); text-decoration: none; transition: color .15s, background .15s; padding: 5px 9px; border-radius: 4px; white-space: nowrap; flex-shrink: 0; }
+.nav-links a:hover { color: #fff; background: rgba(255,255,255,.12); }
+.nav-links a.nav-active { color: #fff; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25); }
+.nav-links a.nav-templates { color: #fcd34d; border: 1px solid rgba(252,211,77,.35); }
+.nav-links a.nav-templates:hover { background: rgba(252,211,77,.12); }
+.nav-div { width: 1px; height: 16px; background: rgba(255,255,255,.2); margin: 0 6px; flex-shrink: 0; }
+
+/* ── HERO ── */
+.hero { background: linear-gradient(135deg, #1e1b4b 0%, #1d3557 100%); color: #fff; padding: 52px 40px 44px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 80% 40%, rgba(109,40,217,.25) 0%, transparent 65%); pointer-events: none; }
+.hero-inner { max-width: var(--col); margin: 0 auto; position: relative; }
+.hero-eyebrow { display: inline-flex; align-items: center; gap: 8px; font-size: 10px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(255,255,255,.5); border: 1px solid rgba(255,255,255,.15); border-radius: 20px; padding: 4px 12px; margin-bottom: 16px; }
+.hero-eyebrow span { width: 6px; height: 6px; border-radius: 50%; background: #a78bfa; }
+.hero h1 { font-family: 'DM Serif Display', serif; font-size: 34px; line-height: 1.2; color: #fff; margin-bottom: 10px; }
+.hero-sub { font-size: 14px; color: rgba(255,255,255,.6); margin-bottom: 24px; max-width: 560px; }
+.hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
+.hero-meta-item { display: flex; flex-direction: column; gap: 2px; }
+.hero-meta-item .label { font-size: 9px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,.4); }
+.hero-meta-item .value { font-size: 13px; font-weight: 500; color: rgba(255,255,255,.85); }
+
+/* ── LAYOUT ── */
+.page { max-width: var(--col); margin: 0 auto; padding: var(--gap) 40px 80px; }
+.section { margin-bottom: 56px; }
+.section-label { font-size: 9px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--ink-light); display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
+.section-label .num { width: 22px; height: 22px; border-radius: 50%; background: var(--ink); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; flex-shrink: 0; }
+h2 { font-family: 'DM Serif Display', serif; font-size: 24px; line-height: 1.25; color: var(--ink); margin-bottom: 10px; }
+h3 { font-size: 13px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+p { color: var(--ink-mid); margin-bottom: 12px; line-height: 1.7; }
+
+/* ── CALLOUT BOXES ── */
+.callout { border-radius: 8px; padding: 16px 18px; margin-bottom: 20px; display: flex; gap: 12px; align-items: flex-start; }
+.callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.callout-body { flex: 1; }
+.callout-body strong { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+.callout-body p { font-size: 12px; margin: 0; line-height: 1.6; }
+.callout.warn { background: var(--amber-light); border: 1px solid #fcd34d; }
+.callout.warn strong { color: var(--amber); }
+.callout.info { background: var(--blue-light); border: 1px solid #93c5fd; }
+.callout.info strong { color: #1d4ed8; }
+.callout.violet { background: var(--violet-light); border: 1px solid #c4b5fd; }
+.callout.violet strong { color: var(--violet); }
+.callout.green { background: var(--green-light); border: 1px solid #86efac; }
+.callout.green strong { color: var(--green); }
+
+/* ── SPEC CARDS ── */
+.spec-card { background: var(--white); border: 1px solid var(--rule); border-radius: 10px; overflow: hidden; margin-bottom: 16px; }
+.spec-card-header { display: flex; align-items: center; gap: 12px; padding: 12px 18px; border-bottom: 1px solid var(--rule); background: #fafaf7; }
+.spec-card-header .sc-num { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #fff; flex-shrink: 0; }
+.spec-card-header .sc-title { font-size: 13px; font-weight: 700; color: var(--ink); }
+.spec-card-header .sc-badge { margin-left: auto; font-size: 9px; font-weight: 700; padding: 2px 8px; border-radius: 20px; letter-spacing: .5px; }
+.badge-blue { background: var(--blue-light); color: #1d4ed8; }
+.badge-violet { background: var(--violet-light); color: var(--violet); }
+.badge-green { background: var(--green-light); color: var(--green); }
+.badge-red { background: var(--red-light); color: var(--red); }
+.badge-amber { background: var(--amber-light); color: var(--amber); }
+.spec-card-body { padding: 16px 18px; }
+.spec-card-body p { font-size: 12.5px; color: var(--ink-mid); margin-bottom: 10px; }
+.spec-card-body p:last-child { margin-bottom: 0; }
+
+/* ── FIELD LIST ── */
+.field-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.field-row { display: flex; gap: 10px; align-items: flex-start; font-size: 12px; }
+.field-row .fkey { font-weight: 700; color: var(--ink); min-width: 180px; flex-shrink: 0; }
+.field-row .fval { color: var(--ink-mid); line-height: 1.55; }
+.field-row .fval code { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 3px; padding: 1px 5px; font-size: 11px; font-family: 'Courier New', monospace; color: #1e293b; }
+
+/* ── ACTION STEPS ── */
+.action-steps { display: flex; flex-direction: column; gap: 0; margin-top: 12px; }
+.action-step { display: flex; gap: 14px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid var(--rule); }
+.action-step:last-child { border-bottom: none; }
+.as-num { width: 24px; height: 24px; border-radius: 50%; background: var(--ink); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.as-body { flex: 1; }
+.as-title { font-size: 12.5px; font-weight: 700; color: var(--ink); margin-bottom: 3px; }
+.as-desc { font-size: 12px; color: var(--ink-mid); line-height: 1.6; }
+.as-desc code { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 3px; padding: 1px 5px; font-size: 11px; font-family: 'Courier New', monospace; color: #1e293b; }
+.as-tag { display: inline-block; font-size: 9px; font-weight: 700; padding: 1px 7px; border-radius: 10px; margin-left: 6px; vertical-align: middle; }
+
+/* ── TABLES ── */
+.spec-table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 12px 0; }
+.spec-table th { background: var(--blue); color: #fff; padding: 8px 12px; text-align: left; font-size: 10px; font-weight: 600; letter-spacing: .5px; text-transform: uppercase; }
+.spec-table td { padding: 9px 12px; border-bottom: 1px solid var(--rule); color: var(--ink-mid); vertical-align: top; line-height: 1.55; }
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table tr:nth-child(even) td { background: #fafaf7; }
+.spec-table td strong { color: var(--ink); font-weight: 600; }
+.spec-table td code { background: #f1f5f9; border: 1px solid #e2e8f0; border-radius: 3px; padding: 1px 5px; font-size: 11px; font-family: 'Courier New', monospace; color: #1e293b; }
+
+/* ── CODE BLOCK ── */
+.code-block { background: #1e293b; border-radius: 8px; padding: 16px 18px; margin: 12px 0; overflow-x: auto; }
+.code-block pre { font-family: 'Courier New', monospace; font-size: 11.5px; color: #e2e8f0; line-height: 1.7; white-space: pre; }
+.code-block .c-key { color: #93c5fd; }
+.code-block .c-str { color: #86efac; }
+.code-block .c-comment { color: #64748b; }
+.code-block .c-val { color: #fde68a; }
+
+/* ── TRIGGER BLOCK ── */
+.trigger-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+.trigger-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; border-radius: 6px; font-size: 12px; }
+.trigger-item.phase1 { background: var(--green-light); border: 1px solid #86efac; }
+.trigger-item.future { background: var(--amber-light); border: 1px solid #fcd34d; }
+.trigger-item .ti-icon { font-size: 14px; flex-shrink: 0; }
+.trigger-item .ti-body { flex: 1; }
+.trigger-item .ti-title { font-weight: 700; color: var(--ink); margin-bottom: 2px; }
+.trigger-item .ti-desc { color: var(--ink-mid); line-height: 1.55; }
+.trigger-item .ti-phase { font-size: 9px; font-weight: 700; padding: 1px 6px; border-radius: 10px; margin-left: 6px; }
+.tp1 { background: var(--green-light); color: var(--green); }
+.tfp { background: var(--amber-light); color: var(--amber); }
+
+/* ── ACCEPTANCE CRITERIA ── */
+.criteria-list { display: flex; flex-direction: column; gap: 12px; margin-top: 12px; }
+.criteria-item { display: flex; gap: 14px; align-items: flex-start; background: var(--white); border: 1px solid var(--rule); border-radius: 8px; padding: 14px 16px; }
+.ci-num { width: 28px; height: 28px; border-radius: 50%; background: var(--blue); color: #fff; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; flex-shrink: 0; }
+.ci-body { flex: 1; }
+.ci-title { font-size: 12.5px; font-weight: 700; color: var(--ink); margin-bottom: 4px; }
+.ci-test { font-size: 12px; color: var(--ink-mid); line-height: 1.6; }
+.ci-test strong { color: var(--ink); font-weight: 600; }
+
+/* ── CONFIG BLOCK ── */
+.config-section { background: var(--white); border: 1px solid var(--rule); border-radius: 10px; padding: 18px; margin-bottom: 14px; }
+.config-section h4 { font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--ink-light); margin-bottom: 12px; }
+
+/* ── FOOTER ── */
+footer { text-align: center; padding: 32px 40px; font-size: 11px; color: var(--ink-light); border-top: 1px solid var(--rule); }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="Index.html" class="nav-logo" title="Home">
+    <svg width="120" height="20" viewBox="0 0 201 33" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block">
+      <path d="M41.4673 22.6537C39.8187 20.8428 38.9963 18.2178 39 14.7786C39.0038 11.3394 39.8262 8.71248 41.4673 6.89787C43.1122 5.08697 45.5118 4.18152 48.666 4.18152C50.7555 4.16768 52.8286 4.54703 54.775 5.29941V8.882C53.0032 8.00664 51.0527 7.54403 49.0725 7.52949H48.9653C47.0569 7.52949 45.5607 8.01757 44.4767 8.99384C43.3926 9.97 42.8525 11.889 42.8563 14.7506C42.8268 16.0424 42.9944 17.3313 43.3531 18.5736C43.5809 19.4472 44.0783 20.2287 44.7759 20.8092C45.3445 21.2551 46.0029 21.5753 46.7069 21.7483C47.4616 21.9236 48.2353 22.0063 49.0104 21.9941C51.0147 21.9922 52.9927 21.5433 54.7976 20.6807V24.2354C52.8505 24.9853 50.7779 25.3646 48.6886 25.3532C45.5344 25.3532 43.1348 24.4478 41.4899 22.6369" fill="white"/>
+      <path d="M62.804 11.0065C62.4684 12.2414 62.3144 13.5176 62.3467 14.796C62.3155 16.0706 62.4695 17.3431 62.804 18.5742C63.0131 19.4422 63.4907 20.2238 64.1704 20.8099C64.7114 21.2542 65.3402 21.5817 66.0167 21.7712C67.505 22.0908 69.0452 22.0908 70.5335 21.7712C71.2106 21.5834 71.8398 21.2557 72.3797 20.8099C73.0592 20.2227 73.5384 19.4417 73.7517 18.5742C74.0824 17.3385 74.2345 16.0628 74.2035 14.7848C74.2345 13.5069 74.0824 12.231 73.7517 10.9954C73.537 10.1284 73.0581 9.34786 72.3797 8.75968C71.8415 8.31452 71.2142 7.98693 70.5391 7.79836C69.0508 7.47879 67.5106 7.47879 66.0223 7.79836C65.346 7.98793 64.717 8.31533 64.1761 8.75968C63.4978 9.34696 63.0205 10.1281 62.8098 10.9954L62.804 11.0065Z" fill="white"/>
+      <path d="M81.605 25.0514V6.27751C84.3483 4.90344 87.3777 4.18195 90.4523 4.17041C93.0872 4.17041 95.146 4.84676 96.629 6.19927C98.1121 7.55188 98.8649 9.42798 98.8875 11.8276V25.0514H95.0087V11.509C95.0663 10.473 94.7322 9.45276 94.0714 8.64731C93.4428 7.95059 92.1875 7.60033 90.3055 7.59662C88.648 7.5912 86.9999 7.84397 85.4217 8.34549V25.0514H81.605Z" fill="white"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0499 5.45796C29.0515 5.29712 29.0196 5.13765 28.9589 4.9887C28.8982 4.83977 28.8072 4.70433 28.6922 4.59018C28.5772 4.47603 28.4415 4.38544 28.2914 4.32362C28.1413 4.2618 27.9816 4.22998 27.8187 4.22998H8.86133V14.2229H17.175C17.6525 14.2229 18.1093 14.4105 18.4462 14.7442C18.7832 15.078 18.9732 15.5306 18.9732 16.0026V24.2426H29.0675V5.45796H29.0499Z" fill="#4d6eff"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M8.86109 14.223H1.10311C0.911479 14.2234 0.72464 14.1676 0.563348 14.0626C0.403653 13.9576 0.279093 13.8081 0.205633 13.6329C0.132174 13.4577 0.111396 13.2648 0.148126 13.0784C0.184856 12.892 0.275895 12.7205 0.411636 12.5856L8.86109 4.22998" fill="#a0b0ff"/>
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0675 24.2427L20.6181 32.6073C20.4839 32.7416 20.3115 32.8333 20.1246 32.8705C19.9362 32.9079 19.743 32.8889 19.5657 32.8164C19.39 32.7439 19.2383 32.6209 19.1329 32.4631C19.0275 32.3055 18.9716 32.1201 18.9732 31.931V24.2427" fill="#a0b0ff"/>
+    </svg>
+  </a>
+  <div class="nav-links">
+    <a href="Index.html">Home</a>
+    <div class="nav-div"></div>
+    <a href="Concepta_Intake_Process_Executive_Brief.html">Brief</a>
+    <a href="Diagram_1_Intake_Request.html">Diagram 1</a>
+    <a href="Diagram_2_New_Request.html">Diagram 2</a>
+    <a href="Diagram_3_Production_Issue.html">Diagram 3</a>
+    <a href="Client_Billing_View.html">Billing View</a>
+    <div class="nav-div"></div>
+    <a href="Reference_Intake_Form.html">Intake Form</a>
+    <a href="Reference_Budget_Model.html">Budget Model</a>
+    <a href="Reference_AI_Agent_MVP.html">AI Agent</a>
+    <a href="Reference_Prerequisites_GoLive.html">Prerequisites</a>
+    <div class="nav-div"></div>
+    <a href="Templates.html" class="nav-templates">⊞ Templates</a>
+    <a href="https://www.notion.so/concepta/Internal-Team-Meetings-17b4767c73b0802fae20ecc7c6981ad5" target="_blank" class="nav-templates" style="margin-left:2px">📋 Meeting Notes</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span></span> Technical Specification · Internal Labs</div>
+    <h1>AI Agent — Build Specification</h1>
+    <p class="hero-sub">Complete technical specification for the Phase 1 MVP build. Covers all integrations, triggers, action logic, notification templates, per-account configuration, and acceptance test cases. Intended audience: internal labs team + PDM lead.</p>
+    <div class="hero-meta">
+      <div class="hero-meta-item"><span class="label">Phase</span><span class="value">Phase 1 — MVP</span></div>
+      <div class="hero-meta-item"><span class="label">Owned By</span><span class="value">Internal Labs Team</span></div>
+      <div class="hero-meta-item"><span class="label">Integrations</span><span class="value">Basecamp · Zoho · Smartsheet · Slack</span></div>
+      <div class="hero-meta-item"><span class="label">Status</span><span class="value">Ready for Build</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- ── SECTION 1: OVERVIEW ── -->
+  <div class="section">
+    <div class="section-label"><div class="num">1</div> Overview</div>
+    <h2>What the Agent Does</h2>
+    <p>The AI Agent is a rule-based automation layer that sits between the client request submission and the internal team handoff. It does not make decisions or exercise judgment — it reads submitted data values, validates completeness, executes a defined set of write actions across four tools, and sends pre-configured notifications. Every action is deterministic and traceable.</p>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body">
+        <strong>Manual process must be validated first</strong>
+        <p>The AI Agent must not be enabled on any live client account until the manual intake process has been validated through the corporate site pilot. The agent reads from explicitly configured account data — if that configuration is incomplete, it routes incorrectly and notifies the wrong people.</p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">💡</div>
+      <div class="callout-body">
+        <strong>Scope boundary — Phase 1 only</strong>
+        <p>This spec covers Phase 1 exclusively: intake validation, ticket creation, Smartsheet logging, Basecamp card movement, Slack notification, requestor confirmation, and lightweight continuous monitoring (budget thresholds, revision routing, resolution notification). SLA cadence monitoring and breach escalation are Phase 2 and are not in scope here.</p>
+      </div>
+    </div>
+
+    <table class="spec-table">
+      <thead><tr><th>Capability</th><th>Phase</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Field validation</strong></td><td><span class="as-tag badge-green">Phase 1</span></td><td>Read submitted form values, check all required fields are present and non-empty for the request type</td></tr>
+        <tr><td><strong>Request categorisation</strong></td><td><span class="as-tag badge-green">Phase 1</span></td><td>Read form type from submitted data — New Request or Reported Issue — and severity level on production issues</td></tr>
+        <tr><td><strong>Zoho ticket creation</strong></td><td><span class="as-tag badge-green">Phase 1</span></td><td>Create Task (new request) or Bug (production issue) ticket with correct epic, sprint bucket, and assignee</td></tr>
+        <tr><td><strong>Smartsheet row logging</strong></td><td><span class="as-tag badge-green">Phase 1</span></td><td>Write one row to the account's external request board, mirroring intake data</td></tr>
+        <tr><td><strong>Basecamp card movement</strong></td><td><span class="as-tag badge-green">Phase 1</span></td><td>Move the submission card to the correct column based on request type</td></tr>
+        <tr><td><strong>Slack notification</strong></td><td><span class="as-tag badge-green">Phase 1</span></td><td>Post to account Slack channel with ticket link, summary, requestor, category, severity (if applicable), and assigned epic</td></tr>
+        <tr><td><strong>Requestor confirmation</strong></td><td><span class="as-tag badge-green">Phase 1</span></td><td>Send email/Basecamp message to requestor confirming receipt, assigned team, and next steps</td></tr>
+        <tr><td><strong>Budget threshold monitoring</strong></td><td><span class="as-tag badge-green">Phase 1</span></td><td>Monitor Planning/Ops and Production Support epic spend against configured threshold — flag PDM before overage</td></tr>
+        <tr><td><strong>Revision routing</strong></td><td><span class="as-tag badge-green">Phase 1</span></td><td>Detect requestor scope feedback on Basecamp, move card back, notify Analysis Team, log revision on Zoho ticket</td></tr>
+        <tr><td><strong>Resolution notification</strong></td><td><span class="as-tag badge-green">Phase 1</span></td><td>Detect fix verified status in Zoho, notify requestor, prompt for confirmation on Basecamp</td></tr>
+        <tr><td><strong>SLA cadence monitoring</strong></td><td><span class="as-tag badge-amber">Phase 2</span></td><td>Inactivity detection per SLA update window, breach escalation — requires SLA definitions per account</td></tr>
+        <tr><td><strong>Deeper categorisation</strong></td><td><span class="as-tag badge-amber">Phase 2</span></td><td>Sub-type classification beyond New Request / Production Issue</td></tr>
+        <tr><td><strong>Historical surfacing</strong></td><td><span class="as-tag badge-amber">Phase 2</span></td><td>Surface similar past requests during analysis stage</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── SECTION 2: ARCHITECTURE ── -->
+  <div class="section">
+    <div class="section-label"><div class="num">2</div> System Architecture</div>
+    <h2>How It Fits Together</h2>
+    <p>The agent is triggered by a Basecamp webhook fired when a new form submission lands on the Request Board. It runs as a lightweight serverless function (recommended: AWS Lambda or equivalent). All actions are outbound API calls to four external services. No database is required — all state lives in the source tools.</p>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#1d3557">A</div>
+        <div class="sc-title">Trigger — Basecamp Webhook</div>
+        <span class="sc-badge badge-blue">Entry point</span>
+      </div>
+      <div class="spec-card-body">
+        <p>Basecamp fires a webhook <code>POST</code> to the agent's endpoint whenever a new card is created on the Request Board. The payload includes the card content, column it was placed in, project ID, and creator details. The agent endpoint must be registered as a webhook in each account's Basecamp project settings.</p>
+        <div class="field-list">
+          <div class="field-row"><span class="fkey">Webhook event type</span><span class="fval"><code>card_table_card.created</code> on the Request Board card table</span></div>
+          <div class="field-row"><span class="fkey">Payload includes</span><span class="fval">Card ID, card content (form fields as text), column ID, project ID, creator name and email, timestamp</span></div>
+          <div class="field-row"><span class="fkey">Auth</span><span class="fval">HMAC signature verification using Basecamp webhook secret — validate before processing</span></div>
+          <div class="field-row"><span class="fkey">Response required</span><span class="fval">Return <code>200 OK</code> within 10 seconds — run processing async if needed</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#4c1d95">B</div>
+        <div class="sc-title">Agent Runtime</div>
+        <span class="sc-badge badge-violet">Serverless function</span>
+      </div>
+      <div class="spec-card-body">
+        <p>Recommended deployment: AWS Lambda (Node.js 18+ or Python 3.11+) behind an API Gateway endpoint. The function is stateless — it reads the webhook payload, looks up the account configuration from a config store (environment variables or a simple config file per account), and executes the action sequence.</p>
+        <div class="field-list">
+          <div class="field-row"><span class="fkey">Recommended runtime</span><span class="fval">Node.js 18+ or Python 3.11+ — either is suitable; match what the labs team is most comfortable with</span></div>
+          <div class="field-row"><span class="fkey">Config storage</span><span class="fval">Per-account config object stored as environment variables or a JSON config file — one config per account</span></div>
+          <div class="field-row"><span class="fkey">Execution timeout</span><span class="fval">Set to 30 seconds minimum — sequential API calls to 4 services can take 10–15s</span></div>
+          <div class="field-row"><span class="fkey">Error logging</span><span class="fval">All failures must be logged with account ID, request ID, failed action, and error message — CloudWatch or equivalent</span></div>
+          <div class="field-row"><span class="fkey">Retry logic</span><span class="fval">Retry failed API calls once with 2s delay before marking as failed — do not retry notification sends (prevents duplicates)</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#14532d">C</div>
+        <div class="sc-title">Continuous Monitoring — Polling Loop</div>
+        <span class="sc-badge badge-green">Scheduled job</span>
+      </div>
+      <div class="spec-card-body">
+        <p>The monitoring triggers (budget threshold, revision detection, resolution notification) run on a scheduled polling loop — not on webhooks. Recommended: a separate scheduled Lambda function running every 15–30 minutes that checks active ticket states in Zoho and Basecamp card positions against expected states.</p>
+        <div class="field-list">
+          <div class="field-row"><span class="fkey">Trigger</span><span class="fval">Scheduled CloudWatch event — every 15–30 minutes during business hours</span></div>
+          <div class="field-row"><span class="fkey">Checks per run</span><span class="fval">Budget spend vs threshold · Basecamp card in revision column · Zoho ticket status = Resolved</span></div>
+          <div class="field-row"><span class="fkey">State tracking</span><span class="fval">Store last-notified timestamp per ticket in a lightweight store (DynamoDB or S3 JSON) to prevent duplicate notifications</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 3: INTEGRATIONS ── -->
+  <div class="section">
+    <div class="section-label"><div class="num">3</div> Integration Requirements</div>
+    <h2>Four APIs — One per Tool</h2>
+    <p>The agent makes outbound API calls to Basecamp, Zoho Sprints, Smartsheet, and Slack. Each integration requires an access token scoped to the minimum permissions needed. Tokens are stored as environment variables — never in code.</p>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#1d3557">1</div>
+        <div class="sc-title">Basecamp 4 API</div>
+        <span class="sc-badge badge-blue">REST · OAuth 2.0</span>
+      </div>
+      <div class="spec-card-body">
+        <div class="field-list">
+          <div class="field-row"><span class="fkey">API base URL</span><span class="fval"><code>https://3.basecampapi.com/{account_id}</code></span></div>
+          <div class="field-row"><span class="fkey">Auth method</span><span class="fval">OAuth 2.0 — use a service account or personal access token via Launchpad. Store as <code>BASECAMP_TOKEN</code></span></div>
+          <div class="field-row"><span class="fkey">Required permissions</span><span class="fval">Read card content, move cards between columns, post messages to card threads</span></div>
+          <div class="field-row"><span class="fkey">Actions used</span><span class="fval">
+            <code>GET /buckets/{project_id}/card_tables/{card_table_id}/columns.json</code> — list columns to get column IDs<br>
+            <code>GET /buckets/{project_id}/card_tables/cards/{card_id}.json</code> — read card content<br>
+            <code>PUT /buckets/{project_id}/card_tables/cards/{card_id}.json</code> — move card to column (pass <code>column_id</code>)<br>
+            <code>POST /buckets/{project_id}/card_tables/cards/{card_id}/comments.json</code> — post confirmation message on card thread
+          </span></div>
+          <div class="field-row"><span class="fkey">Per-account config needed</span><span class="fval">Basecamp account ID, project ID per account, card table ID (Request Board), column IDs for each column</span></div>
+          <div class="field-row"><span class="fkey">Rate limits</span><span class="fval">50 requests per 10 seconds — well within range for this use case</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#4c1d95">2</div>
+        <div class="sc-title">Zoho Sprints API</div>
+        <span class="sc-badge badge-violet">REST · OAuth 2.0</span>
+      </div>
+      <div class="spec-card-body">
+        <div class="field-list">
+          <div class="field-row"><span class="fkey">API base URL</span><span class="fval"><code>https://sprints.zoho.com/api/v1</code></span></div>
+          <div class="field-row"><span class="fkey">Auth method</span><span class="fval">OAuth 2.0 with Zoho self-client or server-based OAuth. Scopes: <code>ZohoSprints.sprints.ALL,ZohoSprints.items.ALL</code></span></div>
+          <div class="field-row"><span class="fkey">Required permissions</span><span class="fval">Create items, assign items to sprints and epics, read item status</span></div>
+          <div class="field-row"><span class="fkey">Actions used</span><span class="fval">
+            <code>POST /teams/{team_id}/projects/{project_id}/sprints/{sprint_id}/item/</code> — create ticket<br>
+            Body must include: <code>name</code> (title), <code>type</code> (Task or Bug), <code>epic</code> (epic ID), <code>assignee</code> (user ID), <code>description</code> (all submitted field values)<br>
+            <code>GET /teams/{team_id}/projects/{project_id}/item/{item_id}/</code> — read item status (for monitoring)
+          </span></div>
+          <div class="field-row"><span class="fkey">Ticket type mapping</span><span class="fval">New Request → <code>type: "Task"</code> · Production Issue → <code>type: "Bug"</code></span></div>
+          <div class="field-row"><span class="fkey">Epic mapping</span><span class="fval">New Request → Planning/Ops/New Requests epic ID · Production Issue → Production Support epic ID</span></div>
+          <div class="field-row"><span class="fkey">Sprint bucket mapping</span><span class="fval">New Request → "New Requests: Analysis" sprint bucket · Production Issue → "Reported Issues" sprint bucket</span></div>
+          <div class="field-row"><span class="fkey">Per-account config needed</span><span class="fval">Team ID, project ID, sprint IDs per bucket, epic IDs, assignee user IDs per request type</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#d97706">3</div>
+        <div class="sc-title">Smartsheet API</div>
+        <span class="sc-badge badge-amber">REST · API Key</span>
+      </div>
+      <div class="spec-card-body">
+        <div class="field-list">
+          <div class="field-row"><span class="fkey">API base URL</span><span class="fval"><code>https://api.smartsheet.com/2.0</code></span></div>
+          <div class="field-row"><span class="fkey">Auth method</span><span class="fval">API key in Authorization header: <code>Authorization: Bearer {SMARTSHEET_TOKEN}</code></span></div>
+          <div class="field-row"><span class="fkey">Actions used</span><span class="fval">
+            <code>POST /sheets/{sheet_id}/rows</code> — add one row to the external request board<br>
+            Body: array of cell objects mapping column IDs to values from the submission
+          </span></div>
+          <div class="field-row"><span class="fkey">Columns to populate</span><span class="fval">Request Title · Request Type · Requestor · Submission Date · Status (set to "New") · Zoho Ticket Link (populated after ticket creation) · Basecamp Card Link</span></div>
+          <div class="field-row"><span class="fkey">Per-account config needed</span><span class="fval">Sheet ID per account, column IDs for each field to populate (get these via <code>GET /sheets/{sheet_id}</code> on first setup)</span></div>
+          <div class="field-row"><span class="fkey">Note</span><span class="fval">Populate the Zoho Ticket Link and Basecamp Card Link columns in the same row write after ticket creation — combine into one API call using the row ID returned from the initial POST</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#14532d">4</div>
+        <div class="sc-title">Slack API</div>
+        <span class="sc-badge badge-green">REST · Bot Token</span>
+      </div>
+      <div class="spec-card-body">
+        <div class="field-list">
+          <div class="field-row"><span class="fkey">API base URL</span><span class="fval"><code>https://slack.com/api</code></span></div>
+          <div class="field-row"><span class="fkey">Auth method</span><span class="fval">Bot OAuth token. Scopes required: <code>chat:write</code>, <code>chat:write.public</code></span></div>
+          <div class="field-row"><span class="fkey">Actions used</span><span class="fval"><code>POST /chat.postMessage</code> — post to account channel with structured message</span></div>
+          <div class="field-row"><span class="fkey">Message format</span><span class="fval">Use Slack Block Kit for structured messages — see notification templates in Section 5</span></div>
+          <div class="field-row"><span class="fkey">Per-account config needed</span><span class="fval">Channel ID per account, user IDs for Analysis Team assignees, user IDs for Production Support assignees</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 4: PROCESSING LOGIC ── -->
+  <div class="section">
+    <div class="section-label"><div class="num">4</div> Processing Logic</div>
+    <h2>Decision Tree — New Submission</h2>
+    <p>When the webhook fires, the agent runs the following steps in order. If any required step fails, the agent logs the error and sends a fallback notification to the PDM Slack channel. It does not proceed to downstream steps on a failed action.</p>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#1d3557">→</div>
+        <div class="sc-title">Step 1 — Parse Submission</div>
+      </div>
+      <div class="spec-card-body">
+        <div class="action-steps">
+          <div class="action-step">
+            <div class="as-num">1</div>
+            <div class="as-body">
+              <div class="as-title">Extract form type</div>
+              <div class="as-desc">Read the form type value from the card content. The requestor selects either <code>New Request / Enhancement</code> or <code>Reported Issue</code> on the Basecamp form before submitting. This value drives all downstream routing. The agent reads it — does not infer it.</div>
+            </div>
+          </div>
+          <div class="action-step">
+            <div class="as-num">2</div>
+            <div class="as-body">
+              <div class="as-title">Extract account context</div>
+              <div class="as-desc">Map the Basecamp project ID from the webhook payload to the correct account config object. If no config is found for the project ID, log error and send PDM fallback alert — do not proceed.</div>
+            </div>
+          </div>
+          <div class="action-step">
+            <div class="as-num">3</div>
+            <div class="as-body">
+              <div class="as-title">Extract all field values</div>
+              <div class="as-desc">Parse the card content to extract all submitted field values as key-value pairs. Field names must match the standardised field labels defined in the intake form spec. Store parsed values for use in all downstream actions.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#4c1d95">→</div>
+        <div class="sc-title">Step 2 — Validate Required Fields</div>
+      </div>
+      <div class="spec-card-body">
+        <p>Check that all required fields for the identified form type are present and non-empty. Required fields differ by form type:</p>
+        <table class="spec-table">
+          <thead><tr><th>Form Type</th><th>Required Fields (all must be present)</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><strong>New Request / Enhancement</strong></td>
+              <td>1. Request Title · 2. Problem Being Solved or Goal Being Pursued · 3. Who Is Impacted · 4. Where Does This Occur (Platform or System)</td>
+            </tr>
+            <tr>
+              <td><strong>Reported Issue</strong></td>
+              <td>1. Title of Issue · 2. Severity Level (1–4) · 3. Overview of Issue · 4. Steps to Reproduce · 5. Expected vs Actual Behavior · 6. Impacted Components · 7. Affected Platform & Version · 8. Screenshots/Video · 9. Console Logs · 10. Number of Reports</td>
+            </tr>
+          </tbody>
+        </table>
+        <p style="margin-top:12px"><strong>If any required field is missing:</strong> do not create any tickets or move any cards. Send a missing-fields notification to the requestor (see notification templates). Hold the card in the <code>Validate &amp; Assign</code> column. Log the incomplete submission. Wait for resubmission — the next webhook from the same card triggers the full validation loop again.</p>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#14532d">→</div>
+        <div class="sc-title">Step 3 — Execute Actions (all fields valid)</div>
+      </div>
+      <div class="spec-card-body">
+        <p>Once validation passes, execute all actions in this order. Steps 3a–3d should be treated as a batch — if any fails, log and send PDM fallback alert.</p>
+        <div class="action-steps">
+          <div class="action-step">
+            <div class="as-num">3a</div>
+            <div class="as-body">
+              <div class="as-title">Create Zoho ticket <span class="as-tag badge-violet">Zoho API</span></div>
+              <div class="as-desc">
+                <strong>New Request:</strong> Create Task ticket · Epic: Planning/Ops/New Requests · Sprint bucket: New Requests: Analysis · Assignee: PDM/Analysis Team user ID · Title: from Request Title field · Description: all submitted field values formatted as structured text<br><br>
+                <strong>Production Issue:</strong> Create Bug ticket · Epic: Production Support · Sprint bucket: Reported Issues · Assignee: Prod Support Team user ID · Title: from Title of Issue field · Description: all submitted field values including severity level
+              </div>
+            </div>
+          </div>
+          <div class="action-step">
+            <div class="as-num">3b</div>
+            <div class="as-body">
+              <div class="as-title">Log row to Smartsheet external request board <span class="as-tag badge-amber">Smartsheet API</span></div>
+              <div class="as-desc">Add one row to the account's external request board. Populate: Request Title, Request Type, Requestor name, Submission Date (today), Status = "New", Zoho Ticket Link (from step 3a response), Basecamp Card Link. Use the Zoho ticket ID returned from step 3a — do not proceed with a null ticket ID.</div>
+            </div>
+          </div>
+          <div class="action-step">
+            <div class="as-num">3c</div>
+            <div class="as-body">
+              <div class="as-title">Move Basecamp card to correct column <span class="as-tag badge-blue">Basecamp API</span></div>
+              <div class="as-desc">
+                <strong>New Request:</strong> Move card to <code>Analyzing / Scoping / Estimating</code> column<br>
+                <strong>Production Issue:</strong> Move card to <code>Triage / Troubleshooting</code> column<br><br>
+                Use the column IDs stored in the account config — do not look them up at runtime.
+              </div>
+            </div>
+          </div>
+          <div class="action-step">
+            <div class="as-num">3d</div>
+            <div class="as-body">
+              <div class="as-title">Post Slack notification <span class="as-tag badge-green">Slack API</span></div>
+              <div class="as-desc">Post to the account's Slack channel. Tag the assigned team member by their Slack user ID. Include: request title, form type, requestor name, Zoho ticket link, Basecamp card link. For production issues, include severity level. See Section 5 for exact message templates.</div>
+            </div>
+          </div>
+          <div class="action-step">
+            <div class="as-num">3e</div>
+            <div class="as-body">
+              <div class="as-title">Send requestor confirmation <span class="as-tag badge-blue">Basecamp API</span></div>
+              <div class="as-desc">Post a message on the Basecamp card thread confirming receipt. Include: assigned team, next steps, how to track progress on the Request Board. See Section 5 for exact message templates. This step runs after 3a–3d complete — if any of those fail, do not send the confirmation.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 5: NOTIFICATION TEMPLATES ── -->
+  <div class="section">
+    <div class="section-label"><div class="num">5</div> Notification Templates</div>
+    <h2>Exact Message Content</h2>
+    <p>All notifications use pre-defined templates with variable substitution. Variables are shown in <code>{curly_braces}</code>. These templates must be loaded into the agent config — they are not generated dynamically by an LLM.</p>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#991b1b">!</div>
+        <div class="sc-title">Missing Fields — Requestor Notification</div>
+        <span class="sc-badge badge-red">Validation failure</span>
+      </div>
+      <div class="spec-card-body">
+        <p><strong>Channel:</strong> Basecamp card thread (reply to the submission)</p>
+        <div class="code-block"><pre>Hi {requestor_name},
+
+Thank you for submitting your request. Before we can process it, 
+we need a few more details.
+
+The following required fields are missing or incomplete:
+{missing_fields_list}
+
+Please update your submission with the missing information and 
+resubmit via the Request Board. Your request will be processed 
+as soon as all required fields are complete.
+
+If you have any questions, contact your PDM directly.</pre></div>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#14532d">✓</div>
+        <div class="sc-title">New Request — Requestor Confirmation</div>
+        <span class="sc-badge badge-green">New Request</span>
+      </div>
+      <div class="spec-card-body">
+        <p><strong>Channel:</strong> Basecamp card thread</p>
+        <div class="code-block"><pre>Hi {requestor_name},
+
+Your request has been received and assigned to the Analysis Team.
+
+Reference: {zoho_ticket_id}
+Assigned to: {analysis_team_name}
+Next steps: The team will review your request, prepare a scope 
+deliverable, and update you when it's ready for your review.
+
+You can track the progress of your request on your Request Board 
+at any time. We will notify you when the scope is ready.</pre></div>
+        <p style="margin-top:12px"><strong>Slack channel message (Block Kit):</strong></p>
+        <div class="code-block"><pre><span class="c-comment">// Post to account Slack channel</span>
+{
+  <span class="c-key">"blocks"</span>: [
+    { <span class="c-key">"type"</span>: <span class="c-str">"header"</span>, <span class="c-key">"text"</span>: { <span class="c-key">"type"</span>: <span class="c-str">"plain_text"</span>, 
+      <span class="c-key">"text"</span>: <span class="c-str">"📥 New Request — {request_title}"</span> } },
+    { <span class="c-key">"type"</span>: <span class="c-str">"section"</span>, <span class="c-key">"fields"</span>: [
+      { <span class="c-key">"type"</span>: <span class="c-str">"mrkdwn"</span>, <span class="c-key">"text"</span>: <span class="c-str">"*Requestor:*\n{requestor_name}"</span> },
+      { <span class="c-key">"type"</span>: <span class="c-str">"mrkdwn"</span>, <span class="c-key">"text"</span>: <span class="c-str">"*Epic:*\nPlanning/Ops/New Requests"</span> },
+      { <span class="c-key">"type"</span>: <span class="c-str">"mrkdwn"</span>, <span class="c-key">"text"</span>: <span class="c-str">"*Zoho Ticket:*\n&lt;{zoho_ticket_url}|{zoho_ticket_id}&gt;"</span> },
+      { <span class="c-key">"type"</span>: <span class="c-str">"mrkdwn"</span>, <span class="c-key">"text"</span>: <span class="c-str">"*Basecamp Card:*\n&lt;{basecamp_card_url}|View Card&gt;"</span> }
+    ]},
+    { <span class="c-key">"type"</span>: <span class="c-str">"section"</span>, <span class="c-key">"text"</span>: { <span class="c-key">"type"</span>: <span class="c-str">"mrkdwn"</span>,
+      <span class="c-key">"text"</span>: <span class="c-str">"Assigned to &lt;@{assignee_slack_id}&gt; for analysis and scoping."</span> }}
+  ]
+}</pre></div>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#991b1b">🔴</div>
+        <div class="sc-title">Production Issue — Requestor Confirmation (per severity)</div>
+        <span class="sc-badge badge-red">Production Issue</span>
+      </div>
+      <div class="spec-card-body">
+        <p><strong>Channel:</strong> Basecamp card thread. Use the severity-matched variant:</p>
+        <table class="spec-table">
+          <thead><tr><th>Severity</th><th>Confirmation Message Text</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Sev 1</strong></td><td>Your critical issue has been received. The Production Support team has been alerted and is initiating triage immediately. Reference: {zoho_ticket_id}. You will receive updates as the investigation progresses.</td></tr>
+            <tr><td><strong>Sev 2</strong></td><td>Your high-impact issue has been received and assigned to the Production Support team. Reference: {zoho_ticket_id}. The team will begin triage as soon as possible. Track progress on your Request Board.</td></tr>
+            <tr><td><strong>Sev 3</strong></td><td>Your issue has been received and assigned to the Production Support team. Reference: {zoho_ticket_id}. It will be reviewed during the next available support window. Track progress on your Request Board.</td></tr>
+            <tr><td><strong>Sev 4</strong></td><td>Your issue has been logged and assigned to the Production Support team. Reference: {zoho_ticket_id}. It will be reviewed in the next sprint cycle. Track progress on your Request Board.</td></tr>
+          </tbody>
+        </table>
+        <p style="margin-top:12px"><strong>Slack channel message:</strong> Same Block Kit structure as New Request — add Severity field: <code>"*Severity:*\nSev {severity_level} — {severity_label}"</code> and tag Production Support assignee.</p>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#d97706">⚡</div>
+        <div class="sc-title">Budget Threshold Alert — PDM Notification</div>
+        <span class="sc-badge badge-amber">Monitoring trigger</span>
+      </div>
+      <div class="spec-card-body">
+        <p><strong>Channel:</strong> Slack (direct message to PDM user ID)</p>
+        <div class="code-block"><pre>⚠️ Budget threshold alert — {account_name}
+
+The {epic_name} epic has reached {threshold_percentage}% of its 
+baseline allocation for this billing cycle.
+
+Hours logged: {hours_logged} of {hours_baseline} baseline hrs
+Remaining: {hours_remaining} hrs
+
+Review current ticket activity and assess whether reallocation 
+or client conversation is needed before the cycle closes.</pre></div>
+        <p style="margin-top:10px">Fire this alert once per epic per billing cycle when the threshold is crossed. Do not repeat until the next cycle. Threshold percentage is defined per account in config.</p>
+      </div>
+    </div>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#14532d">✓</div>
+        <div class="sc-title">Resolution Notification — Requestor</div>
+        <span class="sc-badge badge-green">Monitoring trigger</span>
+      </div>
+      <div class="spec-card-body">
+        <p><strong>Trigger:</strong> Zoho ticket status changes to <code>Resolved</code></p>
+        <p><strong>Channel:</strong> Basecamp card thread</p>
+        <div class="code-block"><pre>Hi {requestor_name},
+
+Your reported issue ({zoho_ticket_id}) has been resolved and 
+deployed to production.
+
+Please verify that the issue is resolved on your end and confirm 
+by replying to this message or updating the card on your Request 
+Board.
+
+If the issue persists or you have additional questions, reply 
+here and the Production Support team will follow up.</pre></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 6: CONTINUOUS MONITORING ── -->
+  <div class="section">
+    <div class="section-label"><div class="num">6</div> Continuous Monitoring</div>
+    <h2>Phase 1 Monitoring Triggers</h2>
+    <p>The scheduled monitoring job runs every 15–30 minutes and checks for the following conditions across all active accounts. Each trigger fires at most once per event — state tracking prevents duplicate notifications.</p>
+
+    <div class="trigger-list">
+      <div class="trigger-item phase1">
+        <div class="ti-icon">⚡</div>
+        <div class="ti-body">
+          <div class="ti-title">Budget approaching threshold <span class="ti-phase tp1">Phase 1</span></div>
+          <div class="ti-desc"><strong>Check:</strong> Query Zoho time logs for active epics. Sum hours logged per epic for current billing cycle. Compare against baseline hours in account config. <strong>Action:</strong> If hours logged ≥ threshold percentage, send budget alert to PDM (Slack DM). <strong>State:</strong> Store <code>budget_alert_sent_{epic}_{cycle}</code> flag — do not re-fire for the same epic in the same billing cycle.</div>
+        </div>
+      </div>
+      <div class="trigger-item phase1">
+        <div class="ti-icon">⚡</div>
+        <div class="ti-body">
+          <div class="ti-title">Requestor scope revision submitted <span class="ti-phase tp1">Phase 1</span></div>
+          <div class="ti-desc"><strong>Check:</strong> Poll Basecamp for cards in the <code>Review Scope / Approve / Prioritize</code> column that have new comments tagged as requestor feedback (detect via comment author matching requestor name on the card). <strong>Action:</strong> Move card back to <code>Analyzing / Scoping / Estimating</code> column. Post Slack notification to Analysis Team with revision note. Add comment to Zoho ticket logging the revision. <strong>State:</strong> Track last processed comment timestamp per card.</div>
+        </div>
+      </div>
+      <div class="trigger-item phase1">
+        <div class="ti-icon">⚡</div>
+        <div class="ti-body">
+          <div class="ti-title">Zoho ticket marked Resolved <span class="ti-phase tp1">Phase 1</span></div>
+          <div class="ti-desc"><strong>Check:</strong> Poll Zoho for Bug tickets in the Reported Issues bucket where status = <code>Resolved</code> and resolution notification has not yet been sent. <strong>Action:</strong> Send resolution notification to requestor on Basecamp card thread. Move Basecamp card to <code>Done / Closed</code> column. <strong>State:</strong> Store <code>resolution_notified_{ticket_id}</code> flag to prevent re-firing.</div>
+        </div>
+      </div>
+      <div class="trigger-item future">
+        <div class="ti-icon">⏳</div>
+        <div class="ti-body">
+          <div class="ti-title">Ticket inactive beyond SLA update cadence <span class="ti-phase tfp">Phase 2</span></div>
+          <div class="ti-desc">Requires SLA response time definitions to be agreed and loaded per account. Not in Phase 1 scope.</div>
+        </div>
+      </div>
+      <div class="trigger-item future">
+        <div class="ti-icon">⏳</div>
+        <div class="ti-body">
+          <div class="ti-title">SLA breach threshold reached <span class="ti-phase tfp">Phase 2</span></div>
+          <div class="ti-desc">Requires SLA response time definitions to be agreed and loaded per account. Not in Phase 1 scope.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── SECTION 7: PER-ACCOUNT CONFIGURATION ── -->
+  <div class="section">
+    <div class="section-label"><div class="num">7</div> Per-Account Configuration</div>
+    <h2>Config Object — One Per Account</h2>
+    <p>Every account the agent operates on requires a fully populated config object. The agent reads exclusively from this config — it does not infer values at runtime. The PDM and labs team are jointly responsible for completing this config before enabling the agent on any account.</p>
+
+    <div class="callout warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body">
+        <strong>Incomplete config = incorrect routing</strong>
+        <p>If any field in the config is null or missing, the agent must abort and send a PDM fallback alert. Do not allow partial config execution.</p>
+      </div>
+    </div>
+
+    <div class="code-block"><pre>{
+  <span class="c-comment">// ── ACCOUNT IDENTITY ──────────────────────────────</span>
+  <span class="c-key">"account_id"</span>: <span class="c-str">"[internal account code, e.g. SFC]"</span>,
+  <span class="c-key">"account_name"</span>: <span class="c-str">"[client-facing name]"</span>,
+
+  <span class="c-comment">// ── BASECAMP ───────────────────────────────────────</span>
+  <span class="c-key">"basecamp"</span>: {
+    <span class="c-key">"account_id"</span>: <span class="c-str">"[Basecamp account ID — numeric]"</span>,
+    <span class="c-key">"project_id"</span>: <span class="c-str">"[project ID for this account]"</span>,
+    <span class="c-key">"card_table_id"</span>: <span class="c-str">"[Request Board card table ID]"</span>,
+    <span class="c-key">"columns"</span>: {
+      <span class="c-key">"validate_assign"</span>: <span class="c-str">"[column ID]"</span>,
+      <span class="c-key">"analyzing_scoping"</span>: <span class="c-str">"[column ID]"</span>,
+      <span class="c-key">"triage_troubleshooting"</span>: <span class="c-str">"[column ID]"</span>,
+      <span class="c-key">"review_scope_approve"</span>: <span class="c-str">"[column ID]"</span>,
+      <span class="c-key">"approved_prioritize"</span>: <span class="c-str">"[column ID]"</span>,
+      <span class="c-key">"in_progress"</span>: <span class="c-str">"[column ID]"</span>,
+      <span class="c-key">"done_closed"</span>: <span class="c-str">"[column ID]"</span>
+    }
+  },
+
+  <span class="c-comment">// ── ZOHO SPRINTS ───────────────────────────────────</span>
+  <span class="c-key">"zoho"</span>: {
+    <span class="c-key">"team_id"</span>: <span class="c-str">"[Zoho team ID]"</span>,
+    <span class="c-key">"project_id"</span>: <span class="c-str">"[Zoho project ID for this account]"</span>,
+    <span class="c-key">"sprints"</span>: {
+      <span class="c-key">"new_requests_analysis"</span>: <span class="c-str">"[sprint ID for New Requests: Analysis bucket]"</span>,
+      <span class="c-key">"reported_issues"</span>: <span class="c-str">"[sprint ID for Reported Issues bucket]"</span>
+    },
+    <span class="c-key">"epics"</span>: {
+      <span class="c-key">"planning_ops_new_requests"</span>: <span class="c-str">"[epic ID]"</span>,
+      <span class="c-key">"production_support"</span>: <span class="c-str">"[epic ID]"</span>
+    },
+    <span class="c-key">"assignees"</span>: {
+      <span class="c-key">"analysis_team"</span>: <span class="c-str">"[Zoho user ID — PDM lead]"</span>,
+      <span class="c-key">"production_support_team"</span>: <span class="c-str">"[Zoho user ID — Prod Support lead]"</span>
+    },
+    <span class="c-key">"budget"</span>: {
+      <span class="c-key">"planning_ops_baseline_hours"</span>: <span class="c-val">52</span>,
+      <span class="c-key">"production_support_baseline_hours"</span>: <span class="c-val">47</span>,
+      <span class="c-key">"alert_threshold_percentage"</span>: <span class="c-val">80</span>  <span class="c-comment">// alert at 80% of baseline</span>
+    }
+  },
+
+  <span class="c-comment">// ── SMARTSHEET ─────────────────────────────────────</span>
+  <span class="c-key">"smartsheet"</span>: {
+    <span class="c-key">"sheet_id"</span>: <span class="c-str">"[external request board sheet ID]"</span>,
+    <span class="c-key">"columns"</span>: {
+      <span class="c-key">"request_title"</span>: <span class="c-str">"[column ID]"</span>,
+      <span class="c-key">"request_type"</span>: <span class="c-str">"[column ID]"</span>,
+      <span class="c-key">"requestor"</span>: <span class="c-str">"[column ID]"</span>,
+      <span class="c-key">"submission_date"</span>: <span class="c-str">"[column ID]"</span>,
+      <span class="c-key">"status"</span>: <span class="c-str">"[column ID]"</span>,
+      <span class="c-key">"zoho_ticket_link"</span>: <span class="c-str">"[column ID]"</span>,
+      <span class="c-key">"basecamp_card_link"</span>: <span class="c-str">"[column ID]"</span>,
+      <span class="c-key">"t_shirt_size"</span>: <span class="c-str">"[column ID]"</span>
+    }
+  },
+
+  <span class="c-comment">// ── SLACK ──────────────────────────────────────────</span>
+  <span class="c-key">"slack"</span>: {
+    <span class="c-key">"channel_id"</span>: <span class="c-str">"[account Slack channel ID]"</span>,
+    <span class="c-key">"assignees"</span>: {
+      <span class="c-key">"analysis_team"</span>: <span class="c-str">"[Slack user ID — PDM lead]"</span>,
+      <span class="c-key">"production_support_team"</span>: <span class="c-str">"[Slack user ID — Prod Support lead]"</span>,
+      <span class="c-key">"pdm_dm"</span>: <span class="c-str">"[Slack user ID — PDM, for budget alerts]"</span>
+    }
+  },
+
+  <span class="c-comment">// ── SEVERITY DEFINITIONS (loaded from account agreement) ─</span>
+  <span class="c-key">"severity"</span>: {
+    <span class="c-key">"sev1_label"</span>: <span class="c-str">"Critical — system down or unusable"</span>,
+    <span class="c-key">"sev2_label"</span>: <span class="c-str">"High — major feature degraded"</span>,
+    <span class="c-key">"sev3_label"</span>: <span class="c-str">"Medium — moderate impact, workaround exists"</span>,
+    <span class="c-key">"sev4_label"</span>: <span class="c-str">"Low — minor or cosmetic issue"</span>
+  }
+}</pre></div>
+  </div>
+
+  <!-- ── SECTION 8: ACCEPTANCE TEST CASES ── -->
+  <div class="section">
+    <div class="section-label"><div class="num">8</div> Acceptance Test Cases</div>
+    <h2>Eight Criteria — Each Must Pass Before Go-Live</h2>
+    <p>These map directly to the MVP acceptance criteria in the AI Agent MVP document. Each criterion must be tested explicitly against the corporate site pilot account before the agent is enabled on any live client account.</p>
+
+    <div class="criteria-list">
+
+      <div class="criteria-item">
+        <div class="ci-num">1</div>
+        <div class="ci-body">
+          <div class="ci-title">Request category and severity correctly read from submitted data</div>
+          <div class="ci-test"><strong>Test:</strong> Submit a New Request form and a Reported Issue form (with each severity level 1–4). Verify the agent correctly identifies the form type from the data — not the column it lands in — and reads the severity value exactly as submitted. <strong>Pass criteria:</strong> Zero misroutes across 8 test submissions (1 NR + 4 PI at each severity).</div>
+        </div>
+      </div>
+
+      <div class="criteria-item">
+        <div class="ci-num">2</div>
+        <div class="ci-body">
+          <div class="ci-title">Field validation works for both request types</div>
+          <div class="ci-test"><strong>Test:</strong> Submit a New Request with each of the 4 required fields missing one at a time (4 tests). Submit a Reported Issue with each of the 10 required fields missing one at a time (10 tests). <strong>Pass criteria:</strong> Every incomplete submission triggers a missing-fields notification to the requestor. No Zoho ticket, Smartsheet row, or Basecamp card move occurs on any incomplete submission.</div>
+        </div>
+      </div>
+
+      <div class="criteria-item">
+        <div class="ci-num">3</div>
+        <div class="ci-body">
+          <div class="ci-title">Zoho tickets created with correct type, epic, bucket, and assignee</div>
+          <div class="ci-test"><strong>Test:</strong> Submit one complete New Request and one complete Reported Issue. Verify in Zoho: NR creates a Task ticket under Planning/Ops/New Requests epic in the New Requests: Analysis bucket assigned to the Analysis Team user. PI creates a Bug ticket under Production Support epic in the Reported Issues bucket assigned to the Prod Support user. <strong>Pass criteria:</strong> Both tickets match config exactly — wrong type, epic, bucket, or assignee = fail.</div>
+        </div>
+      </div>
+
+      <div class="criteria-item">
+        <div class="ci-num">4</div>
+        <div class="ci-body">
+          <div class="ci-title">Smartsheet row logged correctly for every submission</div>
+          <div class="ci-test"><strong>Test:</strong> Submit 3 complete requests (mix of types). Verify in Smartsheet that a row was added for each with correct values: Request Title, Request Type, Requestor name, today's date, Status = "New", correct Zoho ticket link, correct Basecamp card link. <strong>Pass criteria:</strong> 3 of 3 rows present with all columns populated. Zero null values in required columns.</div>
+        </div>
+      </div>
+
+      <div class="criteria-item">
+        <div class="ci-num">5</div>
+        <div class="ci-body">
+          <div class="ci-title">Basecamp cards moved to correct columns</div>
+          <div class="ci-test"><strong>Test:</strong> Submit one complete New Request and one complete Reported Issue. Verify in Basecamp that the NR card moves to Analyzing / Scoping / Estimating and the PI card moves to Triage / Troubleshooting. <strong>Pass criteria:</strong> Both cards in the correct columns within 30 seconds of submission. No cards left in Validate & Assign after valid submissions.</div>
+        </div>
+      </div>
+
+      <div class="criteria-item">
+        <div class="ci-num">6</div>
+        <div class="ci-body">
+          <div class="ci-title">Slack notifications fire with correct content and correct @mention</div>
+          <div class="ci-test"><strong>Test:</strong> Submit one NR and one PI (Sev 2). Verify: both messages post to the correct account Slack channel, NR tags the Analysis Team user, PI tags the Prod Support user and includes the severity level. Verify all links in the message are valid (Zoho ticket URL opens the correct ticket, Basecamp card URL opens the correct card). <strong>Pass criteria:</strong> Both messages present with no broken links and correct @mentions.</div>
+        </div>
+      </div>
+
+      <div class="criteria-item">
+        <div class="ci-num">7</div>
+        <div class="ci-body">
+          <div class="ci-title">Requestor confirmation sent after every valid submission</div>
+          <div class="ci-test"><strong>Test:</strong> Submit valid NR and PI requests. Verify a confirmation message appears on each Basecamp card thread within 60 seconds. For PI, verify the severity-matched message variant is used (Sev 1 message for Sev 1 submission, etc.). <strong>Pass criteria:</strong> Confirmation present on 4 of 4 test submissions (1 NR + 1 PI at each of Sev 1, 2, 3, 4). No confirmation fires on incomplete submissions.</div>
+        </div>
+      </div>
+
+      <div class="criteria-item">
+        <div class="ci-num">8</div>
+        <div class="ci-body">
+          <div class="ci-title">Error handling — PDM fallback alert fires on failure</div>
+          <div class="ci-test"><strong>Test:</strong> Simulate a Zoho API failure (temporarily use an invalid API token). Submit a complete request. Verify: no partial actions occur (no Smartsheet row, no Basecamp move, no Slack notification), a fallback alert fires to the PDM Slack DM with the error details, the card remains in the Validate & Assign column. <strong>Pass criteria:</strong> Zero partial writes on failure. PDM alert fires with account name, request title, and error description.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── SECTION 9: ERROR HANDLING ── -->
+  <div class="section">
+    <div class="section-label"><div class="num">9</div> Error Handling</div>
+    <h2>Failure Modes & Fallbacks</h2>
+
+    <table class="spec-table">
+      <thead><tr><th>Failure Scenario</th><th>Agent Behaviour</th><th>PDM Alert?</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Missing account config</strong> — project ID not found</td><td>Abort immediately. Do not execute any actions.</td><td>Yes — channel: PDM Slack DM</td></tr>
+        <tr><td><strong>Zoho API failure</strong> — ticket not created</td><td>Abort remaining actions. Do not write to Smartsheet, move Basecamp card, or send notifications.</td><td>Yes — include request title and error</td></tr>
+        <tr><td><strong>Smartsheet API failure</strong> — row not written</td><td>Log error. Continue with Basecamp move and notifications. Flag Smartsheet failure separately.</td><td>Yes — PDM must manually log the row</td></tr>
+        <tr><td><strong>Basecamp card move failure</strong></td><td>Log error. Proceed with Slack and requestor notifications. Note that card was not moved.</td><td>Yes — PDM must manually move card</td></tr>
+        <tr><td><strong>Slack notification failure</strong></td><td>Log error. Requestor confirmation still sends. Retry Slack once after 5 seconds.</td><td>No — but logged for monitoring review</td></tr>
+        <tr><td><strong>Requestor confirmation failure</strong></td><td>Log error. All other actions already complete. Retry once after 5 seconds.</td><td>No — but logged for monitoring review</td></tr>
+        <tr><td><strong>Webhook signature invalid</strong></td><td>Return 401. Do not process. Log the attempt.</td><td>No</td></tr>
+        <tr><td><strong>Duplicate webhook</strong> — same card ID processed twice</td><td>Check idempotency key (card ID + timestamp). If already processed, return 200 and skip. Do not create duplicate tickets.</td><td>No</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── SECTION 10: IMPLEMENTATION NOTES ── -->
+  <div class="section">
+    <div class="section-label"><div class="num">10</div> Implementation Notes</div>
+    <h2>Guidance for the Labs Team</h2>
+
+    <div class="spec-card">
+      <div class="spec-card-header">
+        <div class="sc-num" style="background:#1d3557">→</div>
+        <div class="sc-title">Recommended Build Sequence</div>
+      </div>
+      <div class="spec-card-body">
+        <div class="action-steps">
+          <div class="action-step">
+            <div class="as-num">1</div>
+            <div class="as-body">
+              <div class="as-title">Set up the corporate site pilot account config</div>
+              <div class="as-desc">Configure the config object for the corporate site account first. All four integrations must be fully populated before any testing begins. Get the Basecamp column IDs, Zoho sprint and epic IDs, Smartsheet column IDs, and Slack channel/user IDs from the PDM.</div>
+            </div>
+          </div>
+          <div class="action-step">
+            <div class="as-num">2</div>
+            <div class="as-body">
+              <div class="as-title">Build and test the intake trigger in isolation</div>
+              <div class="as-desc">Build the webhook receiver and field parser first. Test that it correctly parses both form types and identifies missing fields before wiring up any write actions. Use test payloads — do not run against the live Basecamp board until parsing is confirmed correct.</div>
+            </div>
+          </div>
+          <div class="action-step">
+            <div class="as-num">3</div>
+            <div class="as-body">
+              <div class="as-title">Add write actions one at a time</div>
+              <div class="as-desc">Wire up Zoho first, then Smartsheet, then Basecamp, then Slack. Test each integration end-to-end before adding the next. This makes debugging significantly easier and isolates failures to a single integration.</div>
+            </div>
+          </div>
+          <div class="action-step">
+            <div class="as-num">4</div>
+            <div class="as-body">
+              <div class="as-title">Run all 8 acceptance test cases</div>
+              <div class="as-desc">Do not mark the agent ready for go-live until all 8 criteria pass. Work through them in order — earlier criteria are dependencies for later ones. Involve the PDM in test runs to confirm the correct data is landing in Zoho and Smartsheet.</div>
+            </div>
+          </div>
+          <div class="action-step">
+            <div class="as-num">5</div>
+            <div class="as-body">
+              <div class="as-title">Build the monitoring loop separately</div>
+              <div class="as-desc">The scheduled monitoring job is a separate Lambda function — build it after the intake trigger is stable and passing all tests. Do not combine them into the same function.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="callout violet">
+      <div class="callout-icon">🔐</div>
+      <div class="callout-body">
+        <strong>Credentials and secrets</strong>
+        <p>Store all API tokens as environment variables in the Lambda function configuration. Never commit tokens to the repository. Rotate tokens if they are ever exposed. The Basecamp webhook secret, Zoho OAuth tokens, Smartsheet API key, and Slack bot token each require separate secure storage. Use AWS Secrets Manager or equivalent for production deployment.</p>
+      </div>
+    </div>
+
+    <div class="callout info">
+      <div class="callout-icon">📋</div>
+      <div class="callout-body">
+        <strong>PDM responsibilities during build</strong>
+        <p>The PDM needs to supply: all Basecamp column IDs (pull from the board URL), Zoho project ID, sprint IDs, epic IDs, and assignee user IDs, Smartsheet sheet ID and column IDs, Slack channel ID and user IDs for each assignee role. The labs team should request these as a structured checklist rather than gathering them piecemeal — use the account config object in Section 7 as the handoff template.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <svg width="60" height="10" viewBox="0 0 201 33" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:6px;opacity:.4">
+    <path d="M41.4673 22.6537C39.8187 20.8428 38.9963 18.2178 39 14.7786C39.0038 11.3394 39.8262 8.71248 41.4673 6.89787C43.1122 5.08697 45.5118 4.18152 48.666 4.18152C50.7555 4.16768 52.8286 4.54703 54.775 5.29941V8.882C53.0032 8.00664 51.0527 7.54403 49.0725 7.52949H48.9653C47.0569 7.52949 45.5607 8.01757 44.4767 8.99384C43.3926 9.97 42.8525 11.889 42.8563 14.7506C42.8268 16.0424 42.9944 17.3313 43.3531 18.5736C43.5809 19.4472 44.0783 20.2287 44.7759 20.8092C45.3445 21.2551 46.0029 21.5753 46.7069 21.7483C47.4616 21.9236 48.2353 22.0063 49.0104 21.9941C51.0147 21.9922 52.9927 21.5433 54.7976 20.6807V24.2354C52.8505 24.9853 50.7779 25.3646 48.6886 25.3532C45.5344 25.3532 43.1348 24.4478 41.4899 22.6369" fill="currentColor"/>
+    <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0499 5.45796H8.86133V14.2229H17.175C17.6525 14.2229 18.1093 14.4105 18.4462 14.7442C18.7832 15.078 18.9732 15.5306 18.9732 16.0026V24.2426H29.0675V5.45796H29.0499Z" fill="#4d6eff"/>
+  </svg>
+  AI Agent Build Specification · Concepta Internal · Labs Team + PDM Lead
+</footer>
+
+</body>
+</html>
