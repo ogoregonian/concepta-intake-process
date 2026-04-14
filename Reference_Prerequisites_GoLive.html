@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Concepta — Prerequisites for Go-Live</title>
+<title>Concepta — Account Readiness Prerequisites</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
@@ -105,7 +105,7 @@ nav {
     <a href="Reference_Budget_Model.html">Budget Model</a>
     <a href="Reference_AI_Agent_MVP.html">AI Agent</a>
     <a href="Reference_AI_Agent_Technical_Spec.html">Build Spec</a>
-    <a href="Reference_Prerequisites_GoLive.html" class=" nav-active">Prerequisites</a>
+    <a href="Reference_Prerequisites_GoLive.html" class=" nav-active">Account Setup</a>
     <div class="nav-div"></div>
     <a href="Templates.html" class="nav-templates">⊞ Templates</a>
     <a href="https://www.notion.so/concepta/Internal-Team-Meetings-17b4767c73b0802fae20ecc7c6981ad5" target="_blank" class="nav-templates" style="margin-left:2px">📋 Meeting Notes</a>
@@ -115,8 +115,8 @@ nav {
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-eyebrow"><span></span> Reference Document · Intake & Request Processing</div>
-    <h1>Prerequisites for Go-Live</h1>
-    <p class="hero-sub">Everything that must be in place — at the account level — before this framework can move from a directional standard to a fully operational and enforceable process. These are the foundational agreements, structures, and tools the workflow, the AI Agent, and the team all depend on.</p>
+    <h1>Account Setup Prerequisites</h1>
+    <p class="hero-sub">The agreements, structures, and tools each account needs before the intake framework is fully operational. Phase 1 items must be in place before the workflow goes live. Future phase items are tracked here for visibility and do not block Phase 1.</p>
   </div>
 </div>
 
@@ -127,8 +127,8 @@ nav {
   <div class="callout callout-warn">
     <div class="callout-icon">⚠️</div>
     <div class="callout-body">
-      <strong>Until these prerequisites are in place, the workflow operates on a best-effort basis only</strong>
-      <p>The framework can be used as a directional guide and reference standard, but enforceable SLAs, accurate budget tracking, and AI Agent operation cannot be guaranteed without account-level alignment on everything below. The corporate site pilot should be used to validate the framework and identify any gaps before prerequisites are required on live client accounts.</p>
+      <strong>Phase 1 items must be complete before the workflow goes live</strong>
+      <p>Work through all Phase 1 items using the corporate site pilot to validate in a controlled environment first. Future phase items are documented here for visibility — they do not block Phase 1 activation.</p>
     </div>
   </div>
 
@@ -136,7 +136,7 @@ nav {
 
   <!-- CATEGORY 1 -->
   <div class="prereq-section">
-    <h3><span class="cat-icon" style="background:#dbeafe">🤝</span> <span style="color:#1d4ed8">1 — Client & Stakeholder Alignment</span></h3>
+    <h3><span class="cat-icon" style="background:#dbeafe">🤝</span> <span style="color:#1d4ed8">1 — Account Structure Alignment with Client</span></h3>
     <div class="field-list">
       <div class="field-card">
         <div class="field-num" style="background:#1d4ed8">✓</div>
@@ -155,7 +155,7 @@ nav {
       <div class="field-card">
         <div class="field-num" style="background:#1d4ed8">✓</div>
         <div class="field-body">
-          <div class="field-title">SLA response times defined per severity level <span style="display:inline-block;margin-left:6px;font-size:9px;font-weight:600;padding:1px 7px;border-radius:10px;background:#fef9c3;border:1px solid #fbbf24;color:#78350f">Future phase</span></div>
+          <div class="field-title">SLA response times defined per severity level</div>
           <div class="field-desc">Initial response time, update cadence, and resolution target must be defined per severity level and agreed with client stakeholders. These are the commitments the AI Agent communicates to the requestor at intake and monitors against continuously throughout the production issue workflow.</div>
         </div>
       </div>
@@ -164,13 +164,6 @@ nav {
         <div class="field-body">
           <div class="field-title">Communication channels and escalation paths confirmed</div>
           <div class="field-desc">Which tools are used for what (Slack, Basecamp, email), who gets notified at each stage, and the escalation path for Sev 1 issues and budget overages — all confirmed per account and loaded into the AI Agent's notification configuration.</div>
-        </div>
-      </div>
-      <div class="field-card">
-        <div class="field-num" style="background:#1d4ed8">✓</div>
-        <div class="field-body">
-          <div class="field-title">RCA trigger criteria agreed per account <span style="display:inline-block;margin-left:6px;font-size:9px;font-weight:600;padding:1px 7px;border-radius:10px;background:#fef9c3;border:1px solid #fbbf24;color:#78350f">Future phase</span></div>
-          <div class="field-desc">Which severity levels and business impact thresholds require a Root Cause Analysis document must be agreed with client stakeholders before the production issue workflow goes live. RCA is initiated alongside the fix — it does not block resolution or deployment.</div>
         </div>
       </div>
       <div class="field-card">
@@ -197,8 +190,8 @@ nav {
       <div class="field-card">
         <div class="field-num" style="background:#991b1b">✓</div>
         <div class="field-body">
-          <div class="field-title">Production support scheduler configured <span style="display:inline-block;margin-left:6px;font-size:9px;font-weight:600;padding:1px 7px;border-radius:10px;background:#fef9c3;border:1px solid #fbbf24;color:#78350f">Future phase</span></div>
-          <div class="field-desc">Office hours, triage windows, and on-call coverage defined per account and loaded into the AI Agent so it can monitor SLA adherence correctly. The scheduler must be visible to the AI Agent — it is the reference point for inactivity detection and SLA cadence monitoring on production issues.</div>
+          <div class="field-title">Production support scheduler configured</div>
+          <div class="field-desc">Office hours, triage windows, and on-call coverage defined per account and communicated to client stakeholders. Coverage windows must be confirmed before the production issue workflow goes live so the team can respond to reported issues within agreed windows.</div>
         </div>
       </div>
       <div class="field-card">
@@ -278,13 +271,6 @@ nav {
           <div class="field-desc">Initiated at the start of analysis on every new request — tracks scope, activities, timeline, resource allocation, and delivery milestones. Template must be configured per account and ready to launch at the point the PDM initiates Diagram 2 (New Request Workflow).</div>
         </div>
       </div>
-      <div class="field-card">
-        <div class="field-num" style="background:#92400e">✓</div>
-        <div class="field-body">
-          <div class="field-title">RCA documentation template configured per account</div>
-          <div class="field-desc">The RCA template must be in place and ready to initiate when a qualifying production issue is identified. Covers: timeline of events, root cause analysis, business impact scope, contributing factors, resolution summary, and preventive actions. Initiated alongside the fix — does not block deployment.</div>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -334,7 +320,29 @@ nav {
 
   <div class="callout callout-info">
     <div class="callout-icon">🔗</div>
-    <div class="callout-body">
+      <!-- FUTURE PHASE SECTION -->
+  <div class="prereq-section" style="margin-top:40px">
+    <h3><span class="cat-icon" style="background:#fef9c3">⏳</span> <span style="color:#92400e">Future Phase — Not Required for Phase 1</span></h3>
+    <p style="font-size:12px;color:var(--ink-light);margin-bottom:16px;padding-left:36px">These items are tracked here for planning visibility. They do not block Phase 1 activation and should be actioned as the framework matures.</p>
+    <div class="field-list">
+      <div class="field-card" style="opacity:.85;border-color:#fcd34d">
+        <div class="field-num" style="background:#d97706">⏳</div>
+        <div class="field-body">
+          <div class="field-title">RCA trigger criteria agreed per account</div>
+          <div class="field-desc">Which severity levels and business impact thresholds require a Root Cause Analysis document must be agreed with client stakeholders. RCA is initiated alongside the fix — it does not block resolution or deployment. Define once production issue handling is stable and patterns are identified.</div>
+        </div>
+      </div>
+      <div class="field-card" style="opacity:.85;border-color:#fcd34d">
+        <div class="field-num" style="background:#d97706">⏳</div>
+        <div class="field-body">
+          <div class="field-title">RCA documentation template configured per account</div>
+          <div class="field-desc">The RCA template covers: timeline of events, root cause analysis, business impact scope, contributing factors, resolution summary, and preventive actions. Configure once RCA trigger criteria are agreed and the production issue workflow has been validated through the pilot.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<div class="callout-body">
       <strong>Related Reference Documents</strong>
       <p>
         <a href="Concepta_Intake_Process_Executive_Brief.html" style="color:#1d4ed8;font-weight:600">← Executive Brief</a> &nbsp;·&nbsp;
@@ -347,7 +355,7 @@ nav {
 
 </div>
 
-<footer>Concepta — Intake & Request Processing Initiative · Prerequisites for Go-Live · March 2026 · Internal Use</footer>
+<footer>Concepta — Intake & Request Processing Initiative · Account Setup Prerequisites · March 2026 · Internal Use</footer>
 
 </body>
 </html>
