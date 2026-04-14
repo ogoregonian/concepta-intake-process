@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concepta — Intake Request Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --ink:       #0f0f0f;
+  --ink-mid:   #3a3a3a;
+  --ink-light: #6b7280;
+  --rule:      #e2ddd8;
+  --paper:     #f7f5f1;
+  --white:     #ffffff;
+
+  --blue:      #1d3557;
+  --blue-mid:  #2563eb;
+  --blue-light:#dbeafe;
+  --violet:    #4c1d95;
+  --violet-light:#ede9fe;
+  --green:     #14532d;
+  --green-light:#dcfce7;
+  --amber:     #92400e;
+  --amber-light:#fef3c7;
+  --red:       #991b1b;
+  --red-light: #fee2e2;
+  --orange:    #c2410c;
+  --orange-light:#fff7ed;
+
+  --gap: 40px;
+  --col: 760px;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+/* ── NAV ── */
+nav {
+  position: sticky; top: 0; z-index: 100;
+  background: #1d3557;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 32px; height: 56px;
+  box-shadow: 0 2px 12px rgba(0,0,0,.18);
+  gap: 24px;
+}
+.nav-logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; opacity: 1; transition: opacity .2s; }
+.nav-logo:hover { opacity: .75; }
+.nav-links { display: flex; align-items: center; gap: 2px; flex: 1; justify-content: flex-end; overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; }
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-links a {
+  font-size: 11.5px; font-weight: 600; letter-spacing: .5px;
+  text-transform: uppercase; color: rgba(255,255,255,.8);
+  text-decoration: none; transition: color .15s, background .15s;
+  padding: 5px 10px; border-radius: 4px; white-space: nowrap; flex-shrink: 0;
+}
+.nav-links a:hover { color: #fff; background: rgba(255,255,255,.12); }
+.nav-links a.nav-active {
+  color: #fff;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.25);
+}
+.nav-links a.nav-templates {
+  color: #fcd34d;
+  border: 1px solid rgba(252,211,77,.35);
+  border-radius: 4px;
+}
+.nav-links a.nav-templates:hover { background: rgba(252,211,77,.12); color: #fde68a; }
+.nav-div { width: 1px; height: 16px; background: rgba(255,255,255,.2); margin: 0 8px; flex-shrink: 0; }
+
+.nav-logo {
+  display: flex; align-items: center;
+  text-decoration: none; flex-shrink: 0;
+  opacity: 1; transition: opacity .2s;
+}
+.nav-logo:hover { opacity: .8; }
+.nav-links {
+  display: flex; align-items: center; gap: 2px;
+  flex: 1; justify-content: flex-end;
+  overflow-x: auto; scrollbar-width: none;
+}
+.nav-links::-webkit-scrollbar { display: none; }
+.nav-links a {
+  font-size: 11px; font-weight: 600; letter-spacing: .6px;
+  text-transform: uppercase; color: rgba(255,255,255,.6);
+  text-decoration: none; transition: color .2s, background .2s;
+  padding: 5px 10px; border-radius: 4px; white-space: nowrap;
+  flex-shrink: 0;
+}
+.nav-links a:hover { color: #fff; background: rgba(255,255,255,.08); }
+.nav-links a.nav-active {
+  color: #fff; background: rgba(255,255,255,.12);
+  border-bottom: 2px solid rgba(255,255,255,.5);
+}
+.nav-links a.nav-templates {
+  color: #fbbf24; border: 1px solid rgba(251,191,36,.3);
+  border-radius: 4px;
+}
+.nav-links a.nav-templates:hover {
+  background: rgba(251,191,36,.12); color: #fde68a;
+}
+.nav-div {
+  width: 1px; height: 16px;
+  background: rgba(255,255,255,.15);
+  margin: 0 6px; flex-shrink: 0;
+}
+
+
+/* ── HERO ── */
+.hero {
+  background: var(--blue);
+  color: #fff;
+  padding: 72px 40px 60px;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 80% 50%, rgba(37,99,235,.3) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-inner { max-width: var(--col); margin: 0 auto; position: relative; }
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
+  text-transform: uppercase; color: rgba(255,255,255,.55);
+  border: 1px solid rgba(255,255,255,.15);
+  border-radius: 20px; padding: 4px 12px; margin-bottom: 20px;
+}
+.hero-eyebrow span { width: 6px; height: 6px; border-radius: 50%; background: #f59e0b; }
+.hero h1 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 42px; line-height: 1.15; color: #fff;
+  margin-bottom: 16px;
+}
+.hero h1 em { font-style: italic; color: rgba(255,255,255,.7); }
+.hero-sub {
+  font-size: 15px; color: rgba(255,255,255,.65); max-width: 540px;
+  margin-bottom: 32px;
+}
+.hero-meta {
+  display: flex; gap: 32px; flex-wrap: wrap;
+}
+.hero-meta-item { display: flex; flex-direction: column; gap: 2px; }
+.hero-meta-item .label {
+  font-size: 9px; font-weight: 600; letter-spacing: 1.2px;
+  text-transform: uppercase; color: rgba(255,255,255,.4);
+}
+.hero-meta-item .value {
+  font-size: 13px; font-weight: 500; color: rgba(255,255,255,.85);
+}
+.wip-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: rgba(245,158,11,.15); border: 1px solid rgba(245,158,11,.4);
+  border-radius: 4px; padding: 6px 12px;
+  font-size: 11px; font-weight: 600; color: #fbbf24;
+  margin-top: 24px;
+}
+
+/* ── LAYOUT ── */
+.page { max-width: var(--col); margin: 0 auto; padding: var(--gap) 40px; }
+
+/* ── SECTION ── */
+.section { margin-bottom: 64px; }
+.section-label {
+  font-size: 9px; font-weight: 700; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--ink-light);
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 20px;
+}
+.section-label::after {
+  content: ''; flex: 1; height: 1px; background: var(--rule);
+}
+.section-label .num {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: var(--ink); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 9px; font-weight: 700; flex-shrink: 0;
+}
+h2 {
+  font-family: 'DM Serif Display', serif;
+  font-size: 26px; line-height: 1.25; color: var(--ink);
+  margin-bottom: 12px;
+}
+h3 {
+  font-size: 13px; font-weight: 600; color: var(--ink);
+  margin-bottom: 8px; margin-top: 24px;
+}
+p { color: var(--ink-mid); margin-bottom: 12px; }
+p:last-child { margin-bottom: 0; }
+
+/* ── CALLOUT BOXES ── */
+.callout {
+  border-radius: 8px; padding: 16px 18px;
+  margin: 20px 0; display: flex; gap: 12px;
+}
+.callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+.callout-body { flex: 1; }
+.callout-body strong { display: block; font-size: 12px; font-weight: 700; margin-bottom: 4px; }
+.callout-body p { font-size: 13px; margin: 0; }
+
+.callout-info  { background: var(--blue-light);  border-left: 3px solid var(--blue-mid); }
+.callout-warn  { background: var(--amber-light);  border-left: 3px solid #f59e0b; }
+.callout-flag  { background: var(--red-light);    border-left: 3px solid #dc2626; }
+.callout-green { background: var(--green-light);  border-left: 3px solid #16a34a; }
+.callout-orange{ background: var(--orange-light); border-left: 3px solid #ea580c; }
+
+/* ── CHALLENGE / GOAL LISTS ── */
+.item-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  margin: 16px 0;
+}
+.item-card {
+  background: var(--white); border: 1px solid var(--rule);
+  border-radius: 8px; padding: 14px 16px;
+}
+.item-card .ic-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--ink-light); margin-bottom: 6px;
+}
+.item-card p { font-size: 12.5px; color: var(--ink-mid); margin: 0; }
+
+/* ── STAGES ── */
+.stage-list { display: flex; flex-direction: column; gap: 0; margin: 20px 0; }
+.stage {
+  display: flex; gap: 0; position: relative;
+}
+.stage:not(:last-child)::after {
+  content: '';
+  position: absolute; left: 19px; top: 42px;
+  width: 2px; height: calc(100% - 10px);
+  background: var(--rule); z-index: 0;
+}
+.stage-num {
+  width: 38px; height: 38px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; flex-shrink: 0;
+  position: relative; z-index: 1; margin-right: 18px; margin-top: 2px;
+}
+.stage-body { flex: 1; padding-bottom: 28px; }
+.stage-body h4 {
+  font-size: 13px; font-weight: 700; color: var(--ink);
+  margin-bottom: 2px;
+}
+.stage-body .stage-sub {
+  font-size: 10px; font-weight: 600; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--ink-light); margin-bottom: 8px;
+}
+.stage-body p { font-size: 13px; margin: 0 0 8px; }
+
+.s1 { background: #dbeafe; color: #1d4ed8; }
+.s2 { background: #ede9fe; color: #6d28d9; }
+.s3 { background: #dcfce7; color: #15803d; }
+.s4 { background: #fef3c7; color: #b45309; }
+.s5 { background: #fee2e2; color: #dc2626; }
+
+/* ── INLINE TAGS ── */
+.tag {
+  display: inline-flex; align-items: center;
+  font-size: 10px; font-weight: 600; padding: 2px 8px;
+  border-radius: 20px; border: 1px solid; margin: 2px 2px 2px 0;
+}
+.tag-blue   { background: var(--blue-light);   color: #1d4ed8;   border-color: #93c5fd; }
+.tag-violet { background: var(--violet-light);  color: #6d28d9;   border-color: #c4b5fd; }
+.tag-green  { background: var(--green-light);   color: #15803d;   border-color: #86efac; }
+.tag-amber  { background: var(--amber-light);   color: #b45309;   border-color: #fcd34d; }
+.tag-red    { background: var(--red-light);     color: #dc2626;   border-color: #fca5a5; }
+.tag-gray   { background: #f3f4f6;             color: #374151;   border-color: #d1d5db; }
+.tag-orange { background: var(--orange-light);  color: #c2410c;   border-color: #fdba74; }
+
+/* ── RULES TABLE ── */
+.rules-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 12.5px; margin: 16px 0;
+}
+.rules-table th {
+  background: var(--ink); color: #fff;
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; padding: 10px 14px;
+  text-align: left;
+}
+.rules-table td {
+  padding: 10px 14px; border-bottom: 1px solid var(--rule);
+  vertical-align: top; color: var(--ink-mid);
+}
+.rules-table tr:last-child td { border-bottom: none; }
+.rules-table tr:nth-child(even) td { background: #fafaf8; }
+.rules-table td strong { color: var(--ink); }
+
+/* ── BUDGET TABLE ── */
+.budget-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 12.5px; margin: 16px 0;
+  border: 1px solid var(--rule); border-radius: 8px; overflow: hidden;
+}
+.budget-table thead tr { background: var(--blue); }
+.budget-table th {
+  color: #fff; font-size: 10px; font-weight: 700;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 11px 14px; text-align: left;
+}
+.budget-table td {
+  padding: 11px 14px; border-bottom: 1px solid var(--rule);
+  vertical-align: top; color: var(--ink-mid);
+}
+.budget-table tr:last-child td { border-bottom: none; }
+.budget-table .bucket-name { font-weight: 600; color: var(--ink); }
+.budget-table .pct { font-weight: 700; font-size: 13px; }
+.budget-table .flag { color: var(--orange); font-weight: 700; }
+.budget-table tr.highlight td { background: #fffbeb; }
+
+/* ── FIELD CARDS ── */
+.field-list { display: flex; flex-direction: column; gap: 8px; margin: 16px 0; }
+.field-card {
+  background: var(--white); border: 1px solid var(--rule);
+  border-radius: 8px; padding: 12px 16px;
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.field-num {
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--ink); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 10px; font-weight: 700; flex-shrink: 0;
+}
+.field-num.opt { background: #d1d5db; color: #374151; }
+.field-body { flex: 1; }
+.field-body .field-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+.field-body .field-desc { font-size: 12px; color: var(--ink-light); margin: 0; }
+.field-body .field-example { font-size: 11px; color: var(--ink-light); font-style: italic; margin: 4px 0 0; }
+
+/* ── AI MVP BOX ── */
+.mvp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 16px 0; }
+.mvp-card {
+  background: var(--white); border: 1px solid var(--rule);
+  border-radius: 8px; padding: 14px 16px;
+}
+.mvp-card .mvp-phase {
+  font-size: 9px; font-weight: 700; letter-spacing: 1.2px;
+  text-transform: uppercase; margin-bottom: 8px;
+}
+.mvp-card.phase1 { border-top: 3px solid #6d28d9; }
+.mvp-card.phase1 .mvp-phase { color: #6d28d9; }
+.mvp-card.phase2 { border-top: 3px solid #d1d5db; }
+.mvp-card.phase2 .mvp-phase { color: #9ca3af; }
+.mvp-card h5 { font-size: 12.5px; font-weight: 700; margin-bottom: 8px; }
+.mvp-card ul { padding-left: 16px; }
+.mvp-card ul li { font-size: 12px; color: var(--ink-mid); margin-bottom: 4px; }
+
+/* ── BLOCKER CARDS ── */
+.blocker-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 16px 0; }
+.blocker-card {
+  background: var(--white); border: 1.5px solid var(--rule);
+  border-radius: 8px; padding: 14px 16px;
+  position: relative; overflow: hidden;
+}
+.blocker-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: #dc2626;
+}
+.blocker-card.resolved::before { background: #16a34a; }
+.blocker-card.partial::before  { background: #f59e0b; }
+.blocker-card .bc-status {
+  font-size: 9px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.blocker-card.resolved .bc-status { color: #15803d; }
+.blocker-card.partial  .bc-status { color: #b45309; }
+.blocker-card          .bc-status { color: #dc2626; }
+.blocker-card h5 { font-size: 12.5px; font-weight: 700; margin-bottom: 4px; }
+.blocker-card p  { font-size: 12px; color: var(--ink-light); margin: 0; }
+
+/* ── GUIDELINE STEPS ── */
+.guideline-block {
+  background: var(--white); border: 1px solid var(--rule);
+  border-radius: 8px; margin: 12px 0; overflow: hidden;
+}
+.guideline-header {
+  background: #f8f7f4; border-bottom: 1px solid var(--rule);
+  padding: 10px 16px; display: flex; align-items: center; gap: 10px;
+}
+.guideline-header .gh-icon { font-size: 16px; }
+.guideline-header .gh-title { font-size: 12.5px; font-weight: 700; color: var(--ink); }
+.guideline-header .gh-tag  { margin-left: auto; }
+.guideline-body { padding: 14px 16px; }
+.guideline-body p { font-size: 13px; margin-bottom: 8px; }
+.guideline-body ul { padding-left: 18px; }
+.guideline-body ul li { font-size: 12.5px; color: var(--ink-mid); margin-bottom: 5px; }
+
+/* ── BUDGET REF ── */
+.budget-ref {
+  display: flex; gap: 10px; flex-wrap: wrap; margin: 12px 0;
+}
+.bucket-pill {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--white); border: 1px solid var(--rule);
+  border-radius: 6px; padding: 8px 12px;
+}
+.bucket-pill .bp-dot {
+  width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+}
+.bucket-pill .bp-name { font-size: 11px; font-weight: 600; color: var(--ink); }
+.bucket-pill .bp-hrs  { font-size: 10px; color: var(--ink-light); }
+
+/* ── FOOTER ── */
+footer {
+  background: var(--ink); color: rgba(255,255,255,.45);
+  text-align: center; padding: 28px;
+  font-size: 11px; letter-spacing: .5px;
+  margin-top: 40px;
+}
+footer strong { color: rgba(255,255,255,.7); }
+
+/* ── DIVIDER ── */
+.divider { border: none; border-top: 1px solid var(--rule); margin: 40px 0; }
+
+/* ── ANIMATE IN ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.hero-inner > * {
+  animation: fadeUp .5s ease both;
+}
+.hero-inner > *:nth-child(1) { animation-delay: .05s; }
+.hero-inner > *:nth-child(2) { animation-delay: .12s; }
+.hero-inner > *:nth-child(3) { animation-delay: .18s; }
+.hero-inner > *:nth-child(4) { animation-delay: .24s; }
+.hero-inner > *:nth-child(5) { animation-delay: .30s; }
+
+/* ── PRINT-FRIENDLY ── */
+@media print {
+  nav { display: none; }
+  body { background: #fff; }
+}
+
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="Index.html" class="nav-logo" title="Home"><svg width="120" height="20" viewBox="0 0 201 33" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block">
+<path d="M41.4673 22.6537C39.8187 20.8428 38.9963 18.2178 39 14.7786C39.0038 11.3394 39.8262 8.71248 41.4673 6.89787C43.1122 5.08697 45.5118 4.18152 48.666 4.18152C50.7555 4.16768 52.8286 4.54703 54.775 5.29941V8.882C53.0032 8.00664 51.0527 7.54403 49.0725 7.52949H48.9653C47.0569 7.52949 45.5607 8.01757 44.4767 8.99384C43.3926 9.97 42.8525 11.889 42.8563 14.7506C42.8268 16.0424 42.9944 17.3313 43.3531 18.5736C43.5809 19.4472 44.0783 20.2287 44.7759 20.8092C45.3445 21.2551 46.0029 21.5753 46.7069 21.7483C47.4616 21.9236 48.2353 22.0063 49.0104 21.9941C51.0147 21.9922 52.9927 21.5433 54.7976 20.6807V24.2354C52.8505 24.9853 50.7779 25.3646 48.6886 25.3532C45.5344 25.3532 43.1348 24.4478 41.4899 22.6369" fill="white"/>
+<path d="M62.804 11.0065C62.4684 12.2414 62.3144 13.5176 62.3467 14.796C62.3155 16.0706 62.4695 17.3431 62.804 18.5742C63.0131 19.4422 63.4907 20.2238 64.1704 20.8099C64.7114 21.2542 65.3402 21.5817 66.0167 21.7712C67.505 22.0908 69.0452 22.0908 70.5335 21.7712C71.2106 21.5834 71.8398 21.2557 72.3797 20.8099C73.0592 20.2227 73.5384 19.4417 73.7517 18.5742C74.0824 17.3385 74.2345 16.0628 74.2035 14.7848C74.2345 13.5069 74.0824 12.231 73.7517 10.9954C73.537 10.1284 73.0581 9.34786 72.3797 8.75968C71.8415 8.31452 71.2142 7.98693 70.5391 7.79836C69.0508 7.47879 67.5106 7.47879 66.0223 7.79836C65.346 7.98793 64.717 8.31533 64.1761 8.75968C63.4978 9.34696 63.0205 10.1281 62.8098 10.9954L62.804 11.0065ZM59.343 20.1001C58.719 18.4018 58.4222 16.6026 58.468 14.796C58.4222 12.9893 58.719 11.1903 59.343 9.4919C59.8068 8.19677 60.6355 7.06011 61.7314 6.21665C62.6613 5.52686 63.7067 5.00467 64.8198 4.67407C67.0829 4.07023 69.4673 4.07023 71.7305 4.67407C72.8447 5.00567 73.8919 5.52776 74.8245 6.21665C75.9143 7.06222 76.737 8.19867 77.1959 9.4919C77.8246 11.1892 78.1235 12.9888 78.0766 14.796C78.1235 16.6032 77.8246 18.4029 77.1959 20.1001C76.734 21.3947 75.9071 22.5312 74.8132 23.3753C73.8806 24.0642 72.8335 24.5863 71.7191 24.918C69.4559 25.5217 67.0716 25.5217 64.8084 24.918C63.6954 24.5873 62.65 24.0651 61.72 23.3753C60.6243 22.5318 59.7955 21.3953 59.3318 20.1001" fill="white"/>
+<path d="M81.605 25.0514V6.27751C84.3483 4.90344 87.3777 4.18195 90.4523 4.17041C93.0872 4.17041 95.146 4.84676 96.629 6.19927C98.1121 7.55188 98.8649 9.42798 98.8875 11.8276V25.0514H95.0087V11.509C95.0663 10.473 94.7322 9.45276 94.0714 8.64731C93.4428 7.95059 92.1875 7.60033 90.3055 7.59662C88.648 7.5912 86.9999 7.84397 85.4217 8.34549V25.0514H81.605Z" fill="white"/>
+<path d="M105.216 22.6541C103.571 20.8432 102.749 18.2182 102.749 14.779C102.749 11.3398 103.571 8.71294 105.216 6.89833C106.865 5.08743 109.259 4.18198 112.415 4.18198C114.506 4.16864 116.581 4.54799 118.53 5.29978V8.88246C116.756 8.0063 114.804 7.54359 112.822 7.52985H112.765C110.857 7.52985 109.351 8.01803 108.248 8.9942C107.145 9.97046 106.603 11.8894 106.622 14.7511C106.59 16.043 106.758 17.3322 107.119 18.574C107.347 19.4461 107.842 20.2271 108.536 20.8097C109.098 21.2618 109.75 21.5913 110.45 21.7766C111.205 21.9524 111.979 22.0349 112.754 22.0226C114.758 22.02 116.736 21.5711 118.541 20.7091V24.2638C116.592 25.0132 114.517 25.3924 112.426 25.3816C109.27 25.3816 106.876 24.4761 105.228 22.6653" fill="white"/>
+<path d="M126.062 13.5438H136.728C136.675 12.8798 136.556 12.2226 136.372 11.5821C136.172 10.9174 135.892 10.2794 135.536 9.68168C135.155 9.029 134.595 8.49628 133.922 8.14471C133.145 7.74701 132.278 7.55452 131.403 7.58582C129.661 7.58582 128.379 8.03107 127.559 8.92157C126.74 9.81589 126.237 11.3585 126.062 13.5606V13.5438ZM122.246 15.0473C122.246 7.82243 125.298 4.20996 131.403 4.20996H131.449C134.219 4.20996 136.436 5.10799 138.1 6.90394C139.763 8.6999 140.592 11.1032 140.584 14.1139C140.584 15.092 140.545 16.0366 140.465 16.9085H126.124C126.587 20.4371 128.537 22.1995 131.974 22.1958C134.456 22.268 136.918 21.7364 139.144 20.6476V24.0738C136.842 24.994 134.377 25.4482 131.895 25.4096H131.77C130.625 25.4221 129.484 25.2695 128.383 24.9569C127.303 24.6309 126.287 24.1243 125.379 23.4589C124.317 22.633 123.523 21.5179 123.092 20.2508C122.489 18.5751 122.201 16.8036 122.246 15.0249" fill="white"/>
+<path d="M148.838 21.1674C150.244 21.7139 151.742 21.9944 153.253 21.9946C153.989 22.0062 154.723 21.9254 155.438 21.7543C156.092 21.5642 156.7 21.2426 157.223 20.8097C157.875 20.2463 158.34 19.4998 158.555 18.669C158.89 17.4684 159.044 16.2254 159.012 14.9802C159.043 13.6431 158.89 12.3078 158.555 11.012C158.353 10.1335 157.896 9.33297 157.24 8.70918C156.747 8.27034 156.171 7.93382 155.545 7.71997C154.924 7.54093 154.279 7.45426 153.632 7.46289C150.432 7.46289 148.832 8.4875 148.832 10.5368V21.1563L148.838 21.1674ZM145.038 32.8711V10.794C145.02 9.75616 145.275 8.73154 145.778 7.82058C146.112 7.15174 146.569 6.55082 147.127 6.04879C147.881 5.44406 148.752 4.9972 149.685 4.7353C150.964 4.34392 152.299 4.15524 153.637 4.17641C154.395 4.1754 155.15 4.24281 155.895 4.37762C156.744 4.55255 157.56 4.85808 158.312 5.28307C159.174 5.74557 159.941 6.36576 160.571 7.11072C161.308 8.05328 161.851 9.13005 162.169 10.2797C162.615 11.8104 162.828 13.3984 162.8 14.9915C162.847 16.7661 162.562 18.5339 161.959 20.2061C161.524 21.4837 160.711 22.6029 159.628 23.4199C158.713 24.0812 157.695 24.5873 156.613 24.9177C155.511 25.2315 154.371 25.384 153.225 25.3705C151.732 25.3761 150.245 25.1729 148.81 24.7669V32.8711H145.038Z" fill="white"/>
+<path d="M166.369 7.7202L173.782 0.297852V4.50092H179.304V7.7202H173.782V19.5972C173.782 21.1956 174.804 21.995 176.848 21.995H176.888C177.736 22.0152 178.574 21.7983 179.304 21.369V24.7783C178.408 25.1427 177.449 25.3325 176.481 25.3372H176.379C175.84 25.3323 175.303 25.2724 174.776 25.1584C174.071 24.9913 173.386 24.7515 172.732 24.443C171.897 24.0506 171.21 23.4043 170.773 22.5985C170.227 21.5998 169.961 20.4749 170 19.3401V7.7202H166.369Z" fill="white"/>
+<path d="M186.96 18.5124C186.96 20.8337 188.622 21.9945 191.945 21.9945H192.007C195.14 21.9945 196.707 20.8767 196.71 18.641V15.3377C195.516 15.1654 194.31 15.0777 193.102 15.075C192.518 15.0778 191.935 15.1282 191.358 15.226C190.694 15.3409 190.037 15.4976 189.393 15.6955C188.728 15.8915 188.126 16.2578 187.649 16.7575C187.197 17.2318 186.951 17.8611 186.96 18.5124ZM183.166 18.5571C183.139 17.607 183.365 16.6666 183.822 15.8306C184.28 14.9947 184.951 14.2927 185.769 13.7952C187.5 12.655 189.891 12.0849 192.939 12.0849C194.201 12.0816 195.46 12.1618 196.71 12.3252C196.631 10.5926 196.146 9.35738 195.282 8.60289C194.418 7.8483 192.979 7.48499 190.997 7.48499C189.037 7.51458 187.095 7.86194 185.249 8.51342V5.28852C187.254 4.53894 189.379 4.16009 191.522 4.17062C194.416 4.17062 196.65 4.91589 198.224 6.40632C199.797 7.89674 200.586 10.0244 200.589 12.7891V18.7192C200.588 19.1602 200.545 19.5999 200.46 20.0327C200.316 20.6144 200.105 21.1772 199.827 21.7094C199.499 22.3914 199.036 23.0014 198.467 23.5036C197.711 24.1093 196.839 24.5562 195.903 24.8169C194.624 25.2074 193.29 25.396 191.951 25.3758C190.588 25.4067 189.228 25.218 187.926 24.8169C186.977 24.5435 186.093 24.0876 185.323 23.4756C184.73 22.9654 184.248 22.3418 183.905 21.6423C183.616 21.0946 183.4 20.5123 183.261 19.9097C183.184 19.463 183.144 19.0105 183.143 18.5571" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29.0499 5.45796C29.0515 5.29712 29.0196 5.13765 28.9589 4.9887C28.8982 4.83977 28.8072 4.70433 28.6922 4.59018C28.5772 4.47603 28.4415 4.38544 28.2914 4.32362C28.1413 4.2618 27.9816 4.22998 27.8187 4.22998H8.86133V14.2229H17.175C17.6525 14.2229 18.1093 14.4105 18.4462 14.7442C18.7832 15.078 18.9732 15.5306 18.9732 16.0026V24.2426H29.0675V5.45796H29.0499Z" fill="#4d6eff"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M8.86109 14.223H1.10311C0.911479 14.2234 0.72464 14.1676 0.563348 14.0626C0.403653 13.9576 0.279093 13.8081 0.205633 13.6329C0.132174 13.4577 0.111396 13.2648 0.148126 13.0784C0.184856 12.892 0.275895 12.7205 0.411636 12.5856L8.86109 4.22998" fill="#a0b0ff"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M29.0675 24.2427L20.6181 32.6073C20.4839 32.7416 20.3115 32.8333 20.1246 32.8705C19.9362 32.9079 19.743 32.8889 19.5657 32.8164C19.39 32.7439 19.2383 32.6209 19.1329 32.4631C19.0275 32.3055 18.9716 32.1201 18.9732 31.931V24.2427" fill="#a0b0ff"/>
+</svg></a>
+  <div class="nav-links">
+    <a href="Index.html">Home</a>
+    <div class="nav-div"></div>
+    <a href="Concepta_Intake_Process_Executive_Brief.html">Brief</a>
+    <a href="Diagram_1_Intake_Request.html">Diagram 1</a>
+    <a href="Diagram_2_New_Request.html">Diagram 2</a>
+    <a href="Diagram_3_Production_Issue.html">Diagram 3</a>
+    <a href="Client_Billing_View.html">Billing View</a>
+    <div class="nav-div"></div>
+    <a href="Reference_Intake_Form.html">Intake Form</a>
+    <a href="Reference_Budget_Model.html">Budget Model</a>
+    <a href="Reference_AI_Agent_MVP.html">AI Agent</a>
+    <a href="Reference_AI_Agent_Technical_Spec.html">Build Spec</a>
+    <a href="Reference_Intake_Request_Board.html" class=" nav-active">Request Board</a>
+    <a href="Reference_Prerequisites_GoLive.html">Account Setup</a>
+    <div class="nav-div"></div>
+    <a href="Templates.html" class="nav-templates">⊞ Templates</a>
+    <a href="https://www.notion.so/concepta/Internal-Team-Meetings-17b4767c73b0802fae20ecc7c6981ad5" target="_blank" class="nav-templates" style="margin-left:2px">📋 Meeting Notes</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span></span> Reference Document · Operational Guidelines</div>
+    <h1>Intake Request Board</h1>
+    <p class="hero-sub">The rules of engagement for how requests are captured, routed, and processed across all accounts — covering the Basecamp request board structure, AI Agent responsibilities, billing epic assignment, feedback loops, and documentation standards.</p>
+  </div>
+</div>
+
+<div class="page">
+
+  <a href="Concepta_Intake_Process_Executive_Brief.html" class="back-link">← Executive Brief</a>
+
+  <div class="callout callout-info">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>These guidelines apply to all team members and accounts</strong>
+      <p>Once this framework is rolled out, these are the non-negotiable operating rules for how every request is handled — regardless of account, request type, or who receives it.</p>
+    </div>
+  </div>
+
+  <section class="section" id="guidelines">
+    <div class="section-label"><div class="num">§</div> Operational Guidelines</div>
+    <h2>How Requests Must Be Handled</h2>
+    <p>Eight guidelines covering the full intake and processing lifecycle — from how requests enter the system to how documentation keeps it running.</p>
+
+      <div class="guideline-header">
+        <span class="gh-icon">📥</span>
+        <span class="gh-title">Guideline 1 — All Requests Must Be Captured via a Standardized Client Request Board</span>
+        <span class="gh-tag tag tag-red">Mandatory</span>
+      </div>
+      <div class="guideline-body">
+        <p>Every account must have a <strong>Client Request Tracking Board</strong> — this is where all incoming requests are captured, tracked, and progressed through the delivery lifecycle. The request board is the single source of truth for a client's active and pending requests at any given time.</p>
+        <p><strong>Basecamp is the designated tool for the client request board</strong> across all accounts. The majority of our accounts already use Basecamp for client communications, project updates, and collaboration — making it the natural home for request tracking. However, the request board feature requires a Basecamp plan upgrade. <strong>All accounts must be on Basecamp 4 with the Request Board feature enabled</strong> before this framework can be fully operationalized.</p>
+
+        <div class="callout callout-warn" style="margin-top:12px;margin-bottom:16px">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-body">
+            <strong>Action Required — Basecamp Upgrade</strong>
+            <p>Only a subset of accounts currently have a request board established. All remaining accounts will need to be upgraded to Basecamp 4 and have a Request Board created and configured before intake can be standardized across the organization.</p>
+          </div>
+        </div>
+
+        <h3 style="margin-top:0;margin-bottom:10px">Step 1 — Client / Requestor Submits a Request Form</h3>
+        <p>Before a request can be processed, the client or requestor must submit a request using the <strong>standardized Concepta intake form</strong>. Two forms are available directly on the account's Basecamp Request Board — the requestor selects the appropriate form for their submission type: <span class="tag tag-blue" style="font-size:10px">New Request / Enhancement</span> or <span class="tag tag-red" style="font-size:10px">Reported Production Issue</span>. For reported issues, the requestor also selects the <strong>severity level (Sev 1–4)</strong> based on definitions agreed with client stakeholders. The required fields differ between the two forms, and <strong>the AI Agent reads these fields to validate completeness, confirm the request category, assign the correct billing epic, and route to the right workflow.</strong></p>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0">
+          <div style="background:#eff6ff;border:1.5px solid #3b82f6;border-radius:8px;padding:16px">
+            <div style="font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#1d4ed8;margin-bottom:10px">New Request · Enhancement · New Feature</div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="width:18px;height:18px;border-radius:50%;background:#1d4ed8;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">1</span>
+                <span style="font-size:12px;color:#1e3a5f"><strong>Request Title</strong> — short, clear summary of the request</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="width:18px;height:18px;border-radius:50%;background:#1d4ed8;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">2</span>
+                <span style="font-size:12px;color:#1e3a5f"><strong>Problem Being Solved or Goal Being Pursued</strong> — the most critical field; focus on the underlying need, not the solution</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="width:18px;height:18px;border-radius:50%;background:#1d4ed8;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">3</span>
+                <span style="font-size:12px;color:#1e3a5f"><strong>Who Is Impacted?</strong> — primary users or stakeholders affected</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="width:18px;height:18px;border-radius:50%;background:#1d4ed8;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">4</span>
+                <span style="font-size:12px;color:#1e3a5f"><strong>Where Does This Occur?</strong> — the platform, system, or product where the request applies</span>
+              </div>
+            </div>
+          </div>
+
+          <div style="background:#fef2f2;border:1.5px solid #dc2626;border-radius:8px;padding:16px">
+            <div style="font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#dc2626;margin-bottom:10px">Reported Production Issue</div>
+            <div style="display:flex;flex-direction:column;gap:7px">
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="width:18px;height:18px;border-radius:50%;background:#dc2626;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">1</span>
+                <span style="font-size:12px;color:#7f1d1d"><strong>Title of Issue</strong></span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="width:18px;height:18px;border-radius:50%;background:#dc2626;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">2</span>
+                <span style="font-size:12px;color:#7f1d1d"><strong>Severity Level (1–4)</strong> — defined per account with client stakeholders</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="width:18px;height:18px;border-radius:50%;background:#dc2626;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">3</span>
+                <span style="font-size:12px;color:#7f1d1d"><strong>Overview of Issue</strong></span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="width:18px;height:18px;border-radius:50%;background:#dc2626;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">4</span>
+                <span style="font-size:12px;color:#7f1d1d"><strong>Steps to Reproduce</strong></span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="width:18px;height:18px;border-radius:50%;background:#dc2626;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">5</span>
+                <span style="font-size:12px;color:#7f1d1d"><strong>Expected vs. Actual Behavior</strong></span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="width:18px;height:18px;border-radius:50%;background:#dc2626;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">6</span>
+                <span style="font-size:12px;color:#7f1d1d"><strong>Impacted Components</strong></span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="width:18px;height:18px;border-radius:50%;background:#dc2626;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">7</span>
+                <span style="font-size:12px;color:#7f1d1d"><strong>Affected Platform &amp; Version</strong></span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="width:18px;height:18px;border-radius:50%;background:#dc2626;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">8</span>
+                <span style="font-size:12px;color:#7f1d1d"><strong>Screenshots / Video</strong> (if applicable)</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="width:18px;height:18px;border-radius:50%;background:#dc2626;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">9</span>
+                <span style="font-size:12px;color:#7f1d1d"><strong>Console Logs</strong> (if applicable)</span>
+              </div>
+              <div style="display:flex;gap:8px;align-items:flex-start">
+                <span style="width:18px;height:18px;border-radius:50%;background:#dc2626;color:#fff;font-size:9px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px">10</span>
+                <span style="font-size:12px;color:#7f1d1d"><strong>Number of Reports</strong> (if applicable)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="callout callout-info" style="margin-bottom:20px">
+          <div class="callout-icon">💡</div>
+          <div class="callout-body">
+            <strong>The requestor selects the form — the AI Agent reads and validates the data</strong>
+            <p>The requestor chooses the appropriate form (New Request or Reported Issue) and assigns the severity level on reported issues. The AI Agent then validates that all required fields are present and complete for that request type, categorises accordingly, and routes to the right workflow. The PDM confirms accuracy — they are not categorising from scratch.</p>
+          </div>
+        </div>
+
+        <h3 style="margin-top:0;margin-bottom:10px">Step 2 — Standardized Request Board Column Structure</h3>
+        <p>To ensure consistency across all accounts, every client request board must follow the same column structure. This allows the AI Agent to assign items to the correct column automatically and gives both internal teams and clients a predictable, shared view of where every request stands.</p>
+
+        <table class="rules-table" style="margin-top:10px">
+          <thead>
+            <tr>
+              <th>Column</th>
+              <th>Purpose</th>
+              <th>Who Moves Items Here</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Validate &amp; Assign New Request</strong></td>
+              <td>Intake holding area — all newly submitted requests land here upon AI Agent validation and ticket creation</td>
+              <td>AI Agent (automated)</td>
+            </tr>
+            <tr>
+              <td><strong>Triage / Troubleshooting</strong></td>
+              <td>Production issues only — AI Agent routes reported issues here after validation. Internal team begins triage, troubleshooting, and severity-based response per SLA</td>
+              <td>AI Agent (automated) → PDM Team</td>
+            </tr>
+            <tr>
+              <td><strong>Analyzing / Scoping / Estimating Request</strong></td>
+              <td>PDM has picked up the request and internal review, triage, scoping, and estimation is in progress</td>
+              <td>PDM</td>
+            </tr>
+            <tr>
+              <td><strong>Review Scope / Approve / Prioritize</strong></td>
+              <td>High-level scope and estimate have been prepared and are ready for client/requestor stakeholder review, approval, and prioritization decision</td>
+              <td>Client / Requestor Stakeholder</td>
+            </tr>
+            <tr>
+              <td><strong>Assign to Dev (Based on Priority)</strong></td>
+              <td>Client has approved — request is prioritized and assigned to the development team based on priority order within the current or upcoming billing cycle</td>
+              <td>PDM</td>
+            </tr>
+            <tr>
+              <td><strong>In Dev</strong></td>
+              <td>Active development is underway</td>
+              <td>PDM Team</td>
+            </tr>
+            <tr>
+              <td><strong>DoD Dev Done</strong></td>
+              <td>Internal team's Definition of Done has been met — this is the KPI checkpoint for tracking delivery. Item is confirmed complete by the internal team before moving to client UAT</td>
+              <td>PDM Team</td>
+            </tr>
+            <tr>
+              <td><strong>Ready for UAT</strong></td>
+              <td>Development complete — item is ready for client/requestor stakeholder UAT review and sign-off</td>
+              <td>Client / Requestor Stakeholder</td>
+            </tr>
+            <tr>
+              <td><strong>Released</strong></td>
+              <td>Item has been deployed to production and confirmed complete</td>
+              <td>PDM</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout callout-info" style="margin-top:14px">
+          <div class="callout-icon">💡</div>
+          <div class="callout-body">
+            <strong>The Board Is How the Client Stays Informed</strong>
+            <p>The request board is not just an internal tool — it is the primary transparency mechanism for the client. They can see exactly where every request stands at any point in the lifecycle without needing to ask. Keeping the board current is a non-negotiable operational responsibility for the PDM on every account.</p>
+            <a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" target="_blank" style="display:inline-flex;align-items:center;gap:10px;background:#fff;border:1.5px solid #2563eb;border-radius:7px;padding:10px 14px;text-decoration:none;margin-top:10px">
+              <span style="font-size:16px">🗂️</span>
+              <span>
+                <span style="display:block;font-size:12px;font-weight:700;color:#1d4ed8">View Request Board Prototype — Basecamp</span>
+                <span style="display:block;font-size:10px;color:#6b7280;margin-top:2px">Live prototype · Intake Process Test Project</span>
+              </span>
+              <span style="margin-left:auto;font-size:10px;font-weight:600;color:#2563eb">↗ Open</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="callout callout-flag" style="margin-top:12px">
+          <div class="callout-icon">📌</div>
+          <div class="callout-body">
+            <strong>Prerequisite — Intake Forms Must Be Created Per Request Type</strong>
+            <p>Before the request board can function as the intake entry point, <strong>two standardized intake forms must be created and linked directly on the board</strong> — one for New Requests / Enhancements and one for Production Issues. Each form captures the required fields for its respective request type. These forms should be pinned or embedded on the board so clients can easily select and submit the appropriate form without friction. Until these forms are in place, intake cannot be standardized or AI Agent-assisted.</p>
+            <p style="margin-top:8px">Working prototypes have been built using MS Office Forms with embedded links on the New Requests / Production Support cards within the Basecamp Request Board mock-up — these serve as the reference model for all accounts.</p>
+            <div style="display:flex;flex-direction:column;gap:8px;margin-top:12px">
+              <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=NeoPortalPage&subpage=design&id=Zlgt4UMaxEewpFyI9QWSR4zPvQRL8zlAjMTvm2a6AVNUMFo0SU5KTFM0T1pSVUtEOFg4SEM0SjhONC4u" target="_blank" style="display:inline-flex;align-items:center;gap:10px;background:#eff6ff;border:1.5px solid #3b82f6;border-radius:7px;padding:10px 14px;text-decoration:none;">
+                <span style="font-size:16px">📋</span>
+                <span>
+                  <span style="display:block;font-size:12px;font-weight:700;color:#1d4ed8">New Request / Enhancement / New Feature Form</span>
+                  <span style="display:block;font-size:10px;color:#6b7280;margin-top:2px">Mock prototype — MS Office Forms · Click to preview</span>
+                </span>
+                <span style="margin-left:auto;font-size:10px;font-weight:600;color:#3b82f6">↗ Open</span>
+              </a>
+              <a href="https://forms.office.com/Pages/DesignPageV2.aspx?origin=NeoPortalPage&subpage=design&id=Zlgt4UMaxEewpFyI9QWSR4zPvQRL8zlAjMTvm2a6AVNURVAyNTVNMUlOT1FTNDNIS0tKVksyTjU2Ri4u" target="_blank" style="display:inline-flex;align-items:center;gap:10px;background:#fef2f2;border:1.5px solid #dc2626;border-radius:7px;padding:10px 14px;text-decoration:none;">
+                <span style="font-size:16px">🐛</span>
+                <span>
+                  <span style="display:block;font-size:12px;font-weight:700;color:#dc2626">Reported Production Issue Form</span>
+                  <span style="display:block;font-size:10px;color:#6b7280;margin-top:2px">Mock prototype — MS Office Forms · Click to preview</span>
+                </span>
+                <span style="margin-left:auto;font-size:10px;font-weight:600;color:#dc2626">↗ Open</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <h3 style="margin-top:24px;margin-bottom:10px">Reference: Basecamp Request Board Prototype</h3>
+        <p style="font-size:12px;color:var(--ink-light);margin-bottom:12px">The following is a working prototype of the standardized Basecamp Request Board — built to validate the column structure and two-form intake model. This is the reference implementation for all accounts.</p>
+        <a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" target="_blank" style="display:flex;align-items:center;gap:12px;background:#f8f7f4;border:1.5px solid var(--rule);border-radius:8px;padding:16px 18px;text-decoration:none;transition:border-color .2s" onmouseover="this.style.borderColor='#1d3557'" onmouseout="this.style.borderColor='#e2ddd8'">
+          <span style="font-size:24px">🗂️</span>
+          <span>
+            <span style="display:block;font-size:13px;font-weight:700;color:#1d3557">View Basecamp Request Board Prototype</span>
+            <span style="display:block;font-size:11px;color:#6b7280;margin-top:2px">Intake Process Test Project · Basecamp 4 · Live mock-up with standardized columns and embedded intake forms</span>
+          </span>
+          <span style="margin-left:auto;font-size:11px;font-weight:600;color:#2563eb;white-space:nowrap">↗ Open in Basecamp</span>
+        </a>
+        <p style="font-size:11px;color:var(--ink-light);margin-top:8px;font-style:italic">
+
+        <p style="margin-top:14px">Requests may still originate through meetings, email, Slack, or informal conversations. However, <strong>before any request can enter the delivery pipeline, it must be captured on the account's request board using the standardized intake structure.</strong> If a request arrives through an informal channel, the PDM is responsible for converting it and creating the board item before any work begins.</p>
+        <ul style="margin-top:8px">
+          <li>Once converted, the completed intake is shared with the requestor to confirm accuracy before processing begins.</li>
+          <li>Only after client confirmation does the request move into triage and evaluation.</li>
+          <li>Requests <strong>not captured on the board should not be routed into the development queue.</strong></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guideline-block">
+      <div class="guideline-header">
+        <span class="gh-icon">🤖</span>
+        <span class="gh-title">Guideline 2 — The AI Agent Is the First Responder on Every Request</span>
+        <span class="gh-tag tag tag-violet">AI-Assisted</span>
+      </div>
+      <div class="guideline-body">
+        <p>Once a client submits a request via the Basecamp Request Board, the AI Agent <strong>automatically moves the item into the Validate & Assign New Request column</strong> — this is where all agent activity takes place before any human on the delivery team is involved. The agent handles data validation, request categorisation, ticket creation, epic assignment, and team notification in sequence. The delivery team does not begin analysis until the AI Agent has completed its steps and a human has confirmed ticket accuracy.</p>
+        <p>The AI Agent performs the following steps in sequence:</p>
+        <ul>
+          <li><strong>Step 1 — Validate required fields and confirm request category:</strong> The requestor selects the appropriate intake form on the Request Board — either the <strong>New Request / Enhancement form</strong> or the <strong>Reported Issue form</strong> — and submits their request. For reported issues, the requestor also assigns the severity level (Sev 1–4) based on pre-agreed definitions confirmed with client stakeholders. Once the item is submitted, the AI Agent picks it up, scans all data values to confirm completeness, and categorises the request type based on what was submitted.
+            <ul style="margin-top:8px">
+              <li>Reported Issue form submitted with severity level assigned → categorised as a <span class="tag tag-red" style="font-size:10px">Production Issue</span> → routed to the production issue workflow</li>
+              <li>New Request / Enhancement form submitted → categorised as a <span class="tag tag-blue" style="font-size:10px">New Request or Enhancement</span> → routed to the new request workflow</li>
+              <li>If required fields are missing or insufficient, the AI Agent notifies the requestor of what's missing. The item remains <strong>held in the Validate & Assign column</strong> in a pending state until all required data is confirmed and resubmitted.</li>
+            </ul>
+          </li>
+          <li><strong>Notification 1 — Validate & Assign acknowledgement:</strong> As soon as the item is moved into the Validate & Assign New Request column, the AI Agent sends an automated notification to the requestor confirming receipt and informing them that their submission is being validated. The notification includes a link to the Basecamp Request Board so the requestor can track the status of their item at any time.</li>
+          <li><strong>Step 2 — Route to the correct Basecamp column based on request type:</strong> Once the intake is validated and the category is confirmed, the agent moves the item out of the Validate & Assign New Request column and into the appropriate column on the Basecamp Request Board:
+            <ul style="margin-top:8px">
+              <li>New Request / Enhancement → item is moved to <span class="tag tag-blue" style="font-size:10px">Analyzing / Scoping / Estimating</span></li>
+              <li>Production Issue → item is moved to <span class="tag tag-red" style="font-size:10px">Triage / Troubleshooting</span></li>
+            </ul>
+          </li>
+          <li><strong>Step 3 — Create Zoho ticket, assign epic and backlog bucket based on request type:</strong> Based on the confirmed category, the AI Agent takes the following actions simultaneously — creating the Zoho ticket, assigning the correct epic, and routing to the appropriate backlog bucket:
+
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
+              <div style="background:#fef2f2;border:1.5px solid #dc2626;border-radius:8px;padding:14px">
+                <div style="font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#dc2626;margin-bottom:10px">Production Issue Path</div>
+                <div style="display:flex;flex-direction:column;gap:7px;font-size:12px;color:#7f1d1d">
+                  <div>📋 <strong>Zoho ticket type:</strong> Bug</div>
+                  <div>🏷️ <strong>Zoho Backlog Sprint Bucket:</strong> Reported Issues</div>
+                  <div>💰 <strong>Epic:</strong> Production Support</div>
+                  <div>📌 <strong>Basecamp column:</strong> Triage / Troubleshooting</div>
+                  <div style="margin-top:6px;padding-top:8px;border-top:1px solid #fca5a5">🕐 The scheduled production support team initiates triage based on defined production support office hours and SLA response times by severity level</div>
+                </div>
+              </div>
+              <div style="background:#eff6ff;border:1.5px solid #3b82f6;border-radius:8px;padding:14px">
+                <div style="font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:#1d4ed8;margin-bottom:10px">New Request / Enhancement Path</div>
+                <div style="display:flex;flex-direction:column;gap:7px;font-size:12px;color:#1e3a5f">
+                  <div>📋 <strong>Zoho ticket type:</strong> Task</div>
+                  <div>🏷️ <strong>Zoho Backlog Sprint Bucket:</strong> New Requests: Analysis / Scope / Estimation</div>
+                  <div>💰 <strong>Epic:</strong> Planning / Ops / New Requests</div>
+                  <div>📌 <strong>Basecamp column:</strong> Analyzing / Scoping / Estimating</div>
+                  <div style="margin-top:6px;padding-top:8px;border-top:1px solid #bfdbfe">📅 The team initiates analysis based on the pre-defined planning ceremony schedule</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="callout callout-flag" style="margin-top:12px">
+              <div class="callout-icon">📌</div>
+              <div class="callout-body">
+                <strong>Prerequisites — Must Be Defined with Client Stakeholders Before Go-Live</strong>
+                <p>Production support office hours and dedicated resource assignment · SLA response times by severity level (Sev 1–4) · Severity level definitions per account · Planning ceremony schedule for new request analysis · Zoho Backlog Sprint Buckets configured ("Reported Issues" and "New Requests: Analysis/Scope/Estimation") · Billing epics created with baseline budget hours associated</p>
+              </div>
+            </div>
+          </li>
+
+          <li><strong>Notification 2 — New Request status update:</strong> When the AI Agent moves a validated new request or enhancement into the Analyzing / Scoping / Estimating column, it sends an automated notification to the requestor confirming the item has been validated, assigned to the team, and is now in analysis. The notification includes the Basecamp Request Board link so the requestor can monitor progress.</li>
+
+          <li><strong>Notification 3 — Production Issue SLA reminder:</strong> When the AI Agent moves a validated production issue into the Triage / Troubleshooting column, it sends an automated notification to the requestor confirming receipt and clearly communicating the SLA response times based on the severity level assigned to the issue. This ensures the requestor is fully informed on what to expect and by when — removing ambiguity around response timing. The notification includes the applicable SLA table and the Basecamp board link.</li>
+          <li><strong>Step 4 — Assign to the PDM / Analysis Team:</strong> The agent assigns both the Basecamp item and the Zoho ticket to the Product Delivery team (PDM) so they have immediate visibility and can begin work based on the appropriate schedule — either the production support office hours or the planning ceremony cadence.</li>
+          <li><strong>Step 5 — Notify the account Slack channel:</strong> The agent sends a notification with the ticket link, request summary, requestor name, confirmed category, assigned epic, and Zoho Backlog Sprint Bucket so the broader team has immediate visibility.</li>
+        </ul>
+        <div class="callout callout-flag" style="margin-top:12px">
+          <div class="callout-icon">📌</div>
+          <div class="callout-body">
+            <strong>Account Prerequisites for AI Agent Operation</strong>
+            <p>Basecamp 4 account active · Request Board created and configured · Zoho Sprint project with Backlog Sprint Buckets configured · Billing epics created with budget hours associated · Account Slack channel established · Notion internal board configured per account · Smartsheet external request board active · Severity level definitions agreed upon with client</p>
+          </div>
+        </div>
+        <div class="callout callout-info" style="margin-top:10px">
+          <div class="callout-icon">💡</div>
+          <div class="callout-body">
+            <strong>The Form Selection Is the Routing Mechanism</strong>
+            <p>Because production issues and new requests have separate intake forms with different required fields, the form the requestor selects tells the AI Agent the request type. The requestor also assigns the severity level on the Reported Issue form based on pre-agreed definitions. The AI Agent reads these values, validates completeness, and routes accordingly — the human oversight step becomes a spot-check rather than a categorization task.</p>
+          </div>
+        </div>
+        <p style="margin-top:10px"><strong>Human oversight is required</strong> after Step 5 — the PDM reviews AI-created tickets for accuracy before the request advances into Stage 3 (internal triage).</p>
+      </div>
+    </div>
+
+    <div class="guideline-block">
+      <div class="guideline-header">
+        <span class="gh-icon">🔄</span>
+        <span class="gh-title">Guideline 2b — The AI Agent Monitors Continuously After Handoff</span>
+        <span class="gh-tag tag tag-violet">AI-Assisted</span>
+      </div>
+      <div class="guideline-body">
+        <p>The AI Agent's role does not end at handoff. Once a request is routed to the appropriate team, the agent runs a <strong>lightweight continuous monitoring role</strong> throughout the workflow — removing coordination overhead from the PDM and ensuring nothing stalls without a nudge. All monitoring actions are rule-based triggers, not autonomous decisions.</p>
+        <p><strong>For New Request / Enhancement workflows, the AI Agent monitors:</strong></p>
+        <ul>
+          <li>Ticket inactive beyond planning ceremony window → flags to PDM + SA in Slack</li>
+          <li>Scope deliverable moved to review column → automatically notifies requestor</li>
+          <li>No requestor response within SLA window → sends automated reminder to requestor</li>
+          <li>Revision submitted by requestor → notifies Analysis Team, moves card back, logs revision on ticket</li>
+          <li>Planning/Ops budget approaching defined threshold → flags to PDM before overage occurs</li>
+          <li>Scope approved by requestor → moves Basecamp item to "Approved / Prioritize," updates ticket, notifies Analysis Team</li>
+        </ul>
+        <p style="margin-top:10px"><strong>For Production Issue workflows, the AI Agent monitors:</strong></p>
+        <ul>
+          <li>Ticket inactive beyond SLA update cadence → flags to Prod Support team in Slack</li>
+          <li>Prod Support requests clarification from requestor → notifies requestor automatically, logs on ticket</li>
+          <li>No requestor response to clarification within SLA window → sends automated reminder</li>
+          <li>SLA breach threshold reached → re-escalates in Slack, flags to PDM</li>
+          <li>Budget overage approved by stakeholder → notifies Prod Support team they are clear to proceed</li>
+          <li>Prod Support budget approaching defined threshold → flags to PDM before overage occurs</li>
+          <li>Fix verified in production → automatically notifies requestor and prompts them to confirm resolution on the Request Board</li>
+        </ul>
+        <div class="callout callout-green" style="margin-top:12px">
+          <div class="callout-icon">💡</div>
+          <div class="callout-body">
+            <strong>Lean by design — built by our internal labs team</strong>
+            <p>All AI Agent actions are rule-based triggers: reading ticket state, moving cards, sending pre-configured notifications, and posting Slack messages. There is no complex AI reasoning involved. The implementation is owned and built by Concepta's internal labs team, who work across our tooling stack — Basecamp, Zoho, and Slack integrations are well within their wheelhouse. We are starting lean and will expand the agent's role as we build confidence through the first implementation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="guideline-block">
+      <div class="guideline-header">
+        <span class="gh-icon">🏷️</span>
+        <span class="gh-title">Guideline 3 — Every Request Must Be Assigned to the Correct Billing Epic</span>
+        <span class="gh-tag tag tag-amber">Billing Critical</span>
+      </div>
+      <div class="guideline-body">
+        <p>The AI Agent automatically assigns the billing epic at the time of ticket creation. However, the PDM must verify this assignment is correct during the human oversight review step. <strong>No time should be logged against a ticket that does not have a billing epic assigned.</strong></p>
+        <div style="margin:12px 0;">
+          <table class="rules-table">
+            <thead>
+              <tr>
+                <th>Request Type</th>
+                <th>Billing Epic / Service Bucket</th>
+                <th>Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>New Feature / Functionality</strong></td>
+                <td><span class="tag tag-blue">Planning / Processing / Ops</span></td>
+                <td>Analysis, scoping, and estimation hours tracked here</td>
+              </tr>
+              <tr>
+                <td><strong>Enhancement to Existing Feature</strong></td>
+                <td><span class="tag tag-blue">Planning / Processing / Ops</span></td>
+                <td>Analysis, scoping, and estimation hours tracked here</td>
+              </tr>
+              <tr>
+                <td><strong>Reported Production Issue</strong></td>
+                <td><span class="tag tag-red">Production Support</span></td>
+                <td>Draws from Prod Support baseline; SLA response times apply</td>
+              </tr>
+              <tr>
+                <td><strong>Deployment / Release Activity</strong></td>
+                <td><span class="tag tag-gray">Deployment</span></td>
+                <td>Staging, QA coordination, production deploys</td>
+              </tr>
+              <tr>
+                <td><strong>Maintenance / Ad Hoc Work</strong></td>
+                <td><span class="tag tag-orange">Implementation / Maint</span></td>
+                <td>Ongoing maintenance, feature work post-approval</td>
+              </tr>
+              <tr>
+                <td><strong>Unplanned / Overflow Work</strong></td>
+                <td><span class="tag tag-amber">Buffer</span></td>
+                <td>Safety net — reassigned when any bucket trends over baseline</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="callout callout-info" style="margin-top:8px">
+          <div class="callout-icon">📊</div>
+          <div class="callout-body">
+            <strong>Budget Hours Must Be Associated to Each Epic</strong>
+            <p>Each billing epic should reflect the account's allocated baseline hours for that service bucket. This allows the team — and the client — to see remaining hours per bucket at any point in the billing cycle, enabling informed decisions about whether a new request can be absorbed or needs to be deferred or re-prioritized.</p>
+          </div>
+        </div>
+        <div class="callout callout-warn" style="margin-top:10px">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-body">
+            <strong>Incorrect Epic Assignment = Budget Reporting Errors</strong>
+            <p>Misassigned tickets corrupt service bucket tracking and make it impossible to accurately report burn rate, adjust baselines, or make informed capacity decisions with clients.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="guideline-block">
+      <div class="guideline-header">
+        <span class="gh-icon">📅</span>
+        <span class="gh-title">Guideline 4 — Billing Boards Open and Close Per Account Cycle</span>
+        <span class="gh-tag tag tag-amber">Billing Critical</span>
+      </div>
+      <div class="guideline-body">
+        <p>Each client account operates on a predefined billing cycle. Most accounts run on either a <strong>3-week</strong> or <strong>4-week</strong> board cadence. Boards open and close in alignment with these cycles, and all time entries must fall within the correct active board.</p>
+        <ul>
+          <li>At the start of each cycle, confirm the board is open and service bucket baselines are current.</li>
+          <li>Any bucket trending over its baseline should have buffer hours reassigned to it — and this data is used to recalibrate baselines at the next contract review.</li>
+          <li>Clients should be regularly updated on bucket utilization so they can make informed prioritization decisions.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="guideline-block">
+      <div class="guideline-header">
+        <span class="gh-icon">🔁</span>
+        <span class="gh-title">Guideline 5 — Two Feedback Loops May Return a Request to the Requestor</span>
+        <span class="gh-tag tag tag-gray">Process Rule</span>
+      </div>
+      <div class="guideline-body">
+        <p>A request can be returned to the requestor at two distinct points in the workflow:</p>
+        <ul>
+          <li><strong>Loop 1 — AI Agent:</strong> Triggered when required intake fields are missing or insufficient. The AI Agent flags the gap and the PDM coordinates with the requestor to provide additional information before the ticket is created.</li>
+          <li><strong>Loop 2 — Internal Team:</strong> Triggered during the Internal Review stage when the PDM or SA determines the request is unclear, ambiguous, or requires additional context to properly evaluate. The team documents the specific questions and informs the client.</li>
+        </ul>
+        <p>In both cases, the request is placed in a <strong>pending / on-hold state</strong> and does not advance until the requestor responds and the missing information is confirmed complete.</p>
+      </div>
+    </div>
+
+    <div class="guideline-block">
+      <div class="guideline-header">
+        <span class="gh-icon">📊</span>
+        <span class="gh-title">Guideline 6 — Service Bucket Baselines Must Be Defined Per Account</span>
+        <span class="gh-tag tag tag-green">Operational</span>
+      </div>
+      <div class="guideline-body">
+        <p>Each account must have a defined set of service bucket baselines — negotiated with client stakeholders — before this framework can be fully operationalized. These baselines determine how hours are allocated, tracked, and reported each billing cycle.</p>
+        <ul>
+          <li><strong>Reference model (Service Finance, 4-week cycle):</strong> Production Support baseline was defined at 45 hrs/cycle with a dedicated Dev and QA resource assigned to specific office hours for monitoring and triage. SLA response times were defined per severity level.</li>
+          <li>Baselines should be reviewed regularly with client stakeholders and adjusted based on observed usage patterns and shifting business priorities.</li>
+          <li>New Requests (enhancements and new functionality) are <strong>baked into the Planning/Ops service bucket</strong> — not a separate line item — reflecting the time required to analyze, estimate, and route the request.</li>
+        </ul>
+      </div>
+    <div class="guideline-block" style="border-left:3px solid #1e293b;background:#fafaf7">
+      <div class="guideline-header">
+        <span class="gh-icon">📝</span>
+        <span class="gh-title">Guideline 7 — Documentation Is Not Overhead. It Is the Infrastructure.</span>
+        <span class="gh-tag tag tag-red">Critical</span>
+      </div>
+      <div class="guideline-body">
+        <p>This is the single biggest gap standing between where Concepta is today and where this initiative needs to get to. <strong>AI Agents cannot operate on informal knowledge, undocumented processes, or assumptions that live in someone's head.</strong> They require clearly defined, explicitly documented workflows and account-specific content models in order to make correct decisions, route accurately, and notify the right people at the right time.</p>
+        <p>Documentation must exist at two levels before the AI Agent can be enabled on any account:</p>
+        <ul>
+          <li><strong>Workflow documentation</strong> — every step, every decision point, every trigger, every rule must be explicitly written down. The diagrams in this initiative are the start — but they must be accompanied by the operational detail that makes each step executable. Ambiguity is the enemy of automation.</li>
+          <li><strong>Account-specific content models</strong> — each account requires its own configuration: severity definitions, SLA windows, service bucket baselines, escalation contacts, team assignments, ceremony schedules, budget thresholds, and notification templates. The AI Agent reads from these. If they are incomplete, outdated, or missing — the agent makes wrong decisions.</li>
+        </ul>
+        <div class="callout callout-warn" style="margin-top:12px">
+          <div class="callout-icon">⚠️</div>
+          <div class="callout-body">
+            <strong>This applies to the entire team — not just the AI Agent configuration</strong>
+            <p>The discipline of documentation must be adopted as a core operating practice. Every process that runs through this framework — intake, triage, analysis, production support, budget tracking — depends on shared, written, up-to-date documentation. Without it, the framework reverts to informal coordination and the AI Agent cannot add value. Documentation is how we scale.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+  </section>
+
+</div>
+
+<footer>Concepta — Intake & Request Processing Initiative · Intake Request Board · March 2026 · Internal Use</footer>
+
+</body>
+</html>
