@@ -474,6 +474,7 @@ footer strong { color: rgba(255,255,255,.7); }
     <a href="Client_Billing_View.html">Billing View</a>
     <div class="nav-div"></div>
     <a href="Reference_Intake_Form.html">Intake Form</a>
+    <a href="Reference_Intake_Request_Board.html">Request Board</a>
     <a href="Reference_Budget_Model.html">Budget Model</a>
     <a href="Reference_AI_Agent_MVP.html">AI Agent</a>
     <a href="Reference_AI_Agent_Technical_Spec.html">Build Spec</a>
@@ -487,9 +488,9 @@ footer strong { color: rgba(255,255,255,.7); }
 
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-eyebrow"><span></span> Reference Document · Operational Guidelines</div>
-    <h1>Intake Request Board</h1>
-    <p class="hero-sub">The rules of engagement for how requests are captured, routed, and processed across all accounts — covering the Basecamp request board structure, AI Agent responsibilities, billing epic assignment, feedback loops, and documentation standards.</p>
+    <div class="hero-eyebrow"><span></span> Reference Document · Client Boards & Operational Guidelines</div>
+    <h1>Client Request Boards</h1>
+    <p class="hero-sub">There are two client-facing boards that work together across the request lifecycle — one for intake and processing (Basecamp), one for portfolio visibility (Smartsheet). This page covers both boards and the operational guidelines that govern how they are used.</p>
   </div>
 </div>
 
@@ -497,18 +498,81 @@ footer strong { color: rgba(255,255,255,.7); }
 
   <a href="Concepta_Intake_Process_Executive_Brief.html" class="back-link">← Executive Brief</a>
 
+  <!-- ── TWO BOARDS OVERVIEW ── -->
+  <div style="display:flex;gap:16px;margin-bottom:24px;flex-wrap:wrap">
+
+    <!-- Board 1: Basecamp -->
+    <div style="flex:1;min-width:280px;background:#fff;border:2px solid #93c5fd;border-radius:10px;overflow:hidden">
+      <div style="background:#1d3557;padding:12px 16px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:18px">🗂️</span>
+        <div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.5)">Board 1 · Intake &amp; Processing</div>
+          <div style="font-size:13px;font-weight:700;color:#fff">Basecamp Client Request Board</div>
+        </div>
+      </div>
+      <div style="padding:14px 16px">
+        <p style="font-size:12.5px;color:var(--ink-mid);line-height:1.6;margin-bottom:10px">The entry point for all requests. Clients submit intake forms here, the AI Agent validates and routes submissions, and cards progress through defined columns as the request moves through the workflow. The board is the client's real-time view of every active request.</p>
+        <div style="font-size:11px;font-weight:700;color:var(--ink);margin-bottom:6px">Purpose</div>
+        <ul style="padding-left:16px;margin-bottom:10px">
+          <li style="font-size:12px;color:var(--ink-mid);margin-bottom:3px">Submit new requests and reported issues via standardised intake forms</li>
+          <li style="font-size:12px;color:var(--ink-mid);margin-bottom:3px">Track each request as it moves through the processing workflow</li>
+          <li style="font-size:12px;color:var(--ink-mid);margin-bottom:3px">Review and approve scope deliverables</li>
+          <li style="font-size:12px;color:var(--ink-mid)">Receive automated status notifications from the AI Agent</li>
+        </ul>
+        <div style="font-size:10px;font-weight:700;color:var(--ink-light);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Tool</div>
+        <div style="font-size:12px;color:var(--ink-mid)">Basecamp 4 · Client Request Board (card-based workflow view)</div>
+      </div>
+    </div>
+
+    <!-- Board 2: Smartsheet -->
+    <div style="flex:1;min-width:280px;background:#fff;border:2px solid #86efac;border-radius:10px;overflow:hidden">
+      <div style="background:#14532d;padding:12px 16px;display:flex;align-items:center;gap:10px">
+        <span style="font-size:18px">📊</span>
+        <div>
+          <div style="font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,.5)">Board 2 · Portfolio Visibility</div>
+          <div style="font-size:13px;font-weight:700;color:#fff">Smartsheet Client Delivery Board</div>
+        </div>
+      </div>
+      <div style="padding:14px 16px">
+        <p style="font-size:12.5px;color:var(--ink-mid);line-height:1.6;margin-bottom:10px">The structured portfolio view for the account. Every request is logged here as a row — whether it's in progress, queued, on hold, or released. Gives the client and the Concepta team a consistent grid view of all requests across the full lifecycle, with dates, status, estimates, and links to supporting artifacts.</p>
+        <div style="font-size:11px;font-weight:700;color:var(--ink);margin-bottom:6px">Purpose</div>
+        <ul style="padding-left:16px;margin-bottom:10px">
+          <li style="font-size:12px;color:var(--ink-mid);margin-bottom:3px">Full backlog visibility — all requests in one structured view</li>
+          <li style="font-size:12px;color:var(--ink-mid);margin-bottom:3px">Track what's In Progress, Up Next, On Hold/Blocked, Released</li>
+          <li style="font-size:12px;color:var(--ink-mid);margin-bottom:3px">See Dev Start, Dev Done, Release dates, and estimates per request</li>
+          <li style="font-size:12px;color:var(--ink-mid)">Cross-reference Zoho, Notion, and Basecamp via embedded links</li>
+        </ul>
+        <div style="font-size:10px;font-weight:700;color:var(--ink-light);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px">Tool</div>
+        <div style="display:flex;align-items:center;justify-content:space-between">
+          <div style="font-size:12px;color:var(--ink-mid)">Smartsheet · Client Delivery Board (grid/row-based portfolio view)</div>
+          <a href="https://app.smartsheet.com/sheets/h6V6CcXcw5pgqQfC7wGXRCqr89wmh8J9WJCC29j1?view=grid" target="_blank" style="display:inline-flex;align-items:center;gap:5px;background:#14532d;color:#fff;font-size:10px;font-weight:700;padding:5px 10px;border-radius:5px;text-decoration:none;white-space:nowrap;margin-left:8px;flex-shrink:0">Open →</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   <div class="callout callout-info">
     <div class="callout-icon">💡</div>
     <div class="callout-body">
-      <strong>These guidelines apply to all team members and accounts</strong>
-      <p>Once this framework is rolled out, these are the non-negotiable operating rules for how every request is handled — regardless of account, request type, or who receives it.</p>
+      <strong>The boards are complementary — not duplicates</strong>
+      <p>Basecamp is where the workflow happens — requests are submitted, validated, scoped, and approved card by card. Smartsheet is where the full picture lives — every request as a structured row, giving clients and the team a consistent data record across the entire account lifecycle. The AI Agent keeps both in sync automatically at intake.</p>
+    </div>
+  </div>
+
+  <!-- ── FUTURE CONSIDERATION ── -->
+  <div class="callout" style="background:#fef9c3;border:1px solid #fbbf24;border-radius:8px;padding:14px 16px;margin-bottom:24px;display:flex;gap:10px;align-items:flex-start">
+    <div style="font-size:16px;flex-shrink:0">⏳</div>
+    <div>
+      <strong style="font-size:12px;font-weight:700;color:#78350f;display:block;margin-bottom:4px">Future Consideration — Smartsheet Consolidation</strong>
+      <p style="font-size:12px;color:#92400e;line-height:1.6;margin:0">As the framework matures, consideration should be given to consolidating intake forms directly onto the Smartsheet client delivery board — removing the Basecamp dependency for form submission. This would reduce tooling overhead and give clients a single board surface for both submitting and tracking requests. This is a post-Phase 1 consideration once the manual process is validated and stable.</p>
     </div>
   </div>
 
   <section class="section" id="guidelines">
     <div class="section-label"><div class="num">§</div> Operational Guidelines</div>
     <h2>How Requests Must Be Handled</h2>
-    <p>Eight guidelines covering the full intake and processing lifecycle — from how requests enter the system to how documentation keeps it running.</p>
+    <p>Eight guidelines covering the full intake and processing lifecycle — from how requests enter the system to how documentation keeps it running. These apply to all team members and accounts once the framework is rolled out.</p>
 
       <div class="guideline-header">
         <span class="gh-icon">📥</span>
