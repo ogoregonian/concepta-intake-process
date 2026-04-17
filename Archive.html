@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concepta — Archive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#f0ede8;min-height:100vh;color:#1e293b}
+
+/* ── Nav ── */
+nav{position:sticky;top:0;z-index:100;background:#1d3557;display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:56px;box-shadow:0 2px 12px rgba(0,0,0,.18);gap:24px}
+.nav-logo{display:flex;align-items:center;text-decoration:none;flex-shrink:0;opacity:1;transition:opacity .2s}
+.nav-logo:hover{opacity:.8}
+.nav-links{display:flex;align-items:center;gap:2px;flex:1;justify-content:flex-end;overflow-x:auto;scrollbar-width:none;flex-wrap:nowrap}
+.nav-links::-webkit-scrollbar{display:none}
+.nav-links a{font-size:11px;font-weight:600;letter-spacing:.6px;text-transform:uppercase;color:rgba(255,255,255,.6);text-decoration:none;transition:color .2s,background .2s;padding:5px 10px;border-radius:4px;white-space:nowrap;flex-shrink:0}
+.nav-links a:hover{color:#fff;background:rgba(255,255,255,.08)}
+.nav-links a.nav-active{color:#fff;background:rgba(255,255,255,.12);border-bottom:2px solid rgba(255,255,255,.5)}
+.nav-links a.nav-templates{color:#fbbf24;border:1px solid rgba(251,191,36,.3);border-radius:4px}
+.nav-links a.nav-templates:hover{background:rgba(251,191,36,.12);color:#fde68a}
+.nav-div{width:1px;height:16px;background:rgba(255,255,255,.15);margin:0 6px;flex-shrink:0}
+
+/* ── Page ── */
+.page{max-width:960px;margin:0 auto;padding:40px 24px 60px}
+
+/* ── Header ── */
+.page-heading{margin-bottom:8px}
+.page-heading h1{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;color:#0f172a;margin-bottom:6px}
+.page-heading p{font-size:13px;color:#64748b;line-height:1.6;max-width:560px}
+
+/* ── Notice ── */
+.notice{
+  display:flex;align-items:flex-start;gap:12px;
+  background:#fffbeb;border:1.5px solid #fde68a;border-radius:10px;
+  padding:14px 18px;margin:24px 0;
+  font-size:12px;color:#78350f;line-height:1.65;
+}
+.notice-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.notice strong{font-weight:700;color:#b45309;display:block;margin-bottom:3px}
+
+/* ── Archive cards ── */
+.archive-grid{display:flex;flex-direction:column;gap:14px}
+.archive-card{
+  background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;
+  padding:20px 24px;
+  display:flex;align-items:flex-start;justify-content:space-between;gap:20px;
+  box-shadow:0 1px 6px rgba(0,0,0,.05);
+}
+.archive-card-left{flex:1}
+.archive-card-label{
+  display:inline-flex;align-items:center;gap:6px;
+  font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;
+  color:#94a3b8;margin-bottom:8px;
+}
+.archive-badge{
+  font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;
+  background:#fffbeb;color:#b45309;border:1px solid #fde68a;
+}
+.archive-card h2{font-family:'Syne',sans-serif;font-size:15px;font-weight:700;color:#0f172a;margin-bottom:6px}
+.archive-card p{font-size:12px;color:#64748b;line-height:1.65;max-width:560px}
+.archive-card-meta{
+  display:flex;gap:8px;flex-wrap:wrap;margin-top:10px;
+}
+.meta-tag{
+  font-size:10px;font-weight:600;padding:2px 8px;border-radius:20px;
+  background:#f1f5f9;color:#475569;border:1px solid #e2e8f0;
+}
+.archive-card-right{flex-shrink:0;display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.btn-view{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.3px;
+  padding:8px 16px;border-radius:7px;text-decoration:none;
+  background:#f8fafc;color:#334155;border:1.5px solid #e2e8f0;
+  transition:background .12s,border-color .12s;white-space:nowrap;
+}
+.btn-view:hover{background:#f1f5f9;border-color:#cbd5e1}
+.archived-label{
+  font-size:10px;color:#94a3b8;font-style:italic;text-align:right;
+}
+
+/* ── Superseded by ── */
+.superseded{
+  display:flex;align-items:center;gap:10px;
+  background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;
+  padding:14px 18px;margin-top:28px;
+}
+.superseded-text{font-size:12px;color:#166534;line-height:1.6}
+.superseded-text strong{font-weight:700;display:block;margin-bottom:2px}
+.btn-workflow{
+  display:inline-flex;align-items:center;gap:6px;
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;
+  padding:9px 18px;border-radius:7px;text-decoration:none;
+  background:#16a34a;color:#fff;border:none;
+  white-space:nowrap;flex-shrink:0;
+  transition:background .12s;
+}
+.btn-workflow:hover{background:#15803d}
+
+/* ── Footer ── */
+.page-footer{margin-top:40px;display:flex;align-items:center;gap:10px;font-size:10px;color:#94a3b8}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="Index.html" class="nav-logo" title="Home"><svg width="120" height="20" viewBox="0 0 201 33" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block"><path d="M41.4673 22.6537C39.8187 20.8428 38.9963 18.2178 39 14.7786C39.0038 11.3394 39.8262 8.71248 41.4673 6.89787C43.1122 5.08697 45.5118 4.18152 48.666 4.18152C50.7555 4.16768 52.8286 4.54703 54.775 5.29941V8.882C53.0032 8.00664 51.0527 7.54403 49.0725 7.52949H48.9653C47.0569 7.52949 45.5607 8.01757 44.4767 8.99384C43.3926 9.97 42.8525 11.889 42.8563 14.7506C42.8268 16.0424 42.9944 17.3313 43.3531 18.5736C43.5809 19.4472 44.0783 20.2287 44.7759 20.8092C45.3445 21.2551 46.0029 21.5753 46.7069 21.7483C47.4616 21.9236 48.2353 22.0063 49.0104 21.9941C51.0147 21.9922 52.9927 21.5433 54.7976 20.6807V24.2354C52.8505 24.9853 50.7779 25.3646 48.6886 25.3532C45.5344 25.3532 43.1348 24.4478 41.4899 22.6369" fill="white"/><path d="M62.804 11.0065C62.4684 12.2414 62.3144 13.5176 62.3467 14.796C62.3155 16.0706 62.4695 17.3431 62.804 18.5742C63.0131 19.4422 63.4907 20.2238 64.1704 20.8099C64.7114 21.2542 65.3402 21.5817 66.0167 21.7712C67.505 22.0908 69.0452 22.0908 70.5335 21.7712C71.2106 21.5834 71.8398 21.2557 72.3797 20.8099C73.0592 20.2227 73.5384 19.4417 73.7517 18.5742C74.0824 17.3385 74.2345 16.0628 74.2035 14.7848C74.2345 13.5069 74.0824 12.231 73.7517 10.9954C73.537 10.1284 73.0581 9.34786 72.3797 8.75968C71.8415 8.31452 71.2142 7.98693 70.5391 7.79836C69.0508 7.47879 67.5106 7.47879 66.0223 7.79836C65.346 7.98793 64.717 8.31533 64.1761 8.75968C63.4978 9.34696 63.0205 10.1281 62.8098 10.9954L62.804 11.0065ZM59.343 20.1001C58.719 18.4018 58.4222 16.6026 58.468 14.796C58.4222 12.9893 58.719 11.1903 59.343 9.4919C59.8068 8.19677 60.6355 7.06011 61.7314 6.21665C62.6613 5.52686 63.7067 5.00467 64.8198 4.67407C67.0829 4.07023 69.4673 4.07023 71.7305 4.67407C72.8447 5.00567 73.8919 5.52776 74.8245 6.21665C75.9143 7.06222 76.737 8.19867 77.1959 9.4919C77.8246 11.1892 78.1235 12.9888 78.0766 14.796C78.1235 16.6032 77.8246 18.4029 77.1959 20.1001C76.734 21.3947 75.9071 22.5312 74.8132 23.3753C73.8806 24.0642 72.8335 24.5863 71.7191 24.918C69.4559 25.5217 67.0716 25.5217 64.8084 24.918C63.6954 24.5873 62.65 24.0651 61.72 23.3753C60.6243 22.5318 59.7955 21.3953 59.3318 20.1001" fill="white"/><path d="M81.605 25.0514V6.27751C84.3483 4.90344 87.3777 4.18195 90.4523 4.17041C93.0872 4.17041 95.146 4.84676 96.629 6.19927C98.1121 7.55188 98.8649 9.42798 98.8875 11.8276V25.0514H95.0087V11.509C95.0663 10.473 94.7322 9.45276 94.0714 8.64731C93.4428 7.95059 92.1875 7.60033 90.3055 7.59662C88.648 7.5912 86.9999 7.84397 85.4217 8.34549V25.0514H81.605Z" fill="white"/><path fill-rule="evenodd" clip-rule="evenodd" d="M29.0499 5.45796C29.0515 5.29712 29.0196 5.13765 28.9589 4.9887C28.8982 4.83977 28.8072 4.70433 28.6922 4.59018C28.5772 4.47603 28.4415 4.38544 28.2914 4.32362C28.1413 4.2618 27.9816 4.22998 27.8187 4.22998H8.86133V14.2229H17.175C17.6525 14.2229 18.1093 14.4105 18.4462 14.7442C18.7832 15.078 18.9732 15.5306 18.9732 16.0026V24.2426H29.0675V5.45796H29.0499Z" fill="#4d6eff"/><path fill-rule="evenodd" clip-rule="evenodd" d="M8.86109 14.223H1.10311C0.911479 14.2234 0.72464 14.1676 0.563348 14.0626C0.403653 13.9576 0.279093 13.8081 0.205633 13.6329C0.132174 13.4577 0.111396 13.2648 0.148126 13.0784C0.184856 12.892 0.275895 12.7205 0.411636 12.5856L8.86109 4.22998" fill="#a0b0ff"/><path fill-rule="evenodd" clip-rule="evenodd" d="M29.0675 24.2427L20.6181 32.6073C20.4839 32.7416 20.3115 32.8333 20.1246 32.8705C19.9362 32.9079 19.743 32.8889 19.5657 32.8164C19.39 32.7439 19.2383 32.6209 19.1329 32.4631C19.0275 32.3055 18.9716 32.1201 18.9732 31.931V24.2427" fill="#a0b0ff"/></svg></a>
+  <div class="nav-links">
+    <a href="Index.html">Home</a>
+    <div class="nav-div"></div>
+    <a href="Concepta_Intake_Process_Executive_Brief.html">Brief</a>
+    <a href="Workflow_Macro_Visual.html">Workflow Map</a>
+    <a href="Archive.html" class="nav-active">Archive</a>
+    <a href="Client_Billing_View.html">Billing View</a>
+    <div class="nav-div"></div>
+    <a href="Reference_Intake_Form.html">Intake Form</a>
+    <a href="Reference_Intake_Request_Board.html">Request Board</a>
+    <a href="Reference_Budget_Model.html">Budget Model</a>
+    <a href="Reference_AI_Agent_MVP.html">AI Agent</a>
+    <a href="Reference_AI_Agent_Technical_Spec.html">Build Spec</a>
+    <a href="Reference_Prerequisites_GoLive.html">Account Setup</a>
+    <div class="nav-div"></div>
+    <a href="Templates.html" class="nav-templates">⊞ Templates</a>
+    <a href="https://www.notion.so/concepta/Internal-Team-Meetings-17b4767c73b0802fae20ecc7c6981ad5" target="_blank" class="nav-templates" style="margin-left:2px">📋 Meeting Notes</a>
+  </div>
+</nav>
+
+<div class="page">
+
+  <div class="page-heading">
+    <h1>Archive</h1>
+    <p>Previous versions of process diagrams retained here for reference. These have been superseded by the Workflow Map.</p>
+  </div>
+
+  <div class="notice">
+    <span class="notice-icon">📦</span>
+    <div>
+      <strong>These diagrams are archived</strong>
+      The Workflow Map is the current source of truth for all intake and request processing workflows. The diagrams below are retained for reference only and will not be updated going forward.
+    </div>
+  </div>
+
+  <div class="archive-grid">
+
+    <!-- Diagram 1 -->
+    <div class="archive-card">
+      <div class="archive-card-left">
+        <div class="archive-card-label">
+          <span class="archive-badge">Archived</span>
+          Diagram 1
+        </div>
+        <h2>Intake Request — Gathering Data from Requestor</h2>
+        <p>Entry point for all requests. Covers form submission, AI Agent validation and routing, and internal team handoff verification. Routes to either the New Request or Production Issue workflow.</p>
+        <div class="archive-card-meta">
+          <span class="meta-tag">Requestor</span>
+          <span class="meta-tag">AI Agent</span>
+          <span class="meta-tag">Internal Team</span>
+          <span class="meta-tag">Basecamp</span>
+          <span class="meta-tag">Zoho Sprints</span>
+          <span class="meta-tag">Slack</span>
+        </div>
+      </div>
+      <div class="archive-card-right">
+        <a href="Diagram_1_Intake_Request.html" class="btn-view">View Diagram →</a>
+        <span class="archived-label">Archived · April 2026</span>
+      </div>
+    </div>
+
+    <!-- Diagram 2 -->
+    <div class="archive-card">
+      <div class="archive-card-left">
+        <div class="archive-card-label">
+          <span class="archive-badge">Archived</span>
+          Diagram 2
+        </div>
+        <h2>New Request Workflow — Analysis · Scoping · Estimation · Client Review</h2>
+        <p>Processing a New Feature or Enhancement from handoff through analysis, scoping, estimation, and client scope approval. Includes POC path and revision loop.</p>
+        <div class="archive-card-meta">
+          <span class="meta-tag">Requestor</span>
+          <span class="meta-tag">AI Agent</span>
+          <span class="meta-tag">Analysis Team</span>
+          <span class="meta-tag">Basecamp</span>
+          <span class="meta-tag">Zoho Sprints</span>
+          <span class="meta-tag">Smartsheet</span>
+          <span class="meta-tag">Slack</span>
+        </div>
+      </div>
+      <div class="archive-card-right">
+        <a href="Diagram_2_New_Request.html" class="btn-view">View Diagram →</a>
+        <span class="archived-label">Archived · April 2026</span>
+      </div>
+    </div>
+
+    <!-- Diagram 3 -->
+    <div class="archive-card">
+      <div class="archive-card-left">
+        <div class="archive-card-label">
+          <span class="archive-badge">Archived</span>
+          Diagram 3
+        </div>
+        <h2>Production Issue Workflow — Triage · Troubleshoot · Resolve · Close</h2>
+        <p>Processing a Reported Production Issue from triage through fix, verification, and closure. Includes severity-based SLA routing, RCA process, and release version alignment.</p>
+        <div class="archive-card-meta">
+          <span class="meta-tag">Requestor</span>
+          <span class="meta-tag">AI Agent</span>
+          <span class="meta-tag">Production Support</span>
+          <span class="meta-tag">Basecamp</span>
+          <span class="meta-tag">Zoho Sprints</span>
+          <span class="meta-tag">Slack</span>
+        </div>
+      </div>
+      <div class="archive-card-right">
+        <a href="Diagram_3_Production_Issue.html" class="btn-view">View Diagram →</a>
+        <span class="archived-label">Archived · April 2026</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Superseded by -->
+  <div class="superseded">
+    <div class="superseded-text">
+      <strong>Superseded by the Workflow Map</strong>
+      The Workflow Map consolidates all three processes into a single interactive page with swim lanes, role ownership, clickable step details, and version history.
+    </div>
+    <a href="Workflow_Macro_Visual.html" class="btn-workflow">View Workflow Map →</a>
+  </div>
+
+  <div class="page-footer">
+    <svg width="56" height="9" viewBox="0 0 201 33" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:.4"><path d="M41.4673 22.6537C39.8187 20.8428 38.9963 18.2178 39 14.7786C39.0038 11.3394 39.8262 8.71248 41.4673 6.89787C43.1122 5.08697 45.5118 4.18152 48.666 4.18152C50.7555 4.16768 52.8286 4.54703 54.775 5.29941V8.882C53.0032 8.00664 51.0527 7.54403 49.0725 7.52949H48.9653C47.0569 7.52949 45.5607 8.01757 44.4767 8.99384C43.3926 9.97 42.8525 11.889 42.8563 14.7506C42.8268 16.0424 42.9944 17.3313 43.3531 18.5736C43.5809 19.4472 44.0783 20.2287 44.7759 20.8092C45.3445 21.2551 46.0029 21.5753 46.7069 21.7483C47.4616 21.9236 48.2353 22.0063 49.0104 21.9941C51.0147 21.9922 52.9927 21.5433 54.7976 20.6807V24.2354C52.8505 24.9853 50.7779 25.3646 48.6886 25.3532C45.5344 25.3532 43.1348 24.4478 41.4899 22.6369" fill="#94a3b8"/><path d="M62.804 11.0065C62.4684 12.2414 62.3144 13.5176 62.3467 14.796C62.3155 16.0706 62.4695 17.3431 62.804 18.5742C63.0131 19.4422 63.4907 20.2238 64.1704 20.8099C64.7114 21.2542 65.3402 21.5817 66.0167 21.7712C67.505 22.0908 69.0452 22.0908 70.5335 21.7712C71.2106 21.5834 71.8398 21.2557 72.3797 20.8099C73.0592 20.2227 73.5384 19.4417 73.7517 18.5742C74.0824 17.3385 74.2345 16.0628 74.2035 14.7848C74.2345 13.5069 74.0824 12.231 73.7517 10.9954C73.537 10.1284 73.0581 9.34786 72.3797 8.75968C71.8415 8.31452 71.2142 7.98693 70.5391 7.79836C69.0508 7.47879 67.5106 7.47879 66.0223 7.79836C65.346 7.98793 64.717 8.31533 64.1761 8.75968C63.4978 9.34696 63.0205 10.1281 62.8098 10.9954L62.804 11.0065ZM59.343 20.1001C58.719 18.4018 58.4222 16.6026 58.468 14.796C58.4222 12.9893 58.719 11.1903 59.343 9.4919C59.8068 8.19677 60.6355 7.06011 61.7314 6.21665C62.6613 5.52686 63.7067 5.00467 64.8198 4.67407C67.0829 4.07023 69.4673 4.07023 71.7305 4.67407C72.8447 5.00567 73.8919 5.52776 74.8245 6.21665C75.9143 7.06222 76.737 8.19867 77.1959 9.4919C77.8246 11.1892 78.1235 12.9888 78.0766 14.796C78.1235 16.6032 77.8246 18.4029 77.1959 20.1001C76.734 21.3947 75.9071 22.5312 74.8132 23.3753C73.8806 24.0642 72.8335 24.5863 71.7191 24.918C69.4559 25.5217 67.0716 25.5217 64.8084 24.918C63.6954 24.5873 62.65 24.0651 61.72 23.3753C60.6243 22.5318 59.7955 21.3953 59.3318 20.1001" fill="#94a3b8"/><path d="M81.605 25.0514V6.27751C84.3483 4.90344 87.3777 4.18195 90.4523 4.17041C93.0872 4.17041 95.146 4.84676 96.629 6.19927C98.1121 7.55188 98.8649 9.42798 98.8875 11.8276V25.0514H95.0087V11.509C95.0663 10.473 94.7322 9.45276 94.0714 8.64731C93.4428 7.95059 92.1875 7.60033 90.3055 7.59662C88.648 7.5912 86.9999 7.84397 85.4217 8.34549V25.0514H81.605Z" fill="#94a3b8"/><path fill-rule="evenodd" clip-rule="evenodd" d="M29.0499 5.45796C29.0515 5.29712 29.0196 5.13765 28.9589 4.9887C28.8982 4.83977 28.8072 4.70433 28.6922 4.59018C28.5772 4.47603 28.4415 4.38544 28.2914 4.32362C28.1413 4.2618 27.9816 4.22998 27.8187 4.22998H8.86133V14.2229H17.175C17.6525 14.2229 18.1093 14.4105 18.4462 14.7442C18.7832 15.078 18.9732 15.5306 18.9732 16.0026V24.2426H29.0675V5.45796H29.0499Z" fill="#94a3b8"/><path fill-rule="evenodd" clip-rule="evenodd" d="M8.86109 14.223H1.10311C0.911479 14.2234 0.72464 14.1676 0.563348 14.0626C0.403653 13.9576 0.279093 13.8081 0.205633 13.6329C0.132174 13.4577 0.111396 13.2648 0.148126 13.0784C0.184856 12.892 0.275895 12.7205 0.411636 12.5856L8.86109 4.22998" fill="#94a3b8"/><path fill-rule="evenodd" clip-rule="evenodd" d="M29.0675 24.2427L20.6181 32.6073C20.4839 32.7416 20.3115 32.8333 20.1246 32.8705C19.9362 32.9079 19.743 32.8889 19.5657 32.8164C19.39 32.7439 19.2383 32.6209 19.1329 32.4631C19.0275 32.3055 18.9716 32.1201 18.9732 31.931V24.2427" fill="#94a3b8"/></svg>
+    Concepta · Intake &amp; Request Processing Initiative · Archive
+  </div>
+
+</div>
+</body>
+</html>
