@@ -1,0 +1,1150 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Concepta — Process Workflow Map</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&amp;display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:#f0ede8;
+  min-height:100vh;
+  padding:0 0 60px;
+  color:#1e293b;
+}
+
+/* ── Header ── */
+.site-header{
+  background:#1e293b;
+  padding:14px 28px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+.header-text-group{display:flex;flex-direction:column;gap:2px}
+.header-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:#f1f5f9;letter-spacing:.3px}
+.header-sub{font-family:'Syne',sans-serif;font-size:11px;font-weight:600;color:#64748b;letter-spacing:.5px}
+
+/* ── Page ── */
+.page{max-width:1500px;margin:0 auto;padding:28px 24px}
+
+/* ── Page heading ── */
+.page-heading{margin-bottom:18px}
+.page-heading h1{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#0f172a;margin-bottom:5px}
+.page-heading p{font-size:12px;color:#64748b;max-width:660px;line-height:1.65}
+
+/* ── Legend ── */
+.legend{
+  display:flex;gap:18px;align-items:center;flex-wrap:wrap;
+  margin-bottom:18px;
+  background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;
+  padding:10px 16px;width:fit-content;
+}
+.legend-label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;margin-right:4px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:#475569}
+.legend-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.ld-req{background:#3b82f6}
+.ld-ai{background:#8b5cf6}
+.ld-team{background:#0d9488}
+.ld-ps{background:#dc2626}
+.legend-sep{width:1px;height:16px;background:#e2e8f0}
+
+/* ── Tool legend ── */
+.tool-legend{
+  display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  margin-bottom:20px;
+}
+.tl-item{display:flex;align-items:center;gap:5px;font-size:10px;color:#64748b}
+
+/* ── Tabs ── */
+.tabs{display:flex;gap:6px;margin-bottom:14px;flex-wrap:wrap}
+.tab{
+  font-family:'Syne',sans-serif;font-size:11.5px;font-weight:700;
+  padding:9px 18px;border-radius:7px;
+  border:1.5px solid #d1d5db;background:#fff;color:#64748b;
+  cursor:pointer;transition:all .15s ease;letter-spacing:.3px;
+}
+.tab:hover{border-color:#94a3b8;color:#1e293b}
+.tab.active.t-intake{background:#1e40af;color:#fff;border-color:#1e40af}
+.tab.active.t-new{background:#0f766e;color:#fff;border-color:#0f766e}
+.tab.active.t-issue{background:#991b1b;color:#fff;border-color:#991b1b}
+
+/* ── Tab panels ── */
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* ── Workflow card ── */
+.workflow-card{
+  background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;
+  overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.06);
+}
+.workflow-header{
+  padding:14px 20px;border-bottom:1.5px solid #e2e8f0;
+  display:flex;align-items:baseline;gap:12px;
+}
+.workflow-header h2{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#0f172a}
+.workflow-header p{font-size:11px;color:#64748b;line-height:1.5}
+
+/* ── Diagram wrap ── */
+.diagram-wrap{overflow-x:auto}
+
+/* ── Swimlane ── */
+.swimlane{display:flex;flex-direction:column;min-width:860px}
+
+/* ── Phase header row ── */
+.phase-header-row{display:flex}
+.role-spacer{
+  width:90px;min-width:90px;flex-shrink:0;
+  background:#0f172a;
+  border-right:1.5px solid #1e3a5f;
+}
+.phases-row{display:flex;flex:1}
+.phase-hd{
+  flex:1;
+  background:#0f172a;color:#e2e8f0;
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
+  letter-spacing:1px;text-transform:uppercase;
+  padding:11px 14px;
+  border-right:1.5px solid #1e3a5f;
+  text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.phase-hd:last-child{border-right:none}
+.phase-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;border-radius:50%;
+  background:rgba(255,255,255,.12);
+  font-size:9px;font-weight:800;flex-shrink:0;
+}
+
+/* ── Lane row ── */
+.lane-row{display:flex;border-top:1.5px solid #e2e8f0}
+
+/* ── Role label ── */
+.role-lbl{
+  width:90px;min-width:90px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  padding:12px 6px;
+  border-right:1.5px solid #e2e8f0;
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  font-family:'Syne',sans-serif;font-size:8.5px;font-weight:700;
+  letter-spacing:1.3px;text-transform:uppercase;
+  position:sticky;left:0;z-index:2;
+}
+.rl-req{background:#dbeafe;color:#1e40af}
+.rl-ai {background:#ede9fe;color:#5b21b6}
+.rl-team{background:#ccfbf1;color:#0f766e}
+.rl-ps {background:#fee2e2;color:#991b1b}
+
+/* ── Lane cells ── */
+.lane-cells{display:flex;flex:1}
+.pc{
+  flex:1;
+  padding:14px;
+  border-right:1.5px solid #e2e8f0;
+  vertical-align:top;
+}
+.pc:last-child{border-right:none}
+
+/* Lane tints */
+.bg-req .pc{background:#fafcff}
+.bg-ai  .pc{background:#fdf9ff}
+.bg-team .pc{background:#f7fffe}
+.bg-ps  .pc{background:#fffafa}
+
+/* ── Step card ── */
+.sc{border-radius:8px;border:1.5px solid;overflow:hidden;font-size:11px}
+.sc-req{border-color:#bfdbfe}
+.sc-ai {border-color:#c4b5fd}
+.sc-team{border-color:#99f6e4}
+.sc-ps {border-color:#fca5a5}
+
+.sc-top{padding:9px 11px 8px}
+.sc-req .sc-top{background:#eff6ff}
+.sc-ai  .sc-top{background:#f5f3ff}
+.sc-team .sc-top{background:#f0fdfa}
+.sc-ps  .sc-top{background:#fef2f2}
+
+.sc-title{font-weight:600;font-size:11px;line-height:1.4;margin-bottom:3px}
+.sc-req .sc-title{color:#1e3a8a}
+.sc-ai  .sc-title{color:#3b0764}
+.sc-team .sc-title{color:#0f4c47}
+.sc-ps  .sc-title{color:#7f1d1d}
+
+
+
+/* ── Tools section ── */
+.sc-tools{
+  display:flex;gap:4px;flex-wrap:wrap;
+  padding:7px 11px;background:#fff;
+  border-top:1px solid;
+}
+.sc-req .sc-tools{border-color:#dbeafe}
+.sc-ai  .sc-tools{border-color:#ede9fe}
+.sc-team .sc-tools{border-color:#ccfbf1}
+.sc-ps  .sc-tools{border-color:#fee2e2}
+
+.tb{font-size:9px;font-weight:600;padding:2px 7px;border-radius:20px;letter-spacing:.2px}
+.tb-bc{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+.tb-zo{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+.tb-ss{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+.tb-sl{background:#fdf4ff;color:#7c3aed;border:1px solid #e9d5ff}
+
+
+
+/* ── Click hint ── */
+.sc-hint{
+  font-size:9px;color:#94a3b8;
+  padding:5px 11px 7px;
+  letter-spacing:.2px;
+  border-top:1px solid #f1f5f9;
+  display:flex;align-items:center;gap:4px;
+}
+.sc-hint::before{content:'🔍';font-size:9px}
+.sc[onclick]:hover .sc-hint{color:#64748b}
+.sc[onclick]{transition:box-shadow .15s}
+.sc[onclick]:hover{box-shadow:0 4px 18px rgba(0,0,0,.1)}
+
+/* ── Card popup overlay ── */
+.why-overlay{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(15,23,42,.45);
+  z-index:1000;
+  align-items:center;justify-content:center;
+  padding:24px;
+}
+.why-overlay.open{display:flex}
+.why-popup{
+  background:#fff;border-radius:12px;
+  max-width:480px;width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,.2);
+  overflow:hidden;
+  animation:popIn .15s ease;
+}
+@keyframes popIn{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.why-popup-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;
+  background:#fffbeb;border-bottom:1px solid #fde68a;
+}
+.why-popup-title{
+  display:flex;align-items:center;gap:7px;
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;
+  color:#b45309;letter-spacing:.4px;text-transform:uppercase;
+}
+.why-popup-close{
+  background:none;border:none;cursor:pointer;
+  color:#92400e;font-size:16px;line-height:1;padding:2px 4px;
+  border-radius:4px;transition:background .1s;
+}
+.why-popup-close:hover{background:#fef3c7}
+.why-popup-body{
+  padding:18px 18px 20px;
+  font-size:12.5px;color:#1e293b;line-height:1.75;
+}
+.why-popup-step{
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;
+  color:#94a3b8;letter-spacing:.8px;text-transform:uppercase;
+  margin-bottom:8px;display:block;
+}
+
+/* ── Decision section ── */
+.sc-dec{
+  padding:8px 11px;background:#f8fafc;
+  border-top:1px dashed #cbd5e1;
+  font-size:10px;color:#475569;line-height:1.55;
+}
+.dec-lbl{
+  font-family:'Syne',sans-serif;font-size:8.5px;font-weight:700;
+  color:#334155;letter-spacing:.5px;text-transform:uppercase;
+  display:block;margin-bottom:5px;
+}
+.dec-y{color:#166534;font-weight:500}
+.dec-n{color:#dc2626;font-weight:500}
+
+/* ── Passive note ── */
+.passive{
+  font-size:10px;color:#94a3b8;
+  font-style:italic;line-height:1.6;padding:2px 0;
+}
+
+/* ── Monitor card ── */
+.mc{
+  border-radius:8px;border:1.5px dashed #a78bfa;
+  background:#faf8ff;padding:10px 11px;
+  font-size:10px;color:#4c1d95;line-height:1.55;
+}
+.mc-title{
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;
+  color:#6d28d9;letter-spacing:.4px;
+  display:block;margin-bottom:7px;
+}
+.mc-trigger{
+  display:flex;gap:5px;align-items:flex-start;
+  padding-top:5px;margin-top:5px;
+  border-top:1px solid #e9d5ff;font-size:9.5px;
+}
+.mc-trigger:first-of-type{border-top:none;margin-top:0;padding-top:0}
+.mc-icon{flex-shrink:0;font-size:10px}
+
+/* ── Footer ── */
+.page-footer{
+  margin-top:28px;display:flex;align-items:center;gap:10px;
+  font-size:10px;color:#94a3b8;
+}
+
+/* ── Popup sections ── */
+.popup-section{margin-bottom:16px}
+.popup-section:last-child{margin-bottom:0}
+.popup-section-lbl{
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;
+  color:#94a3b8;letter-spacing:.8px;text-transform:uppercase;
+  margin-bottom:7px;
+}
+.popup-section-body{
+  font-size:12.5px;color:#1e293b;line-height:1.75;
+}
+
+/* ── Version toggle ── */
+.popup-version-section{
+  border-top:1px solid #f1f5f9;padding-top:14px;margin-top:4px;
+}
+.version-toggle{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;background:none;border:none;cursor:pointer;padding:0;
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
+  color:#64748b;letter-spacing:.4px;
+}
+.version-toggle:hover{color:#334155}
+.version-chevron{font-size:12px;transition:transform .15s}
+.version-list{margin-top:10px;display:flex;flex-direction:column;gap:6px}
+.version-row{
+  display:grid;grid-template-columns:40px 90px 1fr 80px;
+  gap:8px;align-items:start;font-size:11px;
+  padding:7px 10px;background:#f8fafc;border-radius:6px;
+  border:1px solid #e2e8f0;
+}
+.v-badge{
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;
+  color:#1e40af;background:#eff6ff;border:1px solid #bfdbfe;
+  border-radius:20px;padding:1px 6px;white-space:nowrap;
+  display:inline-block;
+}
+.v-date{font-size:10px;color:#94a3b8}
+.v-change{color:#1e293b}
+.v-owner{font-size:10px;color:#64748b;text-align:right}
+
+
+/* ── Linked tool badges ── */
+.sc-tools a .tb:hover{opacity:.75}
+
+
+/* ── Who section ── */
+.popup-who-section{
+  background:#f8fafc;border-radius:7px;
+  padding:8px 12px;margin-bottom:14px;
+  border:1px solid #e2e8f0;
+}
+.popup-who-section .popup-section-lbl{margin-bottom:4px}
+.popup-who-section .popup-section-body{
+  font-size:12px;font-weight:600;color:#0f172a;
+}
+
+
+/* ── Risks banner ── */
+.risks-banner{
+  background:#fff;border:1.5px solid #e2e8f0;
+  border-radius:10px;margin-bottom:20px;
+  overflow:hidden;
+}
+.risks-banner-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:11px 16px;cursor:pointer;
+  background:#fafafa;border-bottom:1.5px solid transparent;
+  transition:background .12s;
+}
+.risks-banner-header:hover{background:#f1f5f9}
+.risks-banner-header.open{border-bottom-color:#e2e8f0}
+.risks-banner-title{
+  display:flex;align-items:center;gap:8px;
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;
+  color:#334155;letter-spacing:.3px;
+}
+.risks-banner-badge{
+  font-size:9px;font-weight:700;padding:2px 8px;border-radius:20px;
+  letter-spacing:.3px;
+}
+.rb-risk{background:#fef2f2;color:#991b1b;border:1px solid #fca5a5}
+.rb-assumption{background:#fffbeb;color:#b45309;border:1px solid #fde68a}
+.rb-consideration{background:#eff6ff;color:#1e40af;border:1px solid #bfdbfe}
+.rb-status{background:#f0fdf4;color:#166534;border:1px solid #86efac}
+.risks-chevron{font-size:12px;color:#94a3b8;transition:transform .2s}
+.risks-chevron.open{transform:rotate(90deg)}
+.risks-body{display:none;padding:16px 20px;display:none}
+.risks-body.open{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.risk-col-title{
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;
+  letter-spacing:.8px;text-transform:uppercase;
+  margin-bottom:10px;display:flex;align-items:center;gap:6px;
+}
+.risk-item{
+  display:flex;gap:8px;align-items:flex-start;
+  font-size:11px;color:#475569;line-height:1.6;
+  margin-bottom:8px;
+}
+.risk-item:last-child{margin-bottom:0}
+.risk-dot{
+  width:6px;height:6px;border-radius:50%;
+  flex-shrink:0;margin-top:6px;
+}
+.rd-red{background:#dc2626}
+.rd-amber{background:#f59e0b}
+.rd-blue{background:#3b82f6}
+.rd-green{background:#16a34a}
+
+
+/* ── Who section ── */
+.popup-who-section{
+  background:#f8fafc;border-radius:7px;
+  padding:8px 12px;margin-bottom:14px;
+  border:1px solid #e2e8f0;
+}
+.popup-who-section .popup-section-lbl{margin-bottom:4px}
+.popup-who-section .popup-section-body{
+  font-size:12px;font-weight:600;color:#0f172a;
+}
+
+
+/* ── Monitoring block hint + hover ── */
+.mc-hint{
+  font-size:9px;color:#94a3b8;
+  padding:6px 0 2px;
+  letter-spacing:.2px;
+  border-top:1px solid #e9d5ff;
+  margin-top:8px;
+}
+.mc[onclick]:hover{
+  box-shadow:0 4px 18px rgba(139,92,246,.15);
+  border-color:#8b5cf6;
+}
+
+</style>
+</head>
+<body>
+<!-- ═══ SITE HEADER ═══ -->
+<header class="site-header">
+<svg fill="none" height="13" viewbox="0 0 201 33" width="80" xmlns="http://www.w3.org/2000/svg">
+<path d="M41.4673 22.6537C39.8187 20.8428 38.9963 18.2178 39 14.7786C39.0038 11.3394 39.8262 8.71248 41.4673 6.89787C43.1122 5.08697 45.5118 4.18152 48.666 4.18152C50.7555 4.16768 52.8286 4.54703 54.775 5.29941V8.882C53.0032 8.00664 51.0527 7.54403 49.0725 7.52949H48.9653C47.0569 7.52949 45.5607 8.01757 44.4767 8.99384C43.3926 9.97 42.8525 11.889 42.8563 14.7506C42.8268 16.0424 42.9944 17.3313 43.3531 18.5736C43.5809 19.4472 44.0783 20.2287 44.7759 20.8092C45.3445 21.2551 46.0029 21.5753 46.7069 21.7483C47.4616 21.9236 48.2353 22.0063 49.0104 21.9941C51.0147 21.9922 52.9927 21.5433 54.7976 20.6807V24.2354C52.8505 24.9853 50.7779 25.3646 48.6886 25.3532C45.5344 25.3532 43.1348 24.4478 41.4899 22.6369" fill="white"></path>
+<path d="M62.804 11.0065C62.4684 12.2414 62.3144 13.5176 62.3467 14.796C62.3155 16.0706 62.4695 17.3431 62.804 18.5742C63.0131 19.4422 63.4907 20.2238 64.1704 20.8099C64.7114 21.2542 65.3402 21.5817 66.0167 21.7712C67.505 22.0908 69.0452 22.0908 70.5335 21.7712C71.2106 21.5834 71.8398 21.2557 72.3797 20.8099C73.0592 20.2227 73.5384 19.4417 73.7517 18.5742C74.0824 17.3385 74.2345 16.0628 74.2035 14.7848C74.2345 13.5069 74.0824 12.231 73.7517 10.9954C73.537 10.1284 73.0581 9.34786 72.3797 8.75968C71.8415 8.31452 71.2142 7.98693 70.5391 7.79836C69.0508 7.47879 67.5106 7.47879 66.0223 7.79836C65.346 7.98793 64.717 8.31533 64.1761 8.75968C63.4978 9.34696 63.0205 10.1281 62.8098 10.9954L62.804 11.0065ZM59.343 20.1001C58.719 18.4018 58.4222 16.6026 58.468 14.796C58.4222 12.9893 58.719 11.1903 59.343 9.4919C59.8068 8.19677 60.6355 7.06011 61.7314 6.21665C62.6613 5.52686 63.7067 5.00467 64.8198 4.67407C67.0829 4.07023 69.4673 4.07023 71.7305 4.67407C72.8447 5.00567 73.8919 5.52776 74.8245 6.21665C75.9143 7.06222 76.737 8.19867 77.1959 9.4919C77.8246 11.1892 78.1235 12.9888 78.0766 14.796C78.1235 16.6032 77.8246 18.4029 77.1959 20.1001C76.734 21.3947 75.9071 22.5312 74.8132 23.3753C73.8806 24.0642 72.8335 24.5863 71.7191 24.918C69.4559 25.5217 67.0716 25.5217 64.8084 24.918C63.6954 24.5873 62.65 24.0651 61.72 23.3753C60.6243 22.5318 59.7955 21.3953 59.3318 20.1001" fill="white"></path>
+<path d="M81.605 25.0514V6.27751C84.3483 4.90344 87.3777 4.18195 90.4523 4.17041C93.0872 4.17041 95.146 4.84676 96.629 6.19927C98.1121 7.55188 98.8649 9.42798 98.8875 11.8276V25.0514H95.0087V11.509C95.0663 10.473 94.7322 9.45276 94.0714 8.64731C93.4428 7.95059 92.1875 7.60033 90.3055 7.59662C88.648 7.5912 86.9999 7.84397 85.4217 8.34549V25.0514H81.605Z" fill="white"></path>
+<path clip-rule="evenodd" d="M29.0499 5.45796C29.0515 5.29712 29.0196 5.13765 28.9589 4.9887C28.8982 4.83977 28.8072 4.70433 28.6922 4.59018C28.5772 4.47603 28.4415 4.38544 28.2914 4.32362C28.1413 4.2618 27.9816 4.22998 27.8187 4.22998H8.86133V14.2229H17.175C17.6525 14.2229 18.1093 14.4105 18.4462 14.7442C18.7832 15.078 18.9732 15.5306 18.9732 16.0026V24.2426H29.0675V5.45796H29.0499Z" fill="#4d6eff" fill-rule="evenodd"></path>
+<path clip-rule="evenodd" d="M8.86109 14.223H1.10311C0.911479 14.2234 0.72464 14.1676 0.563348 14.0626C0.403653 13.9576 0.279093 13.8081 0.205633 13.6329C0.132174 13.4577 0.111396 13.2648 0.148126 13.0784C0.184856 12.892 0.275895 12.7205 0.411636 12.5856L8.86109 4.22998" fill="#a0b0ff" fill-rule="evenodd"></path>
+<path clip-rule="evenodd" d="M29.0675 24.2427L20.6181 32.6073C20.4839 32.7416 20.3115 32.8333 20.1246 32.8705C19.9362 32.9079 19.743 32.8889 19.5657 32.8164C19.39 32.7439 19.2383 32.6209 19.1329 32.4631C19.0275 32.3055 18.9716 32.1201 18.9732 31.931V24.2427" fill="#a0b0ff" fill-rule="evenodd"></path>
+</svg>
+<div class="header-text-group">
+<div class="header-title">Process Workflow Map</div>
+<div class="header-sub">Intake &amp; Request Processing Initiative · Leadership Review</div>
+</div>
+</header>
+<!-- ═══ PAGE ═══ -->
+<div class="page">
+<div class="page-heading">
+<h1>Macro Workflow Visualization</h1>
+<p>Roles, responsibilities, tools, and the rationale behind each step — across all three request workflows. Each tab represents a distinct process. Select a tab to explore.</p>
+</div>
+<!-- Legend -->
+<div class="legend">
+<span class="legend-label">Roles</span>
+<div class="legend-item"><div class="legend-dot ld-req"></div>Requestor</div>
+<div class="legend-sep"></div>
+<div class="legend-item"><div class="legend-dot ld-ai"></div>AI Agent</div>
+<div class="legend-sep"></div>
+<div class="legend-item"><div class="legend-dot ld-team"></div>Analysis Team / Internal Team</div>
+<div class="legend-sep"></div>
+<div class="legend-item"><div class="legend-dot ld-ps"></div>Production Support Team</div>
+</div>
+<!-- Tool legend -->
+<div class="tool-legend">
+<span style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:#94a3b8;letter-spacing:1px;text-transform:uppercase">Tools</span>
+<span class="tb tb-bc">Basecamp</span>
+<span class="tb tb-zo">Zoho Sprints</span>
+<span class="tb tb-ss">Smartsheet</span>
+<span class="tb tb-sl">Slack</span>
+<span style="font-size:10px;color:#94a3b8;margin-left:6px">· <span style="color:#b45309;font-weight:600">WHY</span> = rationale behind each step</span>
+</div>
+<!-- Risks / Assumptions Banner -->
+<div class="risks-banner">
+<div class="risks-banner-header" id="risksBannerHeader" onclick="toggleRisks()">
+<div class="risks-banner-title">
+      ⚠️ Risks, Assumptions &amp; Considerations
+      <span class="risks-banner-badge rb-risk">8 Risks</span>
+<span class="risks-banner-badge rb-assumption">10 Assumptions</span>
+<span class="risks-banner-badge rb-consideration">3 Considerations</span>
+</div>
+<span class="risks-chevron" id="risksChevron">▸</span>
+</div>
+<div class="risks-body" id="risksBannerBody">
+<div>
+<div class="risk-col-title" style="color:#991b1b"><span class="risks-banner-badge rb-risk">Risks</span></div>
+<div class="risk-item"><div class="risk-dot rd-red"></div>Requestors may inflate severity — particularly Sev 1 and Sev 2 — to trigger faster responses. The verification gate must be enforced consistently or SLA definitions erode over time.</div>
+<div class="risk-item"><div class="risk-dot rd-red"></div>If the Smartsheet intake form has friction or access issues, intake will revert to Slack and email immediately. Pilot one account carefully before scaling.</div>
+<div class="risk-item"><div class="risk-dot rd-red"></div>AI Agent miscategorization at volume will overwhelm the human verification gate. Error rate must be validated in the pilot before the agent is enabled on additional accounts.</div>
+<div class="risk-item"><div class="risk-dot rd-red"></div>The monitoring triggers — inactivity flags, budget alerts, SLA nudges — are not yet configured. Without calibrated thresholds they will create noise, not signal.</div>
+<div class="risk-item"><div class="risk-dot rd-red"></div>If the PDM becomes the default submitter across multiple accounts simultaneously, intake becomes a bottleneck at the PDM level. Monitor submission volume per account during the pilot.</div>
+<div class="risk-item"><div class="risk-dot rd-red"></div>No process works without team commitment. If the team does not adhere to the intake standards — logging time, updating tickets, maintaining the project plan — the entire system breaks down regardless of how well it is designed.</div>
+<div class="risk-item"><div class="risk-dot rd-red"></div>The Smartsheet Project Plan and Zoho activity log only have value if they are maintained in real time. Retroactive logging produces inaccurate data that cannot be used for budget tracking, capacity planning, or client reporting — and directly impacts the organisation's bottom line.</div>
+<div class="risk-item"><div class="risk-dot rd-red"></div>Team buy-in must be established before go-live — not assumed. The process should be walked through with the full team, questions addressed, and ownership confirmed per role before the first account is piloted.</div>
+<div class="risk-col-title" style="color:#166534;margin-top:16px"><span class="risks-banner-badge rb-status">Status</span></div>
+<div class="risk-item"><div class="risk-dot rd-green"></div>This is a pilot-ready process — not a production-ready system. Manual validation on one account must be completed before the AI Agent is enabled.</div>
+<div class="risk-item"><div class="risk-dot rd-green"></div>The AI Agent should be enabled in phases — intake routing first, notifications second, monitoring third.</div>
+</div>
+<div>
+<div class="risk-col-title" style="color:#b45309"><span class="risks-banner-badge rb-assumption">Assumptions</span></div>
+<div class="risk-item"><div class="risk-dot rd-amber"></div>Severity definitions (Sev 1–4) are agreed and documented with the client before go-live.</div>
+<div class="risk-item"><div class="risk-dot rd-amber"></div>The client is actively using Basecamp as their request tracking board.</div>
+<div class="risk-item"><div class="risk-dot rd-amber"></div>All client accounts will be upgraded to Basecamp 4 before go-live — this is required to support the Request Board setup and card-based workflow.</div>
+<div class="risk-item"><div class="risk-dot rd-amber"></div>Smartsheet intake forms are accessible to the requestor without login barriers or friction.</div>
+<div class="risk-item"><div class="risk-dot rd-amber"></div>The AI Agent reads form values as submitted — it does not infer or interpret.</div>
+<div class="risk-item"><div class="risk-dot rd-amber"></div>All SLA response times, communication channels, and escalation paths are defined per account before the agent is enabled.</div>
+<div class="risk-item"><div class="risk-dot rd-amber"></div>Budget allocations per service bucket are established and baselined in Zoho before intake begins.</div>
+<div class="risk-item"><div class="risk-dot rd-amber"></div>The Delivery Manager actively maintains the Smartsheet Project Plan in real time — not retroactively.</div>
+<div class="risk-item"><div class="risk-dot rd-amber"></div>For requests estimated at 10 hours or under, formal scoping documentation is at the team's discretion — a one-line description is acceptable. Estimated effort must always be recorded and the item must be added to the Release Project Plan and prioritized. Traceability is non-negotiable regardless of request size.</div>
+<div class="risk-item"><div class="risk-dot rd-amber"></div>For lean or time-poor client accounts, the PDM is the default submitter. The client provides the context — the PDM captures and submits it. This is agreed per account before go-live.</div>
+<div class="risk-col-title" style="color:#1e40af;margin-top:16px"><span class="risks-banner-badge rb-consideration">Considerations</span></div>
+<div class="risk-item"><div class="risk-dot rd-blue"></div>Slack links and Zoho URLs in this document link to reference accounts only — both are configured per account.</div>
+<div class="risk-item"><div class="risk-dot rd-blue"></div>Version history on each card is locked at v1.0 until the process is baselined and signed off by the team.</div>
+<div class="risk-item"><div class="risk-dot rd-blue"></div>This process requires team buy-in before go-live. The documentation reflects the intended design — implementation sequencing to be agreed.</div>
+</div>
+</div>
+</div>
+<!-- ═══ TABS ═══ -->
+<div class="tabs">
+<button class="tab active t-intake" onclick="switchTab('intake',this)">Intake Request</button>
+<button class="tab t-new" onclick="switchTab('new',this)">New Request</button>
+<button class="tab t-issue" onclick="switchTab('issue',this)">Reported Issue</button>
+</div>
+<!-- ══════════════════════════════════════════════════════
+       TAB 1 — INTAKE REQUEST
+  ══════════════════════════════════════════════════════ -->
+<div class="tab-panel active" id="tab-intake">
+<div class="workflow-card">
+<div class="workflow-header">
+<h2>Intake Request</h2>
+<p>Entry point for all work — validates and routes every request to either the New Request or Production Issue workflow</p>
+</div>
+<div class="diagram-wrap">
+<div class="swimlane">
+<!-- Phase headers -->
+<div class="phase-header-row">
+<div class="role-spacer"></div>
+<div class="phases-row">
+<div class="phase-hd"><span class="phase-num">1</span>Submit</div>
+<div class="phase-hd"><span class="phase-num">2</span>Validate &amp; Route</div>
+<div class="phase-hd"><span class="phase-num">3</span>Confirm &amp; Handoff</div>
+</div>
+</div>
+<!-- Requestor lane -->
+<div class="lane-row bg-req">
+<div class="role-lbl rl-req">Requestor</div>
+<div class="lane-cells">
+<div class="pc">
+<div class="sc sc-req" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The requestor fills out a Smartsheet form to submit their request. They choose the form type — New Request or Reported Issue. For issues, they also select a severity level (Sev 1–4)." data-who="Requestor or PDM (on behalf of the requestor)" data-why="One form. One place. Every request arrives with the right information — no chasing, no back and forth before work can even start." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Submit Request</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+</div>
+</div>
+</div>
+<div class="pc">
+<p class="passive">📬 Receives acknowledgment notification confirming request has been received and routed to the correct team.</p>
+</div>
+<div class="pc">
+<p class="passive">Not involved in internal handoff verification.</p>
+</div>
+</div>
+</div>
+<!-- AI Agent lane -->
+<div class="lane-row bg-ai">
+<div class="role-lbl rl-ai">AI Agent</div>
+<div class="lane-cells">
+<div class="pc">
+<p class="passive">⏱ Not active until form is submitted.</p>
+</div>
+<div class="pc">
+<div class="sc sc-ai" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "April 2026", "change": "Added: AI Agent adds item to Client Delivery Portfolio Smartsheet (Backlog) at intake \u2014 Request Date, Requestor, Request Type, Status = Not Started", "owner": "Anne"}]' data-what="The AI Agent reads the submitted form and does four things automatically: creates the right ticket in Zoho, moves the Basecamp card to the correct column, notifies the requestor with a comment on their card, and adds the request to the Client Delivery Portfolio in Smartsheet. The assigned team is tagged in Slack." data-who="AI Agent" data-why="Nothing is done manually. The moment a request is submitted, it is ticketed, routed, logged, and the right people are notified — with no human in the middle." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Validate, Categorize &amp; Route</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://sprints.zoho.com/workspace/conceptatech#P34/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Sprints</span></a>
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+<span class="tb tb-sl">Slack</span>
+<a href="https://app.smartsheet.com/sheets/6xj33C6MVG3XGmvCHGQgW3C2rmMF7jHMmpg276V1" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">Smartsheet</span></a>
+</div>
+<div class="sc-dec">
+<span class="dec-lbl">Routes to</span>
+<div><span class="dec-y">✓ New Request</span> → "Analyzing / Scoping / Estimating" column · Task ticket · Epic: Planning/Ops/New Requests · Analysis team notified</div>
+<div style="margin-top:5px"><span class="dec-n">⚠ Production Issue</span> → "Triage / Troubleshooting" column · Bug ticket · Epic: Production Support · Prod Support team notified per severity &amp; SLA</div>
+</div>
+</div>
+</div>
+<div class="pc">
+<p class="passive">Handoff complete — monitoring resumes at the start of the downstream workflow.</p>
+</div>
+</div>
+</div>
+<!-- Internal Team lane -->
+<div class="lane-row bg-team">
+<div class="role-lbl rl-team">Internal Team</div>
+<div class="lane-cells">
+<div class="pc">
+<p class="passive">Not involved — waiting for AI Agent to complete intake and routing.</p>
+</div>
+<div class="pc">
+<p class="passive">📲 Receives Slack notification with Zoho ticket link, category, and severity (if applicable).</p>
+</div>
+<div class="pc">
+<div class="sc sc-team" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The team does a quick check — is the Zoho ticket correct? Is the Basecamp card in the right column? If something is off, they fix it and the requestor is notified of the change." data-who="PDM" data-why="A two-minute check here prevents hours of rework later. This is the safety net before any work begins." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Verify Handoff Accuracy</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://sprints.zoho.com/workspace/conceptatech#P34/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Sprints</span></a>
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+</div>
+<div class="sc-dec">
+<span class="dec-lbl">Outcome</span>
+<div><span class="dec-y">✓ Accurate</span> → Proceed to New Request Workflow or Production Issue Workflow</div>
+<div style="margin-top:5px"><span class="dec-n">✗ Inaccurate</span> → Reassign category · AI Agent re-notifies requestor · Re-enters flow with corrected ticket</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ══════════════════════════════════════════════════════
+       TAB 2 — NEW REQUEST
+  ══════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-new">
+<div class="workflow-card">
+<div class="workflow-header">
+<h2>New Request</h2>
+<p>Processing a New Feature or Enhancement through analysis, scoping, estimation, and client approval</p>
+</div>
+<div class="diagram-wrap">
+<div class="swimlane">
+<!-- Phase headers -->
+<div class="phase-header-row">
+<div class="role-spacer"></div>
+<div class="phases-row">
+<div class="phase-hd"><span class="phase-num">1</span>Receive</div>
+<div class="phase-hd"><span class="phase-num">2</span>Clarify &amp; Assess</div>
+<div class="phase-hd"><span class="phase-num">3</span>Analyze</div>
+<div class="phase-hd"><span class="phase-num">4</span>Scope &amp; Estimate</div>
+<div class="phase-hd"><span class="phase-num">5</span>Review &amp; Approve</div>
+</div>
+</div>
+<!-- Requestor lane -->
+<div class="lane-row bg-req">
+<div class="role-lbl rl-req">Requestor</div>
+<div class="lane-cells">
+<div class="pc">
+<div class="sc sc-req" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The requestor gets a comment on their Basecamp card confirming their request was received and assigned. Basecamp emails them the comment automatically." data-who="Requestor" data-why="The requestor knows their request landed, who has it, and where to track it — right away. No guessing, no follow-up needed." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Receive Acknowledgment</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+</div>
+</div>
+</div>
+<div class="pc">
+<div class="sc sc-req" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="If the team has questions about the request, the requestor answers them in Basecamp. The sooner they respond, the faster the work moves." data-who="Requestor" data-why="Questions left unanswered during analysis become problems during delivery. A quick response now saves everyone time later." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Respond to Clarification Requests</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+</div>
+</div>
+</div>
+<div class="pc">
+<p class="passive">⏱ Passive — awaiting scope deliverable from Analysis Team.</p>
+</div>
+<div class="pc">
+<p class="passive">⏱ Passive — awaiting notification that scope is ready for review.</p>
+</div>
+<div class="pc">
+<div class="sc sc-req" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The requestor gets a Basecamp comment letting them know the scope is ready to review. They look it over — the scope, the estimate, and the timeline — and either approve it or send feedback." data-who="Requestor" data-why="Nothing moves to delivery without the requestor's approval. This protects both sides from surprises down the line." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Review Scope Deliverable</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+</div>
+<div class="sc-dec">
+<span class="dec-lbl">Decision</span>
+<div><span class="dec-y">✓ Approved</span> → Scope locked · AI Agent moves card to "Approved / Prioritize" · Proceeds to delivery planning</div>
+<div style="margin-top:5px"><span class="dec-n">↩ Revision</span> → Submit feedback via Request Board · AI Agent routes back to Analysis Team</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- AI Agent lane -->
+<div class="lane-row bg-ai">
+<div class="role-lbl rl-ai">AI Agent</div>
+<div class="lane-cells">
+<div class="pc">
+<div class="sc sc-ai" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The AI Agent confirms the Basecamp card is in the right column and tags the analysis team in Slack with the ticket details. It posts a comment on the card so the requestor knows analysis has started." data-who="AI Agent" data-why="The team gets everything they need the moment they are assigned — no emails, no manual handoff, no delay." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Initial Handoff to Analysis Team</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+<a href="https://sprints.zoho.com/workspace/conceptatech#P34/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Sprints</span></a>
+<span class="tb tb-sl">Slack</span>
+</div>
+</div>
+</div>
+<div class="pc">
+<div class="mc" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The AI Agent monitors the New Request workflow continuously once the handoff from intake is complete. It runs three trigger checks: (1) Ticket inactivity — if no activity has been logged on the Zoho ticket within the team's planning ceremony window (the blocked time allocated to analyze requests), the PDM and SA are flagged in Slack. (2) Requestor responsiveness — if a clarification question goes unanswered beyond the agreed SLA window, an automated reminder is sent to the requestor via Basecamp comment. (3) Budget threshold — if the Planning/Ops/New Requests epic reaches 80% of its allocated budget, the PDM is flagged before an overage occurs." data-who="AI Agent (configured by Delivery Manager per account)" data-why="The planning ceremony cadence is the team's committed window to process new requests — inactivity within that window means something is blocked and needs attention. The 80% budget trigger gives the PDM time to have a conversation with the client before the budget is exhausted, not after. None of these triggers require human monitoring — the agent handles the coordination so the team stays focused on the work." onclick="openCard(this)" style="cursor:pointer">
+<span class="mc-title">🔄 Continuous Monitoring — New Request</span>
+<div class="mc-trigger"><span class="mc-icon">⚡</span>Ticket inactive within the planning ceremony window → flag PDM + SA in Slack. Threshold: based on the team's committed planning cadence per account.</div>
+<div class="mc-trigger"><span class="mc-icon">⚡</span>Requestor clarification question unanswered beyond SLA window → send automated reminder via Basecamp comment.</div>
+<div class="mc-trigger"><span class="mc-icon">⚡</span>Planning/Ops/New Requests budget reaches 80% of allocation → flag PDM before overage occurs.</div>
+<div class="mc-hint">🔍 Click for details</div></div>
+</div>
+<div class="pc">
+<p class="passive">🔄 Monitoring continues — tracking ticket activity, budget, and SLA compliance.</p>
+</div>
+<div class="pc">
+<p class="passive">🔄 Monitoring continues — will trigger requestor notification when scope card is moved to review column.</p>
+</div>
+<div class="pc">
+<div class="sc sc-ai" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="When scope is approved, the AI Agent updates the Basecamp card, updates the Zoho ticket, and notifies the analysis team in Slack. The Delivery Manager then expands the Smartsheet Project Plan — adding the Scope Activities section and building out the Release Train with implementation tasks, delivery milestones, and resource allocation. The requestor gets a confirmation comment on their card." data-who="AI Agent · Delivery Manager" data-why="Implementation planning only starts after the client approves — not before. The release train is the DM's delivery commitment, built on a locked scope." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Close Out Scope Approval</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+<a href="https://sprints.zoho.com/workspace/conceptatech#P34/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Sprints</span></a>
+<span class="tb tb-sl">Slack</span>
+</div>
+<div class="sc-dec">
+<span class="dec-lbl">If revision requested</span>
+<div><span class="dec-n">↩</span> Picks up requestor feedback · Notifies Analysis Team · Moves card back to "Analyzing / Scoping / Estimating" · Logs revision on Zoho ticket</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Analysis Team lane -->
+<div class="lane-row bg-team">
+<div class="role-lbl rl-team">Analysis Team<br/><span style="font-size:7px;letter-spacing:.5px">PDM · SA · Dev · QA · UX</span></div>
+<div class="lane-cells">
+<div class="pc">
+<div class="sc sc-team" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The Delivery Manager picks up the request, confirms the Zoho ticket details, and verifies the appropriate team is assigned based on the request type. They note the budget allocation available to process the request against the Planning/Ops/New Requests epic and initialize the Smartsheet Project Plan with the Technical Analysis section ready to track tasks, assignees, and dates from this point forward." data-who="Delivery Manager" data-why="The project plan starts the moment analysis does — not after. The DM owns it because they own the budget and resource allocation. Nothing gets tracked retroactively." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Pick Up &amp; Initiate</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://sprints.zoho.com/workspace/conceptatech#P34/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Sprints</span></a>
+<a href="https://app.smartsheet.com/sheets/6xj33C6MVG3XGmvCHGQgW3C2rmMF7jHMmpg276V1" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">Smartsheet</span></a>
+</div>
+</div>
+</div>
+<div class="pc">
+<div class="sc sc-team" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="If the request is unclear, the team asks questions in Basecamp and waits for answers before moving on. If the team needs to run a small proof of concept before they can estimate, they scope it, get the requestor's approval, and manage it closely." data-who="PDM · SA" data-why="Starting work on a misunderstood request wastes everyone's time. If there is uncertainty, it gets resolved here — not halfway through delivery." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Clarify Request &amp; Assess POC Need</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://sprints.zoho.com/workspace/conceptatech#P34/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Sprints</span></a>
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+</div>
+</div>
+</div>
+<div class="pc">
+<div class="sc sc-team" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The team conducts the technical assessment, defines requirements, and builds supporting artifacts — with the Delivery Manager updating the Smartsheet Project Plan in real time as activities happen. Tasks, assignees, durations, sprint links, and budget are logged throughout. PDM and SA lead; Dev, QA, and UX/UI join based on the request. All time logs to the Planning/Ops/New Requests epic. Note: for requests estimated at 10 hours or under, the depth of analysis and scoping documentation is at the team's discretion. A one-line description is acceptable — but estimated effort must always be recorded and the item added to the Release Project Plan." data-who="Delivery Manager · PDM · SA (+ Dev, QA, UX/UI as needed)" data-why="The DM keeps the project plan current as work happens — not at the end. This gives live visibility into effort, budget, and resource allocation during analysis, not just after." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Analyze &amp; Collaborate</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://sprints.zoho.com/workspace/conceptatech#P34/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Sprints</span></a>
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+<a href="https://app.smartsheet.com/sheets/6xj33C6MVG3XGmvCHGQgW3C2rmMF7jHMmpg276V1" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">Smartsheet</span></a>
+</div>
+<div class="sc-dec">
+<span class="dec-lbl">Gate</span>
+<div><span class="dec-y">✓ Team aligned on scope</span> → Proceed to estimation</div>
+<div style="margin-top:5px"><span class="dec-n">✗ Gaps or misalignment</span> → Revisit analysis · Address with team and stakeholders · Re-enter analysis</div>
+</div>
+</div>
+</div>
+<div class="pc">
+<div class="sc sc-team" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The team locks in the scope and builds the estimate using the Smartsheet Estimator. The estimate covers everything — not just development, but also QA, UAT, deployment, and documentation. All supporting files are attached to the Basecamp card. Note: for requests estimated at 10 hours or under, a one-line scope description is acceptable at the team's discretion. Estimated effort must always be captured and the item must appear on the Release Project Plan — traceability is required regardless of request size." data-who="Delivery Manager · Analysis Team" data-why="Estimating the full picture up front means no surprise hours at delivery. What gets agreed now is what gets delivered." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Finalize Scope &amp; Build Estimate</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://app.smartsheet.com/sheets/6xj33C6MVG3XGmvCHGQgW3C2rmMF7jHMmpg276V1" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">Smartsheet</span></a>
+<a href="https://sprints.zoho.com/workspace/conceptatech#P34/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Sprints</span></a>
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+</div>
+</div>
+</div>
+<div class="pc">
+<div class="sc sc-team" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The team moves the Basecamp card to the Review column. The AI Agent automatically posts a comment letting the requestor know the scope is ready — Basecamp emails it to them." data-who="PDM" data-why="One card move triggers the whole review cycle. The requestor has everything they need to decide — right there on the card." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Submit for Client Review</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- ══════════════════════════════════════════════════════
+       TAB 3 — REPORTED ISSUE
+  ══════════════════════════════════════════════════════ -->
+<div class="tab-panel" id="tab-issue">
+<div class="workflow-card">
+<div class="workflow-header">
+<h2>Reported Issue</h2>
+<p>Processing a Production Issue from triage through fix, verification, and closure · Production Support Team (Dev + QA) owns resolution</p>
+</div>
+<div class="diagram-wrap">
+<div class="swimlane">
+<!-- Phase headers -->
+<div class="phase-header-row">
+<div class="role-spacer"></div>
+<div class="phases-row">
+<div class="phase-hd"><span class="phase-num">1</span>Submit</div>
+<div class="phase-hd"><span class="phase-num">2</span>Triage</div>
+<div class="phase-hd"><span class="phase-num">3</span>Troubleshoot</div>
+<div class="phase-hd"><span class="phase-num">4</span>Fix &amp; Deploy</div>
+<div class="phase-hd"><span class="phase-num">5</span>Verify &amp; Close</div>
+</div>
+</div>
+<!-- Requestor lane -->
+<div class="lane-row bg-req">
+<div class="role-lbl rl-req">Requestor</div>
+<div class="lane-cells">
+<div class="pc">
+<div class="sc sc-req" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The requestor fills out the Reported Issue Smartsheet form and selects a severity level (Sev 1–4). The severity definitions — covering impact, users affected, and workaround availability — were agreed with the team before go-live." data-who="Requestor or PDM (on behalf of the requestor)" data-why="Severity drives everything — response time, who gets paged, and how urgently the team acts. Getting it right at submission means the right response fires automatically." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Submit Issue &amp; Assign Severity</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+</div>
+</div>
+</div>
+<div class="pc">
+<div class="sc sc-req" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The requestor gets a comment on their Basecamp card confirming the issue was received, who is handling it, and the response time that applies to their severity level. Basecamp emails it automatically." data-who="Requestor" data-why="The requestor immediately knows the issue is being handled and what to expect. No need to follow up or wonder if anyone saw it." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Receive SLA Notification</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+</div>
+</div>
+</div>
+<div class="pc">
+<div class="sc sc-req" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="If the Production Support team needs more details — how to reproduce the issue, the environment, or the impact — the requestor responds in Basecamp or Slack." data-who="Requestor" data-why="The team often cannot fix what they cannot reproduce. A fast response from the requestor keeps the resolution on track." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Respond to Clarification Requests</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+<span class="tb tb-sl">Slack</span>
+</div>
+</div>
+</div>
+<div class="pc">
+<p class="passive">⏱ Passive — awaiting fix and deployment from Production Support Team.</p>
+</div>
+<div class="pc">
+<div class="sc sc-req" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="When the fix is live, the requestor gets a Basecamp comment — Basecamp emails it automatically. They confirm the issue is resolved on the Request Board. If it is not fixed, they re-open the ticket with more details." data-who="Requestor" data-why="The issue is not closed until the requestor says it is — not when the team thinks it is. This keeps everyone honest." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Confirm Issue Resolved</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- AI Agent lane -->
+<div class="lane-row bg-ai">
+<div class="role-lbl rl-ai">AI Agent</div>
+<div class="lane-cells">
+<div class="pc">
+<p class="passive">⏱ Not active until Reported Issue ticket arrives from Intake workflow.</p>
+</div>
+<div class="pc">
+<div class="sc sc-ai" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The AI Agent reads the severity from the Bug ticket and immediately posts the right notification on the Basecamp card. The Production Support team is tagged in Slack with the ticket and severity level." data-who="AI Agent" data-why="The response to a production issue should never depend on someone being available to send a message. It fires automatically, every time, in seconds." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Read Severity &amp; Fire SLA Notification</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://sprints.zoho.com/workspace/conceptatech#P34/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Sprints</span></a>
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+<span class="tb tb-sl">Slack</span>
+</div>
+</div>
+</div>
+<div class="pc">
+<div class="mc" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The AI Agent monitors the Reported Issue workflow continuously once the handoff from intake is complete. It runs three trigger checks: (1) Ticket inactivity — if no update has been logged on the Bug ticket within the SLA response window for the submitted severity level, the Production Support team is flagged in Slack. (2) Clarification relay — if the Production Support team posts a clarification request, the AI Agent relays it to the requestor via a Basecamp card comment. (3) Budget threshold — if the Production Support budget reaches 80% of its allocation, the PDM is flagged before an overage occurs." data-who="AI Agent (configured by Delivery Manager per account)" data-why="SLA windows are the contractual commitment to the client — if a ticket goes quiet within that window, the client is already forming a negative impression before the team even knows there is a problem. The 80% budget trigger on the Production Support bucket protects the team from absorbing overage silently. Automating these checks removes the need for the PDM to manually monitor every open ticket." onclick="openCard(this)" style="cursor:pointer">
+<span class="mc-title">🔄 Continuous Monitoring — Reported Issue</span>
+<div class="mc-trigger"><span class="mc-icon">⚡</span>Ticket inactive within the SLA response window for the submitted severity level → flag Production Support team in Slack.</div>
+<div class="mc-trigger"><span class="mc-icon">⚡</span>Clarification request raised by Production Support → relay to requestor via Basecamp card comment automatically.</div>
+<div class="mc-trigger"><span class="mc-icon">⚡</span>Production Support budget reaches 80% of allocation → flag PDM before overage occurs.</div>
+<div class="mc-hint">🔍 Click for details</div></div>
+</div>
+<div class="pc">
+<p class="passive">🔄 Monitoring continues — tracking SLA compliance and budget thresholds throughout fix and deployment.</p>
+</div>
+<div class="pc">
+<div class="sc sc-ai" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="Once the fix is verified, the AI Agent posts a resolution comment on the Basecamp card — Basecamp emails the requestor automatically. After the requestor confirms, the card moves to Done and the Zoho ticket is closed." data-who="AI Agent" data-why="Every issue gets a formal close. Nothing stays open because someone forgot to send a message." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Notify Requestor &amp; Close Loop</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+<a href="https://sprints.zoho.com/workspace/conceptatech#P34/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Sprints</span></a>
+<span class="tb tb-sl">Slack</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Production Support lane -->
+<div class="lane-row bg-ps">
+<div class="role-lbl rl-ps">Production Support<br/><span style="font-size:7px;letter-spacing:.5px">Dev · QA</span></div>
+<div class="lane-cells">
+<div class="pc">
+<p class="passive">Not involved — waiting for AI Agent to complete intake routing and notify team.</p>
+</div>
+<div class="pc">
+<div class="sc sc-ps" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The team opens the Bug ticket, checks the severity level is correct, and starts the activity log. If the severity is wrong, they update it and notify the requestor via a Basecamp card comment." data-who="Production Support Team · Dev · QA" data-why="Severity sets the entire response. Too high wastes resources. Too low delays a fix that may be actively hurting the client." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Acknowledge &amp; Verify Severity</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://sprints.zoho.com/workspace/conceptatech#P34/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Sprints</span></a>
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+</div>
+</div>
+</div>
+<div class="pc">
+<div class="sc sc-ps" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The team reproduces the issue, finds the root cause, assesses the impact, and decides on a fix — logging everything in Zoho. If an RCA is needed, it runs alongside the fix and is completed when the ticket closes. If the issue is bigger than a fix, it gets reclassified as a New Request." data-who="Production Support Team · Dev · QA" data-why="Fixing symptoms without finding the cause means the same issue comes back. The Zoho log gives the client full visibility into exactly how the issue was handled." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Triage, Troubleshoot &amp; Initiate RCA</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://sprints.zoho.com/workspace/conceptatech#P34/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Sprints</span></a>
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+</div>
+</div>
+</div>
+<div class="pc">
+<div class="sc sc-ps" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The team agrees with the client on whether the fix goes out as a hotfix or a scheduled release. Dev builds the fix, QA tests it in staging, and it is deployed to production. Everything is logged in Zoho." data-who="Production Support Team · Dev · QA" data-why="The client decides how and when the fix is deployed — not the team. A hotfix and a scheduled release carry different risks, and the client needs to agree before anything goes live." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Align on Release, Implement &amp; Deploy</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://sprints.zoho.com/workspace/conceptatech#P34/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Sprints</span></a>
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+</div>
+<div class="sc-dec">
+<span class="dec-lbl">Budget gate</span>
+<div><span class="dec-y">✓ Budget available</span> → Proceed</div>
+<div style="margin-top:5px"><span class="dec-n">⚠ Insufficient budget</span> → Check deployment budget + buffer · If still insufficient → escalate to stakeholder for sign-off before proceeding</div>
+</div>
+</div>
+</div>
+<div class="pc">
+<div class="sc sc-ps" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The team confirms the fix is working in production, marks the Zoho ticket as Resolved, and moves the Basecamp card to Done. The activity log is finalized and the RCA is completed if required." data-who="Production Support Team · Dev · QA" data-why="The team verifies the fix themselves before telling the requestor it is done. Closing a ticket on a fix that does not work destroys trust faster than the original issue did." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc-top">
+<div class="sc-title">Verify Fix &amp; Close Ticket</div>
+</div><div class="sc-hint">Click for details</div>
+<div class="sc-tools">
+<a href="https://sprints.zoho.com/workspace/conceptatech#P34/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Sprints</span></a>
+<a href="https://3.basecamp.com/5146855/buckets/46605906/card_tables/9708571123" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+</div>
+<div class="sc-dec">
+<span class="dec-lbl">Fix gate</span>
+<div><span class="dec-y">✓ Fix verified in production</span> → Notify requestor via AI Agent · Await requestor confirmation</div>
+<div style="margin-top:5px"><span class="dec-n">✗ Fix not confirmed</span> → Re-investigate · Revise fix · Re-deploy · Re-enter fix cycle</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="page-footer">
+<svg fill="none" height="9" style="opacity:.4" viewbox="0 0 201 33" width="56" xmlns="http://www.w3.org/2000/svg">
+<path d="M41.4673 22.6537C39.8187 20.8428 38.9963 18.2178 39 14.7786C39.0038 11.3394 39.8262 8.71248 41.4673 6.89787C43.1122 5.08697 45.5118 4.18152 48.666 4.18152C50.7555 4.16768 52.8286 4.54703 54.775 5.29941V8.882C53.0032 8.00664 51.0527 7.54403 49.0725 7.52949H48.9653C47.0569 7.52949 45.5607 8.01757 44.4767 8.99384C43.3926 9.97 42.8525 11.889 42.8563 14.7506C42.8268 16.0424 42.9944 17.3313 43.3531 18.5736C43.5809 19.4472 44.0783 20.2287 44.7759 20.8092C45.3445 21.2551 46.0029 21.5753 46.7069 21.7483C47.4616 21.9236 48.2353 22.0063 49.0104 21.9941C51.0147 21.9922 52.9927 21.5433 54.7976 20.6807V24.2354C52.8505 24.9853 50.7779 25.3646 48.6886 25.3532C45.5344 25.3532 43.1348 24.4478 41.4899 22.6369" fill="#94a3b8"></path>
+<path d="M62.804 11.0065C62.4684 12.2414 62.3144 13.5176 62.3467 14.796C62.3155 16.0706 62.4695 17.3431 62.804 18.5742C63.0131 19.4422 63.4907 20.2238 64.1704 20.8099C64.7114 21.2542 65.3402 21.5817 66.0167 21.7712C67.505 22.0908 69.0452 22.0908 70.5335 21.7712C71.2106 21.5834 71.8398 21.2557 72.3797 20.8099C73.0592 20.2227 73.5384 19.4417 73.7517 18.5742C74.0824 17.3385 74.2345 16.0628 74.2035 14.7848C74.2345 13.5069 74.0824 12.231 73.7517 10.9954C73.537 10.1284 73.0581 9.34786 72.3797 8.75968C71.8415 8.31452 71.2142 7.98693 70.5391 7.79836C69.0508 7.47879 67.5106 7.47879 66.0223 7.79836C65.346 7.98793 64.717 8.31533 64.1761 8.75968C63.4978 9.34696 63.0205 10.1281 62.8098 10.9954L62.804 11.0065ZM59.343 20.1001C58.719 18.4018 58.4222 16.6026 58.468 14.796C58.4222 12.9893 58.719 11.1903 59.343 9.4919C59.8068 8.19677 60.6355 7.06011 61.7314 6.21665C62.6613 5.52686 63.7067 5.00467 64.8198 4.67407C67.0829 4.07023 69.4673 4.07023 71.7305 4.67407C72.8447 5.00567 73.8919 5.52776 74.8245 6.21665C75.9143 7.06222 76.737 8.19867 77.1959 9.4919C77.8246 11.1892 78.1235 12.9888 78.0766 14.796C78.1235 16.6032 77.8246 18.4029 77.1959 20.1001C76.734 21.3947 75.9071 22.5312 74.8132 23.3753C73.8806 24.0642 72.8335 24.5863 71.7191 24.918C69.4559 25.5217 67.0716 25.5217 64.8084 24.918C63.6954 24.5873 62.65 24.0651 61.72 23.3753C60.6243 22.5318 59.7955 21.3953 59.3318 20.1001" fill="#94a3b8"></path>
+<path d="M81.605 25.0514V6.27751C84.3483 4.90344 87.3777 4.18195 90.4523 4.17041C93.0872 4.17041 95.146 4.84676 96.629 6.19927C98.1121 7.55188 98.8649 9.42798 98.8875 11.8276V25.0514H95.0087V11.509C95.0663 10.473 94.7322 9.45276 94.0714 8.64731C93.4428 7.95059 92.1875 7.60033 90.3055 7.59662C88.648 7.5912 86.9999 7.84397 85.4217 8.34549V25.0514H81.605Z" fill="#94a3b8"></path>
+<path clip-rule="evenodd" d="M29.0499 5.45796C29.0515 5.29712 29.0196 5.13765 28.9589 4.9887C28.8982 4.83977 28.8072 4.70433 28.6922 4.59018C28.5772 4.47603 28.4415 4.38544 28.2914 4.32362C28.1413 4.2618 27.9816 4.22998 27.8187 4.22998H8.86133V14.2229H17.175C17.6525 14.2229 18.1093 14.4105 18.4462 14.7442C18.7832 15.078 18.9732 15.5306 18.9732 16.0026V24.2426H29.0675V5.45796H29.0499Z" fill="#94a3b8" fill-rule="evenodd"></path>
+<path clip-rule="evenodd" d="M8.86109 14.223H1.10311C0.911479 14.2234 0.72464 14.1676 0.563348 14.0626C0.403653 13.9576 0.279093 13.8081 0.205633 13.6329C0.132174 13.4577 0.111396 13.2648 0.148126 13.0784C0.184856 12.892 0.275895 12.7205 0.411636 12.5856L8.86109 4.22998" fill="#94a3b8" fill-rule="evenodd"></path>
+<path clip-rule="evenodd" d="M29.0675 24.2427L20.6181 32.6073C20.4839 32.7416 20.3115 32.8333 20.1246 32.8705C19.9362 32.9079 19.743 32.8889 19.5657 32.8164C19.39 32.7439 19.2383 32.6209 19.1329 32.4631C19.0275 32.3055 18.9716 32.1201 18.9732 31.931V24.2427" fill="#94a3b8" fill-rule="evenodd"></path>
+</svg>
+    Concepta · Intake &amp; Request Processing Initiative · Leadership Review · April 2026
+  </div>
+</div>
+<!-- Card popup -->
+<div class="why-overlay" id="whyOverlay" onclick="closeWhy(event)">
+<div class="why-popup">
+<div class="why-popup-header">
+<div class="why-popup-title">
+<span id="popupStepTitle">Step</span>
+</div>
+<button class="why-popup-close" onclick="closeWhyBtn()">✕</button>
+</div>
+<div class="why-popup-body">
+<!-- WHO -->
+<div class="popup-section popup-who-section">
+<div class="popup-section-lbl">👤 Who</div>
+<div class="popup-section-body" id="popupWho"></div>
+</div>
+<!-- WHAT -->
+<div class="popup-section">
+<div class="popup-section-lbl">📋 What</div>
+<div class="popup-section-body" id="popupWhat"></div>
+</div>
+<!-- WHY -->
+<div class="popup-section">
+<div class="popup-section-lbl">💡 Why</div>
+<div class="popup-section-body" id="popupWhy"></div>
+</div>
+<!-- VERSION HISTORY -->
+<div class="popup-section popup-version-section">
+<button class="version-toggle" onclick="toggleVersions()">
+<span>🕘 Version History</span>
+<span class="version-chevron" id="versionChevron">▸</span>
+</button>
+<div class="version-list" id="versionList" style="display:none">
+<!-- filled by JS -->
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="why-overlay" id="whyOverlay" onclick="closeWhy(event)">
+<div class="why-popup">
+<div class="why-popup-header">
+<div class="why-popup-title">
+        💡 <span>Why this step?</span>
+</div>
+<button class="why-popup-close" onclick="closeWhyBtn()">✕</button>
+</div>
+<div class="why-popup-body">
+<span class="why-popup-step" id="whyStepLabel"></span>
+<span id="whyText"></span>
+</div>
+</div>
+</div>
+<script>
+function toggleRisks() {
+  const body = document.getElementById('risksBannerBody');
+  const chevron = document.getElementById('risksChevron');
+  const header = document.getElementById('risksBannerHeader');
+  const isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  header.classList.toggle('open', !isOpen);
+  chevron.classList.toggle('open', !isOpen);
+  chevron.textContent = isOpen ? '▸' : '▾';
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function openCard(card) {
+  const title   = card.querySelector('.sc-title');
+  const who     = card.dataset.who   || '';
+  const what    = card.dataset.what  || '';
+  const why     = card.dataset.why   || '';
+  const versions = JSON.parse(card.dataset.versions || '[]');
+
+  document.getElementById('popupStepTitle').textContent = title ? title.textContent.trim() : 'Step';
+  document.getElementById('popupWho').textContent  = who;
+  document.getElementById('popupWhat').textContent = what;
+  document.getElementById('popupWhy').textContent  = why;
+
+  // Build version list
+  const list = document.getElementById('versionList');
+  list.innerHTML = '';
+  versions.slice().reverse().forEach(function(v) {
+    const row = document.createElement('div');
+    row.className = 'version-row';
+    row.innerHTML = '<span class="v-badge">v' + v.v + '</span>'
+      + '<span class="v-date">' + v.date + '</span>'
+      + '<span class="v-change">' + v.change + '</span>'
+      + '<span class="v-owner">' + v.owner + '</span>';
+    list.appendChild(row);
+  });
+
+  // Reset version toggle
+  document.getElementById('versionList').style.display = 'none';
+  document.getElementById('versionChevron').textContent = '▸';
+
+  document.getElementById('whyOverlay').classList.add('open');
+}
+
+function toggleVersions() {
+  const list = document.getElementById('versionList');
+  const chevron = document.getElementById('versionChevron');
+  if (list.style.display === 'none') {
+    list.style.display = 'block';
+    chevron.textContent = '▾';
+  } else {
+    list.style.display = 'none';
+    chevron.textContent = '▸';
+  }
+}
+
+function closeWhy(e) {
+  if (e.target === document.getElementById('whyOverlay')) {
+    document.getElementById('whyOverlay').classList.remove('open');
+  }
+}
+
+function closeWhyBtn() {
+  document.getElementById('whyOverlay').classList.remove('open');
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') document.getElementById('whyOverlay').classList.remove('open');
+});
+</script>
+</body>
+</html>
