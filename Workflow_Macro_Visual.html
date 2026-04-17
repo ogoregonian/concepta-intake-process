@@ -564,14 +564,13 @@ nav {
 <span style="font-size:22px;flex-shrink:0">🚶</span>
 <div>
 <div style="font-family:'Syne',sans-serif;font-size:12px;font-weight:800;color:#14532d;letter-spacing:.3px;margin-bottom:6px">Phase 1 — Manual Pilot First. AI Agent is Phase 2.</div>
-<div style="font-size:12px;color:#166534;line-height:1.75">Before the AI Agent is introduced, the team will manually validate the full intake process and supporting toolkit. This means:<br><br>
-<strong>· Every step owned by "PDM (manual pilot) → AI Agent (Phase 2)"</strong> is performed by the PDM manually during Phase 1.<br>
-<strong>· The intake forms, Smartsheet portfolio, Basecamp board, Zoho ticketing, and Slack notifications</strong> are all tested and confirmed working per account.<br>
-<strong>· The Templates and reference documents</strong> are used by the team on real requests to confirm they are accurate, complete, and practical before being locked in.<br><br>
+<div style="font-size:12px;color:#166534;line-height:1.75">Before the AI Agent is introduced, the team will manually validate the full intake process and supporting toolkit. This means:<br/><br/>
+<strong>· Every step owned by "PDM (manual pilot) → AI Agent (Phase 2)"</strong> is performed by the PDM manually during Phase 1.<br/>
+<strong>· The intake forms, Smartsheet portfolio, Basecamp board, Zoho ticketing, and Slack notifications</strong> are all tested and confirmed working per account.<br/>
+<strong>· The Templates and reference documents</strong> are used by the team on real requests to confirm they are accurate, complete, and practical before being locked in.<br/><br/>
 The AI Agent does not go live until the manual process is working consistently, the team is aligned, and any gaps or adjustments have been addressed. <strong>The goal is a proven process first — then automation.</strong></div>
 </div>
 </div>
-
 <!-- ═══ TABS ═══ -->
 <div class="tabs">
 <button class="tab active t-intake" onclick="switchTab('intake',this)">Intake Request</button>
@@ -801,10 +800,10 @@ The AI Agent does not go live until the manual process is working consistently, 
 </div>
 <!-- Analysis Team lane -->
 <div class="lane-row bg-team">
-<div class="role-lbl rl-team">Analysis Team<br/><span style="font-size:7px;letter-spacing:.5px">PDM · SA · Dev · QA · UX</span></div>
+<div class="role-lbl rl-team">Analysis Team<br><span style="font-size:7px;letter-spacing:.5px">PDM · SA · Dev · QA · UX</span></br></div>
 <div class="lane-cells">
 <div class="pc">
-<div class="sc sc-team" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The Delivery Manager picks up the request, confirms the Zoho ticket details, and verifies the appropriate team is assigned based on the request type. They note the budget allocation available to process the request against the Planning/Ops/New Requests epic and initialize the Smartsheet Project Plan with the Technical Analysis section ready to track tasks, assignees, and dates from this point forward." data-who="Delivery Manager" data-why="The project plan starts the moment analysis does — not after. The DM owns it because they own the budget and resource allocation. Nothing gets tracked retroactively." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc sc-team" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The Delivery Manager picks up the request, confirms the Zoho ticket details, and verifies the appropriate team is assigned based on the request type. They note the budget allocation available to process the request against the Planning/Ops/New Requests epic and initialize the Smartsheet Project Plan with the Technical Analysis section ready to track tasks, assignees, and dates from this point forward. The PDM also creates the Request Intake Analysis Template entry in Notion at this point — this is the working document for the analysis. Open template: https://www.notion.so/concepta/3424767c73b0803fa828f34a4fe2ff6b?v=3424767c73b08126b63b000cc79be049&amp;p=3424767c73b0817788cbc43c7a31ae14&amp;pm=s" data-who="Delivery Manager" data-why="The project plan starts the moment analysis does — not after. The DM owns it because they own the budget and resource allocation. Nothing gets tracked retroactively." onclick="openCard(this)" style="cursor:pointer">
 <div class="sc-top">
 <div class="sc-title">Pick Up &amp; Initiate</div>
 </div><div class="sc-hint">Click for details</div>
@@ -826,7 +825,7 @@ The AI Agent does not go live until the manual process is working consistently, 
 </div>
 </div>
 <div class="pc">
-<div class="sc sc-team" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The team conducts the technical assessment, defines requirements, and builds supporting artifacts — with the Delivery Manager updating the Smartsheet Project Plan in real time as activities happen. Tasks, assignees, durations, sprint links, and budget are logged throughout. PDM and SA lead; Dev, QA, and UX/UI join based on the request. All time logs to the Planning/Ops/New Requests epic. Note: for requests estimated at 10 hours or under, the depth of analysis and scoping documentation is at the team's discretion. A one-line description is acceptable — but estimated effort must always be recorded and the item added to the Release Project Plan. The PDM creates an Internal Analysis Request doc in Notion for every New Request. The depth of documentation is proportional to complexity — a simple field update may need a one-liner, a new application flow needs a full breakdown with requirements, AC scenarios, and supporting artifacts. The PDM uses judgment to determine how much detail is needed before the team can estimate and deliver confidently." data-who="Delivery Manager · PDM · SA (+ Dev, QA, UX/UI as needed)" data-why="The DM keeps the project plan current as work happens — not at the end. This gives live visibility into effort, budget, and resource allocation during analysis, not just after." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc sc-team" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]' data-what="The team conducts the technical assessment, defines requirements, and builds supporting artifacts — with the Delivery Manager updating the Smartsheet Project Plan in real time as activities happen. Tasks, assignees, durations, sprint links, and budget are logged throughout. PDM and SA lead; Dev, QA, and UX/UI join based on the request. All time logs to the Planning/Ops/New Requests epic. Note: for requests estimated at 10 hours or under, the depth of analysis and scoping documentation is at the team's discretion. A one-line description is acceptable — but estimated effort must always be recorded and the item added to the Release Project Plan. The PDM creates an Internal Analysis Request doc in Notion for every New Request. The depth of documentation is proportional to complexity — a simple field update may need a one-liner, a new application flow needs a full breakdown with requirements, AC scenarios, and supporting artifacts. The PDM uses judgment to determine how much detail is needed before the team can estimate and deliver confidently. The PDM opens or creates the Request Intake Analysis Template in Notion for this request — depth scales to complexity. Open template: https://www.notion.so/concepta/3424767c73b0803fa828f34a4fe2ff6b?v=3424767c73b08126b63b000cc79be049&amp;p=3424767c73b0817788cbc43c7a31ae14&amp;pm=s" data-who="Delivery Manager · PDM · SA (+ Dev, QA, UX/UI as needed)" data-why="The DM keeps the project plan current as work happens — not at the end. This gives live visibility into effort, budget, and resource allocation during analysis, not just after." onclick="openCard(this)" style="cursor:pointer">
 <div class="sc-top">
 <div class="sc-title">Analyze &amp; Collaborate</div>
 </div><div class="sc-hint">Click for details</div>
@@ -988,7 +987,7 @@ The AI Agent does not go live until the manual process is working consistently, 
 </div>
 <!-- Production Support lane -->
 <div class="lane-row bg-ps">
-<div class="role-lbl rl-ps">Production Support<br/><span style="font-size:7px;letter-spacing:.5px">Dev · QA</span></div>
+<div class="role-lbl rl-ps">Production Support<br><span style="font-size:7px;letter-spacing:.5px">Dev · QA</span></br></div>
 <div class="lane-cells">
 <div class="pc">
 <p class="passive">Not involved — waiting for AI Agent to complete intake routing and notify team.</p>
