@@ -561,13 +561,12 @@ nav {
 </div>
 <!-- Manual-first banner -->
 <div style="background:#f0fdf4;border:1.5px solid #86efac;border-radius:10px;padding:14px 18px;margin-bottom:16px;display:flex;align-items:flex-start;gap:12px;">
-  <span style="font-size:18px;flex-shrink:0">🚶</span>
-  <div>
-    <div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:#166534;letter-spacing:.3px;margin-bottom:4px">Manual Process First — AI Agent is Phase 2</div>
-    <div style="font-size:12px;color:#166534;line-height:1.65">This process must be validated manually before the AI Agent is enabled on any account. Every step marked <strong>AI Agent</strong> in the diagrams below will be performed by the PDM during the manual pilot. The goal is to get the team aligned to the process first — then automate what works. The AI Agent does not go live until the manual pilot is complete and the team has signed off.</div>
-  </div>
+<span style="font-size:18px;flex-shrink:0">🚶</span>
+<div>
+<div style="font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:#166534;letter-spacing:.3px;margin-bottom:4px">Manual Process First — AI Agent is Phase 2</div>
+<div style="font-size:12px;color:#166534;line-height:1.65">This process must be validated manually before the AI Agent is enabled on any account. Every step marked <strong>AI Agent</strong> in the diagrams below will be performed by the PDM during the manual pilot. The goal is to get the team aligned to the process first — then automate what works. The AI Agent does not go live until the manual pilot is complete and the team has signed off.</div>
 </div>
-
+</div>
 <!-- ═══ TABS ═══ -->
 <div class="tabs">
 <button class="tab active t-intake" onclick="switchTab('intake',this)">Intake Request</button>
@@ -624,7 +623,7 @@ nav {
 <p class="passive">⏱ Not active until form is submitted.</p>
 </div>
 <div class="pc">
-<div class="sc sc-ai" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "April 2026", "change": "Added: AI Agent adds item to Client Delivery Portfolio Smartsheet (Backlog) at intake \u2014 Request Date, Requestor, Request Type, Status = Not Started", "owner": "Anne"}]' data-what="The AI Agent reads the submitted form and does four things automatically: creates the right ticket in Zoho, moves the Basecamp card to the correct column, notifies the requestor with a comment on their card, and adds the request to the Client Delivery Portfolio in Smartsheet. The assigned team is tagged in Slack." data-who="AI Agent" data-why="Nothing is done manually. The moment a request is submitted, it is ticketed, routed, logged, and the right people are notified — with no human in the middle." onclick="openCard(this)" style="cursor:pointer">
+<div class="sc sc-ai" data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "April 2026", "change": "Added: AI Agent adds item to Client Delivery Portfolio Smartsheet (Backlog) at intake \u2014 Request Date, Requestor, Request Type, Status = Not Started", "owner": "Anne"}]' data-what="The AI Agent reads the submitted form and does four things automatically: creates the right ticket in Zoho, moves the Basecamp card to the correct column, notifies the requestor with a comment on their card, and adds the request to the Client Delivery Portfolio in Smartsheet. The assigned team is tagged in Slack. During the manual pilot (Phase 1), the PDM also manually posts a Slack notification to the account channel — including Request Title, Type, Requestor, Severity, and a link to the portfolio. In Phase 2 this is replaced by a Smartsheet automation rule that fires the Slack message automatically when a new row is added to the portfolio sheet." data-who="AI Agent" data-why="Nothing is done manually. The moment a request is submitted, it is ticketed, routed, logged, and the right people are notified — with no human in the middle. The Slack notification ensures the right people are aware of every new submission immediately — whether triggered manually by the PDM during the pilot or automatically by Smartsheet in Phase 2." onclick="openCard(this)" style="cursor:pointer">
 <div class="sc-top">
 <div class="sc-title">Validate, Categorize &amp; Route</div>
 </div><div class="sc-hint">Click for details</div>

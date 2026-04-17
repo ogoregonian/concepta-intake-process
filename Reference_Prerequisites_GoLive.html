@@ -328,6 +328,22 @@ nav {
           <div class="field-desc">All AI Agent notification templates must be configured and reviewed with the PDM per account before go-live: receipt confirmation · SLA acknowledgement by severity · scope ready for review · clarification request · resolution confirmation · inactivity nudge · SLA breach escalation · budget threshold flag · overage approval request.</div>
         </div>
       </div>
+
+      <div class="field-card">
+        <div class="field-num" style="background:#4c1d95">✓</div>
+        <div class="field-body">
+          <div class="field-title">Smartsheet Client Request Portfolio configured per account</div>
+          <div class="field-desc">Each account requires a Client Request Portfolio sheet in Smartsheet using the standard column structure. Two intake forms must be built directly on the sheet — New Request and Reported Issue — with Request Type and Status pre-populated as hidden fields. Both forms must be tested before the account goes live. The Anago account is the pilot and is ready for testing.</div>
+        </div>
+      </div>
+
+      <div class="field-card">
+        <div class="field-num" style="background:#4c1d95">✓</div>
+        <div class="field-body">
+          <div class="field-title">Smartsheet → Slack notification configured per account</div>
+          <div class="field-desc">A Smartsheet automation rule must be set up on each account's portfolio sheet: when a new row is added → send a Slack notification to the account's dedicated channel including Request Title, Type, Requestor, Severity/Priority, and a link to the sheet. Requires Smartsheet connected to Slack once under Account → Apps &amp; Integrations → Slack. During the manual pilot the PDM posts the Slack message manually — this automation replaces that step in Phase 2.</div>
+        </div>
+      </div>
     </div>
   </div>
 
