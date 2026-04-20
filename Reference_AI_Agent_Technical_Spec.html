@@ -247,8 +247,7 @@ nav { overflow: visible !important; }
     <a href="Workflow_Macro_Visual.html" class="nav-workflow">Workflow</a>
     <div class="nav-div"></div>
     <a href="Reference_Prerequisites_GoLive.html">Account Setup</a>
-    <a href="Reference_Intake_Form.html">Intake Form</a>
-    <a href="Reference_Intake_Request_Board.html">Request Board</a>
+    <a href="Reference_Intake_Form.html">Intake / Request Tracking</a>
     <a href="Reference_Budget_Model.html">Budget Model</a>
     <div class="nav-div"></div>
     <a href="Templates.html" class="nav-templates">⊞ Templates</a>
@@ -269,6 +268,14 @@ nav { overflow: visible !important; }
       <div class="hero-meta-item"><span class="label">Integrations</span><span class="value">Basecamp · Zoho · Smartsheet · Slack</span></div>
       <div class="hero-meta-item"><span class="label">Status</span><span class="value">Ready for Build</span></div>
     </div>
+  </div>
+</div>
+
+<div style="background:#fef3c7;border:1.5px solid #fbbf24;border-radius:8px;padding:14px 18px;margin:20px auto 0;max-width:900px;display:flex;gap:12px;align-items:flex-start;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif">
+  <span style="font-size:18px;flex-shrink:0">⚠️</span>
+  <div style="font-size:12.5px;color:#78350f;line-height:1.65">
+    <strong style="color:#92400e;display:block;margin-bottom:4px">Refresh required before Phase 2 build kicks off — field structure has evolved since this spec was written</strong>
+    The Phase 1 intake forms have been intentionally slimmed to <strong>5 required fields shared across both forms</strong> (Request Date · Request Title · Requestor · Severity/Priority · Notes), plus an optional attachment field on the Reported Issue form. Sections below that reference older field names (Steps to Reproduce, Affected Platform, Console Logs, Impacted Components, etc.) are out of sync with current pilot reality and should be rewritten before this spec drives Phase 2 build. See <a href="Reference_Intake_Form.html" style="color:#92400e;font-weight:700;text-decoration:underline">Intake &amp; Request Tracking</a> for the current Phase 1 field structure. The manual pilot may also surface new field requirements that should be incorporated before the AI Agent build starts.
   </div>
 </div>
 
@@ -558,7 +565,7 @@ nav { overflow: visible !important; }
             <div class="as-body">
               <div class="as-title">Move Basecamp card to correct column <span class="as-tag badge-blue">Basecamp API</span></div>
               <div class="as-desc">
-                <strong>New Request:</strong> Move card to <code>Analyzing / Scoping / Estimating</code> column<br>
+                <strong>New Request:</strong> Move card to <code>Analyze/Scope Request</code> column<br>
                 <strong>Production Issue:</strong> Move card to <code>Triage / Troubleshooting</code> column<br><br>
                 Use the column IDs stored in the account config — do not look them up at runtime.
               </div>
@@ -736,7 +743,7 @@ here and the Production Support team will follow up.</pre></div>
         <div class="ti-icon">⚡</div>
         <div class="ti-body">
           <div class="ti-title">Requestor scope revision submitted <span class="ti-phase tp1">Phase 1</span></div>
-          <div class="ti-desc"><strong>Check:</strong> Poll Basecamp for cards in the <code>Review Scope / Approve / Prioritize</code> column that have new comments tagged as requestor feedback (detect via comment author matching requestor name on the card). <strong>Action:</strong> Move card back to <code>Analyzing / Scoping / Estimating</code> column. Post Slack notification to Analysis Team with revision note. Add comment to Zoho ticket logging the revision. <strong>State:</strong> Track last processed comment timestamp per card.</div>
+          <div class="ti-desc"><strong>Check:</strong> Poll Basecamp for cards in the <code>Review Scope / Approve</code> column that have new comments tagged as requestor feedback (detect via comment author matching requestor name on the card). <strong>Action:</strong> Move card back to <code>Analyze/Scope Request</code> column. Post Slack notification to Analysis Team with revision note. Add comment to Zoho ticket logging the revision. <strong>State:</strong> Track last processed comment timestamp per card.</div>
         </div>
       </div>
       <div class="trigger-item phase1">
@@ -900,7 +907,7 @@ here and the Production Support team will follow up.</pre></div>
         <div class="ci-num">5</div>
         <div class="ci-body">
           <div class="ci-title">Basecamp cards moved to correct columns</div>
-          <div class="ci-test"><strong>Test:</strong> Submit one complete New Request and one complete Reported Issue. Verify in Basecamp that the NR card moves to Analyzing / Scoping / Estimating and the PI card moves to Triage / Troubleshooting. <strong>Pass criteria:</strong> Both cards in the correct columns within 30 seconds of submission. No cards left in Validate & Assign after valid submissions.</div>
+          <div class="ci-test"><strong>Test:</strong> Submit one complete New Request and one complete Reported Issue. Verify in Basecamp that the NR card moves to Analyze/Scope Request and the PI card moves to Triage / Troubleshooting. <strong>Pass criteria:</strong> Both cards in the correct columns within 30 seconds of submission. No cards left in Validate & Assign after valid submissions.</div>
         </div>
       </div>
 
