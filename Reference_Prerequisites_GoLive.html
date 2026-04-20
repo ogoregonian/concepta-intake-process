@@ -126,6 +126,18 @@ nav {
 .nav-dropdown-menu a.nav-active{color:#fff;background:rgba(255,255,255,.12)}
 .nav-dropdown > a::after{content:' ▾';font-size:9px;opacity:.6}
 
+
+/* ── Dropdown fix — overflow visible ── */
+.nav-links { overflow: visible !important; }
+nav { overflow: visible !important; }
+.nav-dropdown { position: static; }
+.nav-dropdown-menu {
+  position: fixed !important;
+  top: 52px !important;
+  margin-top: 0 !important;
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: block; }
+
 </style>
 </head>
 <body>
