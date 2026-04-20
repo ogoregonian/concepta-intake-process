@@ -101,6 +101,32 @@ nav{position:sticky;top:0;z-index:100;background:#1d3557;display:flex;align-item
 
 /* ── Footer ── */
 .page-footer{margin-top:40px;display:flex;align-items:center;gap:10px;font-size:10px;color:#94a3b8}
+
+.nav-links a.nav-workflow {
+  color:#fff;
+  background:rgba(77,110,255,.25);
+  border:1px solid rgba(77,110,255,.5);
+  border-radius:4px;
+}
+.nav-links a.nav-workflow:hover {
+  background:rgba(77,110,255,.4);
+  border-color:#4d6eff;
+}
+.nav-links a.nav-workflow.nav-active {
+  background:#4d6eff;
+  border-color:#4d6eff;
+  border-bottom:2px solid #a0b0ff;
+}
+.cn-links a.nav-workflow {
+  color:#fff;
+  background:rgba(77,110,255,.25);
+  border:1px solid rgba(77,110,255,.5);
+  border-radius:4px;
+}
+.cn-links a.nav-workflow:hover {
+  background:rgba(77,110,255,.4);
+}
+
 </style>
 </head>
 <body>
@@ -110,7 +136,7 @@ nav{position:sticky;top:0;z-index:100;background:#1d3557;display:flex;align-item
   <div class="nav-links">
     <a href="Index.html">Home</a>
     <a href="Concepta_Intake_Process_Executive_Brief.html">Brief</a>
-    <a href="Workflow_Macro_Visual.html">Workflow</a>
+    <a href="Workflow_Macro_Visual.html" class="nav-workflow">Workflow</a>
     <div class="nav-div"></div>
     <a href="Reference_Prerequisites_GoLive.html">Account Setup</a>
     <a href="Reference_Budget_Model.html">Budget Model</a>
