@@ -468,6 +468,32 @@ footer strong { color: rgba(255,255,255,.7); }
   background:rgba(77,110,255,.4);
 }
 
+
+/* ── Budget dropdown ── */
+.nav-dropdown{position:relative;flex-shrink:0}
+.nav-dropdown-menu{
+  display:none;
+  position:absolute;top:calc(100% + 4px);left:0;
+  background:#1d3557;
+  border:1px solid rgba(255,255,255,.15);
+  border-radius:6px;
+  min-width:150px;
+  z-index:200;
+  box-shadow:0 8px 24px rgba(0,0,0,.3);
+  overflow:hidden;
+}
+.nav-dropdown:hover .nav-dropdown-menu{display:block}
+.nav-dropdown-menu a{
+  display:block;
+  font-size:11px;font-weight:600;letter-spacing:.5px;
+  text-transform:uppercase;color:rgba(255,255,255,.7);
+  text-decoration:none;padding:8px 14px;white-space:nowrap;
+  transition:background .12s,color .12s;
+}
+.nav-dropdown-menu a:hover{background:rgba(255,255,255,.1);color:#fff}
+.nav-dropdown-menu a.nav-active{color:#fff;background:rgba(255,255,255,.12)}
+.nav-dropdown > a::after{content:' ▾';font-size:9px;opacity:.6}
+
 </style>
 </head>
 <body>
