@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concepta — T-Shirt Sizing Estimator · Smartsheet Build Spec</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&amp;display=swap" rel="stylesheet"/>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:#f0ede8;color:#1e293b;padding:0 0 60px}
+
+nav{position:sticky;top:0;z-index:100;background:#1d3557;display:flex;align-items:center;padding:0 32px;height:52px;box-shadow:0 2px 12px rgba(0,0,0,.18);gap:20px}
+.nav-logo{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#fff;text-decoration:none;letter-spacing:.5px}
+.nav-back{font-size:11px;color:rgba(255,255,255,.7);text-decoration:none;margin-left:auto}
+.nav-back:hover{color:#fff}
+
+.page{max-width:1200px;margin:0 auto;padding:32px 24px}
+.page-heading h1{font-family:'Syne',sans-serif;font-size:22px;color:#0f172a;margin-bottom:8px;letter-spacing:.2px}
+.page-heading .sub{font-size:13px;color:#64748b;line-height:1.65;max-width:820px;margin-bottom:18px}
+
+.intro-callout{background:#fef3c7;border:1.5px solid #f59e0b;border-radius:8px;padding:14px 18px;margin-bottom:28px;font-size:12px;color:#78350f;line-height:1.6}
+.intro-callout strong{color:#92400e;font-family:'Syne',sans-serif;display:block;margin-bottom:4px;font-size:11.5px;letter-spacing:.3px;text-transform:uppercase}
+
+.section-card{background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.06);margin-bottom:24px}
+.section-header{padding:14px 20px;border-bottom:1.5px solid #e2e8f0;background:#f8fafc}
+.section-header h2{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#0f172a;margin-bottom:3px}
+.section-header .desc{font-size:11.5px;color:#64748b;line-height:1.5}
+.section-body{padding:20px 24px}
+
+table{width:100%;border-collapse:collapse;font-size:12px;margin:6px 0 14px}
+th{background:#f1f5f9;font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:#334155;letter-spacing:.4px;text-transform:uppercase;padding:9px 10px;text-align:left;border-bottom:2px solid #cbd5e1}
+td{padding:10px;border-bottom:1px solid #e2e8f0;vertical-align:top;line-height:1.5}
+td.col-name{font-weight:600;color:#1e293b;white-space:nowrap}
+td.col-type{color:#7c3aed;font-weight:600;font-size:11px;white-space:nowrap}
+td.col-formula{font-family:'SF Mono',Consolas,monospace;font-size:11px;color:#0c4a6e;background:#f0f9ff;padding:6px 8px;border-radius:4px}
+
+.size-table th{background:#1e293b;color:#fff;border-bottom-color:#1e293b}
+.size-table td{font-size:12.5px}
+.size-row-xs{background:#f0fdf4}
+.size-row-s{background:#ecfeff}
+.size-row-m{background:#eff6ff}
+.size-row-l{background:#fef3c7}
+.size-row-xl{background:#fed7aa}
+.size-row-xxl{background:#fee2e2}
+.size-row-tbd{background:#f1f5f9}
+.size-name{font-family:'Syne',sans-serif;font-weight:800;font-size:13px}
+
+.note-box{background:#f0f9ff;border-left:4px solid #0ea5e9;border-radius:6px;padding:10px 14px;margin:10px 0;font-size:11.5px;color:#0c4a6e;line-height:1.6}
+.note-box strong{color:#0369a1;display:block;margin-bottom:3px;font-family:'Syne',sans-serif;font-size:11px;letter-spacing:.3px;text-transform:uppercase}
+
+.checklist{background:#f0fdf4;border:1.5px solid #86efac;border-radius:8px;padding:14px 18px;margin-top:18px;font-size:12px;color:#14532d;line-height:1.7}
+.checklist strong{color:#166534;font-family:'Syne',sans-serif;display:block;margin-bottom:6px;font-size:11.5px;letter-spacing:.3px;text-transform:uppercase}
+.checklist ul{margin:6px 0 0 18px}
+.checklist li{margin-bottom:3px}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="Index.html" class="nav-logo">CONCEPTA</a>
+  <a href="Reference_Phase1_Workflow.html" class="nav-back">← Back to Pilot Reference</a>
+</nav>
+
+<div class="page">
+
+  <div class="page-heading">
+    <h1>T-Shirt Sizing Estimator — Smartsheet Build Spec</h1>
+    <p class="sub">Column-by-column structure for the t-shirt sizing estimator. Three sheets: a reference table the team consults when sizing, a per-request sizing form where new requests get logged, and a calibration log added later once delivery data exists. Build this in the same Smartsheet workbook as the existing LOE estimator so the two tools sit next to each other.</p>
+  </div>
+
+  <div class="intro-callout">
+    <strong>Purpose &amp; Honest Caveat</strong>
+    T-shirt sizing exists to give clients a quick directional range when full LOE estimation isn't appropriate yet — usually because we don't know enough (POC needed) or the client wants a number now, not in three days. The starting hour ranges below are <em>industry-typical patterns</em>, not Concepta-calibrated values. The first version will be wrong; the real value emerges after 6–8 weeks of pilot data when we can compare original sizes to actuals and refine the bands. That refinement is the whole point.
+  </div>
+
+  <!-- ════════════ SHEET 1 — REFERENCE TABLE ════════════ -->
+  <div class="section-card">
+    <div class="section-header">
+      <h2>Sheet 1 — Size Reference Table</h2>
+      <div class="desc">Static reference. The team consults this when sizing a new request. Lives at the top of the workbook.</div>
+    </div>
+    <div class="section-body">
+
+      <table class="size-table">
+        <thead>
+          <tr>
+            <th style="width:80px">Size</th>
+            <th style="width:120px">Hour Range</th>
+            <th style="width:100px">Confidence</th>
+            <th>What This Typically Means</th>
+            <th style="width:170px">Next Step</th>
+            <th>Example Requests</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr class="size-row-xs">
+            <td><span class="size-name">XS</span></td>
+            <td><strong>&lt; 16h</strong></td>
+            <td>High</td>
+            <td>Trivial — single small change, no real uncertainty, one role.</td>
+            <td>Estimate directly. Skip POC.</td>
+            <td>Field rename, copy update, config tweak, label change.</td>
+          </tr>
+          <tr class="size-row-s">
+            <td><span class="size-name">S</span></td>
+            <td><strong>16–40h</strong></td>
+            <td>Medium-high</td>
+            <td>Small — one role, contained scope, clear pattern we've done before.</td>
+            <td>Estimate directly.</td>
+            <td>Add a filter, simple form, minor report, single new endpoint.</td>
+          </tr>
+          <tr class="size-row-m">
+            <td><span class="size-name">M</span></td>
+            <td><strong>40–120h</strong></td>
+            <td>Medium</td>
+            <td>Medium — multiple roles, some unknowns, moderate complexity.</td>
+            <td>Brief team estimate. POC if architectural unknowns.</td>
+            <td>New screen with backend, multi-role report, simple integration.</td>
+          </tr>
+          <tr class="size-row-l">
+            <td><span class="size-name">L</span></td>
+            <td><strong>120–300h</strong></td>
+            <td>Low-medium</td>
+            <td>Large — significant scope, real uncertainty, multi-week.</td>
+            <td><strong>POC strongly recommended</strong> before LOE.</td>
+            <td>New feature, integration with external system, complex flow.</td>
+          </tr>
+          <tr class="size-row-xl">
+            <td><span class="size-name">XL</span></td>
+            <td><strong>300–600h</strong></td>
+            <td>Low</td>
+            <td>Very large — multi-week, multi-resource, meaningful unknowns.</td>
+            <td><strong>POC required</strong> before LOE commitment.</td>
+            <td>New module, major integration, significant rework.</td>
+          </tr>
+          <tr class="size-row-xxl">
+            <td><span class="size-name">XXL</span></td>
+            <td><strong>600+h</strong></td>
+            <td>Very low</td>
+            <td>Project-scale — too big to size as a single request.</td>
+            <td><strong>Break into multiple requests.</strong> Re-size each.</td>
+            <td>New product area, major rework, multi-quarter initiative.</td>
+          </tr>
+          <tr class="size-row-tbd">
+            <td><span class="size-name">TBD</span></td>
+            <td><em>—</em></td>
+            <td>—</td>
+            <td>We don't know yet — blocker on info, feasibility, or scope clarity.</td>
+            <td>Get info or run a spike before sizing.</td>
+            <td>Anything where we genuinely can't ballpark.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note-box">
+        <strong>Calibration mechanism — important</strong>
+        These hour ranges are starting points pulled from industry patterns at agencies of similar size and shape. They are <em>not</em> Concepta-calibrated. After 6–8 weeks of pilot data — once we've sized 10–15 requests and seen actuals — we revisit this table and adjust the bands based on what our actual delivery data shows. The first refinement should happen at the 6-week retro.
+      </div>
+
+      <div class="note-box">
+        <strong>One thing worth deciding before launch</strong>
+        Concepta could start with fewer bands than the 6 shown. Many agencies operate with just 4 (S / M / L / XL). More bands feel more precise but increase the time the team spends second-guessing between adjacent sizes. <strong>Recommend starting with all 6, then consolidating any that don't get used after 6 weeks.</strong> Easier to remove than to add later.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════════════ SHEET 2 — PER-REQUEST SIZING FORM ════════════ -->
+  <div class="section-card">
+    <div class="section-header">
+      <h2>Sheet 2 — Per-Request Sizing Form</h2>
+      <div class="desc">One row per request being sized. The PDM or DM creates a row when a request needs sizing instead of full LOE.</div>
+    </div>
+    <div class="section-body">
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width:170px">Column</th>
+            <th style="width:100px">Type</th>
+            <th>Purpose &amp; Behavior</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-name">Request Title</td>
+            <td class="col-type">Text</td>
+            <td>Short descriptive name of the request being sized. Match the Basecamp / Zoho ticket title.</td>
+          </tr>
+          <tr>
+            <td class="col-name">Sizing Date</td>
+            <td class="col-type">Date</td>
+            <td>Date the sizing was done. Auto-populate to "today" on row creation.</td>
+          </tr>
+          <tr>
+            <td class="col-name">Account</td>
+            <td class="col-type">Dropdown</td>
+            <td>Pick from active accounts: SFC · Heller · Kingdom Strollers · Anago · Vatos · Darihana · Corporate (pilot). Single select.</td>
+          </tr>
+          <tr>
+            <td class="col-name">Sized By</td>
+            <td class="col-type">Contact / Multi-select</td>
+            <td>Who performed the sizing. Usually the DM, may include team members for technical input.</td>
+          </tr>
+          <tr>
+            <td class="col-name">Size Assigned</td>
+            <td class="col-type">Dropdown</td>
+            <td>Single select: XS · S · M · L · XL · XXL · TBD. Required field. This is the core sizing decision.</td>
+          </tr>
+          <tr>
+            <td class="col-name">Hour Range (auto)</td>
+            <td class="col-type">Formula</td>
+            <td>Auto-populated from Size Assigned via lookup against Sheet 1.</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="col-formula">=IFERROR(INDEX({Sheet 1 — Hour Range Column}, MATCH([Size Assigned]@row, {Sheet 1 — Size Column}, 0)), "—")</td>
+          </tr>
+          <tr>
+            <td class="col-name">Confidence (auto)</td>
+            <td class="col-type">Formula</td>
+            <td>Auto-populated from Size Assigned via lookup against Sheet 1.</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="col-formula">=IFERROR(INDEX({Sheet 1 — Confidence Column}, MATCH([Size Assigned]@row, {Sheet 1 — Size Column}, 0)), "—")</td>
+          </tr>
+          <tr>
+            <td class="col-name">Next Step (auto)</td>
+            <td class="col-type">Formula</td>
+            <td>Auto-populated from Size Assigned via lookup against Sheet 1. Tells the team what to do after sizing — estimate directly, run POC, break down, etc.</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="col-formula">=IFERROR(INDEX({Sheet 1 — Next Step Column}, MATCH([Size Assigned]@row, {Sheet 1 — Size Column}, 0)), "—")</td>
+          </tr>
+          <tr>
+            <td class="col-name">Sizing Rationale</td>
+            <td class="col-type">Long Text</td>
+            <td>Free text — why this size? What are the unknowns? What would change the size up or down? This is the field that protects against "I just guessed M" sizing — the rationale forces explicit thinking. Required.</td>
+          </tr>
+          <tr>
+            <td class="col-name">Weeks to DoD (auto)</td>
+            <td class="col-type">Formula</td>
+            <td>Optional but recommended. Translates the hour range into a delivery window using the account's average burn/week from the LOE estimator. Gives the client a useful directional answer when they ask "when can I get this?"</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="col-formula">=Hour Range ÷ Avg Burn/Week (account)<br>e.g., M (40–120h) ÷ 12h/week = 3.3–10 weeks</td>
+          </tr>
+          <tr>
+            <td class="col-name">Status</td>
+            <td class="col-type">Dropdown</td>
+            <td>Single select: <em>Pending Sizing · Sized · POC In Flight · Converted to LOE · Delivered · Cancelled</em>. Tracks lifecycle of the sized request.</td>
+          </tr>
+          <tr>
+            <td class="col-name">Linked Zoho Ticket</td>
+            <td class="col-type">URL</td>
+            <td>Direct link to the Zoho ticket for this request. Required if the request has been ticketed.</td>
+          </tr>
+          <tr>
+            <td class="col-name">Linked Basecamp Request</td>
+            <td class="col-type">URL</td>
+            <td>Direct link to the original Basecamp comms thread for this request.</td>
+          </tr>
+          <tr>
+            <td class="col-name">Actual Hours (filled later)</td>
+            <td class="col-type">Number</td>
+            <td>Left blank until the request is delivered. Filled in from time tracking once work is complete. <strong>This is the column that powers calibration.</strong></td>
+          </tr>
+          <tr>
+            <td class="col-name">Variance % (auto, calc'd later)</td>
+            <td class="col-type">Formula</td>
+            <td>How far off the original sizing was, once actuals exist. Powers Sheet 3 calibration analysis.</td>
+          </tr>
+          <tr>
+            <td colspan="3" class="col-formula">=IF([Actual Hours]@row = "", "", ([Actual Hours]@row - midpoint of [Hour Range]@row) / midpoint of [Hour Range]@row)</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note-box">
+        <strong>Why no per-role breakdown</strong>
+        Notice this sheet doesn't break down hours by BE / FE / QA / UI/UX. That's intentional. T-shirt sizing's value is speed and directional accuracy. Once you start breaking down by role, you've crossed into LOE estimation territory — at which point you should switch to the full LOE estimator. Keeping these tools meaningfully different prevents the team from defaulting to t-shirt sizing for everything.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════════════ SHEET 3 — CALIBRATION LOG ════════════ -->
+  <div class="section-card">
+    <div class="section-header">
+      <h2>Sheet 3 — Calibration Log <span style="font-size:10px;color:#94a3b8;font-weight:normal;font-family:'Syne',sans-serif;letter-spacing:.5px;margin-left:8px">ADDED LATER · NOT AT PILOT START</span></h2>
+      <div class="desc">Tracks original sizing vs. actuals. Stand up at the 6-week mark once 10+ sized requests have been delivered.</div>
+    </div>
+    <div class="section-body">
+
+      <table>
+        <thead>
+          <tr>
+            <th style="width:170px">Column</th>
+            <th style="width:100px">Type</th>
+            <th>Purpose</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="col-name">Size Band</td>
+            <td class="col-type">Reference</td>
+            <td>One row per band: XS, S, M, L, XL, XXL.</td>
+          </tr>
+          <tr>
+            <td class="col-name">Original Range (current)</td>
+            <td class="col-type">Text</td>
+            <td>What Sheet 1 currently says for this band.</td>
+          </tr>
+          <tr>
+            <td class="col-name">Sample Count</td>
+            <td class="col-type">Formula</td>
+            <td>How many requests of this size have been delivered. Pulls from Sheet 2.</td>
+          </tr>
+          <tr>
+            <td class="col-name">Avg Actual Hours</td>
+            <td class="col-type">Formula</td>
+            <td>Average actual hours across delivered requests of this size.</td>
+          </tr>
+          <tr>
+            <td class="col-name">Median Actual Hours</td>
+            <td class="col-type">Formula</td>
+            <td>Median (less skewed by outliers than the average).</td>
+          </tr>
+          <tr>
+            <td class="col-name">Suggested Refined Range</td>
+            <td class="col-type">Formula / Manual</td>
+            <td>Based on actuals, what should the range be? Often calculated as (median × 0.7) to (median × 1.4) for normal distributions, but adjust based on what your data shows.</td>
+          </tr>
+          <tr>
+            <td class="col-name">Decision &amp; Date</td>
+            <td class="col-type">Text + Date</td>
+            <td>Each refresh of Sheet 1 gets a row here documenting what changed and when. Creates institutional memory.</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="note-box">
+        <strong>When to first calibrate</strong>
+        Wait until you have at least <strong>3 delivered requests in each band you actually use</strong>. With less than that, you're calibrating on noise. For most agencies that means 6–12 weeks of pilot operation. The first calibration session is a 30-minute working meeting — pull the data, review the variance, decide what to adjust.
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ════════════ BUILD CHECKLIST ════════════ -->
+  <div class="checklist">
+    <strong>Build Checklist for Anne</strong>
+    <ul>
+      <li>Open the existing LOE estimator Smartsheet workbook (don't create a new one — these tools should sit together).</li>
+      <li>Add Sheet 1 — paste the 7 size rows from the reference table above.</li>
+      <li>Add Sheet 2 — set up the columns above. Configure dropdowns for Size Assigned, Account, Status. Add the formula columns referencing Sheet 1.</li>
+      <li>Test the lookup formulas with one mock request before sharing with the team.</li>
+      <li>Skip Sheet 3 for now — add at the 6-week mark.</li>
+      <li>Share the workbook URL with Flavio and Tina; flag in the kickoff that this is the new tool for sizing requests that don't yet warrant full LOE.</li>
+      <li>Add a callout to the Pilot Reference doc once the sheet exists, with a link to it.</li>
+    </ul>
+  </div>
+
+</div>
+
+</body>
+</html>
