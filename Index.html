@@ -375,6 +375,25 @@ footer {
   border-color:#4d6eff;
   border-bottom:2px solid #a0b0ff;
 }
+/* ── Beta Pilot links ── */
+.nav-links a.nav-pilot {
+  color:#fde68a;
+  background:rgba(245,158,11,.18);
+  border:1px solid rgba(245,158,11,.45);
+  border-radius:4px;
+  padding:5px 10px;
+}
+.nav-links a.nav-pilot:hover {
+  background:rgba(245,158,11,.32);
+  border-color:#f59e0b;
+  color:#fef3c7;
+}
+.nav-links a.nav-pilot.nav-active {
+  background:#f59e0b;
+  color:#0f172a;
+  border-color:#f59e0b;
+}
+
 .cn-links a.nav-workflow {
   color:#fff;
   background:rgba(77,110,255,.25);
@@ -444,7 +463,15 @@ nav { overflow: visible !important; }
   <div class="nav-links">
     <a href="Index.html" class="nav-active">Home</a>
     <a href="Concepta_Intake_Process_Executive_Brief.html">Brief</a>
-    <a href="Workflow_Macro_Visual.html" class="nav-workflow">Workflow</a>
+    <a href="Phase1_Start_Here.html" class="nav-pilot">⚡ Pilot — Start Here</a>
+
+    <a href="Diagram_Beta_Pilot_Manual.html" class="nav-pilot">Pilot — Workflow</a>
+
+    <a href="Reference_Phase1_Workflow.html" class="nav-pilot">Pilot — Reference</a>
+
+    <div class="nav-div"></div>
+
+    <a href="Workflow_Macro_Visual.html" class="nav-workflow">Future Phase Workflow</a>
     <div class="nav-div"></div>
     <a href="Reference_Prerequisites_GoLive.html">Account Setup</a>
     <a href="Reference_Intake_Form.html">Intake / Request Tracking</a>
@@ -510,6 +537,41 @@ nav { overflow: visible !important; }
 </div>
 
 <div class="page">
+
+  <!-- ── BETA PILOT LAUNCH ── -->
+  <div style="background:linear-gradient(135deg,#fef3c7 0%,#fed7aa 100%);border:2px solid #f59e0b;border-radius:14px;padding:24px 28px;margin-bottom:36px;box-shadow:0 4px 18px rgba(245,158,11,.18)">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
+      <span style="font-family:'Syne',sans-serif;font-size:10px;font-weight:800;color:#92400e;letter-spacing:1.5px;text-transform:uppercase;background:rgba(245,158,11,.25);border:1px solid #f59e0b;border-radius:20px;padding:4px 12px">⚡ Beta Pilot · Phase 1 Active</span>
+      <span style="font-size:11px;color:#78350f;font-weight:600">Manual process · Validate before AI Agent</span>
+    </div>
+    <h2 style="font-family:'Syne',sans-serif;font-size:22px;color:#78350f;margin-bottom:6px">Start Here for the Pilot</h2>
+    <p style="font-size:13px;color:#78350f;line-height:1.6;margin-bottom:18px;max-width:680px">Phase 1 is the team running the workflow manually so we validate the structure on real requests before any of it gets handed to an AI Agent. The three documents below are the operating reference for the pilot.</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
+
+      <a href="Phase1_Start_Here.html" style="background:#fff;border:1.5px solid #f59e0b;border-radius:10px;padding:16px 18px;text-decoration:none;display:flex;flex-direction:column;gap:6px;transition:transform .15s,box-shadow .15s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 22px rgba(245,158,11,.25)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:#92400e;letter-spacing:1.2px;text-transform:uppercase">⚡ Cliff Notes</div>
+        <div style="font-size:14px;font-weight:700;color:#78350f">Pilot — Start Here</div>
+        <div style="font-size:11.5px;color:#9a3412;line-height:1.5">The kickoff page. Roles, the 8-stage flow, what's different starting now, the three tools we operate in. Read this first.</div>
+        <div style="font-size:10px;color:#c2410c;font-weight:700;margin-top:4px;letter-spacing:.3px">OPEN →</div>
+      </a>
+
+      <a href="Diagram_Beta_Pilot_Manual.html" style="background:#fff;border:1.5px solid #f59e0b;border-radius:10px;padding:16px 18px;text-decoration:none;display:flex;flex-direction:column;gap:6px;transition:transform .15s,box-shadow .15s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 22px rgba(245,158,11,.25)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:#92400e;letter-spacing:1.2px;text-transform:uppercase">🗺 Visual</div>
+        <div style="font-size:14px;font-weight:700;color:#78350f">Pilot — Workflow Diagram</div>
+        <div style="font-size:11.5px;color:#9a3412;line-height:1.5">Three lanes (Client / PDM / DM) × eight phases. Click any step for the What, Who, and Why. Combined view of New Requests + Reported Issues.</div>
+        <div style="font-size:10px;color:#c2410c;font-weight:700;margin-top:4px;letter-spacing:.3px">OPEN →</div>
+      </a>
+
+      <a href="Reference_Phase1_Workflow.html" style="background:#fff;border:1.5px solid #f59e0b;border-radius:10px;padding:16px 18px;text-decoration:none;display:flex;flex-direction:column;gap:6px;transition:transform .15s,box-shadow .15s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 22px rgba(245,158,11,.25)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
+        <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:#92400e;letter-spacing:1.2px;text-transform:uppercase">📖 Manual</div>
+        <div style="font-size:14px;font-weight:700;color:#78350f">Pilot — Full Reference</div>
+        <div style="font-size:11.5px;color:#9a3412;line-height:1.5">Stage-by-stage detail, stuck-state playbook, source-of-truth rules, and the DM operating mechanics with step-by-step procedures.</div>
+        <div style="font-size:10px;color:#c2410c;font-weight:700;margin-top:4px;letter-spacing:.3px">OPEN →</div>
+      </a>
+
+    </div>
+  </div>
 
   <!-- ── PRESENTATION FLOW ── -->
   <div class="section-label"><div class="num">1</div> How Requests Are Processed</div>
@@ -580,7 +642,7 @@ nav { overflow: visible !important; }
   <!-- ── DOCUMENTS ── -->
   <div class="section-label"><div class="num">2</div> Process Workflows</div>
   <h2>Understand the Process</h2>
-  <p style="margin-bottom:20px">Start with the Executive Brief for context. The Workflow Map is the primary process reference — interactive swim lanes across all three workflows with role ownership, step details, and rationale. The archived diagrams are retained for reference only.</p>
+  <p style="margin-bottom:20px">Start with the Executive Brief for context. For the current operating model, refer to the Beta Pilot section above. The Future Phase Workflow shows the end-state with AI Agent automation — the destination once the pilot is validated.</p>
 
   <div class="doc-cards">
 
@@ -595,13 +657,13 @@ nav { overflow: visible !important; }
       <div class="doc-arrow">↗</div>
     </a>
 
-    <!-- Workflow Map -->
+    <!-- Future Phase Workflow Map -->
     <a href="Workflow_Macro_Visual.html" target="_blank" class="doc-card d1">
       <div class="doc-icon">🗂️</div>
       <div class="doc-content">
-        <div class="doc-step">Primary Process Reference</div>
-        <div class="doc-title">Workflow Map — All Three Processes</div>
-        <div class="doc-desc">Interactive swim-lane map covering all three workflows — Intake Request, New Request, and Reported Issue. Each step is clickable with full details: who owns it, what happens, why it matters, and version history. Includes risks, assumptions, and considerations. <strong>Start here to understand the process end to end.</strong></div>
+        <div class="doc-step">Future Phase · End-State Reference</div>
+        <div class="doc-title">Future Phase Workflow Map — All Three Processes</div>
+        <div class="doc-desc">Interactive swim-lane map showing the end-state workflow including AI Agent automation. Covers all three workflows — Intake Request, New Request, and Reported Issue. Each step is clickable with full details. <strong>This is where we're going. For the current operating model during the manual pilot, see the Beta Pilot section above.</strong></div>
         </div>
       <div class="doc-arrow">↗</div>
     </a>

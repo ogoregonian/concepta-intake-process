@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concepta — Phase 1 · Start Here</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0f0f0f;--ink-mid:#3a3a3a;--ink-light:#6b7280;--rule:#e2ddd8;
+  --paper:#f7f5f1;--white:#ffffff;--blue:#1d3557;--blue-mid:#2563eb;
+  --blue-light:#dbeafe;--violet:#4c1d95;--violet-light:#ede9fe;
+  --green:#14532d;--green-light:#dcfce7;--amber:#92400e;--amber-light:#fef3c7;
+  --red:#991b1b;--red-light:#fee2e2;
+  --col:880px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.65}
+
+nav{position:sticky;top:0;z-index:100;background:var(--blue);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:17px;color:#fff}
+.nav-back{font-size:11px;color:rgba(255,255,255,.6);text-decoration:none}
+.nav-back:hover{color:#fff}
+
+.hero{background:var(--blue);color:#fff;padding:56px 40px 48px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(37,99,235,.25) 0%,transparent 65%);pointer-events:none}
+.hero-inner{max-width:var(--col);margin:0 auto;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.18);border-radius:20px;padding:5px 14px;margin-bottom:18px}
+.hero-eyebrow span{width:6px;height:6px;border-radius:50%;background:#10b981}
+h1{font-family:'DM Serif Display',serif;font-size:40px;line-height:1.1;color:#fff;margin-bottom:14px}
+.hero-sub{font-size:15px;color:rgba(255,255,255,.75);max-width:620px;line-height:1.55}
+
+.page{max-width:var(--col);margin:0 auto;padding:48px 40px 80px}
+
+.section-num{display:inline-flex;align-items:center;justify-content:center;width:28px;height:28px;border-radius:50%;background:var(--ink);color:#fff;font-size:11px;font-weight:700;margin-right:10px;vertical-align:middle}
+h2{font-family:'DM Serif Display',serif;font-size:26px;line-height:1.2;color:var(--ink);margin-bottom:20px;display:flex;align-items:center}
+
+.section{margin-bottom:56px}
+p{color:var(--ink-mid);font-size:14.5px}
+
+/* Why block — the principle */
+.principle{background:var(--violet-light);border-left:4px solid #6d28d9;padding:20px 24px;border-radius:8px;margin-top:8px}
+.principle p{color:#3b1d6d;font-size:14px;line-height:1.55}
+.principle strong{color:#4c1d95}
+
+/* Role split */
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+.role{background:var(--white);border-radius:10px;padding:22px 24px;border-top:4px solid var(--ink)}
+.role.pdm{border-top-color:#6d28d9}
+.role.dm{border-top-color:#2563eb}
+.role-eyebrow{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.role.pdm .role-eyebrow{color:#6d28d9}
+.role.dm .role-eyebrow{color:#1d4ed8}
+.role-title{font-size:16px;font-weight:700;margin-bottom:4px;color:var(--ink)}
+.role-people{font-size:11.5px;color:var(--ink-light);margin-bottom:14px;font-style:italic}
+.role ul{list-style:none;padding:0;margin:0}
+.role li{font-size:13px;color:var(--ink-mid);padding:6px 0 6px 18px;position:relative;line-height:1.5;border-bottom:1px solid #f3f0eb}
+.role li:last-child{border-bottom:none}
+.role li::before{content:'›';position:absolute;left:2px;top:5px;color:var(--ink-light);font-weight:700;font-size:14px}
+
+/* The flow — visual stages */
+.flow{display:flex;flex-direction:column;gap:6px;margin-top:8px;background:var(--white);border-radius:10px;padding:6px;border:1px solid var(--rule)}
+.stage{display:grid;grid-template-columns:42px 1fr 110px;align-items:center;gap:14px;padding:10px 14px;border-radius:6px}
+.stage:hover{background:#fafaf7}
+.stage-n{width:32px;height:32px;border-radius:50%;background:var(--blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;font-family:'DM Serif Display',serif}
+.stage-text{font-size:13.5px;color:var(--ink);line-height:1.45}
+.stage-text strong{color:var(--ink);font-weight:700}
+.stage-who{font-size:10px;font-weight:600;letter-spacing:.5px;text-transform:uppercase;text-align:right}
+.who-pdm{color:#6d28d9}
+.who-dm{color:#1d4ed8}
+.who-both{color:#15803d}
+.who-client{color:var(--ink-light)}
+
+/* This week — action checklist */
+.this-week{background:var(--white);border:1px solid var(--rule);border-radius:10px;padding:24px 26px;margin-top:8px}
+.tw-item{display:grid;grid-template-columns:42px 1fr;gap:14px;padding:14px 0;border-bottom:1px solid #f3f0eb}
+.tw-item:last-child{border-bottom:none;padding-bottom:0}
+.tw-item:first-child{padding-top:0}
+.tw-icon{width:32px;height:32px;border-radius:8px;background:#fef3c7;color:#92400e;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.tw-icon.dm{background:var(--blue-light);color:#1d4ed8}
+.tw-icon.pdm{background:var(--violet-light);color:#6d28d9}
+.tw-icon.team{background:var(--green-light);color:#15803d}
+.tw-body strong{display:block;font-size:13.5px;color:var(--ink);margin-bottom:2px;font-weight:700}
+.tw-body span{font-size:12.5px;color:var(--ink-light);line-height:1.5}
+
+/* Tools strip */
+.tools{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:8px}
+.tool{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:16px 18px;text-align:left}
+.tool-name{font-size:12px;font-weight:700;color:var(--ink);margin-bottom:3px;letter-spacing:.3px}
+.tool-purpose{font-size:11.5px;color:var(--ink-light);line-height:1.5}
+
+/* Reference link card */
+.deep-link{margin-top:16px;background:linear-gradient(135deg,#1d3557 0%,#2563eb 100%);color:#fff;border-radius:10px;padding:24px 28px;display:flex;align-items:center;justify-content:space-between;gap:20px;text-decoration:none;transition:transform .15s}
+.deep-link:hover{transform:translateY(-1px)}
+.deep-link-body strong{display:block;font-size:15px;font-weight:700;margin-bottom:4px}
+.deep-link-body span{font-size:12.5px;color:rgba(255,255,255,.75);line-height:1.5}
+.deep-link-arrow{font-size:24px;color:rgba(255,255,255,.85);flex-shrink:0}
+
+/* Fast path note */
+.fastpath{margin-top:14px;background:#fff7ed;border:1px dashed #fb923c;border-radius:8px;padding:14px 18px;display:flex;gap:12px;align-items:flex-start}
+.fastpath-icon{font-size:18px;flex-shrink:0;line-height:1.4}
+.fastpath-body{font-size:12.5px;color:#7c2d12;line-height:1.55}
+.fastpath-body strong{display:block;font-size:11px;letter-spacing:.5px;text-transform:uppercase;margin-bottom:3px;color:#9a3412;font-weight:700}
+
+footer{background:var(--ink);color:rgba(255,255,255,.45);text-align:center;padding:24px;font-size:11px;letter-spacing:.5px}
+
+@media (max-width:640px){
+  h1{font-size:30px}
+  .roles,.tools{grid-template-columns:1fr}
+  .stage{grid-template-columns:36px 1fr;gap:10px}
+  .stage-who{grid-column:2;text-align:left;margin-top:2px}
+  .deep-link{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Concepta</div>
+  <a href="Index.html" class="nav-back">← Back to Suite</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span></span> Phase 1 · Manual Pilot</div>
+    <h1>Phase 1 — Start Here</h1>
+    <p class="hero-sub">The cliff-notes view of how we run client requests starting now. One page. The full reference is one click away when you need it.</p>
+  </div>
+</div>
+
+<div class="page">
+
+  <!-- ── 1. WHY ── -->
+  <div class="section">
+    <h2><span class="section-num">1</span> Why we are doing this</h2>
+    <div class="principle">
+      <p><strong>Train ourselves before we train the AI.</strong> Phase 1 is the team running the workflow manually so we validate the structure on real requests. Once it works with humans, the AI Agent layers on top in Phase 2.</p>
+    </div>
+  </div>
+
+  <!-- ── 2. ROLES ── -->
+  <div class="section">
+    <h2><span class="section-num">2</span> Who owns what</h2>
+    <div class="roles">
+      <div class="role pdm">
+        <div class="role-eyebrow">PDM Team</div>
+        <div class="role-title">Refining &amp; Scoping</div>
+        <div class="role-people">Anne · Henrique · Gabriel</div>
+        <ul>
+          <li>Refine requirements and capture urgency / priority with the client</li>
+          <li>Create the Zoho ticket and assign to the DM</li>
+          <li>Author the scope in Basecamp and secure client approval</li>
+        </ul>
+      </div>
+      <div class="role dm">
+        <div class="role-eyebrow">Delivery Manager</div>
+        <div class="role-title">Tracking, Budgets &amp; Plans</div>
+        <div class="role-people">Flavio · Tina</div>
+        <ul>
+          <li>Manage service budget hours and inform team how much is available</li>
+          <li>Submit Smartsheet form, allocate resource time, run the estimator, calculate DoD timing</li>
+          <li>Send estimate and DoD timing for client approval</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 3. THE FLOW ── -->
+  <div class="section">
+    <h2><span class="section-num">3</span> The flow — 8 stages</h2>
+    <div class="flow">
+      <div class="stage">
+        <div class="stage-n">1</div>
+        <div class="stage-text"><strong>Request lands in Basecamp</strong></div>
+        <div class="stage-who who-client">Client</div>
+      </div>
+      <div class="stage">
+        <div class="stage-n">2</div>
+        <div class="stage-text"><strong>PDM creates Zoho ticket</strong> and tags the DM</div>
+        <div class="stage-who who-pdm">PDM</div>
+      </div>
+      <div class="stage">
+        <div class="stage-n">3</div>
+        <div class="stage-text"><strong>DM submits Smartsheet form</strong> and allocates time</div>
+        <div class="stage-who who-dm">DM</div>
+      </div>
+      <div class="stage">
+        <div class="stage-n">4</div>
+        <div class="stage-text"><strong>PDM refines with client and scopes with team</strong> · client approves in Basecamp</div>
+        <div class="stage-who who-pdm">PDM</div>
+      </div>
+      <div class="stage">
+        <div class="stage-n">5</div>
+        <div class="stage-text"><strong>PDM tags DM</strong> — scope ready for estimation</div>
+        <div class="stage-who who-pdm">PDM</div>
+      </div>
+      <div class="stage">
+        <div class="stage-n">6</div>
+        <div class="stage-text"><strong>DM runs estimator</strong> with the team · LOE to DoD</div>
+        <div class="stage-who who-dm">DM</div>
+      </div>
+      <div class="stage">
+        <div class="stage-n">7</div>
+        <div class="stage-text"><strong>DM aligns timing &amp; release train</strong> with PDM, then sends to client</div>
+        <div class="stage-who who-both">DM + PDM</div>
+      </div>
+      <div class="stage">
+        <div class="stage-n">8</div>
+        <div class="stage-text"><strong>Client approves</strong> · request enters delivery</div>
+        <div class="stage-who who-client">Client</div>
+      </div>
+    </div>
+
+    <div class="fastpath">
+      <div class="fastpath-icon">⚡</div>
+      <div class="fastpath-body">
+        <strong>Fast path for simple, clear requests</strong>
+        If the PDM is confident the request is simple and clear, they can skip the separate requirements-approval round trip. PDM posts a quick confirmation in Basecamp ("just to make sure I'm interpreting correctly, you want X — DM will follow up shortly with estimate and timing"), then signals the DM to proceed straight to estimation. The DM's reply (requirements + estimate + timing + release train) becomes the single client approval moment instead of two.
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 4. WHAT'S DIFFERENT THIS WEEK ── -->
+  <div class="section">
+    <h2><span class="section-num">4</span> What's different starting now</h2>
+    <div class="this-week">
+      <div class="tw-item">
+        <div class="tw-icon dm">DM</div>
+        <div class="tw-body">
+          <strong>Publish service budget bucket hours per account</strong>
+          <span><em>Planning/Ops/New Requests</em> — covers standing team meetings (dailies, planning, retros, client status calls); remaining hours fund new request processing. <em>Production Support</em> — processing reported issues pull from here. <em>Implementation</em> — approved work pulls from here once requirements, estimate, and timing are signed off. DM tracks continuously as time is logged.</span>
+        </div>
+      </div>
+      <div class="tw-item">
+        <div class="tw-icon pdm">PDM</div>
+        <div class="tw-body">
+          <strong>Create the Zoho request ticket</strong>
+          <span>PDM sets at creation: Item Type (Task / Bug) · Epic · Priority (aligned with client) · Request Status · Assigned to DM. <strong>Status follows ownership</strong> — whoever the ticket is assigned to during the current phase updates the Status as the request moves through analysis, scope, estimation, and approval. Tag handoffs in comments and Slack.</span>
+        </div>
+      </div>
+      <div class="tw-item">
+        <div class="tw-icon team">All</div>
+        <div class="tw-body">
+          <strong>Run the corporate site as our pilot</strong>
+          <span>PDMs submit, DMs process. Surface what doesn't work. Refine before any of this goes live on a client account.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 5. TOOLS ── -->
+  <div class="section">
+    <h2><span class="section-num">5</span> The three tools we operate in</h2>
+    <div class="tools">
+      <div class="tool">
+        <div class="tool-name">BASECAMP</div>
+        <div class="tool-purpose">Where the client lives. Requests captured, scope authored, scope approved.</div>
+      </div>
+      <div class="tool">
+        <div class="tool-name">ZOHO</div>
+        <div class="tool-purpose">Ticket lives in the backlog during the front half — PDM updates the <em>Request Analysis Status</em> field as work progresses. Once Scope Approved, the ticket moves to Sprint Candidates and the active board takes over.</div>
+      </div>
+      <div class="tool">
+        <div class="tool-name">SMARTSHEET</div>
+        <div class="tool-purpose">Client visibility. Request tracker, project plan when needed, request estimator.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── 6. THE FULL REFERENCE ── -->
+  <div class="section" style="margin-bottom:24px">
+    <h2><span class="section-num">6</span> When you need the details</h2>
+    <p style="margin-bottom:6px">The full reference doc has everything: stage-by-stage detail, stuck-state playbook, source-of-truth rules, and the DM operating manual with step-by-step mechanics.</p>
+    <a href="Reference_Phase1_Workflow.html" class="deep-link">
+      <div class="deep-link-body">
+        <strong>Phase 1 Workflow &amp; Delivery Toolkit</strong>
+        <span>Full reference · stuck-states · DM operating mechanics · status mappings</span>
+      </div>
+      <div class="deep-link-arrow">→</div>
+    </a>
+  </div>
+
+</div>
+
+<footer>Concepta — Intake &amp; Request Processing Initiative · Phase 1 Start Here · April 2026 · Internal Use</footer>
+
+</body>
+</html>

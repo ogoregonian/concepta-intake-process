@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<title>Concepta — Beta Pilot Manual Workflow</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&amp;display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:#f0ede8;
+  min-height:100vh;
+  padding:0 0 60px;
+  color:#1e293b;
+}
+
+/* Concepta nav */
+nav{position:sticky;top:0;z-index:200;background:#0f172a;display:flex;align-items:center;padding:0 24px;height:48px;box-shadow:0 2px 12px rgba(0,0,0,.18);gap:14px}
+.nav-logo{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#fff;letter-spacing:.5px;text-decoration:none}
+.nav-logo:hover{opacity:.85}
+.nav-back{font-size:11px;color:rgba(255,255,255,.6);text-decoration:none;margin-left:auto}
+.nav-back:hover{color:#fff}
+
+/* ── Page ── */
+.page{max-width:1500px;margin:0 auto;padding:28px 24px}
+
+/* ── Page heading ── */
+.page-heading{margin-bottom:14px}
+.page-heading h1{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:#0f172a;margin-bottom:6px;letter-spacing:.2px}
+.page-heading p{font-size:12px;color:#64748b;max-width:780px;line-height:1.65}
+
+/* ── Phase 1 callout ── */
+.phase-callout{
+  background:#fef3c7;border:1.5px solid #f59e0b;border-radius:8px;
+  padding:11px 16px;margin-bottom:18px;
+  font-size:11.5px;color:#78350f;line-height:1.6;
+}
+.phase-callout strong{font-family:'Syne',sans-serif;font-weight:700;color:#92400e;display:block;margin-bottom:3px;font-size:11px;letter-spacing:.3px;text-transform:uppercase}
+
+/* ── Legend ── */
+.legend{
+  display:flex;gap:18px;align-items:center;flex-wrap:wrap;
+  margin-bottom:14px;
+  background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;
+  padding:10px 16px;width:fit-content;
+}
+.legend-label{font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:#94a3b8;letter-spacing:1px;text-transform:uppercase;margin-right:4px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:#475569}
+.legend-dot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.ld-c{background:#64748b}
+.ld-pdm{background:#8b5cf6}
+.ld-dm{background:#3b82f6}
+.legend-sep{width:1px;height:16px;background:#e2e8f0}
+
+/* ── Tool legend ── */
+.tool-legend{display:flex;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:18px}
+
+/* ── Workflow card ── */
+.workflow-card{
+  background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;
+  overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.06);
+}
+.workflow-header{
+  padding:14px 20px;border-bottom:1.5px solid #e2e8f0;
+  display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;
+}
+.workflow-header h2{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:#0f172a}
+.workflow-header p{font-size:11px;color:#64748b;line-height:1.5}
+
+/* ── Diagram wrap ── */
+.diagram-wrap{overflow-x:auto}
+
+/* ── Swimlane ── */
+.swimlane{display:flex;flex-direction:column;min-width:1380px}
+
+/* ── Phase header row ── */
+.phase-header-row{display:flex}
+.role-spacer{
+  width:90px;min-width:90px;flex-shrink:0;
+  background:#0f172a;
+  border-right:1.5px solid #1e3a5f;
+}
+.phases-row{display:flex;flex:1}
+.phase-hd{
+  flex:1;
+  background:#0f172a;color:#e2e8f0;
+  font-family:'Syne',sans-serif;font-size:9.5px;font-weight:700;
+  letter-spacing:.8px;text-transform:uppercase;
+  padding:11px 10px;
+  border-right:1.5px solid #1e3a5f;
+  text-align:center;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.phase-hd:last-child{border-right:none}
+.phase-num{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:18px;height:18px;border-radius:50%;
+  background:rgba(255,255,255,.12);
+  font-size:9px;font-weight:800;flex-shrink:0;
+}
+
+/* ── Lane row ── */
+.lane-row{display:flex;border-top:1.5px solid #e2e8f0}
+
+/* ── Role label ── */
+.role-lbl{
+  width:90px;min-width:90px;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  padding:12px 6px;
+  border-right:1.5px solid #e2e8f0;
+  writing-mode:vertical-rl;transform:rotate(180deg);
+  font-family:'Syne',sans-serif;font-size:8.5px;font-weight:700;
+  letter-spacing:1.3px;text-transform:uppercase;
+  position:sticky;left:0;z-index:2;
+}
+.rl-c{background:#f1f5f9;color:#334155}
+.rl-pdm{background:#ede9fe;color:#5b21b6}
+.rl-dm{background:#dbeafe;color:#1e40af}
+
+/* ── Lane cells ── */
+.lane-cells{display:flex;flex:1}
+.pc{
+  flex:1;
+  padding:14px;
+  border-right:1.5px solid #e2e8f0;
+  vertical-align:top;
+}
+.pc:last-child{border-right:none}
+
+/* Lane tints */
+.bg-c   .pc{background:#fafbfc}
+.bg-pdm .pc{background:#fdf9ff}
+.bg-dm  .pc{background:#fafcff}
+
+/* ── Step card ── */
+.sc{border-radius:8px;border:1.5px solid;overflow:hidden;font-size:11px}
+.sc-c{border-color:#cbd5e1}
+.sc-pdm{border-color:#c4b5fd}
+.sc-dm{border-color:#bfdbfe}
+
+.sc-top{padding:9px 11px 8px}
+.sc-c .sc-top{background:#f1f5f9}
+.sc-pdm .sc-top{background:#f5f3ff}
+.sc-dm  .sc-top{background:#eff6ff}
+
+.sc-title{font-weight:600;font-size:11px;line-height:1.4;margin-bottom:3px}
+.sc-c   .sc-title{color:#1e293b}
+.sc-pdm .sc-title{color:#3b0764}
+.sc-dm  .sc-title{color:#1e3a8a}
+
+/* ── Tools section ── */
+.sc-tools{
+  display:flex;gap:4px;flex-wrap:wrap;
+  padding:7px 11px;background:#fff;
+  border-top:1px solid;
+}
+.sc-c   .sc-tools{border-color:#e2e8f0}
+.sc-pdm .sc-tools{border-color:#ede9fe}
+.sc-dm  .sc-tools{border-color:#dbeafe}
+
+.tb{font-size:9px;font-weight:600;padding:2px 7px;border-radius:20px;letter-spacing:.2px}
+.tb-bc{background:#fff7ed;color:#c2410c;border:1px solid #fed7aa}
+.tb-zo{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
+.tb-ss{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
+.tb-sl{background:#fdf4ff;color:#7c3aed;border:1px solid #e9d5ff}
+
+/* ── Click hint ── */
+.sc-hint{
+  font-size:9px;color:#94a3b8;
+  padding:5px 11px 7px;
+  letter-spacing:.2px;
+  border-top:1px solid #f1f5f9;
+  display:flex;align-items:center;gap:4px;
+}
+.sc-hint::before{content:'🔍';font-size:9px}
+.sc[onclick]:hover .sc-hint{color:#64748b}
+.sc[onclick]{transition:box-shadow .15s,transform .15s;cursor:pointer}
+.sc[onclick]:hover{box-shadow:0 4px 18px rgba(0,0,0,.1);transform:translateY(-1px)}
+
+/* ── Decision section ── */
+.sc-dec{
+  padding:8px 11px;background:#fff7ed;
+  border-top:1px dashed #fed7aa;
+  font-size:10px;color:#9a3412;line-height:1.55;
+}
+.dec-lbl{
+  font-family:'Syne',sans-serif;font-size:8.5px;font-weight:700;
+  color:#c2410c;letter-spacing:.5px;text-transform:uppercase;
+  display:block;margin-bottom:5px;
+}
+.dec-y{color:#166534;font-weight:500}
+.dec-n{color:#dc2626;font-weight:500}
+
+/* ── Divergence note ── */
+.div-note{
+  padding:7px 11px;background:#fffbeb;
+  border-top:1px dashed #fde68a;
+  font-size:9.5px;color:#78350f;line-height:1.5;
+}
+.div-note strong{font-family:'Syne',sans-serif;font-size:8.5px;font-weight:700;color:#92400e;letter-spacing:.4px;text-transform:uppercase;display:block;margin-bottom:3px}
+.div-note .nr{color:#1e40af;font-weight:600}
+.div-note .ri{color:#991b1b;font-weight:600}
+
+/* ── Passive note ── */
+.passive{
+  font-size:10px;color:#94a3b8;
+  font-style:italic;line-height:1.6;padding:2px 0;
+}
+
+/* ── Card popup overlay ── */
+.why-overlay{
+  display:none;
+  position:fixed;inset:0;
+  background:rgba(15,23,42,.45);
+  z-index:1000;
+  align-items:center;justify-content:center;
+  padding:24px;
+}
+.why-overlay.open{display:flex}
+.why-popup{
+  background:#fff;border-radius:12px;
+  max-width:480px;width:100%;
+  box-shadow:0 20px 60px rgba(0,0,0,.2);
+  overflow:hidden;
+  animation:popIn .15s ease;
+  max-height:90vh;display:flex;flex-direction:column;
+}
+@keyframes popIn{from{transform:scale(.95);opacity:0}to{transform:scale(1);opacity:1}}
+.why-popup-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 16px;
+  background:#fffbeb;border-bottom:1px solid #fde68a;
+  flex-shrink:0;
+}
+.why-popup-title{
+  display:flex;align-items:center;gap:7px;
+  font-family:'Syne',sans-serif;font-size:11px;font-weight:700;
+  color:#b45309;letter-spacing:.4px;text-transform:uppercase;
+}
+.why-popup-close{
+  background:none;border:none;cursor:pointer;
+  color:#92400e;font-size:16px;line-height:1;padding:2px 4px;
+  border-radius:4px;transition:background .1s;
+}
+.why-popup-close:hover{background:#fef3c7}
+.why-popup-body{
+  padding:18px 18px 20px;
+  font-size:12.5px;color:#1e293b;line-height:1.75;
+  overflow-y:auto;
+}
+
+/* Popup sections */
+.popup-section{margin-bottom:16px}
+.popup-section:last-child{margin-bottom:0}
+.popup-section-lbl{
+  font-family:'Syne',sans-serif;font-size:9px;font-weight:700;
+  color:#94a3b8;letter-spacing:.8px;text-transform:uppercase;
+  margin-bottom:7px;
+}
+.popup-section-body{
+  font-size:12.5px;color:#1e293b;line-height:1.75;
+}
+
+/* Who section */
+.popup-who-section{
+  background:#f8fafc;border-radius:7px;
+  padding:8px 12px;margin-bottom:14px;
+  border:1px solid #e2e8f0;
+}
+.popup-who-section .popup-section-lbl{margin-bottom:4px}
+.popup-who-section .popup-section-body{
+  font-size:12px;font-weight:600;color:#0f172a;
+}
+
+/* ── Continuation ── */
+.continuation{
+  background:#f0f9ff;border:1.5px solid #0ea5e9;border-radius:10px;
+  padding:14px 18px;margin-top:16px;font-size:11.5px;color:#0c4a6e;line-height:1.6;
+}
+.continuation strong{font-family:'Syne',sans-serif;font-weight:700;color:#0369a1;display:block;margin-bottom:5px;font-size:12px;letter-spacing:.3px}
+
+/* ── Page footer ── */
+.page-footer{
+  margin-top:24px;display:flex;align-items:center;gap:10px;
+  font-size:10px;color:#94a3b8;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="Index.html" class="nav-logo">CONCEPTA</a>
+  <a href="Index.html" class="nav-back">← Back to Suite</a>
+</nav>
+
+<!-- ═══ PAGE ═══ -->
+<div class="page">
+
+  <div class="page-heading">
+    <h1>Beta Pilot — Manual Workflow &amp; Tooling</h1>
+    <p>The first pilot workflow we follow. Manual process — no AI Agent yet. Eight stages from request capture through approval and carve-out, covering both new requests and reported issues. Differences between the two are called out inline at the stages where the flow diverges. Click any step for the What, Who, and Why.</p>
+  </div>
+
+  <div class="phase-callout">
+    <strong>Beta Pilot · Phase 1</strong>
+    Once we iterate and validate this through the corporate site pilot, we move to the next phase. The Phase 1 innovation lives in stages 1–8 below; the post-approval delivery pipeline (Sprint Candidates → TO DO → IN DEVELOPMENT → ... → UAT APPROVED) runs as it does today.
+  </div>
+
+  <!-- Legend -->
+  <div class="legend">
+    <span class="legend-label">Roles</span>
+    <div class="legend-item"><div class="legend-dot ld-c"></div>Client / Requestor</div>
+    <div class="legend-sep"></div>
+    <div class="legend-item"><div class="legend-dot ld-pdm"></div>PDM (Anne · Henrique · Gabriel)</div>
+    <div class="legend-sep"></div>
+    <div class="legend-item"><div class="legend-dot ld-dm"></div>Delivery Manager (Flavio · Tina)</div>
+  </div>
+
+  <!-- Tool legend -->
+  <div class="tool-legend">
+    <span style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:#94a3b8;letter-spacing:1px;text-transform:uppercase">Tools</span>
+    <span class="tb tb-bc">Basecamp</span>
+    <span class="tb tb-zo">Zoho</span>
+    <span class="tb tb-ss">Smartsheet</span>
+    <span class="tb tb-sl">Slack</span>
+    <span style="font-size:10px;color:#94a3b8;margin-left:6px">· <span style="color:#b45309;font-weight:600">WHY</span> = rationale behind each step</span>
+  </div>
+
+  <!-- ═══ WORKFLOW CARD ═══ -->
+  <div class="workflow-card">
+    <div class="workflow-header">
+      <h2>Beta Pilot Workflow</h2>
+      <p>Combined view — New Requests + Reported Issues. Divergences flagged inline.</p>
+    </div>
+
+    <div class="diagram-wrap">
+      <div class="swimlane">
+
+        <!-- ═══ PHASE HEADER ROW ═══ -->
+        <div class="phase-header-row">
+          <div class="role-spacer"></div>
+          <div class="phases-row">
+            <div class="phase-hd"><span class="phase-num">1</span>Submit</div>
+            <div class="phase-hd"><span class="phase-num">2</span>Ticket Created</div>
+            <div class="phase-hd"><span class="phase-num">3</span>Track &amp; Allocate</div>
+            <div class="phase-hd"><span class="phase-num">4</span>Refine &amp; Scope</div>
+            <div class="phase-hd"><span class="phase-num">5</span>Ready for Estimate</div>
+            <div class="phase-hd"><span class="phase-num">6</span>Estimate &amp; Time</div>
+            <div class="phase-hd"><span class="phase-num">7</span>Send to Client</div>
+            <div class="phase-hd"><span class="phase-num">8</span>Approve &amp; Carve-Out</div>
+          </div>
+        </div>
+
+        <!-- ═══ CLIENT LANE ═══ -->
+        <div class="lane-row bg-c">
+          <div class="role-lbl rl-c">Client / Requestor</div>
+          <div class="lane-cells">
+
+            <!-- Phase 1 — Submit -->
+            <div class="pc">
+              <div class="sc sc-c"
+                   data-who="Client requestor (any account stakeholder authorized to submit work)"
+                   data-what="Client submits a request via the channel they already use — Basecamp message board for most accounts, request board for one. The format is whatever the account is currently using; nothing changes for the client in Phase 1."
+                   data-why="No client-facing change in Phase 1 — we don't want intake friction with the client while we're still validating our internal process. The discipline we're adding sits behind the scenes; the client experience stays identical to today."
+                   onclick="openCard(this)">
+                <div class="sc-top">
+                  <div class="sc-title">Client submits request</div>
+                </div>
+                <div class="sc-hint">Click for details</div>
+                <div class="sc-tools">
+                  <span class="tb tb-bc">Basecamp</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 2 — Ticket Created (passive) -->
+            <div class="pc">
+              <div class="passive">Not active for client — PDM is creating the Zoho ticket internally.</div>
+            </div>
+
+            <!-- Phase 3 — Track &amp; Allocate (passive) -->
+            <div class="pc">
+              <div class="passive">Not active for client — DM is tracking and allocating internally.</div>
+            </div>
+
+            <!-- Phase 4 — Refine &amp; Scope -->
+            <div class="pc">
+              <div class="sc sc-c"
+                   data-who="Client requestor"
+                   data-what="The PDM works with the client in Basecamp to confirm interpretation of the request and align on what's being built. The PDM may post a quick check (&quot;just to make sure I'm interpreting correctly, you want X&quot;) so the requirement is captured in writing. Then the PDM posts the scope (FE / BE / QA / UI/UX as applicable) and the client approves it in Basecamp."
+                   data-why="Receipt of record — Basecamp is where the request and the alignment live, so anyone can trace what was agreed and when. Two confirmations (requirements + scope) protect both sides: the client gets a chance to course-correct early, and we don't estimate against a misinterpretation."
+                   onclick="openCard(this)">
+                <div class="sc-top">
+                  <div class="sc-title">Confirms requirements &amp; approves scope</div>
+                </div>
+                <div class="sc-hint">Click for details</div>
+                <div class="sc-tools">
+                  <span class="tb tb-bc">Basecamp</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 5 — passive -->
+            <div class="pc">
+              <div class="passive">Not active for client — PDM is signaling DM that scope is ready to estimate.</div>
+            </div>
+
+            <!-- Phase 6 — passive -->
+            <div class="pc">
+              <div class="passive">Not active for client — DM and team are estimating internally.</div>
+            </div>
+
+            <!-- Phase 7 — passive (DM is sending) -->
+            <div class="pc">
+              <div class="passive">Awaiting estimate, timing, and release train placement from DM.</div>
+            </div>
+
+            <!-- Phase 8 — Approve -->
+            <div class="pc">
+              <div class="sc sc-c"
+                   data-who="Client requestor"
+                   data-what="Client approves the estimate, DoD timing, and proposed release train in Basecamp. If the client doesn't approve: timing rejection → DM offers velocity / budget bump. Estimate rejection → PDM works with client to pare down scope and the request loops back to estimation."
+                   data-why="Single approval moment that triggers the carve-out and formally commits both sides to the work. Without explicit approval the request can't enter delivery — protects against scope creep and surprise overruns."
+                   onclick="openCard(this)">
+                <div class="sc-top">
+                  <div class="sc-title">Approves estimate, timing, release train</div>
+                </div>
+                <div class="sc-hint">Click for details</div>
+                <div class="sc-tools">
+                  <span class="tb tb-bc">Basecamp</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ═══ PDM LANE ═══ -->
+        <div class="lane-row bg-pdm">
+          <div class="role-lbl rl-pdm">PDM Team</div>
+          <div class="lane-cells">
+
+            <!-- Phase 1 — passive -->
+            <div class="pc">
+              <div class="passive">Receives the request — proceeds to ticket creation.</div>
+            </div>
+
+            <!-- Phase 2 — Create Zoho ticket -->
+            <div class="pc">
+              <div class="sc sc-pdm"
+                   data-who="PDM (Anne, Henrique, or Gabriel — whoever owns the account)"
+                   data-what="PDM creates the Zoho ticket on the New Request backlog. Sets: Item Type (Task for new request, Bug for reported issue), Item Name (the request title), Description (link to Basecamp comms), Epic (Planning/Ops/New Requests for new request, Production Support for reported issue), Priority (aligned with client urgency), Request Analysis Status (New Request), and assigns the DM. Then tags the DM in the ticket comments and the account Slack channel — that tag is what triggers the DM to begin tracking."
+                   data-why="The Zoho ticket is the internal source of truth for this request. Setting epic and priority correctly at creation means time logged against the ticket bills to the right bucket from day one — no cleanup later. The Slack tag is the human signal that pulls the DM in; without it the request waits."
+                   onclick="openCard(this)">
+                <div class="sc-top">
+                  <div class="sc-title">Create Zoho ticket &amp; tag DM</div>
+                </div>
+                <div class="sc-hint">Click for details</div>
+                <div class="sc-tools">
+                  <span class="tb tb-zo">Zoho</span>
+                  <span class="tb tb-sl">Slack</span>
+                </div>
+                <div class="div-note">
+                  <strong>New Request vs. Reported Issue</strong>
+                  <span class="nr">New:</span> Item Type = Task · Epic = Planning/Ops/New Requests<br>
+                  <span class="ri">Issue:</span> Item Type = Bug · Epic = Production Support
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 3 — passive (DM is acting) -->
+            <div class="pc">
+              <div class="passive">Awaiting DM — tracking the request in Smartsheet and allocating time.</div>
+            </div>
+
+            <!-- Phase 4 — Scope with team and client -->
+            <div class="pc">
+              <div class="sc sc-pdm"
+                   data-who="PDM drives. Team contributes (FE / BE / QA / UI/UX / SA). Client approves."
+                   data-what="PDM refines requirements with the client in Basecamp and aligns internally with the team. If the request is simple, team members review async. If complex, the DM schedules a planning call with the team members the PDM identified on the Zoho ticket. Output is a scope posted in Basecamp covering FE / BE / QA / UI/UX as applicable, approved by the client. Updates the Zoho Request Analysis Status as work moves through these phases (status follows the current ticket assignee)."
+                   data-why="Scope written in Basecamp = institutional memory. Clients reprioritize and forget what they asked for; the Basecamp record is what holds the line. Internal alignment before estimation prevents the team from estimating against assumptions the PDM didn't validate."
+                   onclick="openCard(this)">
+                <div class="sc-top">
+                  <div class="sc-title">Scope with team · client approves</div>
+                </div>
+                <div class="sc-hint">Click for details</div>
+                <div class="sc-tools">
+                  <span class="tb tb-bc">Basecamp</span>
+                  <span class="tb tb-sl">Slack</span>
+                  <span class="tb tb-zo">Zoho</span>
+                </div>
+                <div class="sc-dec">
+                  <span class="dec-lbl">⚡ Fast path</span>
+                  If the PDM is confident the request is simple and clear, they can skip the separate requirements approval round-trip. PDM posts a quick confirmation in Basecamp ("just to make sure I'm interpreting correctly, you want X"), then signals the DM to proceed straight to estimation. The DM's reply at Phase 7 (requirements + estimate + timing + release train) becomes the single client approval moment.
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 5 — Tag DM ready for estimation -->
+            <div class="pc">
+              <div class="sc sc-pdm"
+                   data-who="PDM"
+                   data-what="Once the scope is approved by the client in Basecamp, the PDM updates the Zoho Request Analysis Status to Ready for Estimation, comments on the ticket with a brief handoff note, and tags the DM in the account Slack channel."
+                   data-why="Status follows ownership of the current phase — when the PDM's part is done, the status update is the signal that the next role (DM) takes over. Comment + Slack tag means the DM doesn't have to be watching the ticket to know it's their turn."
+                   onclick="openCard(this)">
+                <div class="sc-top">
+                  <div class="sc-title">Update Status &amp; tag DM</div>
+                </div>
+                <div class="sc-hint">Click for details</div>
+                <div class="sc-tools">
+                  <span class="tb tb-zo">Zoho</span>
+                  <span class="tb tb-sl">Slack</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 6 — passive -->
+            <div class="pc">
+              <div class="passive">Available to team for estimation input on the Smartsheet estimator.</div>
+            </div>
+
+            <!-- Phase 7 — Align release train priority with DM -->
+            <div class="pc">
+              <div class="sc sc-pdm"
+                   data-who="PDM (works with DM)"
+                   data-what="Before the DM sends the estimate to the client, the PDM and DM align on release train placement. The PDM brings the client-side priority context — what the client is expecting, what other work is queued — and the DM brings the LOE and remaining bucket capacity. Together they decide: add to current in-flight release if urgent, or hold for next release if heavy."
+                   data-why="The PDM is closest to the client on priority — without their input, the DM is guessing what the client expects. Aligning internally before going to the client also avoids contradicting messages reaching the client from different team members."
+                   onclick="openCard(this)">
+                <div class="sc-top">
+                  <div class="sc-title">Align release train with DM</div>
+                </div>
+                <div class="sc-hint">Click for details</div>
+                <div class="sc-tools">
+                  <span class="tb tb-sl">Slack</span>
+                  <span class="tb tb-zo">Zoho</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 8 — passive -->
+            <div class="pc">
+              <div class="passive">Awaiting client approval. On approval, DM executes the carve-out.</div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- ═══ DM LANE ═══ -->
+        <div class="lane-row bg-dm">
+          <div class="role-lbl rl-dm">Delivery Manager</div>
+          <div class="lane-cells">
+
+            <!-- Phase 1 — passive -->
+            <div class="pc">
+              <div class="passive">Bucket hours already published — PDM is drawing against the available capacity.</div>
+            </div>
+
+            <!-- Phase 2 — passive -->
+            <div class="pc">
+              <div class="passive">Awaiting PDM tag on the Zoho ticket and the account Slack channel.</div>
+            </div>
+
+            <!-- Phase 3 — Smartsheet form + allocate time -->
+            <div class="pc">
+              <div class="sc sc-dm"
+                   data-who="Delivery Manager (Flavio or Tina)"
+                   data-what="Triggered by the PDM's Slack tag. DM submits the Smartsheet form for the account: Date, Title, Type (New Request / Reported Issue), Requestor, Notes (Basecamp link from the Zoho ticket). The row lands on the account's Smartsheet Request Tracker in NEW REQUEST. DM moves it to SCOPE/ANALYSIS (or Triage column for reported issue), assigns, and allocates how many hours the team has to spend processing this request — drawn from the relevant bucket, with resource availability factored in."
+                   data-why="Smartsheet is the client-facing view — every request lives there so the client can see at any moment what's in flight. Allocating time upfront sets the budget envelope the PDM operates against during scoping; without it, scoping work can sprawl and burn the bucket on a single request."
+                   onclick="openCard(this)">
+                <div class="sc-top">
+                  <div class="sc-title">Submit Smartsheet form · allocate time</div>
+                </div>
+                <div class="sc-hint">Click for details</div>
+                <div class="sc-tools">
+                  <span class="tb tb-ss">Smartsheet</span>
+                  <span class="tb tb-sl">Slack</span>
+                </div>
+                <div class="div-note">
+                  <strong>Bucket the time draws from</strong>
+                  <span class="nr">New:</span> Planning/Ops/New Requests<br>
+                  <span class="ri">Issue:</span> Production Support (covers triage + alignment + fix)
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 4 — Project plan (DM discretion) -->
+            <div class="pc">
+              <div class="sc sc-dm"
+                   data-who="Delivery Manager (judgment per request)"
+                   data-what="DM judges whether the request warrants its own Smartsheet project plan. Simple requests (single field change, copy update, configuration tweak) — no plan needed. Complex requests with multiple resources, rolling days of work, or sequencing risk — DM initiates the project plan from the template. If the request is being added to an existing release that already has a project plan in flight, DM adds it there rather than creating a new one. Activity assignees update their own status as work progresses; DM owns the plan structure and reconciliation."
+                   data-why="A project plan for a 30-minute label change is overhead with no payoff. A complex multi-resource request with no plan is chaos. The DM judges per request — and that judgment is part of the discipline we're building in Phase 1. Distributed status updates keep the plan current without bottlenecking on the DM."
+                   onclick="openCard(this)">
+                <div class="sc-top">
+                  <div class="sc-title">Project plan? (DM discretion)</div>
+                </div>
+                <div class="sc-hint">Click for details</div>
+                <div class="sc-tools">
+                  <span class="tb tb-ss">Smartsheet</span>
+                </div>
+                <div class="sc-dec">
+                  <span class="dec-lbl">Decision</span>
+                  <span class="dec-y">Complex / multi-resource / rolling days →</span> initiate plan<br>
+                  <span class="dec-n">Simple change →</span> skip; ticket alone is enough
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 5 — passive -->
+            <div class="pc">
+              <div class="passive">Receives PDM's Status update and Slack tag — proceeds to estimator.</div>
+            </div>
+
+            <!-- Phase 6 — Generate estimator -->
+            <div class="pc">
+              <div class="sc sc-dm"
+                   data-who="DM stands up the estimator. Team estimates per role (BE · FE · QA · UI/UX · SA). Leadership reviews where applicable."
+                   data-what="DM copies the Smartsheet request estimator template, pulls the high-level requirements from the approved Basecamp scope, populates the standard DoD activities. Each role estimates into their column (BE Est, FE Est, QA Est, UI/UX Est) — async if team maturity allows, brief estimation call otherwise. DM populates the hedge columns (Hedge, SA, PDM, DM, Automation Testing, Team), calculates TOTAL PROJECT HOURS, and surfaces the range to leadership for review where applicable. DM then calculates weeks to DoD (TOTAL HOURS ÷ Avg Burn/Week) adjusting for known scheduling constraints. If the request is folding into a release where DoD activities are already accounted for, the new request only estimates implementation, dev testing, code review, and QA testing — client demo and e2e regression get folded into the in-flight request."
+                   data-why="The estimator turns gut-feel into a number leadership and the client can both stand behind. Hedge columns recognize that dev estimates alone aren't the full picture — SA, PDM, DM, and automation time are real and need to be funded. Folding shared DoD activities into in-flight releases avoids double-counting work."
+                   onclick="openCard(this)">
+                <div class="sc-top">
+                  <div class="sc-title">Generate estimator · calculate timing</div>
+                </div>
+                <div class="sc-hint">Click for details</div>
+                <div class="sc-tools">
+                  <span class="tb tb-ss">Smartsheet</span>
+                  <span class="tb tb-sl">Slack</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 7 — Send to client -->
+            <div class="pc">
+              <div class="sc sc-dm"
+                   data-who="Delivery Manager"
+                   data-what="DM responds on the original Basecamp request thread with the effort estimate (or t-shirt size if applicable), timing to DoD, and proposed release train placement. If the fast path was taken in Phase 4, the DM also restates the requirements in this reply — making it the single client approval moment. For t-shirt sized requests, DM names the next step (POC effort estimate, or follow-up LOE estimate)."
+                   data-why="Single message to the client containing everything they need to make an informed approval decision. Avoids the back-and-forth of separate emails for estimate, timing, and placement. The client either approves or pushes back on something specific — both outcomes are clear."
+                   onclick="openCard(this)">
+                <div class="sc-top">
+                  <div class="sc-title">Send estimate, timing, release train</div>
+                </div>
+                <div class="sc-hint">Click for details</div>
+                <div class="sc-tools">
+                  <span class="tb tb-bc">Basecamp</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Phase 8 — Carve-out -->
+            <div class="pc">
+              <div class="sc sc-dm"
+                   data-who="Delivery Manager"
+                   data-what="On client approval, DM executes the carve-out: (1) closes the original request ticket under Planning/Ops/New Requests so no further time logs there. (2) Creates a new epic in Zoho titled with the request name. (3) Allocates hours from the Implementation bucket to the new epic matching the estimator's TOTAL PROJECT HOURS. (4) Cuts child tickets under the new epic — one per role from the estimator (BE, FE, QA, UI/UX, SA, PDM, DM, Automation Testing, Team), plus a separate Hedge ticket carrying the buffer. (5) Manages Hedge as the request's internal buffer — pulls from it first if any role ticket runs over, before going back to the client. From there, child tickets flow into Sprint Candidates → TO DO → IN DEVELOPMENT → ... → UAT APPROVED via the standard Zoho active board."
+                   data-why="Budget integrity and KPI tracking. If implementation work continued logging against Planning/Ops/New Requests, that bucket would look over-burned and Implementation under-burned — and per-request estimated-vs-actual data would be impossible to extract. The request-specific epic gives clean tracking: what we estimated for DoD vs. what it actually took. Hedge as a per-request buffer means we have a safety margin without going back to the client for every overrun."
+                   onclick="openCard(this)">
+                <div class="sc-top">
+                  <div class="sc-title">Execute carve-out</div>
+                </div>
+                <div class="sc-hint">Click for details</div>
+                <div class="sc-tools">
+                  <span class="tb tb-zo">Zoho</span>
+                </div>
+                <div class="div-note">
+                  <strong>Carve-out applies to</strong>
+                  <span class="nr">New feature / function:</span> YES — carve out of Implementation, new epic created<br>
+                  <span class="ri">Reported issue:</span> NO carve-out — all work stays under Production Support epic
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ CONTINUATION ═══ -->
+  <div class="continuation">
+    <strong>→ Standard Dev / QA / UAT lifecycle takes over</strong>
+    Once the carve-out is complete (Phase 8), child tickets flow into Sprint Candidates → TO DO → IN DEVELOPMENT → READY FOR REVIEW → IN QA → QA APPROVED → IN UAT → UAT APPROVED on the Zoho active board. Smartsheet status moves through <em>In Dev</em> to <em>Released to PROD</em> mirroring the active-board state.
+  </div>
+
+  <div class="page-footer">
+    Concepta · Beta Pilot Manual Workflow · April 2026 · Internal Use
+  </div>
+
+</div>
+
+<!-- ═══ MODAL POPUP ═══ -->
+<div class="why-overlay" id="whyOverlay" onclick="closeWhy(event)">
+  <div class="why-popup">
+    <div class="why-popup-header">
+      <div class="why-popup-title">
+        <span id="popupStepTitle">Step</span>
+      </div>
+      <button class="why-popup-close" onclick="closeWhyBtn()">✕</button>
+    </div>
+    <div class="why-popup-body">
+      <!-- WHO -->
+      <div class="popup-section popup-who-section">
+        <div class="popup-section-lbl">👤 Who</div>
+        <div class="popup-section-body" id="popupWho"></div>
+      </div>
+      <!-- WHAT -->
+      <div class="popup-section">
+        <div class="popup-section-lbl">📋 What</div>
+        <div class="popup-section-body" id="popupWhat"></div>
+      </div>
+      <!-- WHY -->
+      <div class="popup-section">
+        <div class="popup-section-lbl">💡 Why</div>
+        <div class="popup-section-body" id="popupWhy"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openCard(card) {
+  const title = card.querySelector('.sc-title');
+  const who   = card.dataset.who  || '';
+  const what  = card.dataset.what || '';
+  const why   = card.dataset.why  || '';
+
+  document.getElementById('popupStepTitle').textContent = title ? title.textContent.trim() : 'Step';
+  document.getElementById('popupWho').textContent  = who;
+  document.getElementById('popupWhat').textContent = what;
+  document.getElementById('popupWhy').textContent  = why;
+
+  document.getElementById('whyOverlay').classList.add('open');
+}
+
+function closeWhy(e) {
+  if (e.target === document.getElementById('whyOverlay')) {
+    document.getElementById('whyOverlay').classList.remove('open');
+  }
+}
+
+function closeWhyBtn() {
+  document.getElementById('whyOverlay').classList.remove('open');
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') document.getElementById('whyOverlay').classList.remove('open');
+});
+</script>
+
+</body>
+</html>

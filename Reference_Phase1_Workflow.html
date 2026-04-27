@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Concepta — Phase 1 Workflow & Delivery Toolkit</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:#0f0f0f;--ink-mid:#3a3a3a;--ink-light:#6b7280;--rule:#e2ddd8;
+  --paper:#f7f5f1;--white:#ffffff;--blue:#1d3557;--blue-mid:#2563eb;
+  --blue-light:#dbeafe;--violet:#4c1d95;--violet-light:#ede9fe;
+  --green:#14532d;--green-light:#dcfce7;--amber:#92400e;--amber-light:#fef3c7;
+  --red:#991b1b;--red-light:#fee2e2;--orange:#c2410c;--orange-light:#fff7ed;
+  --gap:40px;--col:820px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);font-size:14px;line-height:1.7}
+nav{position:sticky;top:0;z-index:100;background:var(--blue);display:flex;align-items:center;justify-content:space-between;padding:0 40px;height:52px;box-shadow:0 2px 12px rgba(0,0,0,.18)}
+.nav-logo{font-family:'DM Serif Display',serif;font-size:17px;color:#fff}
+.nav-back{font-size:11px;color:rgba(255,255,255,.6);text-decoration:none}
+.nav-back:hover{color:#fff}
+.hero{background:var(--blue);color:#fff;padding:48px 40px 40px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 80% 50%,rgba(37,99,235,.2) 0%,transparent 65%);pointer-events:none}
+.hero-inner{max-width:var(--col);margin:0 auto;position:relative}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.5);border:1px solid rgba(255,255,255,.15);border-radius:20px;padding:4px 12px;margin-bottom:16px}
+.hero-eyebrow span{width:6px;height:6px;border-radius:50%;background:#f59e0b}
+h1{font-family:'DM Serif Display',serif;font-size:32px;line-height:1.2;color:#fff;margin-bottom:10px}
+.hero-sub{font-size:14px;color:rgba(255,255,255,.65);max-width:620px;line-height:1.6}
+.page{max-width:var(--col);margin:0 auto;padding:var(--gap) 40px 80px}
+.section{margin-bottom:40px}
+.section-label{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--ink-light);display:flex;align-items:center;gap:10px;margin-bottom:20px}
+.section-label::after{content:'';flex:1;height:1px;background:var(--rule)}
+.section-label .num{width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0}
+h2{font-family:'DM Serif Display',serif;font-size:24px;line-height:1.25;color:var(--ink);margin-bottom:8px}
+h3{font-size:14px;font-weight:700;color:var(--ink);margin:28px 0 12px}
+h4{font-size:13px;font-weight:700;color:var(--ink);margin:18px 0 8px}
+p{color:var(--ink-mid);margin-bottom:12px}
+ul,ol{color:var(--ink-mid);margin:8px 0 14px 22px}
+li{margin-bottom:5px;font-size:13px}
+.callout{border-radius:8px;padding:14px 18px;margin:16px 0;display:flex;gap:12px;font-size:13px}
+.callout-icon{font-size:18px;flex-shrink:0}
+.callout-body strong{display:block;font-size:12px;font-weight:700;margin-bottom:3px}
+.callout-info{background:var(--blue-light);border-left:3px solid var(--blue-mid)}
+.callout-warn{background:var(--amber-light);border-left:3px solid #f59e0b}
+.callout-flag{background:var(--red-light);border-left:3px solid #dc2626}
+.callout-green{background:var(--green-light);border-left:3px solid #16a34a}
+.callout-violet{background:var(--violet-light);border-left:3px solid #6d28d9}
+.callout-orange{background:var(--orange-light);border-left:3px solid #ea580c}
+.divider{border:none;border-top:1px solid var(--rule);margin:32px 0}
+.back-link{display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--blue-mid);text-decoration:none;margin-bottom:24px;font-weight:600}
+.back-link:hover{text-decoration:underline}
+
+/* Role split */
+.role-split{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+.role-card{background:var(--white);border:1.5px solid var(--rule);border-radius:8px;padding:16px 18px;border-top:4px solid var(--ink)}
+.role-card.product{border-top-color:#6d28d9}
+.role-card.dm{border-top-color:#2563eb}
+.role-eyebrow{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px}
+.role-card.product .role-eyebrow{color:#6d28d9}
+.role-card.dm .role-eyebrow{color:#1d4ed8}
+.role-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px}
+.role-people{font-size:11px;color:var(--ink-light);margin-bottom:10px;font-style:italic}
+.role-list{list-style:none;padding:0;margin:0}
+.role-list li{font-size:12.5px;color:var(--ink-mid);padding-left:14px;position:relative;margin-bottom:6px;line-height:1.5}
+.role-list li::before{content:'›';position:absolute;left:0;top:0;color:var(--ink-light);font-weight:700}
+
+/* Stages */
+.stage-list{display:flex;flex-direction:column;gap:0;border-left:2px solid var(--rule);margin-left:18px;padding:6px 0}
+.stage{display:flex;gap:18px;padding:14px 0 14px 24px;position:relative}
+.stage::before{content:'';position:absolute;left:-7px;top:22px;width:12px;height:12px;border-radius:50%;background:var(--white);border:2px solid var(--ink)}
+.stage-num{position:absolute;left:-44px;top:14px;width:34px;height:34px;border-radius:50%;background:var(--white);border:2px solid var(--ink);color:var(--ink);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;flex-shrink:0;font-family:'DM Serif Display',serif}
+.stage-body{flex:1;background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:14px 18px}
+.stage-body h4{font-size:14px;font-weight:700;margin:0 0 6px;color:var(--ink)}
+.stage-body p{font-size:12.5px;color:var(--ink-mid);margin-bottom:8px}
+.stage-body p:last-child{margin-bottom:0}
+.stage-body ul{margin:6px 0 8px 18px}
+.stage-body li{font-size:12px;line-height:1.55;margin-bottom:3px}
+
+/* Tags */
+.tag{display:inline-block;padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600;letter-spacing:.4px;margin-right:4px;margin-top:4px}
+.tag-blue{background:var(--blue-light);color:#1d4ed8}
+.tag-violet{background:var(--violet-light);color:#6d28d9}
+.tag-green{background:var(--green-light);color:#15803d}
+.tag-amber{background:var(--amber-light);color:#92400e}
+.tag-red{background:var(--red-light);color:#991b1b}
+.tag-gray{background:#e5e7eb;color:#374151}
+
+/* Divergence box */
+.divergence{background:#fef2f2;border:1px dashed #fca5a5;border-radius:6px;padding:10px 14px;margin:8px 0;font-size:11.5px;color:#991b1b}
+.divergence strong{color:#7f1d1d;font-size:11px;letter-spacing:.5px;text-transform:uppercase;display:block;margin-bottom:3px}
+
+/* Stuck-state table */
+.stuck-table{width:100%;border-collapse:collapse;font-size:12.5px;margin:14px 0;background:var(--white);border:1px solid var(--rule);border-radius:8px;overflow:hidden}
+.stuck-table thead tr{background:var(--blue);color:#fff}
+.stuck-table th{padding:10px 14px;text-align:left;font-size:11px;font-weight:700;letter-spacing:.5px}
+.stuck-table td{padding:11px 14px;border-bottom:1px solid var(--rule);color:var(--ink-mid);vertical-align:top}
+.stuck-table tr:last-child td{border-bottom:none}
+.stuck-name{font-weight:700;color:var(--ink)}
+
+/* Source of truth grid */
+.sot-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:16px 0}
+.sot-card{background:var(--white);border:1.5px solid var(--rule);border-radius:8px;padding:14px 16px}
+.sot-card.zoho{border-top:3px solid #f59e0b}
+.sot-card.smart{border-top:3px solid #16a34a}
+.sot-eyebrow{font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;margin-bottom:6px}
+.sot-card.zoho .sot-eyebrow{color:#92400e}
+.sot-card.smart .sot-eyebrow{color:#15803d}
+.sot-title{font-size:13px;font-weight:700;color:var(--ink);margin-bottom:6px}
+.sot-list{list-style:none;padding:0;margin:0}
+.sot-list li{font-size:12px;color:var(--ink-mid);padding-left:14px;position:relative;margin-bottom:5px;line-height:1.5}
+.sot-list li::before{content:'•';position:absolute;left:2px;top:0;color:var(--ink-light)}
+
+/* Hours signal cards */
+.hours-card{background:var(--white);border:1.5px solid var(--rule);border-radius:8px;padding:16px 18px;margin:14px 0;border-left:4px solid #2563eb}
+.hours-card h4{margin-top:0}
+
+/* Status flow */
+.status-flow{display:flex;align-items:center;justify-content:center;gap:8px;margin:14px 0;flex-wrap:wrap}
+.status-pill{background:var(--white);border:1.5px solid var(--rule);border-radius:18px;padding:6px 12px;font-size:11px;font-weight:600;color:var(--ink-mid)}
+.status-pill.exception{background:#fef2f2;border-color:#fca5a5;color:#991b1b}
+.status-arrow{color:var(--ink-light);font-weight:700}
+
+/* Mechanics blocks */
+.mech-block{background:var(--white);border:1px solid var(--rule);border-radius:8px;padding:18px 20px;margin:14px 0;border-left:4px solid #2563eb}
+.mech-block h4{margin-top:0;font-size:14px;color:var(--ink);margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.mech-block h4 .mech-num{display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#2563eb;color:#fff;font-size:11px;font-weight:700;font-family:'DM Sans',sans-serif}
+.mech-block .mech-where{font-size:11px;color:var(--ink-light);background:#f3f4f6;padding:6px 10px;border-radius:4px;margin:8px 0;display:block}
+.mech-block .mech-where strong{color:var(--ink-mid);text-transform:uppercase;letter-spacing:.5px;font-size:9.5px;display:block;margin-bottom:2px}
+.mech-block ol{margin:6px 0 0 20px}
+.mech-block ol li{margin-bottom:5px;font-size:12.5px;line-height:1.55}
+.mech-block ul{margin:4px 0 8px 20px}
+.mech-block ul li{font-size:12px;line-height:1.55;margin-bottom:3px}
+
+footer{background:var(--ink);color:rgba(255,255,255,.45);text-align:center;padding:28px;font-size:11px;letter-spacing:.5px;margin-top:40px}
+
+@media (max-width: 640px){
+  .role-split,.sot-grid{grid-template-columns:1fr}
+  .stage-list{margin-left:14px}
+  .stage-num{left:-40px;width:30px;height:30px;font-size:11px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">Concepta</div>
+  <a href="Concepta_Intake_Process_Executive_Brief.html" class="nav-back">← Back to Executive Brief</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-eyebrow"><span></span> Reference Document · Intake & Request Processing</div>
+    <h1>Phase 1 Workflow &amp;<br>Delivery Toolkit</h1>
+    <p class="hero-sub">The manual operating model for processing client requests — the structure, roles, and tooling we operate to before scaling any of this with an AI Agent. Phase 1 is the discipline pilot; Phase 2 layers automation on top of a process the team has already proven.</p>
+  </div>
+</div>
+
+<div class="page">
+
+  <a href="Concepta_Intake_Process_Executive_Brief.html" class="back-link">← Executive Brief</a>
+
+  <!-- ── SECTION 1: WHY ── -->
+  <div class="section" id="why">
+    <div class="section-label"><div class="num">1</div> Why This Phase 1 Exists</div>
+    <h2>Train Ourselves Before We Train the AI</h2>
+    <p>The intake initiative includes a future AI Agent that will handle validation, routing, monitoring, and notification work. But automation can only amplify a process that already works — it cannot fix one that doesn't. <strong>Phase 1 is the team operating the workflow manually so we validate, refine, and prove the structure on real requests before any of it gets handed to an agent.</strong></p>
+
+    <div class="callout callout-violet">
+      <div class="callout-icon">🎯</div>
+      <div class="callout-body">
+        <strong>The principle</strong>
+        <p>If we cannot run this workflow consistently with humans, we have no business automating it. The discipline we build in Phase 1 — clear roles, ticket hygiene, project plan rigor, budget visibility — becomes the rulebook the AI Agent will eventually operate from. Skipping the manual pilot would automate ambiguity, which is worse than no automation at all.</p>
+      </div>
+    </div>
+
+    <p>This page is the operating reference for Phase 1. It defines the role split, the gating signal that starts every request, the end-to-end workflow, the stuck-state playbook, the rule for keeping Zoho and Smartsheet aligned, and the literal mechanics for executing each DM responsibility. It is the artifact the team operates from during the corporate site pilot and the per-account rollout that follows.</p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── SECTION 2: ROLE SPLIT ── -->
+  <div class="section" id="roles">
+    <div class="section-label"><div class="num">2</div> The Role Split</div>
+    <h2>Two Teams, Two Areas of Ownership</h2>
+    <p>Every request flows through both teams. The split below is about <em>accountability</em> — who owns the artifact, who makes the call, who answers when something stalls. Both teams participate in working sessions and planning ceremonies regardless of which side owns a given activity.</p>
+
+    <div class="role-split">
+      <div class="role-card product">
+        <div class="role-eyebrow">PDM Team (Product Managers)</div>
+        <div class="role-title">Refining &amp; Scoping All Client Requests</div>
+        <div class="role-people">Anne · Henrique · Gabriel</div>
+        <ul class="role-list">
+          <li>Capture and refine incoming requests with the client</li>
+          <li>Drive internal and external alignment until the request is clear</li>
+          <li>Author the scope in Basecamp and secure client approval</li>
+          <li>Create the Zoho ticket with all required fields and assign to the DM</li>
+          <li>Assign the ticket to the correct epic (New Requests or Production Support)</li>
+          <li>Determine and inform priority / severity for reported issues</li>
+          <li>Decide whether the request needs a planning call or can be processed async</li>
+        </ul>
+      </div>
+      <div class="role-card dm">
+        <div class="role-eyebrow">Delivery Manager</div>
+        <div class="role-title">Resource Allocation, Budgets &amp; Project Plans</div>
+        <div class="role-people">Flavio · Tina</div>
+        <ul class="role-list">
+          <li>Manage bucket hours per billing cycle and inform the team of what's available to operate against</li>
+          <li>Trace and track every request through its lifecycle in Smartsheet and Zoho</li>
+          <li>Allocate time the team will spend on the request when it lands in the tracker</li>
+          <li>Initiate or assign a Smartsheet project plan when the request warrants one (DM discretion based on complexity)</li>
+          <li>Generate the request estimator and align the team on LOE including DoD activities — review with leadership where applicable</li>
+          <li>Calculate delivery timing based on LOE and work with the PDM to determine release train priority</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── SECTION 3: REMAINING HOURS SIGNAL ── -->
+  <div class="section" id="hours-signal">
+    <div class="section-label"><div class="num">3</div> The Gating Signal — Bucket Hours Per Cycle</div>
+    <h2>Phase 1 Starts With Visibility</h2>
+    <p>Before any request can be processed, the PDM team needs to know how much capacity exists in the relevant service buckets for the current billing cycle. The DM owns and manages this signal — and it is what enables the PDM team to start processing requests with confidence about what can be absorbed.</p>
+
+    <div class="hours-card">
+      <h4>What the DM Manages and Communicates</h4>
+      <p style="margin-bottom:10px">Per account, per billing cycle, the DM tracks and communicates remaining hours in:</p>
+      <ul>
+        <li><strong>Planning / Ops / New Requests bucket</strong> — covers standing team operations: dailies, planning meetings, retros, client status calls. <em>Remaining</em> hours after operations fund analyzing, scoping, and estimating new requests</li>
+        <li><strong>Production Support bucket</strong> — reported issues pull from here (triage, troubleshooting, resolution)</li>
+        <li><strong>Implementation bucket</strong> — approved work pulls from here once requirements, estimate, and delivery timing are signed off; POCs from t-shirt sized requests also pull from this bucket. <strong>At approval, hours are carved out of this bucket and assigned to a request-specific epic</strong> (see Stage 8) — so "remaining Implementation hours" is what's left after all approved requests have been allocated</li>
+      </ul>
+      <p style="margin-top:10px;font-size:12px;color:var(--ink-light)"><strong>Monitor and recalibrate.</strong> These budgets should be tracked continuously and recalibrated as patterns emerge — that data opens conversations with the client ("we need more hours for production support" or "we need more hours to perform X"). Bucket pressure isn't just a tracking signal; it's the evidence that drives the next contract conversation.</p>
+    </div>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">⏳</div>
+      <div class="callout-body">
+        <strong>Available hours ≠ schedulable in a single day</strong>
+        <p>Budgets are low and the team is not full-time on most accounts. Even when bucket hours show capacity, the resource may not be schedulable to handle everything at once. The DM accounts for resource availability — not just budget availability — when allocating time to a request.</p>
+      </div>
+    </div>
+
+    <div class="callout callout-info">
+      <div class="callout-icon">📅</div>
+      <div class="callout-body">
+        <strong>Cadence — at minimum weekly, no dedicated forum required</strong>
+        <p>Tracking is continuous via Zoho epics as time logs in. Communication of remaining hours happens at minimum once per week — during dailies, internal status calls, or as a post in the relevant account Slack channel. The point is that everyone has a pulse on what's remaining without making it a ceremony. Refresh more often as buckets approach or pass key thresholds.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── SECTION 4: WORKFLOW ── -->
+  <div class="section" id="workflow">
+    <div class="section-label"><div class="num">4</div> The End-to-End Workflow</div>
+    <h2>From Client Request to Delivery Approval</h2>
+    <p>Eight stages from request capture through client approval and release train assignment. The primary path covers New Requests; Reported Issue divergences are called out inline at the stages where the flow differs. The full workflow happens against the bucket capacity managed by the DM in Section 3.</p>
+
+    <div class="callout callout-info">
+      <div class="callout-icon">💬</div>
+      <div class="callout-body">
+        <strong>Anago — current exception</strong>
+        <p>Anago is handled outside the standard flow during their account transition. The workflow below applies to all other active accounts.</p>
+      </div>
+    </div>
+
+    <div class="stage-list">
+
+      <!-- STAGE 1 -->
+      <div class="stage">
+        <div class="stage-num">1</div>
+        <div class="stage-body">
+          <h4>Request Captured in Basecamp</h4>
+          <p>Requests come in via the channel each client already uses — most accounts use the Basecamp message board, one uses a request board. The PDM works within whichever format the account uses; what matters is that the request is captured and that subsequent refinement happens in Basecamp where it is traceable.</p>
+          <div><span class="tag tag-gray">Client / Requestor</span><span class="tag tag-violet">PDM (receives)</span></div>
+        </div>
+      </div>
+
+      <!-- STAGE 2 -->
+      <div class="stage">
+        <div class="stage-num">2</div>
+        <div class="stage-body">
+          <h4>Zoho Ticket Created &amp; Assigned to DM</h4>
+          <p>Once the PDM picks up the request, they create the Zoho ticket on the <strong>New Request backlog category</strong> with the following:</p>
+          <ul>
+            <li><strong>Item Type</strong> — Task for new requests, Bug for reported issues (Zoho dropdown — Story, Task, or Bug)</li>
+            <li><strong>Item Name</strong> — name of the request</li>
+            <li><strong>Description</strong> — link to the Basecamp comms</li>
+            <li><strong>Epic</strong> — <em>Planning / Ops / New Requests</em> for new requests; <em>Production Support</em> for reported issues</li>
+            <li><strong>Priority</strong> — set by the PDM; for reported issues this is how the team understands urgency (Phase 1 does not use formal SLA response targets — the PDM's priority call drives team response)</li>
+            <li><strong>Request Analysis Status</strong> — custom field on the ticket template; PDM sets to <em>New Request</em> at creation. The current ticket assignee updates Status as their phase completes — Status follows ownership, not parked with one role (see Section 6)</li>
+            <li><strong>Required participants</strong> — who the PDM needs to process this request, and whether a planning call is recommended (vs. async review) — captured in the description</li>
+            <li><strong>Assign Users</strong> — the DM</li>
+          </ul>
+          <p>The PDM then tags the DM in the ticket comments and, when needed, in the account Slack channel. <strong>This tag is what triggers the DM to begin tracking.</strong></p>
+          <div><span class="tag tag-violet">PDM</span></div>
+          <div class="divergence">
+            <strong>Reported Issue divergence</strong>
+            Bug item type · Production Support epic · Priority assigned by PDM · The PDM's priority call drives how aggressively the team responds (no formal SLA framework in Phase 1)
+          </div>
+        </div>
+      </div>
+
+      <!-- STAGE 3 -->
+      <div class="stage">
+        <div class="stage-num">3</div>
+        <div class="stage-body">
+          <h4>DM Submits to Smartsheet &amp; Allocates Time</h4>
+          <p>Triggered by the Slack/Zoho tag. The DM submits the Smartsheet form which routes the request into the account's Smartsheet Request Tracker (lands in <em>NEW REQUEST</em>). Form fields:</p>
+          <ul>
+            <li>Request Date</li>
+            <li>Request Title</li>
+            <li>Request Type (New Request / Reported Issue)</li>
+            <li>Requestor</li>
+            <li>Notes — Basecamp link from the Zoho ticket</li>
+          </ul>
+          <p>The DM then moves the row from <em>NEW REQUEST</em> onto the active board in the appropriate column (typically <em>SCOPE/ANALYSIS</em> for new requests, the triage column for reported issues), and assigns. <strong>At this point the DM also allocates how much time the team has to spend on this request</strong> — drawn from the bucket capacity for the cycle, with resource availability factored in. This allocation becomes the budget envelope the PDM operates against during scoping.</p>
+          <div><span class="tag tag-blue">Delivery Manager</span></div>
+        </div>
+      </div>
+
+      <!-- STAGE 4 -->
+      <div class="stage">
+        <div class="stage-num">4</div>
+        <div class="stage-body">
+          <h4>Scoping &amp; Internal Alignment</h4>
+          <p>The PDM works the request to a clear scope — directly with the client in Basecamp, and internally with whichever team members are needed. <strong>Decision point:</strong> if the request is simple enough, individual team members review and align async; if complex, the DM schedules a planning call with the team members the PDM identified on the Zoho ticket.</p>
+          <p>The output of this stage is a scope posted in Basecamp covering the high-level requirements specific to what's applicable for the request — typically <strong>FE, BE, QA, UI/UX</strong>. <strong>The client approves the scope in Basecamp.</strong></p>
+          <div><span class="tag tag-violet">PDM (drives)</span><span class="tag tag-gray">SA / FE / BE / QA / UI-UX (input)</span><span class="tag tag-blue">DM (schedules call if needed)</span><span class="tag tag-gray">Client (approves)</span></div>
+
+          <div class="callout callout-info" style="margin-top:10px">
+            <div class="callout-icon">📋</div>
+            <div class="callout-body">
+              <strong>Project plan — DM discretion based on complexity</strong>
+              <p>For simple requests (e.g. change a field), no separate project plan is needed. For complex requests with multiple resources and rolling days of work, the DM initiates a Smartsheet project plan to track triage/troubleshoot or scoping/analysis activities — typically once the PDM has client-aligned requirements and there's something concrete to plan against. The DM judges per request.</p>
+            </div>
+          </div>
+
+          <div class="callout callout-orange" style="margin-top:10px">
+            <div class="callout-icon">⚡</div>
+            <div class="callout-body">
+              <strong>Fast path — PDM discretion for simple, clear requests</strong>
+              <p>When the PDM is confident the request is simple and clear, they can skip the separate requirements-approval round trip with the client. The PDM posts a lightweight confirmation in Basecamp ("just to make sure I'm interpreting correctly, you want X — the DM will follow up shortly with estimate and timing") so the requirement is captured in writing, then signals the DM to proceed straight to estimation. Internal alignment for estimation still happens — only the client-facing requirements approval loop is skipped. The DM's response in Stage 7 (requirements restated + estimate + timing + release train) becomes the single client approval moment instead of two.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STAGE 5 -->
+      <div class="stage">
+        <div class="stage-num">5</div>
+        <div class="stage-body">
+          <h4>Notify DM Scope is Ready for Estimation</h4>
+          <p>Once the scope is approved by the client in Basecamp, the PDM updates the Zoho ticket and tags the DM in the comments and the account Slack channel. This trigger moves the request from scoping into estimation.</p>
+          <div><span class="tag tag-violet">PDM</span></div>
+        </div>
+      </div>
+
+      <!-- STAGE 6 -->
+      <div class="stage">
+        <div class="stage-num">6</div>
+        <div class="stage-body">
+          <h4>DM Generates Request Estimator &amp; Aligns LOE</h4>
+          <p>The DM generates the Smartsheet <strong>request estimator</strong> and includes the high-level requirements from the approved scope, plus all the activities required to reach <strong>Definition of Done</strong> (the DoD activities are largely reusable across requests). The team estimates async if maturity allows, or convenes a brief estimation call if needed.</p>
+          <p>Each role estimates into their column (BE Est, FE Est, QA Est, UI/UX Est). Once dev estimates land, the DM populates the hedge columns (Hedge, SA, PDM, DM, Automation Testing, Team), aligns the final LOE — including DoD activities — with the team and reviews with leadership where applicable (the estimator's <em>Internal Approved Range by Leadership</em> column). The DM then calculates delivery timing based on hours remaining in the implementation bucket.</p>
+
+          <div class="callout callout-green" style="margin:10px 0">
+            <div class="callout-icon">♻️</div>
+            <div class="callout-body">
+              <strong>Shared DoD activities — when another request is already in flight on the same release</strong>
+              <p>If another request on the same release train has already accounted for shared DoD activities (client demo, e2e regression on our end), those don't need to be re-estimated for the new request. In that case the LOE for the new request includes only <strong>implementation, dev testing, code review, and QA testing</strong> — the client demo and e2e regression get folded into the work already accounted for on the in-flight request. The DM should validate this assumption with the team before applying it.</p>
+            </div>
+          </div>
+
+          <div><span class="tag tag-blue">Delivery Manager</span><span class="tag tag-gray">FE / BE / QA / UI-UX / SA</span><span class="tag tag-amber">Leadership (review, where applicable)</span></div>
+
+          <h4 style="margin-top:14px">T-Shirt Sizing Variant</h4>
+          <p>If the team needs to t-shirt size the request rather than fully estimate, they use the t-shirt size estimator and align async or in a brief call. T-shirt sizing typically applies when:</p>
+          <ul>
+            <li>The team doesn't yet know enough to estimate precisely — a POC is needed first</li>
+            <li>The client is pressing for a quick high-level estimate and doesn't want to wait for full LOE</li>
+          </ul>
+          <p><strong>POC handling:</strong> POCs are owned by the BE or FE resources (or both, depending on the request). POC effort pulls from the <strong>Implementation bucket</strong>. The POC validates feasibility and architectural approach — and frequently delivers a "buy one get one" benefit: once the POC is in, the team usually estimates only what remains to polish and reach DoD rather than estimating the full build from scratch.</p>
+        </div>
+      </div>
+
+      <!-- STAGE 7 -->
+      <div class="stage">
+        <div class="stage-num">7</div>
+        <div class="stage-body">
+          <h4>DM Communicates Estimate, Timing &amp; Release Train to Client</h4>
+          <p>The DM responds to the request in Basecamp with:</p>
+          <ul>
+            <li>The effort estimate (or t-shirt size, if applicable)</li>
+            <li>The timing to reach DoD</li>
+            <li>The proposed release train placement</li>
+            <li><strong>If the fast path was taken in Stage 4:</strong> the DM also restates the requirements in this reply — the requirements + estimate + timing + release train message becomes the single client approval moment</li>
+          </ul>
+          <p><strong>Release train logic — DM works with PDM on priority before client comms:</strong></p>
+          <ul>
+            <li>The PDM knows current release train priority from the client side and is the partner for this call</li>
+            <li>If the request is urgent and there is a release train already in flight but still in development, it makes sense to add the request to that train</li>
+            <li>If the request is heavy and would delay the current release train, it is prioritized for the next release train (v#.#.#)</li>
+            <li>Once DM and PDM are aligned, the placement is communicated to the client</li>
+          </ul>
+          <p><strong>T-shirt sizing caveat:</strong> when the response is a t-shirt size, the DM also informs the client of the next step — either an estimated POC that will then inform the remaining LOE to DoD, or (if no POC is needed) the team estimates and the DM follows up with timing for DoD.</p>
+          <div><span class="tag tag-blue">Delivery Manager</span><span class="tag tag-violet">PDM</span></div>
+        </div>
+      </div>
+
+      <!-- STAGE 8 -->
+      <div class="stage">
+        <div class="stage-num">8</div>
+        <div class="stage-body">
+          <h4>Client Approval &amp; Epic Carve-Out</h4>
+          <p>Client approves the estimate, timing, and release train in Basecamp. The DM updates the Zoho ticket and Smartsheet to <em>Scope Approved</em>. <strong>For new feature/function requests, the DM then carves the approved hours out of the Implementation bucket and stands up a request-specific epic in Zoho.</strong> Reported issues do not get carved out — all work stays under the Production Support epic.</p>
+
+          <p style="font-size:12.5px"><strong>The carve-out, step by step:</strong></p>
+          <ol style="font-size:12.5px;margin:6px 0 12px 22px">
+            <li><strong>Close the original request ticket</strong> under Planning / Ops / New Requests. Processing is complete; we don't want any further time logging against this ticket because it would bill implementation work to the wrong bucket.</li>
+            <li><strong>Create a new epic in Zoho</strong> titled with the request name (e.g. <em>Orders by Resort Report</em>).</li>
+            <li><strong>Allocate hours from the Implementation bucket to the new epic</strong> matching the estimator's TOTAL PROJECT HOURS for the request.</li>
+            <li><strong>Cut child tickets under the new epic — one per role</strong>, each carrying that role's estimated hours from the estimator: BE, FE, QA, UI/UX, SA, PDM, DM, Automation Testing, Team, and a separate <strong>Hedge ticket</strong>.</li>
+            <li><strong>The Hedge ticket is the request's internal buffer.</strong> If any role ticket runs over its estimate mid-flight, the DM pulls from Hedge first before going back to the client. Hedge is request-specific — it doesn't pool across requests, and unused Hedge stays with this request.</li>
+          </ol>
+
+          <p>From there, execution moves through the standard DoD pipeline (In Dev → DoD Dev Done → Released to PROD). Smartsheet status moves to <em>In Dev</em> and tracks delivery progression alongside Zoho's active board.</p>
+
+          <div class="callout callout-violet" style="margin:10px 0">
+            <div class="callout-icon">🎯</div>
+            <div class="callout-body">
+              <strong>Why we carve out at approval — budget integrity and KPI tracking</strong>
+              <p>The carve-out is what keeps budgets honest. If implementation work continued logging against Planning / Ops / New Requests, that bucket would look over-burned and Implementation would look under-burned — and per-request estimated-vs-actual data would be impossible to extract. The request-specific epic gives us clean tracking at the request level: what we estimated for DoD vs. what it actually took. That's the dataset we use to refine future estimates, manage budgets in real time, and report on delivery KPIs accurately.</p>
+            </div>
+          </div>
+
+          <p>If the client does <strong>not</strong> approve, see Section 5 — Stuck-State Playbook.</p>
+          <div><span class="tag tag-gray">Client</span><span class="tag tag-blue">Delivery Manager</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── SECTION 5: STUCK STATES ── -->
+  <div class="section" id="stuck-states">
+    <div class="section-label"><div class="num">5</div> Stuck-State Playbook</div>
+    <h2>What to Do When the Flow Stalls</h2>
+    <p>The workflow assumes a clean path through. In practice requests stall at predictable points — and the response depends on which condition triggered the stall and which team owns the action.</p>
+
+    <table class="stuck-table">
+      <thead>
+        <tr>
+          <th>Stuck Condition</th>
+          <th>Action</th>
+          <th>Owner</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="stuck-name">Client doesn't approve the timing</span></td>
+          <td>DM informs the client we can increase velocity and budget for this specific request to meet their expectations — adjusts the estimate range and release train accordingly.</td>
+          <td>Delivery Manager</td>
+        </tr>
+        <tr>
+          <td><span class="stuck-name">Client doesn't approve the estimate / cost</span></td>
+          <td>PDM works with the client to pare down scope. Once revised scope is approved in Basecamp, the request loops back to Stage 6 for re-estimation.</td>
+          <td>PDM</td>
+        </tr>
+        <tr>
+          <td><span class="stuck-name">Estimate exceeds remaining bucket hours for the cycle</span></td>
+          <td>DM and PDM align on options: defer to next cycle, pull from Buffer (if available and appropriate), reduce scope, or escalate for overage approval per the account's escalation path.</td>
+          <td>DM + PDM</td>
+        </tr>
+        <tr>
+          <td><span class="stuck-name">Project plan is running over mid-flight</span></td>
+          <td>DM flags the overage early. Team and PDM review whether to absorb, reduce remaining scope, or escalate to client. The point is to flag <em>before</em> the date slips — not after.</td>
+          <td>Delivery Manager</td>
+        </tr>
+        <tr>
+          <td><span class="stuck-name">Client doesn't respond to scope or estimate</span></td>
+          <td>PDM follows up in Basecamp at a reasonable cadence. If silence persists, capture the block reason as a comment on the Zoho ticket and note it on the Smartsheet row. The Request Analysis Status reflects the holding state — we don't add a Blocked status because the underlying processing state hasn't changed; it's just paused.</td>
+          <td>PDM</td>
+        </tr>
+        <tr>
+          <td><span class="stuck-name">Reported issue priority unclear</span></td>
+          <td>PDM assigns initial priority on ticket creation. If triage uncovers different priority than initially set, the PDM updates it on the Zoho ticket and notifies the team.</td>
+          <td>PDM</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-warn">
+      <div class="callout-icon">⚠️</div>
+      <div class="callout-body">
+        <strong>Stalls are not silent</strong>
+        <p>Every stuck state requires either a client communication or an internal escalation — not absorption. The discipline of surfacing stalls early is part of what we are training ourselves on in Phase 1.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── SECTION 6: SOURCE OF TRUTH ── -->
+  <div class="section" id="source-of-truth">
+    <div class="section-label"><div class="num">6</div> Source of Truth — Three Views, One Reality</div>
+    <h2>Smartsheet, Zoho Status Field, Zoho Active Board</h2>
+    <p>Every request shows up in three places, each owned by a different role and serving a different audience. The trick is that they all reflect the same underlying state — but each view is built for the role that needs it most.</p>
+
+    <div class="sot-grid" style="grid-template-columns:1fr 1fr 1fr">
+      <div class="sot-card smart">
+        <div class="sot-eyebrow">Smartsheet</div>
+        <div class="sot-title">Client View</div>
+        <ul class="sot-list">
+          <li><strong>Owner:</strong> DM</li>
+          <li>Account Request Tracker (kanban)</li>
+          <li>Where status is shared externally with the client</li>
+          <li>Project plan + estimator live here too</li>
+        </ul>
+      </div>
+      <div class="sot-card zoho">
+        <div class="sot-eyebrow">Zoho — Status Field</div>
+        <div class="sot-title">Front-Half Internal View</div>
+        <ul class="sot-list">
+          <li><strong>Owner:</strong> Current ticket assignee</li>
+          <li>Custom <em>Request Analysis Status</em> field on the ticket</li>
+          <li>Tracks processing state from intake → scope approved</li>
+          <li>Status follows ownership of the current phase</li>
+        </ul>
+      </div>
+      <div class="sot-card zoho" style="border-top-color:#16a34a">
+        <div class="sot-eyebrow" style="color:#15803d">Zoho — Active Board</div>
+        <div class="sot-title">Dev Lifecycle View</div>
+        <ul class="sot-list">
+          <li><strong>Owner:</strong> Dev team</li>
+          <li>Existing columns (TO DO → IN DEVELOPMENT → ... → UAT APPROVED)</li>
+          <li>Takes over once Scope Approved → Sprint Candidates</li>
+          <li>Smartsheet "In Dev / Released to PROD" mirrors this</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout callout-info" style="margin-top:14px">
+      <div class="callout-icon">🧠</div>
+      <div class="callout-body">
+        <strong>The Smartsheet tracker is institutional memory</strong>
+        <p>Clients constantly reprioritize — what's critical today gets superseded tomorrow, and weeks later they ask "what about that other thing we discussed?" because they've forgotten. The Smartsheet tracker is how we hold the line on what was requested, when, and at what status. Without it, requests fall through the cracks and we end up in reactive whack-a-mole. The discipline of moving every request through the tracker — even when the client has gone quiet — is what protects both us and them.</p>
+      </div>
+    </div>
+
+    <h3>The Front-Half State Set — Six Values</h3>
+    <p>The Smartsheet column and the Zoho <em>Request Analysis Status</em> field share the same six values during the front half. <strong>The current ticket assignee updates the Status as their phase completes</strong> — PDM during intake and requirement refinement, DM during estimation, whoever is doing the work owns the move. The DM mirrors each move on the Smartsheet column for client visibility.</p>
+
+    <div class="status-flow">
+      <span class="status-pill">New Request</span>
+      <span class="status-arrow">→</span>
+      <span class="status-pill">In Analysis / Triage</span>
+      <span class="status-arrow">→</span>
+      <span class="status-pill">Pending Client Approval (Requirements)</span>
+      <span class="status-arrow">→</span>
+      <span class="status-pill">Ready for Estimation</span>
+      <span class="status-arrow">→</span>
+      <span class="status-pill">Pending Client Approval (Scope &amp; Estimate)</span>
+      <span class="status-arrow">→</span>
+      <span class="status-pill">Scope Approved</span>
+    </div>
+
+    <p style="font-size:12px;color:var(--ink-light);margin-top:10px"><strong>What happens at Scope Approved:</strong> the Zoho ticket flows from the backlog into <em>Sprint Candidates</em> — and from there into the active board (TO DO → IN DEVELOPMENT → ...) when capacity is assigned. The Request Analysis Status field stops being the source of truth at that point; the active-board column takes over. On Smartsheet, the row moves into <em>In Dev</em> and progresses through to <em>Released to PROD</em> mirroring the Zoho active-board state.</p>
+
+    <p style="font-size:12px;color:var(--ink-light);margin-top:10px"><strong>Blocked is a comment, not a state.</strong> If a request is blocked at any point — client silence, missing input, dependency on another team — capture it as a comment on the Zoho ticket and note it on the Smartsheet row. We don't add a Blocked status to the front-half set because the underlying processing state hasn't changed; it's just paused.</p>
+
+    <h3>Project Plan — Distributed Update Model</h3>
+    <p>When a project plan is created (DM discretion based on complexity — see Stage 4), it is the activity tracker for the request lifecycle, structured by phase (Technical Analysis → Scope &amp; Estimate → Implementation → Dev Testing → Deployment → DoD). Updates are distributed:</p>
+    <ul>
+      <li><strong>DM owns:</strong> creating the plan from the template, structuring phases, assigning activities, sequencing, monitoring overall progress and budget burn, reconciling status</li>
+      <li><strong>Activity assignees update:</strong> their own status on the activities they own — SA, PDM, FE, BE, QA, UI/UX, named stakeholders, the DM themselves</li>
+      <li><strong>Cadence:</strong> as activities progress — the project plan is the live record of the request, not a weekly snapshot</li>
+    </ul>
+
+    <div class="callout callout-green">
+      <div class="callout-icon">📊</div>
+      <div class="callout-body">
+        <strong>Why this discipline matters</strong>
+        <p>Project plan rigor is what gives the DM control over resource allocation, sequencing, and budget burn — and gives the PDM and the broader team visibility into where each request actually stands. It is also the dataset the AI Agent will eventually read from. Manual discipline now is what makes future automation possible.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── SECTION 7: DM OPERATING MECHANICS ── -->
+  <div class="section" id="dm-mechanics">
+    <div class="section-label"><div class="num">7</div> DM Operating Mechanics</div>
+    <h2>How the DM Actually Executes Each Step</h2>
+    <p>This section is the procedural companion to the workflow. For each DM responsibility, the literal mechanics: what to do, where things live, and what to confirm. The intent is that a DM can execute Phase 1 from this section without guesswork.</p>
+
+    <div class="callout callout-info">
+      <div class="callout-icon">🛠️</div>
+      <div class="callout-body">
+        <strong>Living document — refine during the pilot</strong>
+        <p>This section is a starting draft. As Flavio and Tina run the corporate site pilot, anything that doesn't match reality should be flagged and corrected here. Items marked <strong>[TO CONFIRM]</strong> are placeholders awaiting specifics from the DM team.</p>
+      </div>
+    </div>
+
+    <!-- Mechanic 1 — Bucket hours -->
+    <div class="mech-block">
+      <h4><span class="mech-num">1</span> Manage Bucket Hours Per Cycle</h4>
+      <p style="font-size:12.5px"><strong>What:</strong> Track and communicate remaining hours across the three relevant buckets for each active account, continuously as time is logged.</p>
+      <ol>
+        <li>At the start of each billing cycle, pull the baseline allocations per account from the Budget &amp; Service Bucket Model.</li>
+        <li>Track time logged against each epic in Zoho throughout the cycle — actuals vs. baseline. The bucket positions update as time logs in, not on a schedule.</li>
+        <li>Account for the standing draws on the <em>Planning / Ops / New Requests</em> bucket: dailies, planning meetings, retros, client status calls. Only the remaining hours after operations are available for new request processing — communicate that distinction to the team so they don't read the full bucket as new-request capacity.</li>
+        <li>Communicate remaining hours to the team <strong>at minimum once per week</strong> — during dailies, internal status calls, or as a post in the relevant account Slack channel. No dedicated forum required; the goal is that everyone has a pulse on what's remaining. Refresh more often as buckets approach or pass key thresholds.</li>
+        <li>Account for resource availability when telling the team what they have to operate against — schedulable capacity, not just budget capacity (resources are not full-time on most accounts).</li>
+      </ol>
+      <span class="mech-where"><strong>Where</strong>Source data: Zoho epics (time tracking) · Reference: <a href="Reference_Budget_Model.html" style="color:#1d4ed8">Budget &amp; Service Bucket Model</a> · Communicate: dailies / internal status calls / per-account Slack channels (at minimum weekly) · Format: <strong>[TO CONFIRM by DM team — recommend a simple table per account]</strong></span>
+    </div>
+
+    <!-- Mechanic 2 — Receive trigger -->
+    <div class="mech-block">
+      <h4><span class="mech-num">2</span> Receive the PDM Tag</h4>
+      <p style="font-size:12.5px"><strong>What:</strong> Be findable when a PDM tags you to begin tracking a new request.</p>
+      <ol>
+        <li>Maintain a Zoho filter showing tickets assigned to you across all accounts.</li>
+        <li>Monitor the per-account Slack channels you're a member of for direct tags.</li>
+        <li>When tagged: confirm receipt in the Slack thread, then proceed to Mechanic 3.</li>
+        <li>Response window: same business day where possible. If urgent (per PDM priority for reported issues), faster.</li>
+      </ol>
+      <span class="mech-where"><strong>Where</strong>Zoho — assigned-to-me view · Slack — per-account channels</span>
+    </div>
+
+    <!-- Mechanic 3 — Smartsheet form -->
+    <div class="mech-block">
+      <h4><span class="mech-num">3</span> Submit the Smartsheet Form</h4>
+      <p style="font-size:12.5px"><strong>What:</strong> Get the request onto the account's Smartsheet Request Tracker.</p>
+      <ol>
+        <li>Open the Smartsheet form for the account.</li>
+        <li>Fill in: Request Date · Request Title · Request Type (New Request / Reported Issue) · Requestor · Notes (paste the Basecamp link from the Zoho ticket).</li>
+        <li>Submit. The row lands on the tracker in <em>NEW REQUEST</em>.</li>
+        <li>Do not check "Send me a copy of my responses" unless you specifically need it.</li>
+      </ol>
+      <span class="mech-where"><strong>Where</strong>Smartsheet form per account — <strong>[TO CONFIRM by DM team — list of form URLs per account]</strong> · Tracker: Smartsheet Request Tracker per account</span>
+    </div>
+
+    <!-- Mechanic 4 — Move row + assign + allocate time -->
+    <div class="mech-block">
+      <h4><span class="mech-num">4</span> Move the Row, Assign, Allocate Time</h4>
+      <p style="font-size:12.5px"><strong>What:</strong> Get the request into the correct phase on the tracker, assign owners, and set the time envelope.</p>
+      <ol>
+        <li>Move the row from <em>NEW REQUEST</em> into the appropriate phase grouping:
+          <ul>
+            <li><em>SCOPE/ANALYSIS</em> for new requests</li>
+            <li>Triage column for reported issues</li>
+          </ul>
+        </li>
+        <li>Set Status to <em>In Analysis</em> (or <em>In Triage</em> for reported issues).</li>
+        <li>Assign the requestor and any other relevant fields per the tracker schema.</li>
+        <li><strong>Allocate time</strong> — decide how many hours the team has to spend processing this request, drawn from the bucket. Communicate that allocation to the PDM as their budget envelope for scoping.</li>
+      </ol>
+      <span class="mech-where"><strong>Where</strong>Smartsheet Request Tracker · Time allocation: communicated to PDM in Zoho ticket comments + Slack</span>
+    </div>
+
+    <!-- Mechanic 5 — Project plan -->
+    <div class="mech-block">
+      <h4><span class="mech-num">5</span> Decide on a Project Plan (DM Discretion)</h4>
+      <p style="font-size:12.5px"><strong>What:</strong> Judge whether the request warrants its own Smartsheet project plan based on complexity. Simple requests don't; complex requests do.</p>
+      <ol>
+        <li>Skip the project plan if the request is simple — single field change, copy update, configuration tweak. The Zoho ticket and tracker row are enough.</li>
+        <li>Create a project plan if the request involves multiple resources, rolling days of work, or sequencing risk. Typically initiated once the PDM has client-aligned requirements and there's something concrete to plan against.</li>
+        <li>If creating: copy the project plan template, populate the analysis tasks (or triage tasks for reported issues) with owners, durations, and start dates. Update statuses as activities progress; expect activity assignees to update their own statuses on activities they own.</li>
+        <li>If a request is being added to an existing project plan for a release that's already in flight, add it there rather than creating a new plan.</li>
+      </ol>
+      <span class="mech-where"><strong>Where</strong>Smartsheet project plan template — <strong>[TO CONFIRM by DM team — template location once finalized]</strong></span>
+    </div>
+
+    <!-- Mechanic 6 — Estimator -->
+    <div class="mech-block">
+      <h4><span class="mech-num">6</span> Generate &amp; Align the Request Estimator</h4>
+      <p style="font-size:12.5px"><strong>What:</strong> Stand up the Smartsheet request estimator and drive it to a final approved LOE range.</p>
+      <ol>
+        <li>Once the PDM signals the scope is client-approved, copy the request estimator template.</li>
+        <li>Pull the high-level requirements from the approved Basecamp scope into the estimator's description column.</li>
+        <li>Populate the standard DoD activities — these are largely reusable. If the request is folding into an existing release where DoD activities are already accounted for, only estimate implementation, dev testing, code review, and QA testing.</li>
+        <li>Share the estimator with the team for input. Each role estimates into their column: BE Est, FE Est, QA Est, UI/UX Est. Async if maturity allows; brief estimation call otherwise.</li>
+        <li>Once dev estimates land, populate the hedge columns: Hedge, SA, PDM, DM, Automation Testing, Team.</li>
+        <li>Calculate the Subtotal and TOTAL PROJECT HOURS columns. Surface the range to leadership for review where applicable — populate <em>Internal Approved Range by Leadership</em>.</li>
+        <li>For t-shirt sizing instead of full LOE: use the t-shirt size estimator (in development by Anne — flag as a near-term dependency).</li>
+      </ol>
+      <span class="mech-where"><strong>Where</strong>Smartsheet LOE estimator template — <strong>[TO CONFIRM by DM team — template location]</strong> · T-shirt size estimator — in development</span>
+    </div>
+
+    <!-- Mechanic 7 — Delivery timing + release train -->
+    <div class="mech-block">
+      <h4><span class="mech-num">7</span> Calculate Delivery Timing &amp; Align Release Train with PDM</h4>
+      <p style="font-size:12.5px"><strong>What:</strong> Translate LOE into a delivery date and decide which release train the request rides on.</p>
+      <ol>
+        <li>Pull the average burn/week and remaining hours in the implementation bucket from the estimator's reference columns.</li>
+        <li>Calculate weeks to DoD: TOTAL PROJECT HOURS ÷ Avg Burn/Week. Adjust for known scheduling constraints (resource not full-time, holidays, parallel work in flight).</li>
+        <li>Bring the timing to the PDM. The PDM knows current release train priority from the client side — together decide:
+          <ul>
+            <li>Add to current in-flight release if urgent and the release is still in development</li>
+            <li>Hold for next release (v#.#.#) if the request is heavy enough to delay the current one</li>
+          </ul>
+        </li>
+        <li>Once aligned with the PDM, communicate estimate, timing, and release train to the client in Basecamp.</li>
+      </ol>
+      <span class="mech-where"><strong>Where</strong>Estimator (timing math) · Slack / Zoho ticket comments (alignment with PDM) · Basecamp (client comms)</span>
+    </div>
+
+    <!-- Mechanic 8 — Execute the approval carve-out -->
+    <div class="mech-block">
+      <h4><span class="mech-num">8</span> Execute the Approval Carve-Out</h4>
+      <p style="font-size:12.5px"><strong>What:</strong> When the client approves a new feature/function request, carve estimated hours out of the Implementation bucket and stand up a request-specific epic in Zoho. This is what enables clean per-request budget tracking and accurate KPIs. (Skip for reported issues — they stay under the Production Support epic.)</p>
+      <ol>
+        <li><strong>Close the original request ticket</strong> under Planning / Ops / New Requests. Processing is complete; further time logging would bill implementation against the wrong bucket.</li>
+        <li><strong>Create a new epic</strong> in Zoho titled with the request name (e.g. <em>Orders by Resort Report</em>).</li>
+        <li><strong>Allocate hours</strong> from the Implementation bucket to the new epic — match the estimator's TOTAL PROJECT HOURS for the request.</li>
+        <li><strong>Cut child tickets under the new epic, one per role from the estimator</strong>, each carrying that role's estimated hours:
+          <ul>
+            <li>BE ticket — BE Est hours</li>
+            <li>FE ticket — FE Est hours</li>
+            <li>QA ticket — QA Est hours</li>
+            <li>UI/UX ticket — UI/UX Est hours</li>
+            <li>SA, PDM, DM, Automation Testing, Team — separate tickets each carrying their respective estimator hours</li>
+            <li><strong>Hedge ticket</strong> — carries the Hedge column hours from the estimator</li>
+          </ul>
+        </li>
+        <li><strong>Manage Hedge as the request's internal buffer.</strong> If any role ticket runs over its estimate during delivery, pull from the Hedge ticket first before going back to the client. Hedge is request-specific — it doesn't pool across requests, and any unused Hedge stays with this request.</li>
+        <li>Implementation work proceeds against these tickets through the active board (TO DO → IN DEVELOPMENT → ... → UAT APPROVED). Time tracking against each child ticket gives real-time estimated-vs-actual at the role level.</li>
+      </ol>
+      <span class="mech-where"><strong>Where</strong>Zoho — close original ticket, create epic, cut child tickets · Implementation bucket reduces by the carved-out amount</span>
+    </div>
+
+    <!-- Mechanic 9 — Status mirror (renumbered from 8) -->
+    <div class="mech-block">
+      <h4><span class="mech-num">9</span> Keep Smartsheet and Zoho in Sync</h4>
+      <p style="font-size:12.5px"><strong>What:</strong> The Zoho <em>Request Analysis Status</em> field follows ownership — whoever the ticket is assigned to during the current phase updates the Status as their work completes. The DM mirrors each move on the Smartsheet column for client visibility. The two systems hold the same six values during the front half and stay in lockstep.</p>
+      <ol>
+        <li>The current ticket assignee updates the Zoho <em>Request Analysis Status</em> field when their phase is complete or hands off. PDM owns it during intake → requirement alignment; DM owns it during estimation → client comms; SA, FE, BE, QA, UI/UX may own it briefly while specific analysis is in their hands.</li>
+        <li>Whoever moves the Status adds a comment on the ticket so the next owner knows what was done and what's needed next. The comment is what disambiguates handoffs (e.g. "@DM scope approved, ready for estimation" vs. "@PDM client wants Y revised before we can estimate").</li>
+        <li>The DM mirrors the move on the Smartsheet column — same value, same time. Don't batch updates; mirror at the moment of the Zoho move. The two views falling out of sync is the exact chaos the tracker is meant to prevent.</li>
+        <li>Front-half mappings (1:1 — Zoho field value = Smartsheet column):
+          <ul>
+            <li><em>New Request</em></li>
+            <li><em>In Analysis / Triage</em></li>
+            <li><em>Pending Client Approval (Requirements)</em></li>
+            <li><em>Ready for Estimation</em></li>
+            <li><em>Pending Client Approval (Scope &amp; Estimate)</em></li>
+            <li><em>Scope Approved</em></li>
+          </ul>
+        </li>
+        <li>At <em>Scope Approved</em>, the active board takes over on the Zoho side. The ticket flows into <em>Sprint Candidates</em>, then into TO DO when capacity is assigned, then through IN DEVELOPMENT → READY FOR REVIEW → ... → UAT APPROVED. The Request Analysis Status field stops being the source of truth at this point.</li>
+        <li>On Smartsheet, the row continues to mirror Zoho's active-board state via two values: <em>In Dev</em> (covers the active dev/QA/UAT lifecycle) and <em>Released to PROD</em> (covers final delivery).</li>
+        <li>If a request is blocked at any point, capture it as a comment on the Zoho ticket and note it on the Smartsheet row. The status itself doesn't change — the underlying processing state is just paused.</li>
+      </ol>
+      <span class="mech-where"><strong>Where</strong>Zoho ticket — <em>Request Analysis Status</em> custom field (current assignee owns) · Smartsheet Request Tracker — column moves (DM mirrors) · Zoho active board — TO DO → UAT APPROVED (dev team owns)</span>
+    </div>
+
+    <!-- Mechanic 10 — Client comms (renumbered from 9) -->
+    <div class="mech-block">
+      <h4><span class="mech-num">10</span> Communicate with the Client in Basecamp</h4>
+      <p style="font-size:12.5px"><strong>What:</strong> Respond on the original Basecamp request thread with estimate, timing, and release train placement.</p>
+      <ol>
+        <li>Reply on the original Basecamp thread (message board or request board, whichever the account uses).</li>
+        <li>Include: effort estimate (or t-shirt size if applicable), timing to DoD, proposed release train, any caveats.</li>
+        <li>If t-shirt sized: name the next step (POC effort estimate, or follow-up LOE estimate).</li>
+        <li>Wait for client approval. On approval, execute Mechanic 8 (the carve-out). On non-approval, see the Stuck-State Playbook.</li>
+      </ol>
+      <span class="mech-where"><strong>Where</strong>Basecamp — original thread per account</span>
+    </div>
+
+    <div class="callout callout-violet" style="margin-top:18px">
+      <div class="callout-icon">📌</div>
+      <div class="callout-body">
+        <strong>Items to lock down with the DM team during the pilot</strong>
+        <p>Smartsheet form URLs per account · Project plan template location · LOE estimator template location · T-shirt sizing estimator (Anne to deliver) · Exact Zoho status value mappings · Bucket-hours snapshot format · Average resource velocity baselines per account (small/medium/large request norms emerging from pilot data).</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── SECTION 8: DEPENDENCIES ── -->
+  <div class="section" id="dependencies">
+    <div class="section-label"><div class="num">8</div> Dependencies &amp; Open Items</div>
+    <h2>What This Workflow Depends On</h2>
+    <p>The Phase 1 workflow operates on top of artifacts and configurations that must be confirmed per account before consistent operation is possible.</p>
+
+    <div class="callout callout-orange">
+      <div class="callout-icon">🛠️</div>
+      <div class="callout-body">
+        <strong>In-flight artifacts</strong>
+        <p><strong>Per-account remaining hours snapshot</strong> — owed by Flavio &amp; Tina, due tomorrow. <strong>T-shirt sizing estimator</strong> — Anne to create. <strong>LOE estimator template</strong> and <strong>minimum viable project plan template</strong> — owned by Flavio &amp; Tina, target for review next Tuesday session. <strong>DoD templates per account</strong> — owned by Henrique's team. <strong>Planning ceremonies documentation per account</strong> — pending. <strong>Average request size baselines</strong> (small / medium / large) — emerging output of the pilot.</p>
+      </div>
+    </div>
+
+    <div class="callout callout-info" style="background:#f5f3ff;border-left-color:#6d28d9">
+      <div class="callout-icon">🔧</div>
+      <div class="callout-body">
+        <strong style="color:#4c1d95">Zoho ticket template — custom field configuration</strong>
+        <p style="margin-bottom:8px">A custom dropdown field needs to be added to the Zoho ticket template before pilot start. This is what enables the front-half status tracking described in Section 6.</p>
+        <p style="margin-bottom:6px;font-size:12px"><strong>Field name:</strong> Request Analysis Status<br>
+        <strong>Field type:</strong> Dropdown (single select)<br>
+        <strong>Default value:</strong> New Request<br>
+        <strong>Required:</strong> No (so it doesn't block tickets that have moved past the front half)</p>
+        <p style="margin-bottom:6px;font-size:12px"><strong>Picklist values (in order):</strong></p>
+        <ol style="margin:0 0 8px 22px;font-size:12px;line-height:1.7">
+          <li>New Request</li>
+          <li>In Analysis / Triage</li>
+          <li>Pending Client Approval (Requirements)</li>
+          <li>Ready for Estimation</li>
+          <li>Pending Client Approval (Scope &amp; Estimate)</li>
+          <li>Scope Approved</li>
+        </ol>
+        <p style="font-size:11.5px;color:#6d28d9"><strong>Setup tip:</strong> place the field near the top of the ticket form alongside Item Type, Epic, and Priority — it should be part of the standard ticket creation flow, not buried at the bottom. Make it editable by anyone the ticket is assigned to, since status follows ownership of the current phase.</p>
+      </div>
+    </div>
+
+    <div class="callout callout-info">
+      <div class="callout-icon">🧪</div>
+      <div class="callout-body">
+        <strong>Validation path</strong>
+        <p>The corporate site is the controlled pilot environment for Phase 1. PDM team acts as both client (submitting requests) and delivery team (processing them). Every gap surfaced during the pilot should feed back into this document and into the supporting templates before any of it goes live on a client account.</p>
+      </div>
+    </div>
+
+    <div class="callout callout-violet">
+      <div class="callout-icon">🤖</div>
+      <div class="callout-body">
+        <strong>Phase 2 — AI Agent</strong>
+        <p>Once Phase 1 is operating consistently across accounts, the AI Agent layers on top of this same workflow — handling intake validation, ticket creation, status routing, threshold flags, and notifications. The manual discipline built in Phase 1 is the rulebook the agent will operate from. Configuration details for the agent live in the <a href="Reference_AI_Agent_MVP.html" style="color:#6d28d9;font-weight:600">AI Agent MVP &amp; Per-Account Configuration</a> reference.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ── SECTION 9: RELATED ── -->
+  <div class="section" id="related">
+    <div class="section-label"><div class="num">9</div> Related Documents</div>
+    <h2>Where This Connects</h2>
+    <p style="margin-bottom:14px">
+      <a href="Concepta_Intake_Process_Executive_Brief.html" style="color:#1d4ed8;font-weight:600">Executive Brief →</a> &nbsp;·&nbsp;
+      <a href="Diagram_1_Intake_Request.html" style="color:#1d4ed8;font-weight:600">Diagram 1 — Intake →</a> &nbsp;·&nbsp;
+      <a href="Diagram_2_New_Request.html" style="color:#1d4ed8;font-weight:600">Diagram 2 — New Request →</a> &nbsp;·&nbsp;
+      <a href="Diagram_3_Production_Issue.html" style="color:#1d4ed8;font-weight:600">Diagram 3 — Production Issue →</a> &nbsp;·&nbsp;
+      <a href="Reference_Budget_Model.html" style="color:#92400e;font-weight:600">Budget &amp; Service Bucket Model →</a> &nbsp;·&nbsp;
+      <a href="Reference_AI_Agent_MVP.html" style="color:#6d28d9;font-weight:600">AI Agent MVP (Phase 2) →</a> &nbsp;·&nbsp;
+      <a href="Client_Billing_View.html" style="color:#15803d;font-weight:600">Client Billing View →</a>
+    </p>
+  </div>
+
+</div>
+
+<footer>Concepta — Intake &amp; Request Processing Initiative · Phase 1 Workflow &amp; Delivery Toolkit · April 2026 · Internal Use</footer>
+
+</body>
+</html>

@@ -117,6 +117,25 @@ nav {
   border-color:#4d6eff;
   border-bottom:2px solid #a0b0ff;
 }
+/* ── Beta Pilot links ── */
+.nav-links a.nav-pilot {
+  color:#fde68a;
+  background:rgba(245,158,11,.18);
+  border:1px solid rgba(245,158,11,.45);
+  border-radius:4px;
+  padding:5px 10px;
+}
+.nav-links a.nav-pilot:hover {
+  background:rgba(245,158,11,.32);
+  border-color:#f59e0b;
+  color:#fef3c7;
+}
+.nav-links a.nav-pilot.nav-active {
+  background:#f59e0b;
+  color:#0f172a;
+  border-color:#f59e0b;
+}
+
 .cn-links a.nav-workflow {
   color:#fff;
   background:rgba(77,110,255,.25);
@@ -186,7 +205,15 @@ nav { overflow: visible !important; }
   <div class="nav-links">
     <a href="Index.html">Home</a>
     <a href="Concepta_Intake_Process_Executive_Brief.html">Brief</a>
-    <a href="Workflow_Macro_Visual.html" class="nav-workflow">Workflow</a>
+    <a href="Phase1_Start_Here.html" class="nav-pilot">⚡ Pilot — Start Here</a>
+
+    <a href="Diagram_Beta_Pilot_Manual.html" class="nav-pilot">Pilot — Workflow</a>
+
+    <a href="Reference_Phase1_Workflow.html" class="nav-pilot">Pilot — Reference</a>
+
+    <div class="nav-div"></div>
+
+    <a href="Workflow_Macro_Visual.html" class="nav-workflow">Future Phase Workflow</a>
     <div class="nav-div"></div>
     <a href="Reference_Prerequisites_GoLive.html">Account Setup</a>
     <a href="Reference_Intake_Form.html">Intake / Request Tracking</a>
