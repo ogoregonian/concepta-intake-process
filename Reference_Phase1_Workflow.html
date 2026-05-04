@@ -636,9 +636,9 @@ nav {
     <p style="font-size:12px;color:var(--ink-light);margin-top:10px"><strong>Blocked is a comment, not a state.</strong> If a request is blocked at any point — client silence, missing input, dependency on another team — capture it as a comment on the Zoho ticket and note it on the Smartsheet row. We don't add a Blocked status to the front-half set because the underlying processing state hasn't changed; it's just paused.</p>
 
     <h3>Project Plan — Distributed Update Model</h3>
-    <p>When a project plan is created (DM discretion based on complexity — see Stage 4), it is the activity tracker for the request lifecycle, structured by phase (Technical Analysis → Scope &amp; Estimate → Implementation → Dev Testing → Deployment → DoD). Updates are distributed:</p>
+    <p>When a project plan is created (DM discretion based on complexity — see Stage 4), it is the integrated tracker for the request lifecycle. The plan holds <strong>requirements, per-role estimates from the LOE Estimator, activity durations, and the standard DoD activities</strong> structured by phase (Technical Analysis → Scope &amp; Estimate → Implementation → Dev Testing → Deployment → DoD). <strong>DoD timing is derived directly from the project plan</strong> — because the plan has all the inputs in one place (estimates, durations, sequencing, dependencies), it produces a defensible DoD date instead of a gut-feel guess. This is what the DM communicates to the client. Updates are distributed:</p>
     <ul>
-      <li><strong>DM owns:</strong> creating the plan from the template, structuring phases, assigning activities, sequencing, monitoring overall progress and budget burn, reconciling status</li>
+      <li><strong>DM owns:</strong> creating the plan from the template, populating it with requirements and estimates from the LOE estimator, structuring phases, assigning activities, sequencing, monitoring overall progress and budget burn, reconciling status</li>
       <li><strong>Activity assignees update:</strong> their own status on the activities they own — SA, PDM, FE, BE, QA, UI/UX, named stakeholders, the DM themselves</li>
       <li><strong>Cadence:</strong> as activities progress — the project plan is the live record of the request, not a weekly snapshot</li>
     </ul>
