@@ -683,14 +683,15 @@ nav {
                    data-who="Delivery Manager (Flavio or Tina)"
                    data-what="Triggered by the PDM's Slack tag. DM submits the Smartsheet form for the account: Date, Title, Type (New Request / Reported Issue), Requestor, Notes (Basecamp link from the Zoho ticket). The row lands on the account's Smartsheet Request Tracker in NEW REQUEST. DM moves it to SCOPE/ANALYSIS (or Triage column for reported issue), assigns, and allocates how many hours the team has to spend processing this request — drawn from the relevant bucket, with resource availability factored in."
                    data-why="Smartsheet is the client-facing view — every request lives there so the client can see at any moment what's in flight. Allocating time upfront sets the budget envelope the PDM operates against during scoping; without it, scoping work can sprawl and burn the bucket on a single request."
-                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]'
+                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Replaced generic Smartsheet pill with two linked pills: Request Tracker and Budget Tracker", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Submit Smartsheet form · allocate time</div>
                 </div>
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
-                  <span class="tb tb-ss">Smartsheet</span>
+                  <a href="https://app.smartsheet.com/sheets/q7RGW7jc7GWppcFGhGx8mV5WfQ6r43pf9mx76F21?view=grid" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">Request Tracker</span></a>
+                  <a href="https://app.smartsheet.com/sheets/Vhg7fwXgXxPx55hgFPPgcJXwRxccPx7VP53Wv871?view=grid" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">Budget Tracker</span></a>
                   <span class="tb tb-sl">Slack</span>
                 </div>
                 <div class="div-note">
