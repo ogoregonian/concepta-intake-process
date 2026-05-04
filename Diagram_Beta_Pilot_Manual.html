@@ -482,14 +482,14 @@ nav {
                    data-who="Client requestor"
                    data-what="The PDM works with the client in Basecamp to confirm interpretation of the request and align on what's being built. The PDM may post a quick check (&quot;just to make sure I'm interpreting correctly, you want X&quot;) so the requirement is captured in writing. Then the PDM posts the scope (FE / BE / QA / UI/UX as applicable) and the client approves it in Basecamp."
                    data-why="Receipt of record — Basecamp is where the request and the alignment live, so anyone can trace what was agreed and when. Two confirmations (requirements + scope) protect both sides: the client gets a chance to course-correct early, and we don't estimate against a misinterpretation."
-                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]'
+                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Linked Basecamp pill to the intake message thread", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Confirms requirements &amp; approves scope</div>
                 </div>
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
-                  <span class="tb tb-bc">Basecamp</span>
+                  <a href="https://3.basecamp.com/5146855/buckets/46605906/messages/9846147284" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
                 </div>
               </div>
             </div>
@@ -515,14 +515,14 @@ nav {
                    data-who="Client requestor"
                    data-what="At the Approval Checkpoint, the client approves scope, estimate, DoD timing, and release version in Basecamp. If the client doesn't approve: timing rejection → DM offers velocity / budget bump. Estimate rejection → PDM works with client to pare down scope and the request loops back to estimation."
                    data-why="The Approval Checkpoint is the formal gate that triggers epic creation and commits both sides to the work. Without explicit approval the request can't enter delivery — protects against scope creep and surprise overruns."
-                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Renamed from \"Approves estimate, timing, release train\" — language updated to Approval Checkpoint terminology (scope, estimate, DoD timing, release version)", "owner": "Anne"}]'
+                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Renamed from \"Approves estimate, timing, release train\" — language updated to Approval Checkpoint terminology (scope, estimate, DoD timing, release version)", "owner": "Anne"}, {"v": "1.2", "date": "May 2026", "change": "Linked Basecamp pill to the intake message thread", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Approves scope, estimate, DoD timing, release version</div>
                 </div>
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
-                  <span class="tb tb-bc">Basecamp</span>
+                  <a href="https://3.basecamp.com/5146855/buckets/46605906/messages/9846147284" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
                 </div>
               </div>
             </div>
@@ -546,7 +546,7 @@ nav {
                    data-who="PDM (Anne, Henrique, or Gabriel — whoever owns the account)"
                    data-what="PDM creates the Zoho ticket on the New Request backlog. Required field selections: Item Type (Task for new request, Bug for reported issue), Epic (Planning/Ops/New Requests for new request, Production Support for reported issue), and — under the Intake &amp; Processing Request section — Processing Status (New Request for new requests, New Reported Issue for issues). Also sets: Item Name (the request title), Description (link to Basecamp comms), Priority (aligned with client urgency), and assigns the DM. Then tags the DM in the ticket comments and the account Slack channel — that tag is what triggers the DM to begin tracking."
                    data-why="The Zoho ticket is the internal source of truth for this request. Item Type and Epic at creation are what bill time logged against the ticket to the right bucket from day one — no cleanup later. Processing Status drives the intake/processing pipeline view so the team can see at a glance what state every request is in. The Slack tag is the human signal that pulls the DM in; without it the request waits."
-                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Linked Zoho pill to Sprint SP143 in conceptatech workspace", "owner": "Anne"}, {"v": "1.2", "date": "May 2026", "change": "Made Item Type and Processing Status dropdown selections explicit in WHAT and the visible card note. Names both dropdowns by their Zoho field labels and maps each to the correct value for new requests vs reported issues", "owner": "Anne"}, {"v": "1.3", "date": "May 2026", "change": "Corrected Zoho pill link from a specific sprint (SP143) to the backlog \u2014 PDM-created tickets live on the backlog before entering a sprint. Now consistent with Phase 3 DM card", "owner": "Anne"}, {"v": "1.4", "date": "May 2026", "change": "Renamed Zoho pill label to \"Zoho Backlog\" for clarity. Updated URL from P34 to P60 \u2014 P60 is the correct conceptatech project for intake tickets", "owner": "Anne"}]'
+                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Linked Zoho pill to Sprint SP143 in conceptatech workspace", "owner": "Anne"}, {"v": "1.2", "date": "May 2026", "change": "Made Item Type and Processing Status dropdown selections explicit in WHAT and the visible card note. Names both dropdowns by their Zoho field labels and maps each to the correct value for new requests vs reported issues", "owner": "Anne"}, {"v": "1.3", "date": "May 2026", "change": "Corrected Zoho pill link from a specific sprint (SP143) to the backlog — PDM-created tickets live on the backlog before entering a sprint. Now consistent with Phase 3 DM card", "owner": "Anne"}, {"v": "1.4", "date": "May 2026", "change": "Renamed Zoho pill label to \"Zoho Backlog\" for clarity. Updated URL from P34 to P60 — P60 is the correct conceptatech project for intake tickets", "owner": "Anne"}, {"v": "1.5", "date": "May 2026", "change": "Renamed Slack pill to \"Account Slack\" (no link — each account has its own channel)", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Create Zoho ticket &amp; tag DM</div>
@@ -554,7 +554,7 @@ nav {
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
                   <a href="https://sprints.zoho.com/workspace/conceptatech#P60/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Backlog</span></a>
-                  <span class="tb tb-sl">Slack</span>
+                  <span class="tb tb-sl">Account Slack</span>
                 </div>
                 <div class="div-note">
                   <strong>New Request vs. Reported Issue</strong>
@@ -575,16 +575,16 @@ nav {
                    data-who="PDM drives. Team contributes (FE / BE / QA / UI/UX / SA). Client approves."
                    data-what="PDM refines requirements with the client in Basecamp and aligns internally with the team. If the request is simple, team members review async. If complex, the DM schedules a planning call with the team members the PDM identified on the Zoho ticket. Output is a scope posted in Basecamp covering FE / BE / QA / UI/UX as applicable, approved by the client. Updates the Zoho Request Analysis Status as work moves through these phases (status follows the current ticket assignee)."
                    data-why="Scope written in Basecamp = institutional memory. Clients reprioritize and forget what they asked for; the Basecamp record is what holds the line. Internal alignment before estimation prevents the team from estimating against assumptions the PDM didn't validate."
-                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Fast path text updated — \"release train\" replaced with \"DoD timing + release version\"; \"client approval moment\" replaced with \"Approval Checkpoint\"", "owner": "Anne"}]'
+                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Fast path text updated — \"release train\" replaced with \"DoD timing + release version\"; \"client approval moment\" replaced with \"Approval Checkpoint\"", "owner": "Anne"}, {"v": "1.2", "date": "May 2026", "change": "Linked Basecamp and Zoho pills (Zoho → P60 backlog with \"Zoho Backlog\" label). Renamed Slack pill to \"Account Slack\"", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Scope with team · client approves</div>
                 </div>
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
-                  <span class="tb tb-bc">Basecamp</span>
-                  <span class="tb tb-sl">Slack</span>
-                  <span class="tb tb-zo">Zoho</span>
+                  <a href="https://3.basecamp.com/5146855/buckets/46605906/messages/9846147284" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+                  <span class="tb tb-sl">Account Slack</span>
+                  <a href="https://sprints.zoho.com/workspace/conceptatech#P60/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Backlog</span></a>
                 </div>
                 <div class="sc-dec">
                   <span class="dec-lbl">⚡ Fast path</span>
@@ -599,15 +599,15 @@ nav {
                    data-who="PDM"
                    data-what="Once the scope is approved by the client in Basecamp, the PDM updates the Zoho Request Analysis Status to Ready for Estimation, comments on the ticket with a brief handoff note, and tags the DM in the account Slack channel."
                    data-why="Status follows ownership of the current phase — when the PDM's part is done, the status update is the signal that the next role (DM) takes over. Comment + Slack tag means the DM doesn't have to be watching the ticket to know it's their turn."
-                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]'
+                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Linked Zoho pill to P60 backlog with \"Zoho Backlog\" label. Renamed Slack pill to \"Account Slack\"", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Update Status &amp; tag DM</div>
                 </div>
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
-                  <span class="tb tb-zo">Zoho</span>
-                  <span class="tb tb-sl">Slack</span>
+                  <a href="https://sprints.zoho.com/workspace/conceptatech#P60/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Backlog</span></a>
+                  <span class="tb tb-sl">Account Slack</span>
                 </div>
               </div>
             </div>
@@ -623,15 +623,15 @@ nav {
                    data-who="PDM (works with DM)"
                    data-what="Before the DM sends to the client, the PDM and DM align on release version placement. The PDM brings the client-side priority context — what the client is expecting, what other work is queued — and the DM brings the LOE and remaining bucket capacity. Together they decide: add to current in-flight release if urgent, or hold for next release if heavy."
                    data-why="The PDM is closest to the client on priority — without their input, the DM is guessing what the client expects. Aligning internally before going to the client also avoids contradicting messages reaching the client from different team members."
-                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Renamed from \"Align release train with DM\" — release train terminology replaced with release version throughout description", "owner": "Anne"}]'
+                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Renamed from \"Align release train with DM\" — release train terminology replaced with release version throughout description", "owner": "Anne"}, {"v": "1.2", "date": "May 2026", "change": "Linked Zoho pill to P60 backlog with \"Zoho Backlog\" label. Renamed Slack pill to \"Account Slack\"", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Align release version with DM</div>
                 </div>
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
-                  <span class="tb tb-sl">Slack</span>
-                  <span class="tb tb-zo">Zoho</span>
+                  <span class="tb tb-sl">Account Slack</span>
+                  <a href="https://sprints.zoho.com/workspace/conceptatech#P60/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Backlog</span></a>
                 </div>
               </div>
             </div>
@@ -642,14 +642,14 @@ nav {
                    data-who="PDM"
                    data-what="On Approval Checkpoint passed: PDM creates the new epic in Zoho titled with the request name, and authors the description with the approved scope, requirements, and acceptance criteria. The DM then takes over to cut child tickets, sequence them, assign owners, schedule allocation, and manage the Hedge buffer ticket."
                    data-why="Splitting epic creation from ticket execution puts the scope-of-record in the PDM's hands (closest to the client conversation) and the delivery mechanics in the DM's hands (closest to capacity and sequencing). The epic description becomes the durable scope reference everyone works against — and the AC at the epic level prevents drift during execution."
-                   data-versions='[{"v": "1.1", "date": "May 2026", "change": "New PDM card added at Phase 8 — splits epic creation (PDM owns scope/requirements/AC) from child ticket execution (DM owns child tickets, sequencing, allocation, Hedge)", "owner": "Anne"}]'
+                   data-versions='[{"v": "1.1", "date": "May 2026", "change": "New PDM card added at Phase 8 — splits epic creation (PDM owns scope/requirements/AC) from child ticket execution (DM owns child tickets, sequencing, allocation, Hedge)", "owner": "Anne"}, {"v": "1.2", "date": "May 2026", "change": "Linked Zoho pill to P60 backlog with \"Zoho Backlog\" label. Note: by Phase 8 the work has graduated past intake; backlog is the established pattern but may not be the ideal target", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Create epic · scope, requirements, AC</div>
                 </div>
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
-                  <span class="tb tb-zo">Zoho</span>
+                  <a href="https://sprints.zoho.com/workspace/conceptatech#P60/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Backlog</span></a>
                 </div>
                 <div class="div-note">
                   <strong>Applies to</strong>
@@ -683,7 +683,7 @@ nav {
                    data-who="Delivery Manager (Flavio or Tina)"
                    data-what="Triggered by the PDM's Slack tag. DM does two things in parallel: (1) Submits the Smartsheet form for the account — Date, Title, Type (New Request / Reported Issue), Requestor, Notes (Basecamp link from the Zoho ticket). The row lands on the Smartsheet Request Tracker in NEW REQUEST; DM moves it to SCOPE/ANALYSIS (or Triage column for reported issue). (2) Updates the Zoho ticket the PDM created on the backlog: comments how many hours are remaining in the relevant bucket (Planning/Ops/New Requests for new requests, Production Support for reported issues) and how many of those hours are allocated to processing this request, factoring in resource availability. DM then assigns the appropriate resources directly on the ticket and confirms allocation — or, if the request is complex enough to need a planning call, schedules one. DM works with the PDM to determine who is needed and how much time is needed. Finally, DM sets Processing Status on the ticket to Scoping/Analyzing for new requests or Triaging/Troubleshooting for reported issues."
                    data-why="Smartsheet is the client-facing view — every request lives there so the client can see at any moment what's in flight. Updating the Zoho ticket with remaining bucket hours and the allocation for this specific request makes the budget envelope visible to everyone touching the ticket — not just the DM&#39;s head. Resource assignment on the ticket itself means the next person who picks it up knows who&#39;s on it without chasing. Setting Processing Status drives the intake/processing pipeline view so the team sees at a glance what state every request is in."
-                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Replaced generic Smartsheet pill with two linked pills: Request Tracker and Budget Tracker", "owner": "Anne"}, {"v": "1.2", "date": "May 2026", "change": "Expanded scope of card to capture full DM intake actions: added Zoho pill linked to the backlog where the PDM-created ticket lives. Documented that DM updates the ticket with remaining bucket hours and allocation, assigns resources or schedules a planning call (working with PDM on who/how much), and sets Processing Status to Scoping/Analyzing (new) or Triaging/Troubleshooting (issue). Added Processing Status rule to the visible card note", "owner": "Anne"}, {"v": "1.3", "date": "May 2026", "change": "Renamed card title from \"Submit Smartsheet form \u00b7 allocate time\" to \"Track request \u00b7 allocate \u0026 assign\" to reflect the expanded scope from v1.2 (the card covers Zoho ticket updates, resource assignment, and Processing Status, not just the Smartsheet form)", "owner": "Anne"}, {"v": "1.4", "date": "May 2026", "change": "Renamed Zoho pill label to \"Zoho Backlog\" for clarity. Updated URL from P34 to P60 \u2014 P60 is the correct conceptatech project for intake tickets. Now consistent with Phase 2 PDM card", "owner": "Anne"}]'
+                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Replaced generic Smartsheet pill with two linked pills: Request Tracker and Budget Tracker", "owner": "Anne"}, {"v": "1.2", "date": "May 2026", "change": "Expanded scope of card to capture full DM intake actions: added Zoho pill linked to the backlog where the PDM-created ticket lives. Documented that DM updates the ticket with remaining bucket hours and allocation, assigns resources or schedules a planning call (working with PDM on who/how much), and sets Processing Status to Scoping/Analyzing (new) or Triaging/Troubleshooting (issue). Added Processing Status rule to the visible card note", "owner": "Anne"}, {"v": "1.3", "date": "May 2026", "change": "Renamed card title from \"Submit Smartsheet form · allocate time\" to \"Track request · allocate & assign\" to reflect the expanded scope from v1.2 (the card covers Zoho ticket updates, resource assignment, and Processing Status, not just the Smartsheet form)", "owner": "Anne"}, {"v": "1.4", "date": "May 2026", "change": "Renamed Zoho pill label to \"Zoho Backlog\" for clarity. Updated URL from P34 to P60 — P60 is the correct conceptatech project for intake tickets. Now consistent with Phase 2 PDM card", "owner": "Anne"}, {"v": "1.5", "date": "May 2026", "change": "Renamed Slack pill to \"Account Slack\"", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Track request · allocate &amp; assign</div>
@@ -693,7 +693,7 @@ nav {
                   <a href="https://app.smartsheet.com/sheets/q7RGW7jc7GWppcFGhGx8mV5WfQ6r43pf9mx76F21?view=grid" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">Request Tracker</span></a>
                   <a href="https://app.smartsheet.com/sheets/Vhg7fwXgXxPx55hgFPPgcJXwRxccPx7VP53Wv871?view=grid" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">Budget Tracker</span></a>
                   <a href="https://sprints.zoho.com/workspace/conceptatech#P60/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Backlog</span></a>
-                  <span class="tb tb-sl">Slack</span>
+                  <span class="tb tb-sl">Account Slack</span>
                 </div>
                 <div class="div-note">
                   <strong>Bucket &amp; Processing Status</strong>
@@ -737,15 +737,16 @@ nav {
                    data-who="DM stands up the estimator. Team estimates per role (BE · FE · QA · UI/UX · SA). Leadership reviews where applicable."
                    data-what="DM copies the Smartsheet request estimator template, pulls the high-level requirements from the approved Basecamp scope, populates the standard DoD activities. Each role estimates into their column (BE Est, FE Est, QA Est, UI/UX Est) — async if team maturity allows, brief estimation call otherwise. DM populates the hedge columns (Hedge, SA, PDM, DM, Automation Testing, Team), calculates TOTAL PROJECT HOURS, and surfaces the range to leadership for review where applicable. DM then calculates weeks to DoD (TOTAL HOURS ÷ Avg Burn/Week) adjusting for known scheduling constraints. If the request is folding into a release where DoD activities are already accounted for, the new request only estimates implementation, dev testing, code review, and QA testing — client demo and e2e regression get folded into the in-flight request."
                    data-why="The estimator turns gut-feel into a number leadership and the client can both stand behind. Hedge columns recognize that dev estimates alone aren't the full picture — SA, PDM, DM, and automation time are real and need to be funded. Folding shared DoD activities into in-flight releases avoids double-counting work."
-                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]'
+                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Replaced single Smartsheet pill with two linked pills: T-Shirt Estimator and LOE Estimator. Renamed Slack pill to \"Account Slack\"", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Generate estimator · calculate timing</div>
                 </div>
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
-                  <span class="tb tb-ss">Smartsheet</span>
-                  <span class="tb tb-sl">Slack</span>
+                  <a href="https://app.smartsheet.com/sheets/MMpphH9MMcCWM9VW69WgGjP4h83QqgCJw6PjFgg1?view=grid" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">T-Shirt Estimator</span></a>
+                  <a href="https://app.smartsheet.com/sheets/jCW7HjgR5757RGGQrv8h5PhmgFFQGmrhvm4jmRh1?view=grid" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">LOE Estimator</span></a>
+                  <span class="tb tb-sl">Account Slack</span>
                 </div>
               </div>
             </div>
@@ -756,14 +757,14 @@ nav {
                    data-who="Delivery Manager"
                    data-what="DM responds on the original Basecamp request thread with the effort estimate (or t-shirt size if applicable), DoD timing, and proposed release version. If the fast path was taken in Phase 4, the DM also restates the requirements in this reply — making it the single Approval Checkpoint. For t-shirt sized requests, DM names the next step (POC effort estimate, or follow-up LOE estimate)."
                    data-why="Single message to the client containing everything they need to make an informed approval decision. Avoids the back-and-forth of separate emails for estimate, timing, and placement. The client either approves or pushes back on something specific — both outcomes are clear."
-                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Renamed from \"Send estimate, timing, release train\" — language updated to align with Approval Checkpoint criteria (scope, estimate, DoD timing, release version)", "owner": "Anne"}]'
+                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Renamed from \"Send estimate, timing, release train\" — language updated to align with Approval Checkpoint criteria (scope, estimate, DoD timing, release version)", "owner": "Anne"}, {"v": "1.2", "date": "May 2026", "change": "Linked Basecamp pill to the intake message thread", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Send scope, estimate, DoD timing, release version</div>
                 </div>
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
-                  <span class="tb tb-bc">Basecamp</span>
+                  <a href="https://3.basecamp.com/5146855/buckets/46605906/messages/9846147284" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
                 </div>
               </div>
             </div>
@@ -774,14 +775,14 @@ nav {
                    data-who="Delivery Manager"
                    data-what="On Approval Checkpoint passed and PDM epic in place: DM (1) closes the original request ticket under Planning/Ops/New Requests so no further time logs there. (2) Allocates hours from the Implementation bucket to the PDM-created epic matching the estimator's TOTAL PROJECT HOURS. (3) Cuts child tickets under the new epic — one per role from the estimator (BE, FE, QA, UI/UX, SA, PDM, DM, Automation Testing, Team), plus a separate Hedge ticket carrying the buffer. (4) Sequences child tickets to match the project plan and assigns owners per resource availability. (5) Manages Hedge as the request's internal buffer — pulls from it first if any role ticket runs over, before going back to the client. From there, child tickets flow into Sprint Candidates → TO DO → IN DEVELOPMENT → ... → UAT APPROVED via the standard Zoho active board."
                    data-why="Budget integrity and KPI tracking. If implementation work continued logging against Planning/Ops/New Requests, that bucket would look over-burned and Implementation under-burned — and per-request estimated-vs-actual data would be impossible to extract. The request-specific epic gives clean tracking: what we estimated for DoD vs. what it actually took. Hedge as a per-request buffer means we have a safety margin without going back to the client for every overrun."
-                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation as \"Execute carve-out\" — DM-owned 5-step mechanic", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Renamed from \"Execute carve-out\". Card scope reduced — epic creation moved to new PDM card (steps 1-2 now PDM owned). DM card now covers: closing original ticket, allocating hours, cutting child tickets, sequencing, assigning owners, and managing Hedge buffer", "owner": "Anne"}]'
+                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation as \"Execute carve-out\" — DM-owned 5-step mechanic", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Renamed from \"Execute carve-out\". Card scope reduced — epic creation moved to new PDM card (steps 1-2 now PDM owned). DM card now covers: closing original ticket, allocating hours, cutting child tickets, sequencing, assigning owners, and managing Hedge buffer", "owner": "Anne"}, {"v": "1.2", "date": "May 2026", "change": "Linked Zoho pill to P60 backlog with \"Zoho Backlog\" label. Note: by Phase 8 the work has graduated past intake; backlog is the established pattern but may not be the ideal target", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Cut child tickets · sequence · manage Hedge</div>
                 </div>
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
-                  <span class="tb tb-zo">Zoho</span>
+                  <a href="https://sprints.zoho.com/workspace/conceptatech#P60/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Backlog</span></a>
                 </div>
                 <div class="div-note">
                   <strong>Applies to</strong>
