@@ -681,9 +681,9 @@ nav {
             <div class="pc">
               <div class="sc sc-dm"
                    data-who="Delivery Manager (Flavio or Tina)"
-                   data-what="Triggered by the PDM's Slack tag. DM submits the Smartsheet form for the account: Date, Title, Type (New Request / Reported Issue), Requestor, Notes (Basecamp link from the Zoho ticket). The row lands on the account's Smartsheet Request Tracker in NEW REQUEST. DM moves it to SCOPE/ANALYSIS (or Triage column for reported issue), assigns, and allocates how many hours the team has to spend processing this request — drawn from the relevant bucket, with resource availability factored in."
-                   data-why="Smartsheet is the client-facing view — every request lives there so the client can see at any moment what's in flight. Allocating time upfront sets the budget envelope the PDM operates against during scoping; without it, scoping work can sprawl and burn the bucket on a single request."
-                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Replaced generic Smartsheet pill with two linked pills: Request Tracker and Budget Tracker", "owner": "Anne"}]'
+                   data-what="Triggered by the PDM's Slack tag. DM does two things in parallel: (1) Submits the Smartsheet form for the account — Date, Title, Type (New Request / Reported Issue), Requestor, Notes (Basecamp link from the Zoho ticket). The row lands on the Smartsheet Request Tracker in NEW REQUEST; DM moves it to SCOPE/ANALYSIS (or Triage column for reported issue). (2) Updates the Zoho ticket the PDM created on the backlog: comments how many hours are remaining in the relevant bucket (Planning/Ops/New Requests for new requests, Production Support for reported issues) and how many of those hours are allocated to processing this request, factoring in resource availability. DM then assigns the appropriate resources directly on the ticket and confirms allocation — or, if the request is complex enough to need a planning call, schedules one. DM works with the PDM to determine who is needed and how much time is needed. Finally, DM sets Processing Status on the ticket to Scoping/Analyzing for new requests or Triaging/Troubleshooting for reported issues."
+                   data-why="Smartsheet is the client-facing view — every request lives there so the client can see at any moment what's in flight. Updating the Zoho ticket with remaining bucket hours and the allocation for this specific request makes the budget envelope visible to everyone touching the ticket — not just the DM&#39;s head. Resource assignment on the ticket itself means the next person who picks it up knows who&#39;s on it without chasing. Setting Processing Status drives the intake/processing pipeline view so the team sees at a glance what state every request is in."
+                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Replaced generic Smartsheet pill with two linked pills: Request Tracker and Budget Tracker", "owner": "Anne"}, {"v": "1.2", "date": "May 2026", "change": "Expanded scope of card to capture full DM intake actions: added Zoho pill linked to the backlog where the PDM-created ticket lives. Documented that DM updates the ticket with remaining bucket hours and allocation, assigns resources or schedules a planning call (working with PDM on who/how much), and sets Processing Status to Scoping/Analyzing (new) or Triaging/Troubleshooting (issue). Added Processing Status rule to the visible card note", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Submit Smartsheet form · allocate time</div>
@@ -692,12 +692,13 @@ nav {
                 <div class="sc-tools">
                   <a href="https://app.smartsheet.com/sheets/q7RGW7jc7GWppcFGhGx8mV5WfQ6r43pf9mx76F21?view=grid" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">Request Tracker</span></a>
                   <a href="https://app.smartsheet.com/sheets/Vhg7fwXgXxPx55hgFPPgcJXwRxccPx7VP53Wv871?view=grid" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">Budget Tracker</span></a>
+                  <a href="https://sprints.zoho.com/workspace/conceptatech#P34/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho</span></a>
                   <span class="tb tb-sl">Slack</span>
                 </div>
                 <div class="div-note">
-                  <strong>Bucket the time draws from</strong>
-                  <span class="nr">New:</span> Planning/Ops/New Requests<br>
-                  <span class="ri">Issue:</span> Production Support (covers triage + alignment + fix)
+                  <strong>Bucket &amp; Processing Status</strong>
+                  <span class="nr">New:</span> Bucket = Planning/Ops/New Requests · Processing Status = Scoping/Analyzing<br>
+                  <span class="ri">Issue:</span> Bucket = Production Support · Processing Status = Triaging/Troubleshooting
                 </div>
               </div>
             </div>
