@@ -319,7 +319,7 @@ nav { overflow: visible !important; }
       <div class="callout-icon">⚠️</div>
       <div class="callout-body">
         <strong>Manual process must be validated first</strong>
-        <p>The AI Agent must not be enabled on any live client account until the manual intake process has been validated through the corporate site pilot. The agent reads from explicitly configured account data — if that configuration is incomplete, it routes incorrectly and notifies the wrong people.</p>
+        <p>The AI Agent must not be enabled on any account until the manual intake process has been validated and refined across the active-account pilot. The agent reads from explicitly configured account data — if that configuration is incomplete, it routes incorrectly and notifies the wrong people.</p>
       </div>
     </div>
 
@@ -895,7 +895,7 @@ here and the Production Support team will follow up.</pre></div>
   <div class="section">
     <div class="section-label"><div class="num">8</div> Acceptance Test Cases</div>
     <h2>Eight Criteria — Each Must Pass Before Go-Live</h2>
-    <p>These map directly to the MVP acceptance criteria in the AI Agent MVP document. Each criterion must be tested explicitly against the corporate site pilot account before the agent is enabled on any live client account.</p>
+    <p>These map directly to the MVP acceptance criteria in the AI Agent MVP document. Each criterion must be tested explicitly against the manual pilot operating across active accounts before the agent is enabled.</p>
 
     <div class="criteria-list">
 
@@ -1001,8 +1001,8 @@ here and the Production Support team will follow up.</pre></div>
           <div class="action-step">
             <div class="as-num">1</div>
             <div class="as-body">
-              <div class="as-title">Set up the corporate site pilot account config</div>
-              <div class="as-desc">Configure the config object for the corporate site account first. All four integrations must be fully populated before any testing begins. Get the Basecamp column IDs, Zoho sprint and epic IDs, Smartsheet column IDs, and Slack channel/user IDs from the PDM.</div>
+              <div class="as-title">Set up the first active-account config</div>
+              <div class="as-desc">Pick one active account to configure first as a controlled AI Agent rollout (the team should choose based on which account has the cleanest documentation and most cooperative client cadence). Configure the config object for that account first. All four integrations must be fully populated before any testing begins. Get the Basecamp column IDs, Zoho sprint and epic IDs, Smartsheet column IDs, and Slack channel/user IDs from the PDM. Once the first account is operating cleanly, expand to the rest of the portfolio.</div>
             </div>
           </div>
           <div class="action-step">
