@@ -476,7 +476,7 @@ nav {
         <div class="stage-num">8</div>
         <div class="stage-body">
           <h4>Approval Checkpoint &amp; Epic Setup</h4>
-          <p>At the Approval Checkpoint, the client approves <strong>scope, estimate, DoD timing, and release version</strong> in Basecamp. The DM updates the Zoho ticket and Smartsheet to <em>Scope Approved</em>. <strong>For new feature/function requests, the PDM then creates the new epic with scope, requirements, and acceptance criteria in the description; the DM allocates hours from the Implementation bucket and cuts child tickets, sequences them, and manages the Hedge buffer.</strong> Reported issues stay under the Production Support epic — no new epic, no Approval Checkpoint.</p>
+          <p>At the Approval Checkpoint, the client approves <strong>scope, estimate, DoD timing, and release version</strong> in Basecamp. The DM updates the Zoho ticket and Smartsheet to <em>Scope Approved</em>. <strong>For new feature/function requests, the PDM then creates the new epic with scope, requirements, and acceptance criteria in the description; the DM allocates hours from the Implementation bucket and cuts child tickets, sequences them, and manages the Hedge buffer.</strong> For reported issues, there is no new epic and no Approval Checkpoint — but the DM still cuts child tickets and manages Hedge, with the tickets cut under the existing Production Support epic instead of a new per-issue epic.</p>
 
           <p style="font-size:12.5px"><strong>Epic setup — who does what:</strong></p>
           <ol style="font-size:12.5px;margin:6px 0 12px 22px">
@@ -775,16 +775,16 @@ nav {
     <!-- Mechanic 8 — Epic setup at the Approval Checkpoint -->
     <div class="mech-block">
       <h4><span class="mech-num">8</span> Epic Setup at the Approval Checkpoint</h4>
-      <p style="font-size:12.5px"><strong>What:</strong> When the client passes the Approval Checkpoint on a new feature/function request, the PDM creates the new epic with scope/requirements/AC and the DM allocates hours, cuts child tickets, and manages Hedge. This is what enables clean per-request budget tracking and accurate KPIs. (Skip for reported issues — they stay under the Production Support epic.)</p>
-      <p style="font-size:12.5px;margin-top:8px"><strong>PDM owns:</strong></p>
+      <p style="font-size:12.5px"><strong>What:</strong> When a new feature/function request passes the Approval Checkpoint, the PDM creates the new epic with scope/requirements/AC and the DM allocates hours, cuts child tickets, and manages Hedge. For reported issues, there is no new epic and no Approval Checkpoint — but the DM still allocates hours, cuts child tickets, and manages Hedge under the existing Production Support epic. The mechanic is the same in both cases; only the destination epic differs. This is what enables clean per-request budget tracking and accurate KPIs.</p>
+      <p style="font-size:12.5px;margin-top:8px"><strong>PDM owns (new feature / function only):</strong></p>
       <ol>
         <li><strong>Close the original request ticket</strong> under Planning / Ops / New Requests. Processing is complete; further time logging would bill implementation against the wrong bucket.</li>
         <li><strong>Create a new epic</strong> in Zoho titled with the request name (e.g. <em>Orders by Resort Report</em>). Author the description with the approved scope, requirements, and acceptance criteria — this becomes the durable scope reference everyone works against during execution.</li>
       </ol>
-      <p style="font-size:12.5px;margin-top:8px"><strong>DM owns:</strong></p>
+      <p style="font-size:12.5px;margin-top:8px"><strong>DM owns (both paths):</strong></p>
       <ol>
-        <li><strong>Allocate hours</strong> from the Implementation bucket to the new epic — match the estimator's TOTAL PROJECT HOURS for the request.</li>
-        <li><strong>Cut child tickets under the new epic, one per role from the estimator</strong>, each carrying that role's estimated hours:
+        <li><strong>Allocate hours</strong> to the destination epic — match the estimator's TOTAL PROJECT HOURS. For new feature/function, the destination is the new PDM-created epic and hours come from the Implementation bucket. For reported issues, the destination is the existing Production Support epic and hours come from the Production Support bucket.</li>
+        <li><strong>Cut child tickets under the destination epic, one per role from the estimator</strong>, each carrying that role's estimated hours:
           <ul>
             <li>BE ticket — BE Est hours</li>
             <li>FE ticket — FE Est hours</li>
@@ -798,7 +798,7 @@ nav {
         <li><strong>Manage Hedge as the request's internal buffer.</strong> If any role ticket runs over its estimate during delivery, pull from the Hedge ticket first before going back to the client. Hedge is request-specific — it doesn't pool across requests, and any unused Hedge stays with this request.</li>
         <li>Implementation work proceeds against these tickets through the active board (TO DO → IN DEVELOPMENT → ... → UAT APPROVED). Time tracking against each child ticket gives real-time estimated-vs-actual at the role level.</li>
       </ol>
-      <span class="mech-where"><strong>Where</strong>Zoho — PDM closes original ticket and creates epic with scope/AC; DM allocates hours, cuts and sequences child tickets · Implementation bucket reduces by the allocated amount</span>
+      <span class="mech-where"><strong>Where</strong>Zoho — PDM closes original ticket and creates new epic with scope/AC (new requests only); DM allocates hours, cuts and sequences child tickets under the destination epic (new PDM-created epic for new requests, existing Production Support epic for reported issues)</span>
     </div>
 
     <!-- Mechanic 9 — Status mirror (renumbered from 8) -->
