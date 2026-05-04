@@ -267,7 +267,7 @@ nav {
           <li>Manage bucket hours per billing cycle and inform the team of what's available to operate against</li>
           <li>Trace and track every request through its lifecycle in Smartsheet and Zoho</li>
           <li>Allocate time the team will spend on the request when it lands in the tracker</li>
-          <li>Initiate or assign a Smartsheet project plan when the request warrants one (DM discretion based on complexity)</li>
+          <li>Create and maintain the Smartsheet project plan for complex requests — the integrated tracker holding requirements, estimates, durations, and DoD activities</li>
           <li>Generate the request estimator and align the team on LOE including DoD activities — review with leadership where applicable</li>
           <li>Calculate delivery timing based on LOE and work with the PDM to determine release version placement</li>
         </ul>
@@ -394,8 +394,8 @@ nav {
           <div class="callout callout-info" style="margin-top:10px">
             <div class="callout-icon">📋</div>
             <div class="callout-body">
-              <strong>Project plan — DM discretion based on complexity</strong>
-              <p>For simple requests (e.g. change a field), no separate project plan is needed. For complex requests with multiple resources and rolling days of work, the DM initiates a Smartsheet project plan to track triage/troubleshoot or scoping/analysis activities — typically once the PDM has client-aligned requirements and there's something concrete to plan against. The DM judges per request.</p>
+              <strong>Project plan — when to create one</strong>
+              <p>For simple requests (e.g. change a field), no separate project plan is needed. For complex requests with multiple resources and rolling days of work, the DM creates a Smartsheet project plan from the template — typically once the PDM has client-aligned requirements and there's something concrete to plan against. The plan is the integrated tracker for the request: it holds requirements, per-role estimates from the LOE estimator, activity durations, sequencing, and the standard DoD activities. It's also the source the DM derives DoD timing from in Stage 7. (See Section 6 for the full project plan model.)</p>
             </div>
           </div>
 
@@ -636,7 +636,7 @@ nav {
     <p style="font-size:12px;color:var(--ink-light);margin-top:10px"><strong>Blocked is a comment, not a state.</strong> If a request is blocked at any point — client silence, missing input, dependency on another team — capture it as a comment on the Zoho ticket and note it on the Smartsheet row. We don't add a Blocked status to the front-half set because the underlying processing state hasn't changed; it's just paused.</p>
 
     <h3>Project Plan — Distributed Update Model</h3>
-    <p>When a project plan is created (DM discretion based on complexity — see Stage 4), it is the integrated tracker for the request lifecycle. The plan holds <strong>requirements, per-role estimates from the LOE Estimator, activity durations, and the standard DoD activities</strong> structured by phase (Technical Analysis → Scope &amp; Estimate → Implementation → Dev Testing → Deployment → DoD). <strong>DoD timing is derived directly from the project plan</strong> — because the plan has all the inputs in one place (estimates, durations, sequencing, dependencies), it produces a defensible DoD date instead of a gut-feel guess. This is what the DM communicates to the client. Updates are distributed:</p>
+    <p>When a project plan is created (required for complex requests — see Stage 4), it is the integrated tracker for the request lifecycle. The plan holds <strong>requirements, per-role estimates from the LOE Estimator, activity durations, and the standard DoD activities</strong> structured by phase (Technical Analysis → Scope &amp; Estimate → Implementation → Dev Testing → Deployment → DoD). <strong>DoD timing is derived directly from the project plan</strong> — because the plan has all the inputs in one place (estimates, durations, sequencing, dependencies), it produces a defensible DoD date instead of a gut-feel guess. This is what the DM communicates to the client. Updates are distributed:</p>
     <ul>
       <li><strong>DM owns:</strong> creating the plan from the template, populating it with requirements and estimates from the LOE estimator, structuring phases, assigning activities, sequencing, monitoring overall progress and budget burn, reconciling status</li>
       <li><strong>Activity assignees update:</strong> their own status on the activities they own — SA, PDM, FE, BE, QA, UI/UX, named stakeholders, the DM themselves</li>
@@ -728,15 +728,15 @@ nav {
 
     <!-- Mechanic 5 — Project plan -->
     <div class="mech-block">
-      <h4><span class="mech-num">5</span> Decide on a Project Plan (DM Discretion)</h4>
-      <p style="font-size:12.5px"><strong>What:</strong> Judge whether the request warrants its own Smartsheet project plan based on complexity. Simple requests don't; complex requests do.</p>
+      <h4><span class="mech-num">5</span> Create &amp; Maintain the Project Plan</h4>
+      <p style="font-size:12.5px"><strong>What:</strong> The Smartsheet project plan is the integrated tracker for the request. It holds <strong>requirements, per-role estimates from the LOE estimator, activity durations, sequencing, and the standard DoD activities</strong> — all in one place. Because the plan has all those inputs together, it's the source the DM derives DoD timing from when sending to the client (Stage 7). A plan is required for complex requests; simple requests don't need one.</p>
       <ol>
         <li>Skip the project plan if the request is simple — single field change, copy update, configuration tweak. The Zoho ticket and tracker row are enough.</li>
         <li>Create a project plan if the request involves multiple resources, rolling days of work, or sequencing risk. Typically initiated once the PDM has client-aligned requirements and there's something concrete to plan against.</li>
-        <li>If creating: copy the project plan template, populate the analysis tasks (or triage tasks for reported issues) with owners, durations, and start dates. Update statuses as activities progress; expect activity assignees to update their own statuses on activities they own.</li>
+        <li>If creating: copy the project plan template, populate the requirements, the analysis tasks (or triage tasks for reported issues), and the standard DoD activities with owners, durations, and start dates. Once the LOE estimator is complete (Mechanic 6), bring the per-role estimates and durations into the plan so it reflects the full integrated view. Update statuses as activities progress; expect activity assignees to update their own statuses on activities they own.</li>
         <li>If a request is being added to an existing project plan for a release that's already in flight, add it there rather than creating a new plan.</li>
       </ol>
-      <span class="mech-where"><strong>Where</strong>Smartsheet project plan template — <strong>[TO CONFIRM by DM team — template location once finalized]</strong></span>
+      <span class="mech-where"><strong>Where</strong>Smartsheet project plan template — <a href="https://app.smartsheet.com/sheets/MFc2Xc7xpVvWP3JX48vWh7G8M76vXV3PGh6FrFJ1?view=grid" target="_blank" rel="noopener noreferrer">app.smartsheet.com/sheets/MFc2Xc7xpVvWP3JX48vWh7G8M76vXV3PGh6FrFJ1</a></span>
     </div>
 
     <!-- Mechanic 6 — Estimator -->
@@ -750,9 +750,9 @@ nav {
         <li>Share the estimator with the team for input. Each role estimates into their column: BE Est, FE Est, QA Est, UI/UX Est. Async if maturity allows; brief estimation call otherwise.</li>
         <li>Once dev estimates land, populate the hedge columns: Hedge, SA, PDM, DM, Automation Testing, Team.</li>
         <li>Calculate the Subtotal and TOTAL PROJECT HOURS columns. Surface the range to leadership for review where applicable — populate <em>Internal Approved Range by Leadership</em>.</li>
-        <li>For t-shirt sizing instead of full LOE: use the t-shirt size estimator (in development by Anne — flag as a near-term dependency).</li>
+        <li>For t-shirt sizing instead of full LOE: use the t-shirt size estimator template instead of the LOE estimator template.</li>
       </ol>
-      <span class="mech-where"><strong>Where</strong>Smartsheet LOE estimator template — <strong>[TO CONFIRM by DM team — template location]</strong> · T-shirt size estimator — in development</span>
+      <span class="mech-where"><strong>Where</strong>Smartsheet LOE estimator template — <a href="https://app.smartsheet.com/sheets/jCW7HjgR5757RGGQrv8h5PhmgFFQGmrhvm4jmRh1?view=grid" target="_blank" rel="noopener noreferrer">app.smartsheet.com/sheets/jCW7HjgR5757RGGQrv8h5PhmgFFQGmrhvm4jmRh1</a> · T-shirt size estimator — <a href="https://app.smartsheet.com/sheets/MMpphH9MMcCWM9VW69WgGjP4h83QqgCJw6PjFgg1?view=grid" target="_blank" rel="noopener noreferrer">app.smartsheet.com/sheets/MMpphH9MMcCWM9VW69WgGjP4h83QqgCJw6PjFgg1</a></span>
     </div>
 
     <!-- Mechanic 7 — Delivery timing + release version -->
