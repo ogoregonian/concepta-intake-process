@@ -275,6 +275,63 @@ nav{position:sticky;top:0;z-index:200;background:#0f172a;display:flex;align-item
   font-size:12px;font-weight:600;color:#0f172a;
 }
 
+/* ── Version History (collapsible) ── */
+.popup-history{
+  margin-top:18px;
+  border-top:1px solid #e2e8f0;
+  padding-top:14px;
+}
+.popup-history-toggle{
+  display:flex;align-items:center;gap:8px;
+  width:100%;background:none;border:none;cursor:pointer;
+  padding:4px 0;
+  font-family:'Syne',sans-serif;font-size:10px;font-weight:700;
+  color:#64748b;letter-spacing:.6px;text-transform:uppercase;
+  transition:color .15s;
+}
+.popup-history-toggle:hover{color:#0f172a}
+.popup-history-toggle .ph-icon{font-size:11px}
+.popup-history-toggle .ph-chevron{
+  margin-left:auto;font-size:10px;
+  transition:transform .2s;
+}
+.popup-history.open .ph-chevron{transform:rotate(180deg)}
+.popup-history-list{
+  display:none;
+  margin-top:10px;
+  flex-direction:column;gap:6px;
+}
+.popup-history.open .popup-history-list{display:flex}
+.history-row{
+  display:grid;
+  grid-template-columns:auto auto 1fr auto;
+  align-items:center;gap:10px;
+  padding:8px 12px;
+  background:#f8fafc;border:1px solid #e2e8f0;
+  border-radius:6px;
+  font-size:11.5px;
+}
+.history-version{
+  display:inline-flex;align-items:center;
+  background:#fef3c7;color:#92400e;
+  border:1px solid #fde68a;border-radius:4px;
+  padding:2px 7px;
+  font-family:'Syne',sans-serif;font-size:9.5px;font-weight:700;
+  letter-spacing:.3px;
+}
+.history-date{font-size:10.5px;color:#64748b;font-weight:500;white-space:nowrap}
+.history-desc{
+  font-size:11.5px;color:#1e293b;line-height:1.45;
+}
+.history-author{
+  font-size:10.5px;color:#475569;font-weight:600;
+  text-align:right;white-space:nowrap;
+}
+.history-empty{
+  font-size:11px;color:#94a3b8;font-style:italic;
+  padding:8px 0;
+}
+
 /* ── Continuation ── */
 .continuation{
   background:#f0f9ff;border:1.5px solid #0ea5e9;border-radius:10px;
@@ -359,7 +416,7 @@ nav {
 
   <div class="page-heading">
     <h1>Beta Pilot — Manual Workflow &amp; Tooling</h1>
-    <p>The first pilot workflow we follow. Manual process — no AI Agent yet. Eight stages from request capture through approval and carve-out, covering both new requests and reported issues. Differences between the two are called out inline at the stages where the flow diverges. Click any step for the What, Who, and Why.</p>
+    <p>The first pilot workflow we follow. Manual process — no AI Agent yet. Eight stages from request capture through the Approval Checkpoint and epic creation, covering both new requests and reported issues. Differences between the two are called out inline at the stages where the flow diverges. Click any step for the What, Who, and Why.</p>
   </div>
 
   <div class="phase-callout">
@@ -408,7 +465,7 @@ nav {
             <div class="phase-hd"><span class="phase-num">5</span>Ready for Estimate</div>
             <div class="phase-hd"><span class="phase-num">6</span>Estimate &amp; Time</div>
             <div class="phase-hd"><span class="phase-num">7</span>Send to Client</div>
-            <div class="phase-hd"><span class="phase-num">8</span>Approve &amp; Carve-Out</div>
+            <div class="phase-hd"><span class="phase-num">8</span>Approval Checkpoint</div>
           </div>
         </div>
 
@@ -423,6 +480,7 @@ nav {
                    data-who="Client requestor (any account stakeholder authorized to submit work)"
                    data-what="Client submits a request via the channel they already use — Basecamp message board for most accounts, request board for one. The format is whatever the account is currently using; nothing changes for the client in Phase 1."
                    data-why="No client-facing change in Phase 1 — we don't want intake friction with the client while we're still validating our internal process. The discipline we're adding sits behind the scenes; the client experience stays identical to today."
+                   data-history='[{"version":"v1.0","date":"April 2026","desc":"Initial documentation","author":"Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Client submits request</div>
@@ -450,6 +508,7 @@ nav {
                    data-who="Client requestor"
                    data-what="The PDM works with the client in Basecamp to confirm interpretation of the request and align on what's being built. The PDM may post a quick check (&quot;just to make sure I'm interpreting correctly, you want X&quot;) so the requirement is captured in writing. Then the PDM posts the scope (FE / BE / QA / UI/UX as applicable) and the client approves it in Basecamp."
                    data-why="Receipt of record — Basecamp is where the request and the alignment live, so anyone can trace what was agreed and when. Two confirmations (requirements + scope) protect both sides: the client gets a chance to course-correct early, and we don't estimate against a misinterpretation."
+                   data-history='[{"version":"v1.0","date":"April 2026","desc":"Initial documentation","author":"Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Confirms requirements &amp; approves scope</div>
@@ -473,18 +532,19 @@ nav {
 
             <!-- Phase 7 — passive (DM is sending) -->
             <div class="pc">
-              <div class="passive">Awaiting estimate, timing, and release train placement from DM.</div>
+              <div class="passive">Awaiting scope, estimate, DoD timing, and release version from DM.</div>
             </div>
 
             <!-- Phase 8 — Approve -->
             <div class="pc">
               <div class="sc sc-c"
                    data-who="Client requestor"
-                   data-what="Client approves the estimate, DoD timing, and proposed release train in Basecamp. If the client doesn't approve: timing rejection → DM offers velocity / budget bump. Estimate rejection → PDM works with client to pare down scope and the request loops back to estimation."
-                   data-why="Single approval moment that triggers the carve-out and formally commits both sides to the work. Without explicit approval the request can't enter delivery — protects against scope creep and surprise overruns."
+                   data-what="At the Approval Checkpoint, the client approves scope, estimate, DoD timing, and release version in Basecamp. If the client doesn't approve: timing rejection → DM offers velocity / budget bump. Estimate rejection → PDM works with client to pare down scope and the request loops back to estimation."
+                   data-why="The Approval Checkpoint is the formal gate that triggers epic creation and commits both sides to the work. Without explicit approval the request can't enter delivery — protects against scope creep and surprise overruns."
+                   data-history='[{"version":"v1.0","date":"April 2026","desc":"Initial documentation","author":"Anne"},{"version":"v1.1","date":"May 2026","desc":"Renamed from \"Approves estimate, timing, release train\" — language updated to Approval Checkpoint terminology (scope, estimate, DoD timing, release version)","author":"Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
-                  <div class="sc-title">Approves estimate, timing, release train</div>
+                  <div class="sc-title">Approves scope, estimate, DoD timing, release version</div>
                 </div>
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
@@ -512,6 +572,7 @@ nav {
                    data-who="PDM (Anne, Henrique, or Gabriel — whoever owns the account)"
                    data-what="PDM creates the Zoho ticket on the New Request backlog. Sets: Item Type (Task for new request, Bug for reported issue), Item Name (the request title), Description (link to Basecamp comms), Epic (Planning/Ops/New Requests for new request, Production Support for reported issue), Priority (aligned with client urgency), Request Analysis Status (New Request), and assigns the DM. Then tags the DM in the ticket comments and the account Slack channel — that tag is what triggers the DM to begin tracking."
                    data-why="The Zoho ticket is the internal source of truth for this request. Setting epic and priority correctly at creation means time logged against the ticket bills to the right bucket from day one — no cleanup later. The Slack tag is the human signal that pulls the DM in; without it the request waits."
+                   data-history='[{"version":"v1.0","date":"April 2026","desc":"Initial documentation","author":"Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Create Zoho ticket &amp; tag DM</div>
@@ -540,6 +601,7 @@ nav {
                    data-who="PDM drives. Team contributes (FE / BE / QA / UI/UX / SA). Client approves."
                    data-what="PDM refines requirements with the client in Basecamp and aligns internally with the team. If the request is simple, team members review async. If complex, the DM schedules a planning call with the team members the PDM identified on the Zoho ticket. Output is a scope posted in Basecamp covering FE / BE / QA / UI/UX as applicable, approved by the client. Updates the Zoho Request Analysis Status as work moves through these phases (status follows the current ticket assignee)."
                    data-why="Scope written in Basecamp = institutional memory. Clients reprioritize and forget what they asked for; the Basecamp record is what holds the line. Internal alignment before estimation prevents the team from estimating against assumptions the PDM didn't validate."
+                   data-history='[{"version":"v1.0","date":"April 2026","desc":"Initial documentation","author":"Anne"},{"version":"v1.1","date":"May 2026","desc":"Fast path text updated — \"release train\" replaced with \"DoD timing + release version\"; \"client approval moment\" replaced with \"Approval Checkpoint\"","author":"Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Scope with team · client approves</div>
@@ -552,7 +614,7 @@ nav {
                 </div>
                 <div class="sc-dec">
                   <span class="dec-lbl">⚡ Fast path</span>
-                  If the PDM is confident the request is simple and clear, they can skip the separate requirements approval round-trip. PDM posts a quick confirmation in Basecamp ("just to make sure I'm interpreting correctly, you want X"), then signals the DM to proceed straight to estimation. The DM's reply at Phase 7 (requirements + estimate + timing + release train) becomes the single client approval moment.
+                  If the PDM is confident the request is simple and clear, they can skip the separate requirements approval round-trip. PDM posts a quick confirmation in Basecamp ("just to make sure I'm interpreting correctly, you want X"), then signals the DM to proceed straight to estimation. The DM's reply at Phase 7 (requirements + estimate + DoD timing + release version) becomes the single Approval Checkpoint.
                 </div>
               </div>
             </div>
@@ -563,6 +625,7 @@ nav {
                    data-who="PDM"
                    data-what="Once the scope is approved by the client in Basecamp, the PDM updates the Zoho Request Analysis Status to Ready for Estimation, comments on the ticket with a brief handoff note, and tags the DM in the account Slack channel."
                    data-why="Status follows ownership of the current phase — when the PDM's part is done, the status update is the signal that the next role (DM) takes over. Comment + Slack tag means the DM doesn't have to be watching the ticket to know it's their turn."
+                   data-history='[{"version":"v1.0","date":"April 2026","desc":"Initial documentation","author":"Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Update Status &amp; tag DM</div>
@@ -580,15 +643,16 @@ nav {
               <div class="passive">Available to team for estimation input on the Smartsheet estimator.</div>
             </div>
 
-            <!-- Phase 7 — Align release train priority with DM -->
+            <!-- Phase 7 — Align release version with DM -->
             <div class="pc">
               <div class="sc sc-pdm"
                    data-who="PDM (works with DM)"
-                   data-what="Before the DM sends the estimate to the client, the PDM and DM align on release train placement. The PDM brings the client-side priority context — what the client is expecting, what other work is queued — and the DM brings the LOE and remaining bucket capacity. Together they decide: add to current in-flight release if urgent, or hold for next release if heavy."
+                   data-what="Before the DM sends to the client, the PDM and DM align on release version placement. The PDM brings the client-side priority context — what the client is expecting, what other work is queued — and the DM brings the LOE and remaining bucket capacity. Together they decide: add to current in-flight release if urgent, or hold for next release if heavy."
                    data-why="The PDM is closest to the client on priority — without their input, the DM is guessing what the client expects. Aligning internally before going to the client also avoids contradicting messages reaching the client from different team members."
+                   data-history='[{"version":"v1.0","date":"April 2026","desc":"Initial documentation","author":"Anne"},{"version":"v1.1","date":"May 2026","desc":"Renamed from \"Align release train with DM\" — release train terminology replaced with release version throughout description","author":"Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
-                  <div class="sc-title">Align release train with DM</div>
+                  <div class="sc-title">Align release version with DM</div>
                 </div>
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
@@ -598,9 +662,27 @@ nav {
               </div>
             </div>
 
-            <!-- Phase 8 — passive -->
+            <!-- Phase 8 — Create new epic with scope/AC -->
             <div class="pc">
-              <div class="passive">Awaiting client approval. On approval, DM executes the carve-out.</div>
+              <div class="sc sc-pdm"
+                   data-who="PDM"
+                   data-what="On Approval Checkpoint passed: PDM creates the new epic in Zoho titled with the request name, and authors the description with the approved scope, requirements, and acceptance criteria. The DM then takes over to cut child tickets, sequence them, assign owners, schedule allocation, and manage the Hedge buffer ticket."
+                   data-why="Splitting epic creation from ticket execution puts the scope-of-record in the PDM's hands (closest to the client conversation) and the delivery mechanics in the DM's hands (closest to capacity and sequencing). The epic description becomes the durable scope reference everyone works against — and the AC at the epic level prevents drift during execution."
+                   data-history='[{"version":"v1.1","date":"May 2026","desc":"New PDM card added at Phase 8 — splits epic creation (PDM owns scope/requirements/AC) from child ticket execution (DM owns child tickets, sequencing, allocation, Hedge)","author":"Anne"}]'
+                   onclick="openCard(this)">
+                <div class="sc-top">
+                  <div class="sc-title">Create epic · scope, requirements, AC</div>
+                </div>
+                <div class="sc-hint">Click for details</div>
+                <div class="sc-tools">
+                  <span class="tb tb-zo">Zoho</span>
+                </div>
+                <div class="div-note">
+                  <strong>Applies to</strong>
+                  <span class="nr">New feature / function:</span> YES — PDM creates new epic<br>
+                  <span class="ri">Reported issue:</span> NO new epic — work stays under Production Support
+                </div>
+              </div>
             </div>
 
           </div>
@@ -627,6 +709,7 @@ nav {
                    data-who="Delivery Manager (Flavio or Tina)"
                    data-what="Triggered by the PDM's Slack tag. DM submits the Smartsheet form for the account: Date, Title, Type (New Request / Reported Issue), Requestor, Notes (Basecamp link from the Zoho ticket). The row lands on the account's Smartsheet Request Tracker in NEW REQUEST. DM moves it to SCOPE/ANALYSIS (or Triage column for reported issue), assigns, and allocates how many hours the team has to spend processing this request — drawn from the relevant bucket, with resource availability factored in."
                    data-why="Smartsheet is the client-facing view — every request lives there so the client can see at any moment what's in flight. Allocating time upfront sets the budget envelope the PDM operates against during scoping; without it, scoping work can sprawl and burn the bucket on a single request."
+                   data-history='[{"version":"v1.0","date":"April 2026","desc":"Initial documentation","author":"Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Submit Smartsheet form · allocate time</div>
@@ -650,6 +733,7 @@ nav {
                    data-who="Delivery Manager (judgment per request)"
                    data-what="DM judges whether the request warrants its own Smartsheet project plan. Simple requests (single field change, copy update, configuration tweak) — no plan needed. Complex requests with multiple resources, rolling days of work, or sequencing risk — DM initiates the project plan from the template. If the request is being added to an existing release that already has a project plan in flight, DM adds it there rather than creating a new one. Activity assignees update their own status as work progresses; DM owns the plan structure and reconciliation."
                    data-why="A project plan for a 30-minute label change is overhead with no payoff. A complex multi-resource request with no plan is chaos. The DM judges per request — and that judgment is part of the discipline we're building in Phase 1. Distributed status updates keep the plan current without bottlenecking on the DM."
+                   data-history='[{"version":"v1.0","date":"April 2026","desc":"Initial documentation","author":"Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Project plan? (DM discretion)</div>
@@ -677,6 +761,7 @@ nav {
                    data-who="DM stands up the estimator. Team estimates per role (BE · FE · QA · UI/UX · SA). Leadership reviews where applicable."
                    data-what="DM copies the Smartsheet request estimator template, pulls the high-level requirements from the approved Basecamp scope, populates the standard DoD activities. Each role estimates into their column (BE Est, FE Est, QA Est, UI/UX Est) — async if team maturity allows, brief estimation call otherwise. DM populates the hedge columns (Hedge, SA, PDM, DM, Automation Testing, Team), calculates TOTAL PROJECT HOURS, and surfaces the range to leadership for review where applicable. DM then calculates weeks to DoD (TOTAL HOURS ÷ Avg Burn/Week) adjusting for known scheduling constraints. If the request is folding into a release where DoD activities are already accounted for, the new request only estimates implementation, dev testing, code review, and QA testing — client demo and e2e regression get folded into the in-flight request."
                    data-why="The estimator turns gut-feel into a number leadership and the client can both stand behind. Hedge columns recognize that dev estimates alone aren't the full picture — SA, PDM, DM, and automation time are real and need to be funded. Folding shared DoD activities into in-flight releases avoids double-counting work."
+                   data-history='[{"version":"v1.0","date":"April 2026","desc":"Initial documentation","author":"Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Generate estimator · calculate timing</div>
@@ -693,11 +778,12 @@ nav {
             <div class="pc">
               <div class="sc sc-dm"
                    data-who="Delivery Manager"
-                   data-what="DM responds on the original Basecamp request thread with the effort estimate (or t-shirt size if applicable), timing to DoD, and proposed release train placement. If the fast path was taken in Phase 4, the DM also restates the requirements in this reply — making it the single client approval moment. For t-shirt sized requests, DM names the next step (POC effort estimate, or follow-up LOE estimate)."
+                   data-what="DM responds on the original Basecamp request thread with the effort estimate (or t-shirt size if applicable), DoD timing, and proposed release version. If the fast path was taken in Phase 4, the DM also restates the requirements in this reply — making it the single Approval Checkpoint. For t-shirt sized requests, DM names the next step (POC effort estimate, or follow-up LOE estimate)."
                    data-why="Single message to the client containing everything they need to make an informed approval decision. Avoids the back-and-forth of separate emails for estimate, timing, and placement. The client either approves or pushes back on something specific — both outcomes are clear."
+                   data-history='[{"version":"v1.0","date":"April 2026","desc":"Initial documentation","author":"Anne"},{"version":"v1.1","date":"May 2026","desc":"Renamed from \"Send estimate, timing, release train\" — language updated to align with Approval Checkpoint criteria (scope, estimate, DoD timing, release version)","author":"Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
-                  <div class="sc-title">Send estimate, timing, release train</div>
+                  <div class="sc-title">Send scope, estimate, DoD timing, release version</div>
                 </div>
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
@@ -710,20 +796,21 @@ nav {
             <div class="pc">
               <div class="sc sc-dm"
                    data-who="Delivery Manager"
-                   data-what="On client approval, DM executes the carve-out: (1) closes the original request ticket under Planning/Ops/New Requests so no further time logs there. (2) Creates a new epic in Zoho titled with the request name. (3) Allocates hours from the Implementation bucket to the new epic matching the estimator's TOTAL PROJECT HOURS. (4) Cuts child tickets under the new epic — one per role from the estimator (BE, FE, QA, UI/UX, SA, PDM, DM, Automation Testing, Team), plus a separate Hedge ticket carrying the buffer. (5) Manages Hedge as the request's internal buffer — pulls from it first if any role ticket runs over, before going back to the client. From there, child tickets flow into Sprint Candidates → TO DO → IN DEVELOPMENT → ... → UAT APPROVED via the standard Zoho active board."
+                   data-what="On Approval Checkpoint passed and PDM epic in place: DM (1) closes the original request ticket under Planning/Ops/New Requests so no further time logs there. (2) Allocates hours from the Implementation bucket to the PDM-created epic matching the estimator's TOTAL PROJECT HOURS. (3) Cuts child tickets under the new epic — one per role from the estimator (BE, FE, QA, UI/UX, SA, PDM, DM, Automation Testing, Team), plus a separate Hedge ticket carrying the buffer. (4) Sequences child tickets to match the project plan and assigns owners per resource availability. (5) Manages Hedge as the request's internal buffer — pulls from it first if any role ticket runs over, before going back to the client. From there, child tickets flow into Sprint Candidates → TO DO → IN DEVELOPMENT → ... → UAT APPROVED via the standard Zoho active board."
                    data-why="Budget integrity and KPI tracking. If implementation work continued logging against Planning/Ops/New Requests, that bucket would look over-burned and Implementation under-burned — and per-request estimated-vs-actual data would be impossible to extract. The request-specific epic gives clean tracking: what we estimated for DoD vs. what it actually took. Hedge as a per-request buffer means we have a safety margin without going back to the client for every overrun."
+                   data-history='[{"version":"v1.0","date":"April 2026","desc":"Initial documentation as \"Execute carve-out\" — DM-owned 5-step mechanic","author":"Anne"},{"version":"v1.1","date":"May 2026","desc":"Renamed from \"Execute carve-out\". Card scope reduced — epic creation moved to new PDM card (steps 1-2 now PDM owned). DM card now covers: closing original ticket, allocating hours, cutting child tickets, sequencing, assigning owners, and managing Hedge buffer","author":"Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
-                  <div class="sc-title">Execute carve-out</div>
+                  <div class="sc-title">Cut child tickets · sequence · manage Hedge</div>
                 </div>
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
                   <span class="tb tb-zo">Zoho</span>
                 </div>
                 <div class="div-note">
-                  <strong>Carve-out applies to</strong>
-                  <span class="nr">New feature / function:</span> YES — carve out of Implementation, new epic created<br>
-                  <span class="ri">Reported issue:</span> NO carve-out — all work stays under Production Support epic
+                  <strong>Applies to</strong>
+                  <span class="nr">New feature / function:</span> YES — child tickets cut under PDM-created epic<br>
+                  <span class="ri">Reported issue:</span> NO new tickets here — work stays under Production Support epic
                 </div>
               </div>
             </div>
@@ -738,7 +825,7 @@ nav {
   <!-- ═══ CONTINUATION ═══ -->
   <div class="continuation">
     <strong>→ Standard Dev / QA / UAT lifecycle takes over</strong>
-    Once the carve-out is complete (Phase 8), child tickets flow into Sprint Candidates → TO DO → IN DEVELOPMENT → READY FOR REVIEW → IN QA → QA APPROVED → IN UAT → UAT APPROVED on the Zoho active board. Smartsheet status moves through <em>In Dev</em> to <em>Released to PROD</em> mirroring the active-board state.
+    Once the Approval Checkpoint passes and the new epic is set up (Phase 8), child tickets flow into Sprint Candidates → TO DO → IN DEVELOPMENT → READY FOR REVIEW → IN QA → QA APPROVED → IN UAT → UAT APPROVED on the Zoho active board. Smartsheet status moves through <em>In Dev</em> to <em>Released to PROD</em> mirroring the active-board state.
   </div>
 
   <div class="page-footer">
@@ -772,6 +859,15 @@ nav {
         <div class="popup-section-lbl">💡 Why</div>
         <div class="popup-section-body" id="popupWhy"></div>
       </div>
+      <!-- VERSION HISTORY -->
+      <div class="popup-history" id="popupHistory">
+        <button class="popup-history-toggle" onclick="toggleHistory()">
+          <span class="ph-icon">🕓</span>
+          <span>Version History</span>
+          <span class="ph-chevron">▾</span>
+        </button>
+        <div class="popup-history-list" id="popupHistoryList"></div>
+      </div>
     </div>
   </div>
 </div>
@@ -782,13 +878,50 @@ function openCard(card) {
   const who   = card.dataset.who  || '';
   const what  = card.dataset.what || '';
   const why   = card.dataset.why  || '';
+  const historyRaw = card.dataset.history || '';
 
   document.getElementById('popupStepTitle').textContent = title ? title.textContent.trim() : 'Step';
   document.getElementById('popupWho').textContent  = who;
   document.getElementById('popupWhat').textContent = what;
   document.getElementById('popupWhy').textContent  = why;
 
+  // Render version history
+  const historyList = document.getElementById('popupHistoryList');
+  const historyContainer = document.getElementById('popupHistory');
+  historyList.innerHTML = '';
+  // Reset to closed state every time a card opens
+  historyContainer.classList.remove('open');
+
+  let entries = [];
+  if (historyRaw) {
+    try {
+      entries = JSON.parse(historyRaw);
+    } catch (e) {
+      console.warn('Invalid history JSON on card:', e);
+    }
+  }
+
+  if (entries.length === 0) {
+    historyList.innerHTML = '<div class="history-empty">No history recorded yet.</div>';
+  } else {
+    // Display newest first
+    entries.slice().reverse().forEach(entry => {
+      const row = document.createElement('div');
+      row.className = 'history-row';
+      row.innerHTML =
+        '<span class="history-version">' + (entry.version || '—') + '</span>' +
+        '<span class="history-date">' + (entry.date || '') + '</span>' +
+        '<span class="history-author">' + (entry.author || '') + '</span>' +
+        '<span class="history-desc">' + (entry.desc || '') + '</span>';
+      historyList.appendChild(row);
+    });
+  }
+
   document.getElementById('whyOverlay').classList.add('open');
+}
+
+function toggleHistory() {
+  document.getElementById('popupHistory').classList.toggle('open');
 }
 
 function closeWhy(e) {

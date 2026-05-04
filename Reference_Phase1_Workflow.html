@@ -269,7 +269,7 @@ nav {
           <li>Allocate time the team will spend on the request when it lands in the tracker</li>
           <li>Initiate or assign a Smartsheet project plan when the request warrants one (DM discretion based on complexity)</li>
           <li>Generate the request estimator and align the team on LOE including DoD activities — review with leadership where applicable</li>
-          <li>Calculate delivery timing based on LOE and work with the PDM to determine release train priority</li>
+          <li>Calculate delivery timing based on LOE and work with the PDM to determine release version placement</li>
         </ul>
       </div>
     </div>
@@ -289,7 +289,7 @@ nav {
       <ul>
         <li><strong>Planning / Ops / New Requests bucket</strong> — covers standing team operations: dailies, planning meetings, retros, client status calls. <em>Remaining</em> hours after operations fund analyzing, scoping, and estimating new requests</li>
         <li><strong>Production Support bucket</strong> — reported issues pull from here (triage, troubleshooting, resolution)</li>
-        <li><strong>Implementation bucket</strong> — approved work pulls from here once requirements, estimate, and delivery timing are signed off; POCs from t-shirt sized requests also pull from this bucket. <strong>At approval, hours are carved out of this bucket and assigned to a request-specific epic</strong> (see Stage 8) — so "remaining Implementation hours" is what's left after all approved requests have been allocated</li>
+        <li><strong>Implementation bucket</strong> — approved work pulls from here once requirements, estimate, and delivery timing are signed off; POCs from t-shirt sized requests also pull from this bucket. <strong>At the Approval Checkpoint, hours are allocated from this bucket to a request-specific epic</strong> (see Stage 8) — so "remaining Implementation hours" is what's left after all approved requests have been allocated</li>
       </ul>
       <p style="margin-top:10px;font-size:12px;color:var(--ink-light)"><strong>Monitor and recalibrate.</strong> These budgets should be tracked continuously and recalibrated as patterns emerge — that data opens conversations with the client ("we need more hours for production support" or "we need more hours to perform X"). Bucket pressure isn't just a tracking signal; it's the evidence that drives the next contract conversation.</p>
     </div>
@@ -317,7 +317,7 @@ nav {
   <div class="section" id="workflow">
     <div class="section-label"><div class="num">4</div> The End-to-End Workflow</div>
     <h2>From Client Request to Delivery Approval</h2>
-    <p>Eight stages from request capture through client approval and release train assignment. The primary path covers New Requests; Reported Issue divergences are called out inline at the stages where the flow differs. The full workflow happens against the bucket capacity managed by the DM in Section 3.</p>
+    <p>Eight stages from request capture through the Approval Checkpoint and release version placement. The primary path covers New Requests; Reported Issue divergences are called out inline at the stages where the flow differs. The full workflow happens against the bucket capacity managed by the DM in Section 3.</p>
 
     <div class="callout callout-info">
       <div class="callout-icon">💬</div>
@@ -403,7 +403,7 @@ nav {
             <div class="callout-icon">⚡</div>
             <div class="callout-body">
               <strong>Fast path — PDM discretion for simple, clear requests</strong>
-              <p>When the PDM is confident the request is simple and clear, they can skip the separate requirements-approval round trip with the client. The PDM posts a lightweight confirmation in Basecamp ("just to make sure I'm interpreting correctly, you want X — the DM will follow up shortly with estimate and timing") so the requirement is captured in writing, then signals the DM to proceed straight to estimation. Internal alignment for estimation still happens — only the client-facing requirements approval loop is skipped. The DM's response in Stage 7 (requirements restated + estimate + timing + release train) becomes the single client approval moment instead of two.</p>
+              <p>When the PDM is confident the request is simple and clear, they can skip the separate requirements-approval round trip with the client. The PDM posts a lightweight confirmation in Basecamp ("just to make sure I'm interpreting correctly, you want X — the DM will follow up shortly with estimate and timing") so the requirement is captured in writing, then signals the DM to proceed straight to estimation. Internal alignment for estimation still happens — only the client-facing requirements approval loop is skipped. The DM's response in Stage 7 (requirements restated + estimate + DoD timing + release version) becomes the single Approval Checkpoint instead of two.</p>
             </div>
           </div>
         </div>
@@ -431,7 +431,7 @@ nav {
             <div class="callout-icon">♻️</div>
             <div class="callout-body">
               <strong>Shared DoD activities — when another request is already in flight on the same release</strong>
-              <p>If another request on the same release train has already accounted for shared DoD activities (client demo, e2e regression on our end), those don't need to be re-estimated for the new request. In that case the LOE for the new request includes only <strong>implementation, dev testing, code review, and QA testing</strong> — the client demo and e2e regression get folded into the work already accounted for on the in-flight request. The DM should validate this assumption with the team before applying it.</p>
+              <p>If another request on the same release version has already accounted for shared DoD activities (client demo, e2e regression on our end), those don't need to be re-estimated for the new request. In that case the LOE for the new request includes only <strong>implementation, dev testing, code review, and QA testing</strong> — the client demo and e2e regression get folded into the work already accounted for on the in-flight request. The DM should validate this assumption with the team before applying it.</p>
             </div>
           </div>
 
@@ -456,14 +456,14 @@ nav {
           <ul>
             <li>The effort estimate (or t-shirt size, if applicable)</li>
             <li>The timing to reach DoD</li>
-            <li>The proposed release train placement</li>
-            <li><strong>If the fast path was taken in Stage 4:</strong> the DM also restates the requirements in this reply — the requirements + estimate + timing + release train message becomes the single client approval moment</li>
+            <li>The proposed release version placement</li>
+            <li><strong>If the fast path was taken in Stage 4:</strong> the DM also restates the requirements in this reply — the requirements + estimate + DoD timing + release version message becomes the single Approval Checkpoint</li>
           </ul>
-          <p><strong>Release train logic — DM works with PDM on priority before client comms:</strong></p>
+          <p><strong>Release version logic — DM works with PDM on priority before client comms:</strong></p>
           <ul>
-            <li>The PDM knows current release train priority from the client side and is the partner for this call</li>
-            <li>If the request is urgent and there is a release train already in flight but still in development, it makes sense to add the request to that train</li>
-            <li>If the request is heavy and would delay the current release train, it is prioritized for the next release train (v#.#.#)</li>
+            <li>The PDM knows current release priority from the client side and is the partner for this call</li>
+            <li>If the request is urgent and there is a release version already in flight but still in development, it makes sense to add the request to that release</li>
+            <li>If the request is heavy and would delay the current release, it is prioritized for the next release version (v#.#.#)</li>
             <li>Once DM and PDM are aligned, the placement is communicated to the client</li>
           </ul>
           <p><strong>T-shirt sizing caveat:</strong> when the response is a t-shirt size, the DM also informs the client of the next step — either an estimated POC that will then inform the remaining LOE to DoD, or (if no POC is needed) the team estimates and the DM follows up with timing for DoD.</p>
@@ -475,16 +475,16 @@ nav {
       <div class="stage">
         <div class="stage-num">8</div>
         <div class="stage-body">
-          <h4>Client Approval &amp; Epic Carve-Out</h4>
-          <p>Client approves the estimate, timing, and release train in Basecamp. The DM updates the Zoho ticket and Smartsheet to <em>Scope Approved</em>. <strong>For new feature/function requests, the DM then carves the approved hours out of the Implementation bucket and stands up a request-specific epic in Zoho.</strong> Reported issues do not get carved out — all work stays under the Production Support epic.</p>
+          <h4>Approval Checkpoint &amp; Epic Setup</h4>
+          <p>At the Approval Checkpoint, the client approves <strong>scope, estimate, DoD timing, and release version</strong> in Basecamp. The DM updates the Zoho ticket and Smartsheet to <em>Scope Approved</em>. <strong>For new feature/function requests, the PDM then creates the new epic with scope, requirements, and acceptance criteria in the description; the DM allocates hours from the Implementation bucket and cuts child tickets, sequences them, and manages the Hedge buffer.</strong> Reported issues stay under the Production Support epic — no new epic, no Approval Checkpoint.</p>
 
-          <p style="font-size:12.5px"><strong>The carve-out, step by step:</strong></p>
+          <p style="font-size:12.5px"><strong>Epic setup — who does what:</strong></p>
           <ol style="font-size:12.5px;margin:6px 0 12px 22px">
-            <li><strong>Close the original request ticket</strong> under Planning / Ops / New Requests. Processing is complete; we don't want any further time logging against this ticket because it would bill implementation work to the wrong bucket.</li>
-            <li><strong>Create a new epic in Zoho</strong> titled with the request name (e.g. <em>Orders by Resort Report</em>).</li>
-            <li><strong>Allocate hours from the Implementation bucket to the new epic</strong> matching the estimator's TOTAL PROJECT HOURS for the request.</li>
-            <li><strong>Cut child tickets under the new epic — one per role</strong>, each carrying that role's estimated hours from the estimator: BE, FE, QA, UI/UX, SA, PDM, DM, Automation Testing, Team, and a separate <strong>Hedge ticket</strong>.</li>
-            <li><strong>The Hedge ticket is the request's internal buffer.</strong> If any role ticket runs over its estimate mid-flight, the DM pulls from Hedge first before going back to the client. Hedge is request-specific — it doesn't pool across requests, and unused Hedge stays with this request.</li>
+            <li><strong>PDM closes the original request ticket</strong> under Planning / Ops / New Requests. Processing is complete; we don't want any further time logging against this ticket because it would bill implementation work to the wrong bucket.</li>
+            <li><strong>PDM creates a new epic in Zoho</strong> titled with the request name (e.g. <em>Orders by Resort Report</em>) and authors the description with the approved scope, requirements, and acceptance criteria.</li>
+            <li><strong>DM allocates hours from the Implementation bucket to the new epic</strong> matching the estimator's TOTAL PROJECT HOURS for the request.</li>
+            <li><strong>DM cuts child tickets under the new epic — one per role</strong>, each carrying that role's estimated hours from the estimator: BE, FE, QA, UI/UX, SA, PDM, DM, Automation Testing, Team, plus a separate <strong>Hedge ticket</strong>. DM sequences child tickets to match the project plan and assigns owners per resource availability.</li>
+            <li><strong>DM manages the Hedge ticket as the request's internal buffer.</strong> If any role ticket runs over its estimate mid-flight, the DM pulls from Hedge first before going back to the client. Hedge is request-specific — it doesn't pool across requests, and unused Hedge stays with this request.</li>
           </ol>
 
           <p>From there, execution moves through the standard DoD pipeline (In Dev → DoD Dev Done → Released to PROD). Smartsheet status moves to <em>In Dev</em> and tracks delivery progression alongside Zoho's active board.</p>
@@ -492,8 +492,8 @@ nav {
           <div class="callout callout-violet" style="margin:10px 0">
             <div class="callout-icon">🎯</div>
             <div class="callout-body">
-              <strong>Why we carve out at approval — budget integrity and KPI tracking</strong>
-              <p>The carve-out is what keeps budgets honest. If implementation work continued logging against Planning / Ops / New Requests, that bucket would look over-burned and Implementation would look under-burned — and per-request estimated-vs-actual data would be impossible to extract. The request-specific epic gives us clean tracking at the request level: what we estimated for DoD vs. what it actually took. That's the dataset we use to refine future estimates, manage budgets in real time, and report on delivery KPIs accurately.</p>
+              <strong>Why we use an Approval Checkpoint — budget integrity and KPI tracking</strong>
+              <p>The Approval Checkpoint and the per-request epic that follows are what keep budgets honest. If implementation work continued logging against Planning / Ops / New Requests, that bucket would look over-burned and Implementation would look under-burned — and per-request estimated-vs-actual data would be impossible to extract. The request-specific epic gives us clean tracking at the request level: what we estimated for DoD vs. what it actually took. That's the dataset we use to refine future estimates, manage budgets in real time, and report on delivery KPIs accurately.</p>
             </div>
           </div>
 
@@ -524,7 +524,7 @@ nav {
       <tbody>
         <tr>
           <td><span class="stuck-name">Client doesn't approve the timing</span></td>
-          <td>DM informs the client we can increase velocity and budget for this specific request to meet their expectations — adjusts the estimate range and release train accordingly.</td>
+          <td>DM informs the client we can increase velocity and budget for this specific request to meet their expectations — adjusts the estimate range and release version accordingly.</td>
           <td>Delivery Manager</td>
         </tr>
         <tr>
@@ -754,31 +754,35 @@ nav {
       <span class="mech-where"><strong>Where</strong>Smartsheet LOE estimator template — <strong>[TO CONFIRM by DM team — template location]</strong> · T-shirt size estimator — in development</span>
     </div>
 
-    <!-- Mechanic 7 — Delivery timing + release train -->
+    <!-- Mechanic 7 — Delivery timing + release version -->
     <div class="mech-block">
-      <h4><span class="mech-num">7</span> Calculate Delivery Timing &amp; Align Release Train with PDM</h4>
-      <p style="font-size:12.5px"><strong>What:</strong> Translate LOE into a delivery date and decide which release train the request rides on.</p>
+      <h4><span class="mech-num">7</span> Calculate Delivery Timing &amp; Align Release Version with PDM</h4>
+      <p style="font-size:12.5px"><strong>What:</strong> Translate LOE into a delivery date and decide which release version the request rides on.</p>
       <ol>
         <li>Pull the average burn/week and remaining hours in the implementation bucket from the estimator's reference columns.</li>
         <li>Calculate weeks to DoD: TOTAL PROJECT HOURS ÷ Avg Burn/Week. Adjust for known scheduling constraints (resource not full-time, holidays, parallel work in flight).</li>
-        <li>Bring the timing to the PDM. The PDM knows current release train priority from the client side — together decide:
+        <li>Bring the timing to the PDM. The PDM knows current release priority from the client side — together decide:
           <ul>
             <li>Add to current in-flight release if urgent and the release is still in development</li>
-            <li>Hold for next release (v#.#.#) if the request is heavy enough to delay the current one</li>
+            <li>Hold for next release version (v#.#.#) if the request is heavy enough to delay the current one</li>
           </ul>
         </li>
-        <li>Once aligned with the PDM, communicate estimate, timing, and release train to the client in Basecamp.</li>
+        <li>Once aligned with the PDM, communicate scope, estimate, DoD timing, and release version to the client in Basecamp.</li>
       </ol>
       <span class="mech-where"><strong>Where</strong>Estimator (timing math) · Slack / Zoho ticket comments (alignment with PDM) · Basecamp (client comms)</span>
     </div>
 
-    <!-- Mechanic 8 — Execute the approval carve-out -->
+    <!-- Mechanic 8 — Epic setup at the Approval Checkpoint -->
     <div class="mech-block">
-      <h4><span class="mech-num">8</span> Execute the Approval Carve-Out</h4>
-      <p style="font-size:12.5px"><strong>What:</strong> When the client approves a new feature/function request, carve estimated hours out of the Implementation bucket and stand up a request-specific epic in Zoho. This is what enables clean per-request budget tracking and accurate KPIs. (Skip for reported issues — they stay under the Production Support epic.)</p>
+      <h4><span class="mech-num">8</span> Epic Setup at the Approval Checkpoint</h4>
+      <p style="font-size:12.5px"><strong>What:</strong> When the client passes the Approval Checkpoint on a new feature/function request, the PDM creates the new epic with scope/requirements/AC and the DM allocates hours, cuts child tickets, and manages Hedge. This is what enables clean per-request budget tracking and accurate KPIs. (Skip for reported issues — they stay under the Production Support epic.)</p>
+      <p style="font-size:12.5px;margin-top:8px"><strong>PDM owns:</strong></p>
       <ol>
         <li><strong>Close the original request ticket</strong> under Planning / Ops / New Requests. Processing is complete; further time logging would bill implementation against the wrong bucket.</li>
-        <li><strong>Create a new epic</strong> in Zoho titled with the request name (e.g. <em>Orders by Resort Report</em>).</li>
+        <li><strong>Create a new epic</strong> in Zoho titled with the request name (e.g. <em>Orders by Resort Report</em>). Author the description with the approved scope, requirements, and acceptance criteria — this becomes the durable scope reference everyone works against during execution.</li>
+      </ol>
+      <p style="font-size:12.5px;margin-top:8px"><strong>DM owns:</strong></p>
+      <ol>
         <li><strong>Allocate hours</strong> from the Implementation bucket to the new epic — match the estimator's TOTAL PROJECT HOURS for the request.</li>
         <li><strong>Cut child tickets under the new epic, one per role from the estimator</strong>, each carrying that role's estimated hours:
           <ul>
@@ -790,10 +794,11 @@ nav {
             <li><strong>Hedge ticket</strong> — carries the Hedge column hours from the estimator</li>
           </ul>
         </li>
+        <li><strong>Sequence child tickets to match the project plan</strong> and assign owners per resource availability.</li>
         <li><strong>Manage Hedge as the request's internal buffer.</strong> If any role ticket runs over its estimate during delivery, pull from the Hedge ticket first before going back to the client. Hedge is request-specific — it doesn't pool across requests, and any unused Hedge stays with this request.</li>
         <li>Implementation work proceeds against these tickets through the active board (TO DO → IN DEVELOPMENT → ... → UAT APPROVED). Time tracking against each child ticket gives real-time estimated-vs-actual at the role level.</li>
       </ol>
-      <span class="mech-where"><strong>Where</strong>Zoho — close original ticket, create epic, cut child tickets · Implementation bucket reduces by the carved-out amount</span>
+      <span class="mech-where"><strong>Where</strong>Zoho — PDM closes original ticket and creates epic with scope/AC; DM allocates hours, cuts and sequences child tickets · Implementation bucket reduces by the allocated amount</span>
     </div>
 
     <!-- Mechanic 9 — Status mirror (renumbered from 8) -->
@@ -824,12 +829,12 @@ nav {
     <!-- Mechanic 10 — Client comms (renumbered from 9) -->
     <div class="mech-block">
       <h4><span class="mech-num">10</span> Communicate with the Client in Basecamp</h4>
-      <p style="font-size:12.5px"><strong>What:</strong> Respond on the original Basecamp request thread with estimate, timing, and release train placement.</p>
+      <p style="font-size:12.5px"><strong>What:</strong> Respond on the original Basecamp request thread with scope, estimate, DoD timing, and release version.</p>
       <ol>
         <li>Reply on the original Basecamp thread (message board or request board, whichever the account uses).</li>
-        <li>Include: effort estimate (or t-shirt size if applicable), timing to DoD, proposed release train, any caveats.</li>
+        <li>Include: effort estimate (or t-shirt size if applicable), DoD timing, proposed release version, any caveats.</li>
         <li>If t-shirt sized: name the next step (POC effort estimate, or follow-up LOE estimate).</li>
-        <li>Wait for client approval. On approval, execute Mechanic 8 (the carve-out). On non-approval, see the Stuck-State Playbook.</li>
+        <li>Wait for the Approval Checkpoint. On approval, execute Mechanic 8 (epic setup). On non-approval, see the Stuck-State Playbook.</li>
       </ol>
       <span class="mech-where"><strong>Where</strong>Basecamp — original thread per account</span>
     </div>
