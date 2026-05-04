@@ -166,6 +166,8 @@ nav{position:sticky;top:0;z-index:200;background:#0f172a;display:flex;align-item
 .tb-zo{background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe}
 .tb-ss{background:#f0fdf4;color:#15803d;border:1px solid #bbf7d0}
 .tb-sl{background:#fdf4ff;color:#7c3aed;border:1px solid #e9d5ff}
+.sc-tools a{display:inline-block}
+.sc-tools a .tb:hover{opacity:.75}
 
 /* ── Click hint ── */
 .sc-hint{
@@ -544,14 +546,14 @@ nav {
                    data-who="PDM (Anne, Henrique, or Gabriel — whoever owns the account)"
                    data-what="PDM creates the Zoho ticket on the New Request backlog. Sets: Item Type (Task for new request, Bug for reported issue), Item Name (the request title), Description (link to Basecamp comms), Epic (Planning/Ops/New Requests for new request, Production Support for reported issue), Priority (aligned with client urgency), Request Analysis Status (New Request), and assigns the DM. Then tags the DM in the ticket comments and the account Slack channel — that tag is what triggers the DM to begin tracking."
                    data-why="The Zoho ticket is the internal source of truth for this request. Setting epic and priority correctly at creation means time logged against the ticket bills to the right bucket from day one — no cleanup later. The Slack tag is the human signal that pulls the DM in; without it the request waits."
-                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]'
+                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Linked Zoho pill to Sprint SP143 in conceptatech workspace", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Create Zoho ticket &amp; tag DM</div>
                 </div>
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
-                  <span class="tb tb-zo">Zoho</span>
+                  <a href="https://sprints.zoho.com/workspace/conceptatech#P34/sprintdetails/SP143/details" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho</span></a>
                   <span class="tb tb-sl">Slack</span>
                 </div>
                 <div class="div-note">
