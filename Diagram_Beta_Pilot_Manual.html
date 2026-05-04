@@ -735,7 +735,7 @@ nav {
             <div class="pc">
               <div class="sc sc-dm"
                    data-who="DM stands up the estimator. Team estimates per role (BE · FE · QA · UI/UX · SA). Leadership reviews where applicable."
-                   data-what="DM copies the Smartsheet request estimator template, pulls the high-level requirements from the approved Basecamp scope, populates the standard DoD activities. Each role estimates into their column (BE Est, FE Est, QA Est, UI/UX Est) — async if team maturity allows, brief estimation call otherwise. DM populates the hedge columns (Hedge, SA, PDM, DM, Automation Testing, Team), calculates TOTAL PROJECT HOURS, and surfaces the range to leadership for review where applicable. DM then calculates weeks to DoD (TOTAL HOURS ÷ Avg Burn/Week) adjusting for known scheduling constraints. If the request is folding into a release where DoD activities are already accounted for, the new request only estimates implementation, dev testing, code review, and QA testing — client demo and e2e regression get folded into the in-flight request. Once estimates are settled, DM updates the Smartsheet project plan to reflect the activities, sequencing, and DoD target — the plan becomes the durable view of what gets done in what order to hit DoD."
+                   data-what="DM copies the Smartsheet request estimator template, pulls the high-level requirements from the approved Basecamp scope (for new requests) or the triaged issue write-up (for reported issues), and populates the standard DoD activities. Each role estimates into their column (BE Est, FE Est, QA Est, UI/UX Est) — async if team maturity allows, brief estimation call otherwise. DM populates the hedge columns (Hedge, SA, PDM, DM, Automation Testing, Team), calculates TOTAL PROJECT HOURS, and surfaces the range to leadership for review where applicable. DM then calculates weeks to DoD (TOTAL HOURS ÷ Avg Burn/Week) adjusting for known scheduling constraints. If the request is folding into a release where DoD activities are already accounted for, the new request only estimates implementation, dev testing, code review, and QA testing — client demo and e2e regression get folded into the in-flight request. Once estimates are settled, DM updates the Smartsheet project plan to reflect the activities, sequencing, and DoD target — the plan becomes the durable view of what gets done in what order to hit DoD. Both new requests and reported issues go through LOE estimation in this phase — the per-role hours feed the child tickets cut in Phase 8."
                    data-why="The estimator turns gut-feel into a number leadership and the client can both stand behind. Hedge columns recognize that dev estimates alone aren't the full picture — SA, PDM, DM, and automation time are real and need to be funded. Folding shared DoD activities into in-flight releases avoids double-counting work. Updating the project plan at this stage means sequencing decisions are made with the LOE in hand, not retrofitted later — the plan drives implementation order and DoD commitment from one source of truth."
                    data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]'
                    onclick="openCard(this)">
@@ -749,6 +749,11 @@ nav {
                   <a href="https://app.smartsheet.com/sheets/MFc2Xc7xpVvWP3JX48vWh7G8M76vXV3PGh6FrFJ1?view=grid" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">Project Plan</span></a>
                   <span class="tb tb-sl">Account Slack</span>
                 </div>
+                <div class="div-note">
+                  <strong>Applies to</strong>
+                  <span class="nr">New feature / function:</span> YES — full LOE estimation<br>
+                  <span class="ri">Reported issue:</span> YES — full LOE estimation (per-role hours feed the child tickets)
+                </div>
               </div>
             </div>
 
@@ -756,7 +761,7 @@ nav {
             <div class="pc">
               <div class="sc sc-dm"
                    data-who="Delivery Manager"
-                   data-what="DM responds on the original Basecamp request thread with the effort estimate (or t-shirt size if applicable), DoD timing, and proposed release version. If the fast path was taken in Phase 4, the DM also restates the requirements in this reply — making it the single Approval Checkpoint. For t-shirt sized requests, DM names the next step (POC effort estimate, or follow-up LOE estimate). DM also confirms the project plan reflects the scope, estimate, and DoD target being communicated to the client — so the plan and the client commitment match."
+                   data-what="For new feature/function requests only. DM responds on the original Basecamp request thread with the effort estimate (or t-shirt size if applicable), DoD timing, and proposed release version. If the fast path was taken in Phase 4, the DM also restates the requirements in this reply — making it the single Approval Checkpoint. For t-shirt sized requests, DM names the next step (POC effort estimate, or follow-up LOE estimate). DM also confirms the project plan reflects the scope, estimate, and DoD target being communicated to the client — so the plan and the client commitment match. Reported issues skip this phase entirely — there is no Approval Checkpoint for issues; they go from estimation (Phase 6) directly to ticket cutting (Phase 8)."
                    data-why="Single message to the client containing everything they need to make an informed approval decision. Avoids the back-and-forth of separate emails for estimate, timing, and placement. The client either approves or pushes back on something specific — both outcomes are clear. Confirming the project plan matches what's being sent prevents the plan and the client commitment from drifting out of sync at the moment of approval."
                    data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]'
                    onclick="openCard(this)">
@@ -767,6 +772,11 @@ nav {
                 <div class="sc-tools">
                   <a href="https://3.basecamp.com/5146855/buckets/46605906/messages/9846147284" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
                   <a href="https://app.smartsheet.com/sheets/MFc2Xc7xpVvWP3JX48vWh7G8M76vXV3PGh6FrFJ1?view=grid" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">Project Plan</span></a>
+                </div>
+                <div class="div-note">
+                  <strong>Applies to</strong>
+                  <span class="nr">New feature / function:</span> YES — Approval Checkpoint with client<br>
+                  <span class="ri">Reported issue:</span> NO — issues skip the Approval Checkpoint and go straight to ticket cutting in Phase 8
                 </div>
               </div>
             </div>

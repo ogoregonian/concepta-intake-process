@@ -452,6 +452,7 @@ nav {
         <div class="stage-num">7</div>
         <div class="stage-body">
           <h4>DM Communicates Estimate, Timing &amp; Release Train to Client</h4>
+          <p><em>Applies to new feature/function requests only. Reported issues skip this stage entirely — there is no Approval Checkpoint for issues; they go from estimation (Stage 6) directly to ticket cutting (Stage 8).</em></p>
           <p>The DM responds to the request in Basecamp with:</p>
           <ul>
             <li>The effort estimate (or t-shirt size, if applicable)</li>
@@ -480,11 +481,11 @@ nav {
 
           <p style="font-size:12.5px"><strong>Epic setup — who does what:</strong></p>
           <ol style="font-size:12.5px;margin:6px 0 12px 22px">
-            <li><strong>PDM closes the original request ticket</strong> under Planning / Ops / New Requests. Processing is complete; we don't want any further time logging against this ticket because it would bill implementation work to the wrong bucket.</li>
-            <li><strong>PDM creates a new epic in Zoho</strong> titled with the request name (e.g. <em>Orders by Resort Report</em>) and authors the description with the approved scope, requirements, and acceptance criteria.</li>
-            <li><strong>DM allocates hours from the Implementation bucket to the new epic</strong> matching the estimator's TOTAL PROJECT HOURS for the request.</li>
-            <li><strong>DM cuts child tickets under the new epic — one per role</strong>, each carrying that role's estimated hours from the estimator: BE, FE, QA, UI/UX, SA, PDM, DM, Automation Testing, Team, plus a separate <strong>Hedge ticket</strong>. DM sequences child tickets to match the project plan and assigns owners per resource availability.</li>
-            <li><strong>DM manages the Hedge ticket as the request's internal buffer.</strong> If any role ticket runs over its estimate mid-flight, the DM pulls from Hedge first before going back to the client. Hedge is request-specific — it doesn't pool across requests, and unused Hedge stays with this request.</li>
+            <li><strong>PDM closes the original intake ticket</strong> under Planning / Ops / New Requests. Processing is complete; we don't want any further time logging against this ticket because it would bill implementation work to the wrong bucket. Applies to both new requests and reported issues.</li>
+            <li><strong>PDM creates a new epic in Zoho</strong> titled with the request name (e.g. <em>Orders by Resort Report</em>) and authors the description with the approved scope, requirements, and acceptance criteria. <em>Applies to new feature/function requests only — reported issues do not get a new epic; their child tickets are cut under the existing Production Support epic.</em></li>
+            <li><strong>DM allocates hours to the destination epic</strong> matching the estimator's TOTAL PROJECT HOURS. For new feature/function: destination is the new PDM-created epic, hours come from the Implementation bucket. For reported issues: destination is the existing Production Support epic, hours come from the Production Support bucket.</li>
+            <li><strong>DM cuts child tickets under the destination epic — one per role</strong>, each carrying that role's estimated hours from the estimator: BE, FE, QA, UI/UX, SA, PDM, DM, Automation Testing, Team, plus a separate <strong>Hedge ticket</strong>. DM sequences child tickets to match the project plan and assigns owners per resource availability. Applies to both paths.</li>
+            <li><strong>DM manages the Hedge ticket as the request's internal buffer.</strong> If any role ticket runs over its estimate mid-flight, the DM pulls from Hedge first before going back to the client. Hedge is request-specific — it doesn't pool across requests, and unused Hedge stays with this request. Applies to both paths.</li>
           </ol>
 
           <p>From there, execution moves through the standard DoD pipeline (In Dev → DoD Dev Done → Released to PROD). Smartsheet status moves to <em>In Dev</em> and tracks delivery progression alongside Zoho's active board.</p>
@@ -492,12 +493,12 @@ nav {
           <div class="callout callout-violet" style="margin:10px 0">
             <div class="callout-icon">🎯</div>
             <div class="callout-body">
-              <strong>Why we use an Approval Checkpoint — budget integrity and KPI tracking</strong>
-              <p>The Approval Checkpoint and the per-request epic that follows are what keep budgets honest. If implementation work continued logging against Planning / Ops / New Requests, that bucket would look over-burned and Implementation would look under-burned — and per-request estimated-vs-actual data would be impossible to extract. The request-specific epic gives us clean tracking at the request level: what we estimated for DoD vs. what it actually took. That's the dataset we use to refine future estimates, manage budgets in real time, and report on delivery KPIs accurately.</p>
+              <strong>Why we use an Approval Checkpoint and per-request epics — budget integrity and KPI tracking</strong>
+              <p>The Approval Checkpoint and the per-request epic that follows are what keep budgets honest for new feature/function work. If implementation work continued logging against Planning / Ops / New Requests, that bucket would look over-burned and Implementation would look under-burned — and per-request estimated-vs-actual data would be impossible to extract. The request-specific epic gives us clean tracking at the request level: what we estimated for DoD vs. what it actually took. The same per-role child ticket structure applies to reported issues — they cut tickets under the existing Production Support epic so we get the same role-level estimated-vs-actual data without inflating the new-request bucket. That's the dataset we use to refine future estimates, manage budgets in real time, and report on delivery KPIs accurately across both work types.</p>
             </div>
           </div>
 
-          <p>If the client does <strong>not</strong> approve, see Section 5 — Stuck-State Playbook.</p>
+          <p>If the client does <strong>not</strong> approve a new feature/function request, see Section 5 — Stuck-State Playbook. (Reported issues skip the Approval Checkpoint, so this scenario doesn't apply to them.)</p>
           <div><span class="tag tag-gray">Client</span><span class="tag tag-blue">Delivery Manager</span></div>
         </div>
       </div>
