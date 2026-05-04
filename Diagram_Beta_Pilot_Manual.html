@@ -735,8 +735,8 @@ nav {
             <div class="pc">
               <div class="sc sc-dm"
                    data-who="DM stands up the estimator. Team estimates per role (BE · FE · QA · UI/UX · SA). Leadership reviews where applicable."
-                   data-what="DM copies the Smartsheet request estimator template, pulls the high-level requirements from the approved Basecamp scope, populates the standard DoD activities. Each role estimates into their column (BE Est, FE Est, QA Est, UI/UX Est) — async if team maturity allows, brief estimation call otherwise. DM populates the hedge columns (Hedge, SA, PDM, DM, Automation Testing, Team), calculates TOTAL PROJECT HOURS, and surfaces the range to leadership for review where applicable. DM then calculates weeks to DoD (TOTAL HOURS ÷ Avg Burn/Week) adjusting for known scheduling constraints. If the request is folding into a release where DoD activities are already accounted for, the new request only estimates implementation, dev testing, code review, and QA testing — client demo and e2e regression get folded into the in-flight request."
-                   data-why="The estimator turns gut-feel into a number leadership and the client can both stand behind. Hedge columns recognize that dev estimates alone aren't the full picture — SA, PDM, DM, and automation time are real and need to be funded. Folding shared DoD activities into in-flight releases avoids double-counting work."
+                   data-what="DM copies the Smartsheet request estimator template, pulls the high-level requirements from the approved Basecamp scope, populates the standard DoD activities. Each role estimates into their column (BE Est, FE Est, QA Est, UI/UX Est) — async if team maturity allows, brief estimation call otherwise. DM populates the hedge columns (Hedge, SA, PDM, DM, Automation Testing, Team), calculates TOTAL PROJECT HOURS, and surfaces the range to leadership for review where applicable. DM then calculates weeks to DoD (TOTAL HOURS ÷ Avg Burn/Week) adjusting for known scheduling constraints. If the request is folding into a release where DoD activities are already accounted for, the new request only estimates implementation, dev testing, code review, and QA testing — client demo and e2e regression get folded into the in-flight request. Once estimates are settled, DM updates the Smartsheet project plan to reflect the activities, sequencing, and DoD target — the plan becomes the durable view of what gets done in what order to hit DoD."
+                   data-why="The estimator turns gut-feel into a number leadership and the client can both stand behind. Hedge columns recognize that dev estimates alone aren't the full picture — SA, PDM, DM, and automation time are real and need to be funded. Folding shared DoD activities into in-flight releases avoids double-counting work. Updating the project plan at this stage means sequencing decisions are made with the LOE in hand, not retrofitted later — the plan drives implementation order and DoD commitment from one source of truth."
                    data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
@@ -746,6 +746,7 @@ nav {
                 <div class="sc-tools">
                   <a href="https://app.smartsheet.com/sheets/MMpphH9MMcCWM9VW69WgGjP4h83QqgCJw6PjFgg1?view=grid" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">T-Shirt Estimator</span></a>
                   <a href="https://app.smartsheet.com/sheets/jCW7HjgR5757RGGQrv8h5PhmgFFQGmrhvm4jmRh1?view=grid" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">LOE Estimator</span></a>
+                  <a href="https://app.smartsheet.com/sheets/MFc2Xc7xpVvWP3JX48vWh7G8M76vXV3PGh6FrFJ1?view=grid" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">Project Plan</span></a>
                   <span class="tb tb-sl">Account Slack</span>
                 </div>
               </div>
@@ -755,8 +756,8 @@ nav {
             <div class="pc">
               <div class="sc sc-dm"
                    data-who="Delivery Manager"
-                   data-what="DM responds on the original Basecamp request thread with the effort estimate (or t-shirt size if applicable), DoD timing, and proposed release version. If the fast path was taken in Phase 4, the DM also restates the requirements in this reply — making it the single Approval Checkpoint. For t-shirt sized requests, DM names the next step (POC effort estimate, or follow-up LOE estimate)."
-                   data-why="Single message to the client containing everything they need to make an informed approval decision. Avoids the back-and-forth of separate emails for estimate, timing, and placement. The client either approves or pushes back on something specific — both outcomes are clear."
+                   data-what="DM responds on the original Basecamp request thread with the effort estimate (or t-shirt size if applicable), DoD timing, and proposed release version. If the fast path was taken in Phase 4, the DM also restates the requirements in this reply — making it the single Approval Checkpoint. For t-shirt sized requests, DM names the next step (POC effort estimate, or follow-up LOE estimate). DM also confirms the project plan reflects the scope, estimate, and DoD target being communicated to the client — so the plan and the client commitment match."
+                   data-why="Single message to the client containing everything they need to make an informed approval decision. Avoids the back-and-forth of separate emails for estimate, timing, and placement. The client either approves or pushes back on something specific — both outcomes are clear. Confirming the project plan matches what's being sent prevents the plan and the client commitment from drifting out of sync at the moment of approval."
                    data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
@@ -765,6 +766,7 @@ nav {
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
                   <a href="https://3.basecamp.com/5146855/buckets/46605906/messages/9846147284" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-bc" style="transition:opacity .12s">Basecamp</span></a>
+                  <a href="https://app.smartsheet.com/sheets/MFc2Xc7xpVvWP3JX48vWh7G8M76vXV3PGh6FrFJ1?view=grid" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">Project Plan</span></a>
                 </div>
               </div>
             </div>
@@ -773,8 +775,8 @@ nav {
             <div class="pc">
               <div class="sc sc-dm"
                    data-who="Delivery Manager"
-                   data-what="On Approval Checkpoint passed and PDM epic in place: DM (1) closes the original request ticket under Planning/Ops/New Requests so no further time logs there. (2) Allocates hours from the Implementation bucket to the PDM-created epic matching the estimator's TOTAL PROJECT HOURS. (3) Cuts child tickets under the new epic — one per role from the estimator (BE, FE, QA, UI/UX, SA, PDM, DM, Automation Testing, Team), plus a separate Hedge ticket carrying the buffer. (4) Sequences child tickets to match the project plan and assigns owners per resource availability. (5) Manages Hedge as the request's internal buffer — pulls from it first if any role ticket runs over, before going back to the client. From there, child tickets flow into Sprint Candidates → TO DO → IN DEVELOPMENT → ... → UAT APPROVED via the standard Zoho active board."
-                   data-why="Budget integrity and KPI tracking. If implementation work continued logging against Planning/Ops/New Requests, that bucket would look over-burned and Implementation under-burned — and per-request estimated-vs-actual data would be impossible to extract. The request-specific epic gives clean tracking: what we estimated for DoD vs. what it actually took. Hedge as a per-request buffer means we have a safety margin without going back to the client for every overrun."
+                   data-what="On Approval Checkpoint passed and PDM epic in place: DM (1) closes the original request ticket under Planning/Ops/New Requests so no further time logs there. (2) Allocates hours from the Implementation bucket to the PDM-created epic matching the estimator's TOTAL PROJECT HOURS. (3) Cuts child tickets under the new epic — one per role from the estimator (BE, FE, QA, UI/UX, SA, PDM, DM, Automation Testing, Team), plus a separate Hedge ticket carrying the buffer. (4) Sequences child tickets to match the Smartsheet project plan and assigns owners per resource availability — the project plan is the source of truth for activity order through to DoD. (5) Manages Hedge as the request's internal buffer — pulls from it first if any role ticket runs over, before going back to the client. As implementation progresses, DM keeps the project plan current with status, sequencing changes, and any rolling-window adjustments. From there, child tickets flow into Sprint Candidates → TO DO → IN DEVELOPMENT → ... → UAT APPROVED via the standard Zoho active board."
+                   data-why="Budget integrity and KPI tracking. If implementation work continued logging against Planning/Ops/New Requests, that bucket would look over-burned and Implementation under-burned — and per-request estimated-vs-actual data would be impossible to extract. The request-specific epic gives clean tracking: what we estimated for DoD vs. what it actually took. Hedge as a per-request buffer means we have a safety margin without going back to the client for every overrun. Keeping the project plan current is what makes DoD a real commitment instead of a hope — anyone touching the request can see what's done, what's next, and what the path to delivery looks like."
                    data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
@@ -783,6 +785,7 @@ nav {
                 <div class="sc-hint">Click for details</div>
                 <div class="sc-tools">
                   <a href="https://sprints.zoho.com/workspace/conceptatech#P60/backlog" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-zo" style="transition:opacity .12s">Zoho Backlog</span></a>
+                  <a href="https://app.smartsheet.com/sheets/MFc2Xc7xpVvWP3JX48vWh7G8M76vXV3PGh6FrFJ1?view=grid" rel="noopener noreferrer" style="text-decoration:none" target="_blank"><span class="tb tb-ss" style="transition:opacity .12s">Project Plan</span></a>
                 </div>
                 <div class="div-note">
                   <strong>Applies to</strong>
