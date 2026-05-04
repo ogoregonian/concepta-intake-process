@@ -544,9 +544,9 @@ nav {
             <div class="pc">
               <div class="sc sc-pdm"
                    data-who="PDM (Anne, Henrique, or Gabriel — whoever owns the account)"
-                   data-what="PDM creates the Zoho ticket on the New Request backlog. Sets: Item Type (Task for new request, Bug for reported issue), Item Name (the request title), Description (link to Basecamp comms), Epic (Planning/Ops/New Requests for new request, Production Support for reported issue), Priority (aligned with client urgency), Request Analysis Status (New Request), and assigns the DM. Then tags the DM in the ticket comments and the account Slack channel — that tag is what triggers the DM to begin tracking."
-                   data-why="The Zoho ticket is the internal source of truth for this request. Setting epic and priority correctly at creation means time logged against the ticket bills to the right bucket from day one — no cleanup later. The Slack tag is the human signal that pulls the DM in; without it the request waits."
-                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Linked Zoho pill to Sprint SP143 in conceptatech workspace", "owner": "Anne"}]'
+                   data-what="PDM creates the Zoho ticket on the New Request backlog. Required field selections: Item Type (Task for new request, Bug for reported issue), Epic (Planning/Ops/New Requests for new request, Production Support for reported issue), and — under the Intake &amp; Processing Request section — Processing Status (New Request for new requests, New Reported Issue for issues). Also sets: Item Name (the request title), Description (link to Basecamp comms), Priority (aligned with client urgency), and assigns the DM. Then tags the DM in the ticket comments and the account Slack channel — that tag is what triggers the DM to begin tracking."
+                   data-why="The Zoho ticket is the internal source of truth for this request. Item Type and Epic at creation are what bill time logged against the ticket to the right bucket from day one — no cleanup later. Processing Status drives the intake/processing pipeline view so the team can see at a glance what state every request is in. The Slack tag is the human signal that pulls the DM in; without it the request waits."
+                   data-versions='[{"v": "1.0", "date": "April 2026", "change": "Initial documentation", "owner": "Anne"}, {"v": "1.1", "date": "May 2026", "change": "Linked Zoho pill to Sprint SP143 in conceptatech workspace", "owner": "Anne"}, {"v": "1.2", "date": "May 2026", "change": "Made Item Type and Processing Status dropdown selections explicit in WHAT and the visible card note. Names both dropdowns by their Zoho field labels and maps each to the correct value for new requests vs reported issues", "owner": "Anne"}]'
                    onclick="openCard(this)">
                 <div class="sc-top">
                   <div class="sc-title">Create Zoho ticket &amp; tag DM</div>
@@ -558,8 +558,8 @@ nav {
                 </div>
                 <div class="div-note">
                   <strong>New Request vs. Reported Issue</strong>
-                  <span class="nr">New:</span> Item Type = Task · Epic = Planning/Ops/New Requests<br>
-                  <span class="ri">Issue:</span> Item Type = Bug · Epic = Production Support
+                  <span class="nr">New:</span> Item Type = Task · Epic = Planning/Ops/New Requests · Processing Status = New Request<br>
+                  <span class="ri">Issue:</span> Item Type = Bug · Epic = Production Support · Processing Status = New Reported Issue
                 </div>
               </div>
             </div>
