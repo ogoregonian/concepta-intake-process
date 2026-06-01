@@ -41,10 +41,14 @@ main { max-width: 1080px; margin: 0 auto; padding: 40px 40px 80px; }
 .card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
 .card-emoji { font-size: 22px; line-height: 1; }
 .tag { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
-.tag.diagram { background: #EFF6FF; color: #1D4ED8; }
-.tag.ref { background: #F1F5F9; color: #475569; }
+.tag.diagram  { background: #EFF6FF; color: #1D4ED8; }
+.tag.ref      { background: #F1F5F9; color: #475569; }
 .tag.template { background: #FFF7ED; color: #9A3412; }
 .tag.overview { background: #F0FDF4; color: #166534; }
+.tag.pilot    { background: #ECFDF5; color: #065F46; }
+.tag.start    { background: #F5F3FF; color: #5B21B6; }
+.tag.archive  { background: #F8FAFC; color: #94A3B8; }
+.tag.wip      { background: #FFFBEB; color: #92400E; }
 
 .card-title { font-size: 14px; font-weight: 700; color: #0d1b2a; line-height: 1.35; margin-bottom: 6px; }
 .card-desc { font-size: 12px; color: #777; line-height: 1.55; flex: 1; }
@@ -58,7 +62,7 @@ footer { background: #0d1b2a; padding: 20px 40px; text-align: center; color: rgb
 <body>
 
 <header>
-  <a class="back-link" href="Index.html">← Hub</a>
+  <a class="back-link" href="Index.html">&larr; Hub</a>
   <div class="brand">Concepta</div>
   <div class="section-pill">Intake Process</div>
 </header>
@@ -71,35 +75,101 @@ footer { background: #0d1b2a; padding: 20px 40px; text-align: center; color: rgb
 
 <main>
 
-  <div class="group-title">Process Flows</div>
+  <div class="group-title">Getting Started</div>
   <div class="card-grid">
 
-    <a class="card" href="Concepta_Intake_Process_Executive_Summary.html">
-      <div class="card-top"><div class="card-emoji">📄</div><span class="tag overview">Overview</span></div>
-      <div class="card-title">Intake Process — Executive Summary</div>
-      <div class="card-desc">High-level overview of the standardized client request intake model. The what, why, and how.</div>
-      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+    <a class="card" href="Phase1_Start_Here.html">
+      <div class="card-top"><div class="card-emoji">&#128640;</div><span class="tag start">Start Here</span></div>
+      <div class="card-title">Phase 1 &mdash; Start Here</div>
+      <div class="card-desc">Orientation for the Phase 1 pilot. Where to start, who is involved, and what the pilot covers.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
     </a>
 
+    <a class="card" href="Concepta_Intake_Process_Executive_Brief.html">
+      <div class="card-top"><div class="card-emoji">&#128196;</div><span class="tag overview">Overview</span></div>
+      <div class="card-title">Intake Process &mdash; Executive Brief</div>
+      <div class="card-desc">Executive brief on the intake process initiative. Key decisions, implementation status, and model overview.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
+    </a>
+
+    <a class="card" href="Workflow_Macro_Visual.html">
+      <div class="card-top"><div class="card-emoji">&#128506;</div><span class="tag diagram">Diagram</span></div>
+      <div class="card-title">Workflow Macro Visual</div>
+      <div class="card-desc">High-level macro visual of the end-to-end intake workflow. Full picture across all phases and handoffs.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
+    </a>
+
+  </div>
+
+  <div class="group-title">Current Pilot Workflows</div>
+  <div class="card-grid">
+
+    <a class="card" href="Diagram_Beta_Pilot_Manual.html">
+      <div class="card-top"><div class="card-emoji">&#128260;</div><span class="tag pilot">Pilot</span></div>
+      <div class="card-title">Beta Pilot &mdash; Manual Workflow</div>
+      <div class="card-desc">Current pilot workflow diagram for the beta manual phase. Active reference for pilot accounts in use now.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
+    </a>
+
+    <a class="card" href="Reference_Phase1_Workflow.html">
+      <div class="card-top"><div class="card-emoji">&#128203;</div><span class="tag pilot">Pilot</span></div>
+      <div class="card-title">Phase 1 Workflow &mdash; Reference</div>
+      <div class="card-desc">Detailed reference for the Phase 1 pilot workflow. Step-by-step process guide for the current operating model.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
+    </a>
+
+    <a class="card" href="Reference_Intake_Request_Board.html">
+      <div class="card-top"><div class="card-emoji">&#128204;</div><span class="tag pilot">Pilot</span></div>
+      <div class="card-title">Intake Request Board</div>
+      <div class="card-desc">How the intake request board is structured and used to track and manage incoming requests through delivery.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
+    </a>
+
+  </div>
+
+  <div class="group-title">Process Flow Diagrams</div>
+  <div class="card-grid">
+
     <a class="card" href="Diagram_1_Intake_Request.html">
-      <div class="card-top"><div class="card-emoji">🔄</div><span class="tag diagram">Diagram</span></div>
-      <div class="card-title">Diagram 1 — Intake Request Flow</div>
+      <div class="card-top"><div class="card-emoji">&#128260;</div><span class="tag diagram">Diagram</span></div>
+      <div class="card-title">Diagram 1 &mdash; Intake Request Flow</div>
       <div class="card-desc">End-to-end flow for all incoming client requests from Basecamp submission through ticket creation.</div>
-      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
     </a>
 
     <a class="card" href="Diagram_2_New_Request.html">
-      <div class="card-top"><div class="card-emoji">✨</div><span class="tag diagram">Diagram</span></div>
-      <div class="card-title">Diagram 2 — New Feature Request</div>
+      <div class="card-top"><div class="card-emoji">&#10024;</div><span class="tag diagram">Diagram</span></div>
+      <div class="card-title">Diagram 2 &mdash; New Feature Request</div>
       <div class="card-desc">Flow for new feature and enhancement requests through SA review, AC creation, sprint planning, and delivery.</div>
-      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
     </a>
 
     <a class="card" href="Diagram_3_Production_Issue.html">
-      <div class="card-top"><div class="card-emoji">🚨</div><span class="tag diagram">Diagram</span></div>
-      <div class="card-title">Diagram 3 — Production Issue</div>
+      <div class="card-top"><div class="card-emoji">&#128680;</div><span class="tag diagram">Diagram</span></div>
+      <div class="card-title">Diagram 3 &mdash; Production Issue</div>
       <div class="card-desc">Escalation and resolution flow for production bugs. Severity triage, assignment, and client communication.</div>
-      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
+    </a>
+
+    <a class="card" href="Concepta__Intake_Request___Gathering_Data_from_Requestor.html">
+      <div class="card-top"><div class="card-emoji">&#128202;</div><span class="tag diagram">Diagram</span></div>
+      <div class="card-title">Intake Request &mdash; Gathering Data from Requestor</div>
+      <div class="card-desc">Intake request flow focused on the data-gathering phase. How information is collected from the requestor.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
+    </a>
+
+    <a class="card" href="Concepta___Intake__Gathering_Request_Data__SVG_.html">
+      <div class="card-top"><div class="card-emoji">&#128444;</div><span class="tag diagram">Diagram</span></div>
+      <div class="card-title">Intake &mdash; Gathering Request Data (SVG)</div>
+      <div class="card-desc">SVG version of the intake data-gathering flow. Vector graphic format of the request collection diagram.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
+    </a>
+
+    <a class="card" href="Intake_Request___Gathering_Data_from_Requestor.html">
+      <div class="card-top"><div class="card-emoji">&#128269;</div><span class="tag diagram">Diagram</span></div>
+      <div class="card-title">Intake Request &mdash; Requestor Data Gathering</div>
+      <div class="card-desc">Alternate view of the intake request flow showing the gathering of data from the requestor.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
     </a>
 
   </div>
@@ -108,45 +178,59 @@ footer { background: #0d1b2a; padding: 20px 40px; text-align: center; color: rgb
   <div class="card-grid">
 
     <a class="card" href="Reference_AI_Agent_MVP.html">
-      <div class="card-top"><div class="card-emoji">🤖</div><span class="tag ref">Reference</span></div>
+      <div class="card-top"><div class="card-emoji">&#129302;</div><span class="tag ref">Reference</span></div>
       <div class="card-title">AI Agent MVP</div>
       <div class="card-desc">What the intake AI Agent automates, how it connects to Zoho Sprints and Basecamp, and what it replaces.</div>
-      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
+    </a>
+
+    <a class="card" href="Reference_AI_Agent_Technical_Spec.html">
+      <div class="card-top"><div class="card-emoji">&#128295;</div><span class="tag ref">Reference</span></div>
+      <div class="card-title">AI Agent &mdash; Technical Spec</div>
+      <div class="card-desc">Technical specification for the intake AI Agent. Architecture, integrations, and implementation details.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
     </a>
 
     <a class="card" href="Reference_Budget_Model.html">
-      <div class="card-top"><div class="card-emoji">📊</div><span class="tag ref">Reference</span></div>
+      <div class="card-top"><div class="card-emoji">&#128202;</div><span class="tag ref">Reference</span></div>
       <div class="card-title">Budget Model</div>
       <div class="card-desc">Service budget structure, budget bucket definitions, allocation rules, and hour tracking per client contract.</div>
-      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
     </a>
 
     <a class="card" href="Reference_Intake_Form.html">
-      <div class="card-top"><div class="card-emoji">📝</div><span class="tag ref">Reference</span></div>
+      <div class="card-top"><div class="card-emoji">&#128221;</div><span class="tag ref">Reference</span></div>
       <div class="card-title">Intake Form Fields</div>
-      <div class="card-desc">Field-by-field breakdown of the standardized intake form. Required fields, validation rules, and guidance for complete submissions.</div>
-      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+      <div class="card-desc">Field-by-field breakdown of the standardized intake form. Required fields, validation rules, and submission guidance.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
     </a>
 
     <a class="card" href="Reference_Prerequisites_GoLive.html">
-      <div class="card-top"><div class="card-emoji">✅</div><span class="tag ref">Reference</span></div>
-      <div class="card-title">Prerequisites — Go-Live Checklist</div>
-      <div class="card-desc">What must be in place before a client account goes live on the intake process. Technical and operational readiness.</div>
-      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+      <div class="card-top"><div class="card-emoji">&#9989;</div><span class="tag ref">Reference</span></div>
+      <div class="card-title">Prerequisites &mdash; Go-Live Checklist</div>
+      <div class="card-desc">What must be in place before a client account goes live on the intake process.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
     </a>
 
     <a class="card" href="Reference_TShirt_Sizing.html">
-      <div class="card-top"><div class="card-emoji">👕</div><span class="tag ref">Reference</span></div>
+      <div class="card-top"><div class="card-emoji">&#128085;</div><span class="tag ref">Reference</span></div>
       <div class="card-title">T-Shirt Sizing Guide</div>
       <div class="card-desc">Effort estimation framework. What each size tier means in hours and how sizing drives sprint capacity planning.</div>
-      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
+    </a>
+
+    <a class="card" href="Reference_TShirt_Estimator_Spec.html">
+      <div class="card-top"><div class="card-emoji">&#128208;</div><span class="tag ref">Reference</span></div>
+      <div class="card-title">T-Shirt Estimator &mdash; Spec</div>
+      <div class="card-desc">Technical specification for the T-shirt size estimator tool. How the estimator works and what it outputs.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
     </a>
 
     <a class="card" href="Client_Billing_View.html">
-      <div class="card-top"><div class="card-emoji">💳</div><span class="tag ref">Reference</span></div>
+      <div class="card-top"><div class="card-emoji">&#128179;</div><span class="tag ref">Reference</span></div>
       <div class="card-title">Client Billing View</div>
       <div class="card-desc">How client billing is structured, tracked, and communicated. Budget allocation and invoice transparency.</div>
-      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
     </a>
 
   </div>
@@ -155,16 +239,42 @@ footer { background: #0d1b2a; padding: 20px 40px; text-align: center; color: rgb
   <div class="card-grid">
 
     <a class="card" href="Smartsheet_Account_Setup_Template.html">
-      <div class="card-top"><div class="card-emoji">📋</div><span class="tag template">Template</span></div>
+      <div class="card-top"><div class="card-emoji">&#128203;</div><span class="tag template">Template</span></div>
       <div class="card-title">Smartsheet Account Setup Template</div>
       <div class="card-desc">Step-by-step guide for configuring a new client account in Smartsheet with intake form wiring and Zoho integration.</div>
-      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
+    </a>
+
+    <a class="card" href="Templates.html">
+      <div class="card-top"><div class="card-emoji">&#128193;</div><span class="tag template">Template</span></div>
+      <div class="card-title">Templates</div>
+      <div class="card-desc">Collection of templates used across the intake process. Ready-to-use forms, documents, and starting points.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
+    </a>
+
+  </div>
+
+  <div class="group-title">Archive &amp; Work in Progress</div>
+  <div class="card-grid">
+
+    <a class="card" href="Archive.html">
+      <div class="card-top"><div class="card-emoji">&#128452;</div><span class="tag archive">Archive</span></div>
+      <div class="card-title">Archive</div>
+      <div class="card-desc">Archive of older intake process materials. Historical reference for superseded diagrams and documents.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
+    </a>
+
+    <a class="card" href="WIP.html">
+      <div class="card-top"><div class="card-emoji">&#128679;</div><span class="tag wip">WIP</span></div>
+      <div class="card-title">Work in Progress</div>
+      <div class="card-desc">Materials under active development. Content here is not yet finalized and may change.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">&rarr;</span></div>
     </a>
 
   </div>
 
 </main>
 
-<footer>Concepta Technology &nbsp;·&nbsp; Internal Use Only</footer>
+<footer>Concepta Technology &nbsp;&middot;&nbsp; Internal Use Only</footer>
 </body>
 </html>
