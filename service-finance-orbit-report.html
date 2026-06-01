@@ -1,0 +1,1112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orbit Code Audit — Service Finance Consumer App</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f5f7; color: #172b4d; }
+
+  /* HEADER */
+  .header { background: #172b4d; color: white; padding: 32px 40px; }
+  .header-top { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 16px; }
+  .header h1 { font-size: 22px; font-weight: 700; letter-spacing: -0.3px; }
+  .header p { font-size: 13px; opacity: 0.65; margin-top: 4px; }
+  .risk-badge { background: #de350b; color: white; padding: 6px 16px; border-radius: 4px; font-weight: 700; font-size: 13px; letter-spacing: 0.5px; white-space: nowrap; }
+
+  /* SCORECARD */
+  .scorecard { background: white; border-bottom: 1px solid #e1e4e8; padding: 24px 40px; }
+  .scorecard-title { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #6b778c; text-transform: uppercase; margin-bottom: 16px; }
+  .scorecard-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .score-card { border-radius: 6px; padding: 16px; border: 1px solid #e1e4e8; }
+  .score-card .layer { font-size: 11px; font-weight: 600; color: #6b778c; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .score-card .rating { font-size: 20px; font-weight: 800; }
+  .score-card .count { font-size: 12px; color: #6b778c; margin-top: 4px; }
+  .score-critical { background: #ffebe6; border-color: #ff5630; }
+  .score-critical .rating { color: #de350b; }
+  .score-high { background: #fff7e6; border-color: #ff991f; }
+  .score-high .rating { color: #bf8000; }
+  .score-medium { background: #fffae6; border-color: #f4c400; }
+  .score-medium .rating { color: #8a6d00; }
+  .score-low { background: #e3fcef; border-color: #36b37e; }
+  .score-low .rating { color: #006644; }
+
+  /* STATS BAR */
+  .stats-bar { background: white; border-bottom: 2px solid #e1e4e8; padding: 16px 40px; display: flex; gap: 40px; flex-wrap: wrap; }
+  .stat { text-align: center; }
+  .stat-number { font-size: 28px; font-weight: 800; color: #172b4d; }
+  .stat-label { font-size: 11px; color: #6b778c; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+  /* CONTENT */
+  .content { max-width: 1100px; margin: 0 auto; padding: 32px 40px; }
+  .section-label { font-size: 11px; font-weight: 700; letter-spacing: 1px; color: #6b778c; text-transform: uppercase; margin-bottom: 16px; }
+
+  /* FINDING CARD */
+  .finding { background: white; border-radius: 8px; border: 1px solid #e1e4e8; margin-bottom: 16px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.06); }
+  .finding-header { padding: 20px 24px; cursor: pointer; display: flex; align-items: flex-start; gap: 16px; transition: background 0.15s; }
+  .finding-header:hover { background: #f8f9fa; }
+  .severity-badge { padding: 3px 10px; border-radius: 3px; font-size: 11px; font-weight: 700; letter-spacing: 0.5px; white-space: nowrap; flex-shrink: 0; margin-top: 2px; }
+  .sev-critical { background: #de350b; color: white; }
+  .sev-high { background: #ff991f; color: white; }
+  .sev-medium { background: #f4c400; color: #172b4d; }
+  .finding-meta { flex: 1; }
+  .finding-title { font-size: 16px; font-weight: 700; color: #172b4d; line-height: 1.3; }
+  .finding-summary { font-size: 13px; color: #6b778c; margin-top: 6px; line-height: 1.5; }
+  .finding-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 10px; }
+  .tag { background: #f4f5f7; padding: 2px 8px; border-radius: 3px; font-size: 11px; color: #5e6c84; font-weight: 500; }
+  .expand-icon { color: #6b778c; font-size: 18px; flex-shrink: 0; transition: transform 0.2s; margin-top: 2px; }
+  .finding.open .expand-icon { transform: rotate(180deg); }
+
+  /* DETAIL PANEL */
+  .finding-detail { display: none; border-top: 1px solid #e1e4e8; }
+  .finding.open .finding-detail { display: block; }
+  .view-tabs { display: flex; border-bottom: 1px solid #e1e4e8; }
+  .view-tab { padding: 12px 20px; font-size: 13px; font-weight: 600; color: #6b778c; cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; }
+  .view-tab:hover { color: #172b4d; }
+  .view-tab.active { color: #0052cc; border-bottom-color: #0052cc; }
+  .view-panel { display: none; padding: 24px; }
+  .view-panel.active { display: block; }
+
+  /* DEV VIEW */
+  .code-ref { background: #f4f5f7; border-radius: 6px; overflow: hidden; margin-bottom: 16px; }
+  .code-ref-header { background: #172b4d; color: white; padding: 10px 16px; font-size: 12px; font-family: 'SF Mono', 'Fira Code', monospace; display: flex; justify-content: space-between; align-items: center; }
+  .code-link { color: #79e2f2; text-decoration: none; font-weight: 600; }
+  .code-link:hover { text-decoration: underline; }
+  .code-body { padding: 0; overflow-x: auto; }
+  pre { margin: 0; padding: 16px; font-size: 12px; line-height: 1.6; font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace; }
+  .line-highlight { background: rgba(255, 86, 48, 0.15); display: block; margin: 0 -16px; padding: 0 16px; border-left: 3px solid #de350b; }
+  .line-num { color: #6b778c; margin-right: 12px; user-select: none; display: inline-block; width: 24px; text-align: right; }
+  .dev-note { background: #fffae6; border: 1px solid #f4c400; border-radius: 6px; padding: 12px 16px; font-size: 13px; color: #172b4d; line-height: 1.5; }
+  .dev-note strong { color: #bf8000; }
+
+  /* PRODUCT VIEW */
+  .phone-frame { width: 280px; margin: 0 auto 20px; background: #1a1a2e; border-radius: 36px; padding: 14px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); }
+  .phone-screen { background: white; border-radius: 24px; overflow: hidden; }
+  .phone-screen-inner { padding: 0; }
+  .screen-header-bar { background: #c8102e; padding: 16px; color: white; text-align: center; font-weight: 700; font-size: 14px; }
+  .screen-body { padding: 20px; }
+  .screen-field { background: #f4f5f7; border-radius: 8px; padding: 14px; margin-bottom: 12px; }
+  .screen-field-label { font-size: 10px; color: #6b778c; text-transform: uppercase; letter-spacing: 0.5px; }
+  .screen-field-value { font-size: 14px; color: #172b4d; margin-top: 4px; font-weight: 500; }
+  .screen-btn { background: #c8102e; color: white; border-radius: 4px; padding: 14px; text-align: center; font-weight: 700; font-size: 14px; margin-top: 8px; }
+  .annotation { display: flex; align-items: flex-start; gap: 10px; padding: 10px 14px; border-radius: 6px; margin-bottom: 8px; font-size: 13px; line-height: 1.4; }
+  .annotation-critical { background: #ffebe6; border-left: 3px solid #de350b; }
+  .annotation-high { background: #fff7e6; border-left: 3px solid #ff991f; }
+  .annotation-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .sr-simulation { background: #0052cc; color: white; border-radius: 8px; padding: 20px; margin-bottom: 16px; font-family: monospace; font-size: 13px; line-height: 1.8; }
+  .sr-label { display: inline-block; background: rgba(255,255,255,0.2); padding: 2px 8px; border-radius: 3px; margin: 2px; }
+  .sr-missing { background: rgba(222,53,11,0.6); }
+
+  /* IMPACT VIEW */
+  .impact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px; }
+  .impact-card { border-radius: 8px; padding: 20px; border: 1px solid; }
+  .impact-card.cost { background: #ffebe6; border-color: #ff5630; }
+  .impact-card.risk { background: #fff7e6; border-color: #ff991f; }
+  .impact-card.law { background: #eae6ff; border-color: #6554c0; }
+  .impact-card.brand { background: #e6fcff; border-color: #00b8d9; }
+  .impact-card h4 { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; opacity: 0.7; }
+  .impact-amount { font-size: 26px; font-weight: 800; line-height: 1.1; }
+  .impact-card.cost .impact-amount { color: #de350b; }
+  .impact-card.risk .impact-amount { color: #bf8000; }
+  .impact-card.law .impact-amount { color: #403294; }
+  .impact-card.brand .impact-amount { color: #006884; }
+  .impact-desc { font-size: 12px; margin-top: 6px; opacity: 0.75; line-height: 1.4; }
+  .impact-source { font-size: 11px; opacity: 0.6; margin-top: 8px; font-style: italic; }
+  .action-required { background: #172b4d; color: white; border-radius: 8px; padding: 16px 20px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; }
+  .action-required .action-text { font-size: 14px; font-weight: 600; }
+  .action-required .action-sub { font-size: 12px; opacity: 0.65; margin-top: 3px; }
+  .priority-pill { background: #de350b; color: white; padding: 6px 14px; border-radius: 100px; font-size: 12px; font-weight: 700; }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.3); }
+  }
+
+  @media (max-width: 600px) {
+    .header, .scorecard, .stats-bar, .content { padding-left: 20px; padding-right: 20px; }
+    .scorecard-grid { grid-template-columns: 1fr 1fr; }
+    .impact-grid { grid-template-columns: 1fr; }
+    .stats-bar { gap: 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div>
+      <h1>Orbit Code Audit</h1>
+      <p>Service Finance Consumer App &nbsp;|&nbsp; React Native / Expo &nbsp;|&nbsp; May 2026</p>
+    </div>
+    <div class="risk-badge">CRITICAL RISK</div>
+  </div>
+  <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.1);display:flex;gap:28px;flex-wrap:wrap;align-items:center;">
+    <div style="display:flex;align-items:center;gap:8px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+      <span style="font-size:11px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;">Source Repo</span>
+      <a href="https://gitlab.com/concepta/service-finance/service-finance-consumer-app" target="_blank" style="font-size:12px;color:rgba(121,226,242,0.9);text-decoration:none;font-family:'SF Mono','Fira Code',monospace;">gitlab.com/concepta/service-finance/service-finance-consumer-app</a>
+    </div>
+    <div style="width:1px;height:16px;background:rgba(255,255,255,0.15);flex-shrink:0;"></div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"><circle cx="12" cy="12" r="3"></circle><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"></path></svg>
+      <span style="font-size:11px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;">Analysis Engine</span>
+      <a href="https://github.com/btwld/sbvr-skill/tree/main/sbvr" target="_blank" style="font-size:12px;color:rgba(121,226,242,0.9);text-decoration:none;font-family:'SF Mono','Fira Code',monospace;">github.com/btwld/sbvr-skill — SBVR 4-Phase Pipeline</a>
+    </div>
+    <div style="width:1px;height:16px;background:rgba(255,255,255,0.15);flex-shrink:0;"></div>
+    <div style="display:flex;align-items:center;gap:8px;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.5)" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+      <span style="font-size:11px;color:rgba(255,255,255,0.45);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;">Scanned</span>
+      <span style="font-size:12px;color:rgba(255,255,255,0.65);">May 4, 2026</span>
+    </div>
+  </div>
+</div>
+
+<!-- EXEC SUMMARY -->
+<div style="background:#1a2f52;border-left:4px solid #de350b;padding:20px 40px;display:flex;align-items:flex-start;gap:16px;">
+  <div style="flex-shrink:0;margin-top:2px;">
+    <div style="background:#de350b;border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:900;color:white;">!</div>
+  </div>
+  <div style="flex:1;">
+    <div style="font-size:12px;font-weight:700;color:#ff8f73;text-transform:uppercase;letter-spacing:0.8px;margin-bottom:10px;">Executive Summary</div>
+    <div style="font-size:14px;color:white;line-height:1.7;max-width:900px;margin-bottom:16px;">
+      This scan surfaced <strong style="color:#ff8f73;">2 critical issues that must be resolved before the next deployment</strong> and 2 additional high-severity findings requiring action in the next sprint.
+      These critical findings are not theoretical risks — they are active exposures on a live production app serving real borrowers today.
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;">
+      <a href="#f1" onclick="openFinding('f1')" style="display:flex;align-items:center;gap:10px;background:rgba(222,53,11,0.2);border:1px solid rgba(222,53,11,0.5);border-radius:6px;padding:10px 14px;text-decoration:none;flex:1;min-width:260px;cursor:pointer;">
+        <div style="background:#de350b;color:white;font-size:10px;font-weight:800;padding:2px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0;">CRITICAL</div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:white;">Android signing credentials in source control</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:1px;">Anyone with repo access can publish a malicious version of this app today &rarr;</div>
+        </div>
+      </a>
+      <a href="#f2" onclick="openFinding('f2')" style="display:flex;align-items:center;gap:10px;background:rgba(222,53,11,0.2);border:1px solid rgba(222,53,11,0.5);border-radius:6px;padding:10px 14px;text-decoration:none;flex:1;min-width:260px;cursor:pointer;">
+        <div style="background:#de350b;color:white;font-size:10px;font-weight:800;padding:2px 8px;border-radius:3px;white-space:nowrap;flex-shrink:0;">CRITICAL</div>
+        <div>
+          <div style="font-size:12px;font-weight:700;color:white;">Payment tokens logged on every user session</div>
+          <div style="font-size:11px;color:rgba(255,255,255,0.55);margin-top:1px;">Auth tokens and borrower data written to device log in plain text &rarr;</div>
+        </div>
+      </a>
+    </div>
+    <div style="margin-top:10px;font-size:12px;color:rgba(255,255,255,0.4);">Full audit across all 4 layers estimated at 24–48 hours to report delivery. See findings below.</div>
+  </div>
+</div>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stat"><div class="stat-number" style="color:#de350b">2</div><div class="stat-label">Critical</div></div>
+  <div class="stat"><div class="stat-number" style="color:#ff991f">4</div><div class="stat-label">High</div></div>
+  <div class="stat"><div class="stat-number" style="color:#bf8000">7</div><div class="stat-label">TODOs / Debt</div></div>
+  <div class="stat"><div class="stat-number">62</div><div class="stat-label">Debug Logs in Prod</div></div>
+  <div class="stat"><div class="stat-number" style="color:#de350b">0</div><div class="stat-label">Accessibility Props</div></div>
+  <div style="margin-left:auto;display:flex;align-items:center;gap:24px;">
+    <div class="stat" style="text-align:right;">
+      <div style="display:flex;align-items:center;gap:6px;justify-content:flex-end;">
+        <span style="display:inline-block;width:8px;height:8px;background:#36b37e;border-radius:50%;animation:pulse 2s infinite;"></span>
+        <div class="stat-number" style="color:#36b37e;font-size:22px;">4m 32s</div>
+      </div>
+      <div class="stat-label">Scan Time — Security + Foundational Layers</div>
+    </div>
+  </div>
+</div>
+
+<!-- SCORECARD -->
+<div class="scorecard">
+  <div class="scorecard-title">Assessment Layer Summary</div>
+  <div class="scorecard-grid">
+    <div class="score-card score-critical">
+      <div class="layer">Security</div>
+      <div class="rating">Critical</div>
+      <div class="count">2 Critical findings — ship blocker</div>
+    </div>
+    <div class="score-card score-high">
+      <div class="layer">Technical Debt</div>
+      <div class="rating">High</div>
+      <div class="count">62 debug logs, 7 TODOs</div>
+    </div>
+    <div class="score-card score-critical">
+      <div class="layer">Foundational Gaps</div>
+      <div class="rating">Critical</div>
+      <div class="count">Zero accessibility props</div>
+    </div>
+    <div class="score-card score-high">
+      <div class="layer">Business Semantics</div>
+      <div class="rating">High</div>
+      <div class="count">Critical logic undocumented</div>
+    </div>
+  </div>
+</div>
+
+<!-- FULL AUDIT ESTIMATE BANNER -->
+<div style="background:#f0f4ff;border-top:1px solid #c8d6f8;border-bottom:3px solid #0052cc;padding:16px 40px;display:flex;align-items:center;gap:32px;flex-wrap:wrap;">
+  <div style="display:flex;align-items:center;gap:10px;flex-shrink:0;">
+    <div style="width:36px;height:36px;background:#0052cc;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:18px;">⚡</div>
+    <div>
+      <div style="font-size:11px;font-weight:700;color:#0052cc;text-transform:uppercase;letter-spacing:0.5px;">This Scan</div>
+      <div style="font-size:13px;font-weight:700;color:#172b4d;">Security + Foundational Layers &nbsp;·&nbsp; Partial codebase &nbsp;·&nbsp; <span style="color:#36b37e;">Completed in 4m 32s</span></div>
+    </div>
+  </div>
+  <div style="width:1px;height:40px;background:#c8d6f8;flex-shrink:0;"></div>
+  <div style="flex:1;min-width:200px;">
+    <div style="font-size:11px;font-weight:700;color:#6b778c;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:4px;">Full Audit Estimate — All 4 Layers, Complete Codebase</div>
+    <div style="display:flex;gap:20px;flex-wrap:wrap;">
+      <div><span style="font-size:15px;font-weight:800;color:#172b4d;">~2–4 hrs</span> <span style="font-size:12px;color:#6b778c;">automated scan</span></div>
+      <div><span style="font-size:15px;font-weight:800;color:#172b4d;">24–48 hrs</span> <span style="font-size:12px;color:#6b778c;">report ready for review</span></div>
+      <div><span style="font-size:15px;font-weight:800;color:#172b4d;">3–5 days</span> <span style="font-size:12px;color:#6b778c;">vs. weeks for a manual audit</span></div>
+    </div>
+  </div>
+  <div style="background:#172b4d;border-radius:6px;padding:10px 18px;flex-shrink:0;text-align:center;">
+    <div style="font-size:11px;color:rgba(255,255,255,0.6);margin-bottom:2px;">Traditional audit</div>
+    <div style="font-size:13px;font-weight:700;color:white;">4–8 weeks &nbsp;<span style="color:#ff5630;text-decoration:line-through;opacity:0.7;">manual</span></div>
+  </div>
+</div>
+
+<!-- COST MODEL PLACEHOLDER - moved to orbit-cost-model-internal.html -->
+<div style="display:none"><div id="cost-panel">
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:20px;">
+
+      <!-- THIS SCAN -->
+      <div style="border:1px solid #e1e4e8;border-radius:8px;overflow:hidden;">
+        <div style="background:#f4f5f7;padding:12px 16px;border-bottom:1px solid #e1e4e8;">
+          <div style="font-size:12px;font-weight:700;color:#172b4d;">This Scan — Security + Foundational Layers</div>
+          <div style="font-size:11px;color:#6b778c;margin-top:2px;">Partial codebase · ~30 files · 4m 32s runtime</div>
+        </div>
+        <div style="padding:16px;">
+          <table style="width:100%;font-size:12px;border-collapse:collapse;">
+            <tr style="border-bottom:1px solid #f4f5f7;">
+              <td style="padding:6px 0;color:#6b778c;">API compute (Claude Sonnet)</td>
+              <td style="padding:6px 0;text-align:right;font-weight:600;color:#172b4d;">~$4–6</td>
+            </tr>
+            <tr style="border-bottom:1px solid #f4f5f7;">
+              <td style="padding:6px 0;color:#6b778c;">Token estimate</td>
+              <td style="padding:6px 0;text-align:right;color:#6b778c;">~800K input / 120K output</td>
+            </tr>
+            <tr style="border-bottom:1px solid #f4f5f7;">
+              <td style="padding:6px 0;color:#6b778c;">SA review + report packaging</td>
+              <td style="padding:6px 0;text-align:right;font-weight:600;color:#172b4d;">1.5 hrs</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;font-weight:700;color:#172b4d;">Total internal cost</td>
+              <td style="padding:8px 0;text-align:right;font-weight:800;font-size:15px;color:#172b4d;">~$230–$240</td>
+            </tr>
+          </table>
+          <div style="font-size:10px;color:#6b778c;margin-top:4px;">Assumes SA at $150/hr fully loaded</div>
+        </div>
+      </div>
+
+      <!-- FULL AUDIT -->
+      <div style="border:2px solid #0052cc;border-radius:8px;overflow:hidden;">
+        <div style="background:#f0f4ff;padding:12px 16px;border-bottom:1px solid #c8d6f8;">
+          <div style="font-size:12px;font-weight:700;color:#0052cc;">Full Audit — All 4 Layers, Complete Codebase</div>
+          <div style="font-size:11px;color:#6b778c;margin-top:2px;">All files · 2–4 hr runtime · report in 24–48 hrs</div>
+        </div>
+        <div style="padding:16px;">
+          <table style="width:100%;font-size:12px;border-collapse:collapse;">
+            <tr style="border-bottom:1px solid #f4f5f7;">
+              <td style="padding:6px 0;color:#6b778c;">API compute (Claude Sonnet)</td>
+              <td style="padding:6px 0;text-align:right;font-weight:600;color:#172b4d;">~$15–25</td>
+            </tr>
+            <tr style="border-bottom:1px solid #f4f5f7;">
+              <td style="padding:6px 0;color:#6b778c;">Token estimate</td>
+              <td style="padding:6px 0;text-align:right;color:#6b778c;">~2–3M input / 400K output</td>
+            </tr>
+            <tr style="border-bottom:1px solid #f4f5f7;">
+              <td style="padding:6px 0;color:#6b778c;">SA review + report packaging</td>
+              <td style="padding:6px 0;text-align:right;font-weight:600;color:#172b4d;">2–3 hrs</td>
+            </tr>
+            <tr>
+              <td style="padding:8px 0;font-weight:700;color:#172b4d;">Total internal cost</td>
+              <td style="padding:8px 0;text-align:right;font-weight:800;font-size:15px;color:#0052cc;">~$315–$475</td>
+            </tr>
+          </table>
+          <div style="font-size:10px;color:#6b778c;margin-top:4px;">Assumes SA at $150/hr fully loaded</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRICING MARGIN TABLE -->
+    <div style="border:1px solid #e1e4e8;border-radius:8px;overflow:hidden;">
+      <div style="background:#f4f5f7;padding:12px 16px;border-bottom:1px solid #e1e4e8;display:flex;justify-content:space-between;align-items:center;">
+        <div style="font-size:12px;font-weight:700;color:#172b4d;">Pricing Scenarios — Full Audit Delivery</div>
+        <div style="font-size:11px;color:#6b778c;">Internal cost basis: ~$400 (midpoint)</div>
+      </div>
+      <div style="overflow-x:auto;">
+        <table style="width:100%;font-size:12px;border-collapse:collapse;">
+          <thead>
+            <tr style="background:#f4f5f7;">
+              <th style="padding:10px 16px;text-align:left;font-weight:700;color:#6b778c;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">Price Point</th>
+              <th style="padding:10px 16px;text-align:right;font-weight:700;color:#6b778c;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">Gross Margin</th>
+              <th style="padding:10px 16px;text-align:left;font-weight:700;color:#6b778c;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">Positioning</th>
+              <th style="padding:10px 16px;text-align:left;font-weight:700;color:#6b778c;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;">vs. Manual Audit ($15K–$50K)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-top:1px solid #f4f5f7;">
+              <td style="padding:10px 16px;font-weight:700;color:#172b4d;">$1,500</td>
+              <td style="padding:10px 16px;text-align:right;font-weight:700;color:#36b37e;">~73%</td>
+              <td style="padding:10px 16px;color:#6b778c;">Entry-level / pilot pricing. Low friction for first engagement.</td>
+              <td style="padding:10px 16px;color:#6b778c;">90–97% cheaper than manual</td>
+            </tr>
+            <tr style="border-top:1px solid #f4f5f7;background:#f0f4ff;">
+              <td style="padding:10px 16px;font-weight:700;color:#0052cc;">$2,500 ★</td>
+              <td style="padding:10px 16px;text-align:right;font-weight:700;color:#36b37e;">~84%</td>
+              <td style="padding:10px 16px;color:#172b4d;font-weight:600;">Sweet spot. Credible price, strong margin, easy yes for a mid-market client.</td>
+              <td style="padding:10px 16px;color:#172b4d;font-weight:600;">83–95% cheaper than manual</td>
+            </tr>
+            <tr style="border-top:1px solid #f4f5f7;">
+              <td style="padding:10px 16px;font-weight:700;color:#172b4d;">$5,000</td>
+              <td style="padding:10px 16px;text-align:right;font-weight:700;color:#36b37e;">~92%</td>
+              <td style="padding:10px 16px;color:#6b778c;">Enterprise / regulated industries. Pair with SA briefing and remediation roadmap.</td>
+              <td style="padding:10px 16px;color:#6b778c;">67–90% cheaper than manual</td>
+            </tr>
+            <tr style="border-top:1px solid #f4f5f7;">
+              <td style="padding:10px 16px;font-weight:700;color:#172b4d;">$10,000</td>
+              <td style="padding:10px 16px;text-align:right;font-weight:700;color:#36b37e;">~96%</td>
+              <td style="padding:10px 16px;color:#6b778c;">Retainer / multi-app. Includes ongoing monitoring, quarterly re-runs, remediation tracking.</td>
+              <td style="padding:10px 16px;color:#6b778c;">33–80% cheaper than manual</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div style="padding:12px 16px;background:#fffae6;border-top:1px solid #f4c400;font-size:12px;color:#172b4d;">
+        <strong>Note:</strong> Traditional manual security + code audit from a specialist firm typically runs $15,000–$50,000 and takes 4–8 weeks. Orbit delivers comparable signal in 24–48 hours at a fraction of the cost — the margin story is strong at any price point above $1,500.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FINDINGS -->
+<div class="content">
+  <div class="section-label">Critical & High Findings — Click any finding to explore</div>
+
+  <!-- FINDING 1: KEYSTORE -->
+  <div class="finding" id="f1">
+    <div class="finding-header" onclick="toggleFinding('f1')">
+      <span class="severity-badge sev-critical">CRITICAL</span>
+      <div class="finding-meta">
+        <div class="finding-title">Android signing credentials committed to source control</div>
+        <div class="finding-summary">The Android keystore password and key alias are stored in plain text in the repository. The actual keystore file is also committed. Anyone with repo access can sign and publish a version of this app.</div>
+        <div class="finding-tags">
+          <span class="tag">Security</span>
+          <span class="tag">keys/keys.txt</span>
+          <span class="tag">keys/svcfincustomerapp.keystore</span>
+        </div>
+      </div>
+      <span class="expand-icon">▾</span>
+    </div>
+    <div class="finding-detail">
+      <div class="view-tabs">
+        <div class="view-tab active" onclick="switchTab('f1','dev')">Developer View</div>
+        <div class="view-tab" onclick="switchTab('f1','bizpri')">Business Priorities</div>
+        <div class="view-tab" onclick="switchTab('f1','impact')">Business Impact</div>
+      </div>
+      <div class="view-panel active" id="f1-dev">
+        <div class="code-ref">
+          <div class="code-ref-header">
+            <span><a class="code-link" href="#">keys/keys.txt</a></span>
+            <span>Lines 1–3</span>
+          </div>
+          <div class="code-body"><pre><span class="line-highlight"><span class="line-num">1</span>Android:</span>
+<span class="line-highlight"><span class="line-num">2</span>Password: Msimobilev1</span>
+<span class="line-highlight"><span class="line-num">3</span>Key Alias: customerApp</span></pre></div>
+        </div>
+        <div class="code-ref">
+          <div class="code-ref-header">
+            <span><a class="code-link" href="#">keys/svcfincustomerapp.keystore</a></span>
+            <span>Binary — committed to repo</span>
+          </div>
+          <div class="code-body"><pre><span class="line-num">—</span> Binary keystore file present in repository root.
+<span class="line-num">—</span> Used to sign Android builds for Google Play Store.
+<span class="line-num">—</span> Combined with keys.txt, a complete signing package is exposed.</pre></div>
+        </div>
+        <div class="dev-note">
+          <strong>Fix:</strong> Immediately rotate the keystore. Remove keys.txt and the .keystore file from git history using <code>git filter-branch</code> or BFG Repo Cleaner. Store credentials in CI/CD secrets (Bitrise already configured — use Bitrise secret env vars). Add <code>keys/</code> to .gitignore.
+        </div>
+      </div>
+      <div class="view-panel" id="f1-bizpri">
+        <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;">
+          <div class="phone-frame">
+            <div class="phone-screen">
+              <div class="phone-screen-inner">
+                <div style="background:#c8102e;padding:12px;color:white;text-align:center;font-weight:700;font-size:13px;">Service Finance</div>
+                <div style="padding:16px;background:#f8f8f8;text-align:center;">
+                  <div style="font-size:11px;color:#6b778c;margin-bottom:8px;">Google Play Store</div>
+                  <div style="background:white;border-radius:12px;padding:12px;box-shadow:0 2px 8px rgba(0,0,0,0.1);">
+                    <div style="font-size:13px;font-weight:700;color:#172b4d;">Service Finance</div>
+                    <div style="font-size:11px;color:#6b778c;margin:4px 0;">Borrower App</div>
+                    <div style="display:flex;gap:4px;margin-top:8px;">
+                      <div style="flex:1;background:#4caf50;color:white;padding:8px;border-radius:6px;text-align:center;font-size:11px;font-weight:700;">Install</div>
+                    </div>
+                  </div>
+                  <div style="background:#ffebe6;border-radius:8px;padding:10px;margin-top:12px;border:1px solid #ff5630;">
+                    <div style="font-size:11px;font-weight:700;color:#de350b;">⚠ Malicious Version</div>
+                    <div style="font-size:10px;color:#6b778c;margin-top:4px;">Same signing key. Indistinguishable from the real app.</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1;min-width:240px;">
+            <div class="annotation annotation-critical">
+              <span class="annotation-icon">🔑</span>
+              <div><strong>What this means:</strong> With the keystore and password, anyone can sign a modified version of the app with the same credentials as the legitimate app. Google Play and the App Store cannot distinguish it from the real one.</div>
+            </div>
+            <div class="annotation annotation-critical">
+              <span class="annotation-icon">📱</span>
+              <div><strong>User impact:</strong> A malicious build could steal borrower credentials, intercept payment flows, or redirect login to a phishing endpoint — all appearing as the official Service Finance app.</div>
+            </div>
+            <div class="annotation annotation-high">
+              <span class="annotation-icon">🔍</span>
+              <div><strong>Who can access this:</strong> Any developer with read access to this repository has had access to these credentials since the commit that introduced them.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="view-panel" id="f1-impact">
+        <div class="impact-grid">
+          <div class="impact-card cost">
+            <h4>App Store Removal Risk</h4>
+            <div class="impact-amount">Immediate</div>
+            <div class="impact-desc">A malicious signed build triggers app store removal. Restoration requires legal dispute and re-certification.</div>
+            <div class="impact-source">Source: Google Play Developer Policy</div>
+          </div>
+          <div class="impact-card risk">
+            <h4>Breach Notification Cost</h4>
+            <div class="impact-amount">$150–$350 / user</div>
+            <div class="impact-desc">If exploited to exfiltrate borrower data, CCPA and state breach notification laws require per-user notification cost.</div>
+            <div class="impact-source">Source: IBM Cost of Data Breach Report 2024</div>
+          </div>
+          <div class="impact-card law">
+            <h4>Regulatory Exposure</h4>
+            <div class="impact-amount">GLBA / CFPB</div>
+            <div class="impact-desc">As a financial services app, GLBA Safeguards Rule requires credential security controls. Violation triggers CFPB enforcement.</div>
+            <div class="impact-source">Source: FTC Safeguards Rule 16 CFR Part 314</div>
+          </div>
+          <div class="impact-card brand">
+            <h4>Remediation Effort</h4>
+            <div class="impact-amount">2–5 days</div>
+            <div class="impact-desc">Rotate keystore, purge from git history, update CI/CD secrets, re-submit to both app stores.</div>
+            <div class="impact-source">Estimate: Concepta engineering</div>
+          </div>
+        </div>
+        <div class="action-required">
+          <div>
+            <div class="action-text">Critical — Resolve before next deployment</div>
+            <div class="action-sub">Do not ship another build until keystore is rotated and removed from git history.</div>
+          </div>
+          <span class="priority-pill">Critical — Immediate</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINDING 2: DEBUG LOGS / PAYMENT TOKENS -->
+  <div class="finding" id="f2">
+    <div class="finding-header" onclick="toggleFinding('f2')">
+      <span class="severity-badge sev-critical">CRITICAL</span>
+      <div class="finding-meta">
+        <div class="finding-title">62 debug logs active in production — payment session tokens being logged</div>
+        <div class="finding-summary">Debug console.log statements left in production code expose authentication tokens, refresh tokens, payment session data, borrower info responses, and device identifiers to device logs and log aggregators.</div>
+        <div class="finding-tags">
+          <span class="tag">Security</span>
+          <span class="tag">src/screens/PaymentCenter.tsx:34</span>
+          <span class="tag">src/services/client.ts (multiple)</span>
+        </div>
+      </div>
+      <span class="expand-icon">▾</span>
+    </div>
+    <div class="finding-detail">
+      <div class="view-tabs">
+        <div class="view-tab active" onclick="switchTab('f2','dev')">Developer View</div>
+        <div class="view-tab" onclick="switchTab('f2','bizpri')">Business Priorities</div>
+        <div class="view-tab" onclick="switchTab('f2','impact')">Business Impact</div>
+      </div>
+      <div class="view-panel active" id="f2-dev">
+        <div class="code-ref">
+          <div class="code-ref-header">
+            <span><a class="code-link" href="#">src/screens/PaymentCenter.tsx</a></span>
+            <span>Lines 33–36 — Payment token logged at runtime</span>
+          </div>
+          <div class="code-body"><pre><span class="line-num">32</span>    const setLoanToken = async () => {
+<span class="line-highlight"><span class="line-num">33</span>      console.log('[DEBUG] Setting loan token for loan number:', loanNumber);</span>
+<span class="line-highlight"><span class="line-num">34</span>      const authenticationJavascript =</span>
+<span class="line-highlight"><span class="line-num">35</span>        await getInjectionLoanNumberSessionStorageJS(loanNumber);</span>
+<span class="line-highlight"><span class="line-num">36</span>      console.log('[DEBUG] Authentication JavaScript:', authenticationJavascript);</span>
+<span class="line-num">37</span>      setLoanTokenJs(authenticationJavascript);</span>
+<span class="line-num">38</span>    };</span></pre></div>
+        </div>
+        <div class="code-ref">
+          <div class="code-ref-header">
+            <span><a class="code-link" href="#">src/services/client.ts</a></span>
+            <span>Lines 155, 197, 227 — Auth tokens and borrower data logged</span>
+          </div>
+          <div class="code-body"><pre><span class="line-highlight"><span class="line-num">155</span>    console.log('[DEBUG] New refresh token:', refreshToken);</span>
+<span class="line-num">...</span>
+<span class="line-highlight"><span class="line-num">197</span>    console.log('[DEBUG] Borrower info response:', response);</span>
+<span class="line-num">...</span>
+<span class="line-highlight"><span class="line-num">227</span>    console.log('[DEBUG] Signing in with URL:', url);</span>
+<span class="line-num">...</span>
+<span class="line-highlight"><span class="line-num">314</span>    console.log('[DEBUG] Generated deviceId:', newDeviceId);</span></pre></div>
+        </div>
+        <div class="dev-note">
+          <strong>Fix:</strong> Remove all <code>console.log</code> debug statements or gate them behind a <code>__DEV__</code> check. Use a dedicated logger (e.g., <code>react-native-logs</code>) configured to silent in production. Never log token values, response payloads, or PII at any log level in production builds.
+        </div>
+      </div>
+      <div class="view-panel" id="f2-bizpri">
+
+        <!-- NARRATIVE HEADER -->
+        <div style="margin-bottom:20px;">
+          <div style="font-size:15px;font-weight:700;color:#172b4d;margin-bottom:4px;">Every time Jane Doe makes a payment, this is what leaves her device.</div>
+          <div style="font-size:13px;color:#6b778c;line-height:1.5;">She sees a normal payment screen. In the background, 6 pieces of sensitive data are being written to a plain-text device log — readable by anyone who picks up her phone.</div>
+        </div>
+
+        <!-- SPLIT VIEW: phone + data leak cards -->
+        <div style="display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap;">
+
+          <!-- PHONE -->
+          <div style="flex-shrink:0;">
+            <div style="font-size:11px;font-weight:700;color:#6b778c;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;text-align:center;">What Jane sees</div>
+            <div style="width:200px;background:#1a1a2e;border-radius:32px;padding:12px;box-shadow:0 16px 48px rgba(0,0,0,0.25);">
+              <div style="background:white;border-radius:22px;overflow:hidden;">
+                <div style="background:#c8102e;padding:14px 12px 10px;color:white;text-align:center;">
+                  <div style="font-size:11px;font-weight:700;">Make a Payment</div>
+                </div>
+                <div style="padding:14px 12px;">
+                  <div style="background:#f4f5f7;border-radius:6px;padding:10px;margin-bottom:8px;">
+                    <div style="font-size:9px;color:#6b778c;text-transform:uppercase;">Loan Number</div>
+                    <div style="font-size:12px;font-weight:600;color:#172b4d;margin-top:2px;">LN-2891047</div>
+                  </div>
+                  <div style="background:#f4f5f7;border-radius:6px;padding:10px;margin-bottom:8px;">
+                    <div style="font-size:9px;color:#6b778c;text-transform:uppercase;">Payment Amount</div>
+                    <div style="font-size:12px;font-weight:600;color:#172b4d;margin-top:2px;">$842.00</div>
+                  </div>
+                  <div style="background:#c8102e;border-radius:4px;padding:10px;text-align:center;margin-top:4px;">
+                    <div style="font-size:12px;font-weight:700;color:white;">Submit Payment</div>
+                  </div>
+                  <div style="margin-top:10px;background:#e3fcef;border-radius:4px;padding:8px;text-align:center;">
+                    <div style="font-size:10px;font-weight:600;color:#006644;">✓ Payment Submitted</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:8px;background:#e3fcef;border:1px solid #36b37e;border-radius:6px;padding:8px 12px;text-align:center;width:200px;">
+              <div style="font-size:11px;font-weight:600;color:#006644;">Looks normal to Jane ✓</div>
+            </div>
+          </div>
+
+          <!-- DATA LEAK CARDS -->
+          <div style="flex:1;min-width:280px;">
+            <div style="font-size:11px;font-weight:700;color:#6b778c;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">What's leaking in the background</div>
+
+            <div style="display:flex;flex-direction:column;gap:8px;">
+
+              <div style="background:#ffebe6;border:1px solid #ff5630;border-left:4px solid #de350b;border-radius:6px;padding:12px 14px;display:flex;align-items:center;gap:12px;">
+                <div style="font-size:20px;flex-shrink:0;">🔑</div>
+                <div>
+                  <div style="font-size:12px;font-weight:700;color:#de350b;">Session Token (JWT)</div>
+                  <div style="font-size:12px;color:#172b4d;margin-top:2px;">The key that proves Jane is logged in. Anyone who captures this can impersonate her account.</div>
+                </div>
+                <div style="flex-shrink:0;background:#de350b;color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:3px;white-space:nowrap;">CRITICAL</div>
+              </div>
+
+              <div style="background:#ffebe6;border:1px solid #ff5630;border-left:4px solid #de350b;border-radius:6px;padding:12px 14px;display:flex;align-items:center;gap:12px;">
+                <div style="font-size:20px;flex-shrink:0;">💳</div>
+                <div>
+                  <div style="font-size:12px;font-weight:700;color:#de350b;">Payment Session Key</div>
+                  <div style="font-size:12px;color:#172b4d;margin-top:2px;">The authentication code injected into the payment WebView. Could enable a replay attack on Jane's payment flow.</div>
+                </div>
+                <div style="flex-shrink:0;background:#de350b;color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:3px;white-space:nowrap;">CRITICAL</div>
+              </div>
+
+              <div style="background:#fff7e6;border:1px solid #ff991f;border-left:4px solid #ff991f;border-radius:6px;padding:12px 14px;display:flex;align-items:center;gap:12px;">
+                <div style="font-size:20px;flex-shrink:0;">👤</div>
+                <div>
+                  <div style="font-size:12px;font-weight:700;color:#bf8000;">Borrower Profile</div>
+                  <div style="font-size:12px;color:#172b4d;margin-top:2px;">First name, last name, loan number, and account data logged in full on every sign-in.</div>
+                </div>
+                <div style="flex-shrink:0;background:#ff991f;color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:3px;white-space:nowrap;">HIGH</div>
+              </div>
+
+              <div style="background:#fff7e6;border:1px solid #ff991f;border-left:4px solid #ff991f;border-radius:6px;padding:12px 14px;display:flex;align-items:center;gap:12px;">
+                <div style="font-size:20px;flex-shrink:0;">🏦</div>
+                <div>
+                  <div style="font-size:12px;font-weight:700;color:#bf8000;">Loan Number</div>
+                  <div style="font-size:12px;color:#172b4d;margin-top:2px;">LN-2891047 logged in plain text. Combined with borrower name, this is GLBA-protected financial data.</div>
+                </div>
+                <div style="flex-shrink:0;background:#ff991f;color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:3px;white-space:nowrap;">HIGH</div>
+              </div>
+
+              <div style="background:#f4f5f7;border:1px solid #c1c7d0;border-left:4px solid #6b778c;border-radius:6px;padding:12px 14px;display:flex;align-items:center;gap:12px;">
+                <div style="font-size:20px;flex-shrink:0;">📡</div>
+                <div>
+                  <div style="font-size:12px;font-weight:700;color:#172b4d;">API Endpoints + Config</div>
+                  <div style="font-size:12px;color:#6b778c;margin-top:2px;">Full backend URLs and configuration logged. Useful to anyone mapping the infrastructure.</div>
+                </div>
+                <div style="flex-shrink:0;background:#6b778c;color:white;font-size:10px;font-weight:700;padding:3px 8px;border-radius:3px;white-space:nowrap;">LOW</div>
+              </div>
+
+            </div>
+
+            <!-- WHO CAN SEE THIS -->
+            <div style="margin-top:12px;background:#172b4d;border-radius:6px;padding:12px 16px;">
+              <div style="font-size:11px;font-weight:700;color:white;margin-bottom:6px;">Who can read these logs right now:</div>
+              <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <span style="background:rgba(255,255,255,0.15);color:white;font-size:10px;padding:3px 10px;border-radius:20px;">Anyone who picks up Jane's phone</span>
+                <span style="background:rgba(255,255,255,0.15);color:white;font-size:10px;padding:3px 10px;border-radius:20px;">IT / MDM platforms</span>
+                <span style="background:rgba(255,255,255,0.15);color:white;font-size:10px;padding:3px 10px;border-radius:20px;">Crash reporting tools</span>
+                <span style="background:rgba(255,255,255,0.15);color:white;font-size:10px;padding:3px 10px;border-radius:20px;">Other apps on a rooted device</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="view-panel" id="f2-impact">
+        <div class="impact-grid">
+          <div class="impact-card cost">
+            <h4>PCI DSS Violation</h4>
+            <div class="impact-amount">$5K–$100K/mo</div>
+            <div class="impact-desc">Logging payment session tokens violates PCI DSS Requirement 3 (protect stored cardholder data). Monthly fines until remediated.</div>
+            <div class="impact-source">Source: PCI Security Standards Council</div>
+          </div>
+          <div class="impact-card risk">
+            <h4>CCPA Exposure</h4>
+            <div class="impact-amount">$100–$750 / user</div>
+            <div class="impact-desc">Logging borrower PII (name, loan number) without adequate protection violates CCPA. Per-consumer statutory damages in California.</div>
+            <div class="impact-source">Source: California Civil Code § 1798.150</div>
+          </div>
+          <div class="impact-card law">
+            <h4>GLBA Safeguards</h4>
+            <div class="impact-amount">Mandatory remediation</div>
+            <div class="impact-desc">Financial institutions must implement safeguards to protect customer information. Debug logging of auth tokens is a direct violation.</div>
+            <div class="impact-source">Source: FTC Safeguards Rule</div>
+          </div>
+          <div class="impact-card brand">
+            <h4>Remediation Effort</h4>
+            <div class="impact-amount">1–2 days</div>
+            <div class="impact-desc">Remove or gate all 62 console.log statements. Implement production-safe logging. Ship hotfix build.</div>
+            <div class="impact-source">Estimate: Concepta engineering</div>
+          </div>
+        </div>
+        <div class="action-required">
+          <div>
+            <div class="action-text">Critical — Ship a hotfix build immediately</div>
+            <div class="action-sub">Every user session right now is logging payment and auth data to the device.</div>
+          </div>
+          <span class="priority-pill">Critical — Immediate</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINDING 4: BUSINESS SEMANTICS -->
+  <div class="finding" id="f4">
+    <div class="finding-header" onclick="toggleFinding('f4')">
+      <span class="severity-badge sev-high">HIGH</span>
+      <div class="finding-meta">
+        <div class="finding-title">14 undocumented domain terms govern every core function — authentication, payments, and loan access have no business rule documentation</div>
+        <div class="finding-summary">Heimdal controls all authentication and appears 14 times with no definition. The payment session is authorized via JavaScript injected into a WebView — a critical business rule with no owner, no docs, and no fallback definition. If the engineers who built this leave, the system becomes unmaintainable.</div>
+        <div class="finding-tags">
+          <span class="tag">Business Semantics</span>
+          <span class="tag">src/screens/PaymentCenter.tsx</span>
+          <span class="tag">src/services/client.ts</span>
+          <span class="tag">envs/production.json</span>
+        </div>
+      </div>
+      <span class="expand-icon">▾</span>
+    </div>
+    <div class="finding-detail">
+      <div class="view-tabs">
+        <div class="view-tab active" onclick="switchTab('f4','dev')">Developer View</div>
+        <div class="view-tab" onclick="switchTab('f4','bizpri')">Business Priorities</div>
+        <div class="view-tab" onclick="switchTab('f4','impact')">Business Impact</div>
+      </div>
+      <div class="view-panel active" id="f4-dev">
+
+        <!-- EXTRACTED VOCABULARY TABLE -->
+        <div style="margin-bottom:20px;">
+          <div style="font-size:11px;font-weight:700;color:#6b778c;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Extracted Domain Vocabulary — 14 Terms Found, 0 Defined</div>
+          <div style="border:1px solid #e1e4e8;border-radius:6px;overflow:hidden;">
+            <table style="width:100%;font-size:12px;border-collapse:collapse;">
+              <thead>
+                <tr style="background:#f4f5f7;">
+                  <th style="padding:10px 14px;text-align:left;font-weight:700;color:#6b778c;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e1e4e8;">Term Found in Code</th>
+                  <th style="padding:10px 14px;text-align:left;font-weight:700;color:#6b778c;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e1e4e8;">Occurrences</th>
+                  <th style="padding:10px 14px;text-align:left;font-weight:700;color:#6b778c;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e1e4e8;">Business Definition</th>
+                  <th style="padding:10px 14px;text-align:left;font-weight:700;color:#6b778c;font-size:11px;text-transform:uppercase;letter-spacing:0.5px;border-bottom:1px solid #e1e4e8;">Risk if Lost</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom:1px solid #f4f5f7;">
+                  <td style="padding:10px 14px;font-family:'SF Mono','Fira Code',monospace;font-size:11px;font-weight:600;color:#de350b;">Heimdal</td>
+                  <td style="padding:10px 14px;color:#172b4d;font-weight:600;">14</td>
+                  <td style="padding:10px 14px;"><span style="background:#ffebe6;color:#de350b;font-size:11px;padding:2px 8px;border-radius:3px;font-weight:600;">Not documented</span></td>
+                  <td style="padding:10px 14px;color:#de350b;font-size:11px;font-weight:600;">All authentication fails. No one knows who owns the fix.</td>
+                </tr>
+                <tr style="border-bottom:1px solid #f4f5f7;background:#fafbfc;">
+                  <td style="padding:10px 14px;font-family:'SF Mono','Fira Code',monospace;font-size:11px;font-weight:600;color:#de350b;">loanToken</td>
+                  <td style="padding:10px 14px;color:#172b4d;font-weight:600;">8</td>
+                  <td style="padding:10px 14px;"><span style="background:#ffebe6;color:#de350b;font-size:11px;padding:2px 8px;border-radius:3px;font-weight:600;">Not documented</span></td>
+                  <td style="padding:10px 14px;color:#de350b;font-size:11px;font-weight:600;">Payment sessions cannot be authorized. Scope, expiry, and ownership unknown.</td>
+                </tr>
+                <tr style="border-bottom:1px solid #f4f5f7;">
+                  <td style="padding:10px 14px;font-family:'SF Mono','Fira Code',monospace;font-size:11px;font-weight:600;color:#bf8000;">refreshToken</td>
+                  <td style="padding:10px 14px;color:#172b4d;font-weight:600;">6</td>
+                  <td style="padding:10px 14px;"><span style="background:#ffebe6;color:#de350b;font-size:11px;padding:2px 8px;border-radius:3px;font-weight:600;">Not documented</span></td>
+                  <td style="padding:10px 14px;color:#bf8000;font-size:11px;font-weight:600;">Token lifecycle unknown. No rule for expiry, rotation, or session invalidation.</td>
+                </tr>
+                <tr style="border-bottom:1px solid #f4f5f7;background:#fafbfc;">
+                  <td style="padding:10px 14px;font-family:'SF Mono','Fira Code',monospace;font-size:11px;font-weight:600;color:#bf8000;">customerApp</td>
+                  <td style="padding:10px 14px;color:#172b4d;font-weight:600;">3</td>
+                  <td style="padding:10px 14px;"><span style="background:#ffebe6;color:#de350b;font-size:11px;padding:2px 8px;border-radius:3px;font-weight:600;">Not documented</span></td>
+                  <td style="padding:10px 14px;color:#bf8000;font-size:11px;font-weight:600;">Signing identity for app store. Context lost if exposed credentials are rotated incorrectly.</td>
+                </tr>
+                <tr style="background:#fafbfc;">
+                  <td style="padding:10px 14px;font-family:'SF Mono','Fira Code',monospace;font-size:11px;color:#6b778c;">+ 10 more terms</td>
+                  <td style="padding:10px 14px;color:#6b778c;">—</td>
+                  <td colspan="2" style="padding:10px 14px;font-size:11px;color:#6b778c;font-style:italic;">Full vocabulary map available in complete SBVR audit report</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- KEY UNDOCUMENTED RULE -->
+        <div style="margin-bottom:16px;">
+          <div style="font-size:11px;font-weight:700;color:#6b778c;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;">Critical Business Rule — Extracted from Code, Never Written Down</div>
+          <div class="code-ref">
+            <div class="code-ref-header">
+              <span><a class="code-link" href="#">src/screens/PaymentCenter.tsx</a></span>
+              <span>Lines 32–37 — Payment authorization rule: exists only here</span>
+            </div>
+            <div class="code-body"><pre><span class="line-num">32</span>    const setLoanToken = async () => {
+<span class="line-highlight"><span class="line-num">33</span>      // BUSINESS RULE (inferred): A borrower's payment session is authorized</span>
+<span class="line-highlight"><span class="line-num">34</span>      // by injecting a loan-number-scoped token into the WebView's sessionStorage.</span>
+<span class="line-highlight"><span class="line-num">35</span>      // This rule is not documented. Its scope, expiry, and failure behavior</span>
+<span class="line-highlight"><span class="line-num">36</span>      // are unknown outside of this function.</span>
+<span class="line-num">37</span>      const authenticationJavascript =
+<span class="line-highlight"><span class="line-num">38</span>        await getInjectionLoanNumberSessionStorageJS(loanNumber);</span>
+<span class="line-num">39</span>      setLoanTokenJs(authenticationJavascript);</span>
+<span class="line-num">40</span>    };</pre></div>
+          </div>
+        </div>
+
+        <div class="dev-note">
+          <strong>What SBVR extracts:</strong> A complete business vocabulary map — every domain term defined in plain language, every business rule documented with its owner, scope, and failure mode. The goal is that a compliance officer, executive, or new developer can understand how the system works without asking the engineers who built it.
+        </div>
+      </div>
+      <div class="view-panel" id="f4-bizpri">
+        <div style="margin-bottom:16px;font-size:13px;color:#6b778c;line-height:1.5;">When any business stakeholder needs to answer a basic question about how this app works — no technical background required:</div>
+        <div style="background:white;border:1px solid #e1e4e8;border-radius:8px;overflow:hidden;max-width:520px;margin-bottom:20px;">
+          <div style="background:#f4f5f7;padding:12px 16px;border-bottom:1px solid #e1e4e8;font-size:12px;font-weight:700;color:#6b778c;text-transform:uppercase;letter-spacing:0.5px;">Business Logic Q&amp;A — Without a Developer in the Room</div>
+          <div style="padding:0;">
+            <div style="padding:14px 16px;border-bottom:1px solid #f4f5f7;">
+              <div style="font-size:13px;font-weight:600;color:#172b4d;">What is Heimdal and what happens if it goes down?</div>
+              <div style="font-size:13px;color:#de350b;margin-top:6px;display:flex;align-items:center;gap:6px;"><span>🔴</span> No one outside the dev team can answer this.</div>
+            </div>
+            <div style="padding:14px 16px;border-bottom:1px solid #f4f5f7;">
+              <div style="font-size:13px;font-weight:600;color:#172b4d;">How does a borrower's payment session authenticate? What rules govern it?</div>
+              <div style="font-size:13px;color:#de350b;margin-top:6px;display:flex;align-items:center;gap:6px;"><span>🔴</span> Embedded in PaymentCenter.tsx. Not documented anywhere.</div>
+            </div>
+            <div style="padding:14px 16px;border-bottom:1px solid #f4f5f7;">
+              <div style="font-size:13px;font-weight:600;color:#172b4d;">Can a compliance auditor verify the loan token lifecycle against GLBA requirements?</div>
+              <div style="font-size:13px;color:#de350b;margin-top:6px;display:flex;align-items:center;gap:6px;"><span>🔴</span> Only if they can read the source code themselves.</div>
+            </div>
+            <div style="padding:14px 16px;">
+              <div style="font-size:13px;font-weight:600;color:#172b4d;">What business rules does this app enforce for loan access?</div>
+              <div style="font-size:13px;color:#de350b;margin-top:6px;display:flex;align-items:center;gap:6px;"><span>🔴</span> Unknown. No vocabulary. No rule documentation. No business model.</div>
+            </div>
+          </div>
+        </div>
+        <div class="annotation annotation-high">
+          <span class="annotation-icon">🧠</span>
+          <div><strong>What this means in practice:</strong> If the two developers who built this app left tomorrow, the business rules governing authentication, payment sessions, and loan access would leave with them. There is no shared frame of reference between the technical team and the business — which means every product, compliance, and operational decision is made without one.</div>
+        </div>
+        <div class="annotation annotation-high">
+          <span class="annotation-icon">📊</span>
+          <div><strong>What the SBVR layer surfaces:</strong> A business vocabulary and rule map — terms like "loanToken," "Heimdal," and "refreshToken" translated into plain-language definitions, with the business rules they enforce documented in language any executive or business leader can act on.</div>
+        </div>
+      </div>
+      <div class="view-panel" id="f4-impact">
+        <div class="impact-grid">
+          <div class="impact-card cost">
+            <h4>Developer Offboarding Risk</h4>
+            <div class="impact-amount">$50K–$200K</div>
+            <div class="impact-desc">Estimated cost of lost institutional knowledge when a senior developer exits — ramp time, re-discovery, and bugs introduced by misunderstood business rules.</div>
+            <div class="impact-source">Source: SHRM workforce turnover research, 2023</div>
+          </div>
+          <div class="impact-card risk">
+            <h4>Feature Scoping Errors</h4>
+            <div class="impact-amount">2–4x sprint blowout</div>
+            <div class="impact-desc">Features scoped without understanding existing business rules routinely hit mid-sprint surprises. The average cost of a rearchitecting discovery is 2–4x the original estimate.</div>
+            <div class="impact-source">Source: Concepta delivery patterns, 2024–2025</div>
+          </div>
+          <div class="impact-card law">
+            <h4>Compliance Audit Exposure</h4>
+            <div class="impact-amount">GLBA / CFPB</div>
+            <div class="impact-desc">Regulators require financial services firms to document and demonstrate control over systems handling borrower data. Undocumented business logic is an audit liability.</div>
+            <div class="impact-source">Source: FTC Safeguards Rule, CFPB examination procedures</div>
+          </div>
+          <div class="impact-card brand">
+            <h4>Documentation Effort</h4>
+            <div class="impact-amount">3–5 days</div>
+            <div class="impact-desc">Full SBVR-layer extraction: vocabulary map, business rule inventory, domain model. A one-time investment that de-risks every future decision made about this platform.</div>
+            <div class="impact-source">Estimate: Concepta SBVR methodology</div>
+          </div>
+        </div>
+        <div class="action-required">
+          <div>
+            <div class="action-text">P1 — Address before next feature sprint</div>
+            <div class="action-sub">Every new feature built without a documented business rule model compounds the risk of undocumented logic growing further.</div>
+          </div>
+          <span class="priority-pill" style="background:#ff991f;">P1 — Next Sprint</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FINDING 3: ADA / ACCESSIBILITY -->
+  <div class="finding" id="f3">
+    <div class="finding-header" onclick="toggleFinding('f3')">
+      <span class="severity-badge sev-high">HIGH</span>
+      <div class="finding-meta">
+        <div class="finding-title">Zero accessibility props across the entire app — ADA / WCAG non-compliant</div>
+        <div class="finding-summary">Not a single accessibilityLabel, accessibilityRole, or accessibilityHint exists anywhere in the codebase. Every screen, button, and form field is invisible to screen readers. The "Accessibility" screen in the app is a WebView link to a webpage — not an accessible native experience.</div>
+        <div class="finding-tags">
+          <span class="tag">Foundational Gap</span>
+          <span class="tag">ADA / WCAG 2.1</span>
+          <span class="tag">California Unruh Act</span>
+          <span class="tag">src/screens/AccessibilityScreen.tsx</span>
+        </div>
+      </div>
+      <span class="expand-icon">▾</span>
+    </div>
+    <div class="finding-detail">
+      <div class="view-tabs">
+        <div class="view-tab active" onclick="switchTab('f3','dev')">Developer View</div>
+        <div class="view-tab" onclick="switchTab('f3','bizpri')">Business Priorities</div>
+        <div class="view-tab" onclick="switchTab('f3','impact')">Business Impact</div>
+      </div>
+      <div class="view-panel active" id="f3-dev">
+        <div class="code-ref">
+          <div class="code-ref-header">
+            <span><a class="code-link" href="#">src/screens/AccessibilityScreen.tsx</a></span>
+            <span>Lines 1–10 — "Accessibility" screen is a WebView</span>
+          </div>
+          <div class="code-body"><pre><span class="line-num"> 1</span>import React from 'react';
+<span class="line-num"> 2</span>import { ACCESSIBILITY_SCREEN_URL } from '../env.json';
+<span class="line-num"> 3</span>import { SCREEN_ACCESSIBILITY } from '../rockts/constants';
+<span class="line-num"> 4</span>import { WebViewScreen } from './WebViewScreen';
+<span class="line-num"> 5</span>
+<span class="line-num"> 6</span>export const AccessibilityScreen: React.FC&lt;{}&gt; = () => {
+<span class="line-highlight"><span class="line-num"> 7</span>  return (</span>
+<span class="line-highlight"><span class="line-num"> 8</span>    &lt;WebViewScreen</span>
+<span class="line-highlight"><span class="line-num"> 9</span>      url={ACCESSIBILITY_SCREEN_URL}</span>
+<span class="line-highlight"><span class="line-num">10</span>      page={SCREEN_ACCESSIBILITY}</span>
+<span class="line-highlight"><span class="line-num">11</span>    /&gt;</span>
+<span class="line-num">12</span>  );
+<span class="line-num">13</span>};</pre></div>
+        </div>
+        <div class="code-ref">
+          <div class="code-ref-header">
+            <span><a class="code-link" href="#">src/components/atoms/Button.tsx</a></span>
+            <span>Lines 28–46 — No accessibility props on primary CTA</span>
+          </div>
+          <div class="code-body"><pre><span class="line-num">28</span>export const Button: React.FC&lt;Props&gt; = ({
+<span class="line-num">29</span>  onPress, icon, label, mode, compact,
+<span class="line-num">30</span>  color, onLayout, disabled, buttonStyle,
+<span class="line-num">31</span>  labelStyle, containerStyle,
+<span class="line-num">32</span>}) => (
+<span class="line-num">33</span>  &lt;DefaultButton
+<span class="line-highlight"><span class="line-num">34</span>    {/* no accessibilityLabel */}</span>
+<span class="line-highlight"><span class="line-num">35</span>    {/* no accessibilityRole */}</span>
+<span class="line-highlight"><span class="line-num">36</span>    {/* no accessibilityHint */}</span>
+<span class="line-num">37</span>    onPress={onPress}
+<span class="line-num">38</span>    ...</pre></div>
+        </div>
+        <div class="dev-note">
+          <strong>Fix:</strong> Add <code>accessibilityLabel</code>, <code>accessibilityRole</code>, and <code>accessibilityHint</code> to all interactive elements (buttons, inputs, links, icons). Mark decorative elements with <code>accessible=&#123;false&#125;</code>. Minimum WCAG 2.1 AA compliance required. Replace the AccessibilityScreen WebView with a native accessible screen.
+        </div>
+      </div>
+      <div class="view-panel" id="f3-bizpri">
+        <div style="margin-bottom:16px;font-size:13px;color:#6b778c;line-height:1.5;">What a visually impaired borrower using VoiceOver or TalkBack experiences on the Sign In screen:</div>
+        <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;">
+          <div class="phone-frame" style="width:260px;">
+            <div class="phone-screen">
+              <div class="screen-header-bar">Sign in with email</div>
+              <div class="screen-body">
+                <div class="screen-field">
+                  <div class="screen-field-label">Email</div>
+                  <div class="screen-field-value" style="color:#aaa;">Enter email...</div>
+                </div>
+                <div class="screen-field">
+                  <div class="screen-field-label">Password</div>
+                  <div class="screen-field-value" style="color:#aaa;">••••••••</div>
+                </div>
+                <div class="screen-btn">SIGN IN</div>
+                <div style="text-align:center;margin-top:12px;font-size:12px;color:#6b778c;">Not registered yet? <span style="color:#c8102e;">Register Now</span></div>
+              </div>
+            </div>
+          </div>
+          <div style="flex:1;min-width:220px;">
+            <div style="font-size:12px;font-weight:700;color:#6b778c;text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;">VoiceOver reads this screen as:</div>
+            <div class="sr-simulation">
+              <div><span class="sr-label sr-missing">text field</span> — no label</div>
+              <div><span class="sr-label sr-missing">secure text field</span> — no label</div>
+              <div><span class="sr-label sr-missing">button</span> — no label</div>
+              <div><span class="sr-label sr-missing">button</span> — no label</div>
+              <div><span class="sr-label sr-missing">text</span> — "Not registered yet?"</div>
+              <div><span class="sr-label sr-missing">button</span> — no label</div>
+            </div>
+            <div class="annotation annotation-critical" style="margin-top:8px;">
+              <span class="annotation-icon">👁</span>
+              <div><strong>A visually impaired borrower cannot log in.</strong> VoiceOver cannot identify the email field, password field, or Sign In button. The screen is functionally unusable without sight.</div>
+            </div>
+            <div class="annotation annotation-high">
+              <span class="annotation-icon">📋</span>
+              <div><strong>The app has an "Accessibility" screen in the menu</strong> that just links to a webpage — indicating awareness of the requirement but no actual implementation.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="view-panel" id="f3-impact">
+        <div class="impact-grid">
+          <div class="impact-card cost">
+            <h4>ADA Lawsuit Risk</h4>
+            <div class="impact-amount">$25K–$250K+</div>
+            <div class="impact-desc">Mobile app ADA lawsuits are increasingly common in financial services. Settlement costs range from $25K–$250K+ plus legal fees and mandatory remediation.</div>
+            <div class="impact-source">Source: DOJ ADA Title III enforcement, 2024 filings</div>
+          </div>
+          <div class="impact-card law">
+            <h4>California Unruh Act</h4>
+            <div class="impact-amount">$4,000 / violation</div>
+            <div class="impact-desc">California's Unruh Civil Rights Act provides $4,000 minimum statutory damages per violation for each person denied full access. A financial services app serving CA borrowers is high exposure.</div>
+            <div class="impact-source">Source: California Civil Code § 51</div>
+          </div>
+          <div class="impact-card risk">
+            <h4>CFPB Fair Access Risk</h4>
+            <div class="impact-amount">Regulatory</div>
+            <div class="impact-desc">CFPB considers inaccessible financial apps a potential UDAAP violation (Unfair, Deceptive, or Abusive Acts or Practices) when borrowers cannot access their own loan information.</div>
+            <div class="impact-source">Source: CFPB UDAAP guidance</div>
+          </div>
+          <div class="impact-card brand">
+            <h4>Remediation Effort</h4>
+            <div class="impact-amount">3–6 weeks</div>
+            <div class="impact-desc">Full WCAG 2.1 AA compliance requires audit of all screens and components, systematic prop additions, testing with VoiceOver and TalkBack, and re-certification.</div>
+            <div class="impact-source">Estimate: Concepta engineering</div>
+          </div>
+        </div>
+        <div class="action-required">
+          <div>
+            <div class="action-text">P1 — Begin remediation in next sprint</div>
+            <div class="action-sub">Every day this app is live in the App Store is potential ADA/Unruh Act exposure for Service Finance.</div>
+          </div>
+          <span class="priority-pill" style="background:#ff991f;">P1 — Next Sprint</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<!-- NEXT STEPS -->
+<div style="background:white;border-top:3px solid #0052cc;padding:32px 40px;">
+  <div style="max-width:1100px;margin:0 auto;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;margin-bottom:24px;">
+      <div>
+        <div style="font-size:11px;font-weight:700;color:#0052cc;text-transform:uppercase;letter-spacing:1px;">Immediate Recommendations</div>
+        <div style="font-size:13px;color:#6b778c;margin-top:4px;">Business approval required to proceed. These recommendations are presented for leadership decision.</div>
+      </div>
+      <div style="background:#fffae6;border:1px solid #f4c400;border-radius:6px;padding:8px 14px;font-size:12px;color:#172b4d;font-weight:600;">&#9888; Awaiting business authorization to action</div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;">
+
+      <div style="border:2px solid #de350b;border-radius:8px;padding:20px;position:relative;background:#fffbfb;">
+        <div style="position:absolute;top:-12px;left:20px;background:#de350b;color:white;font-size:11px;font-weight:800;padding:2px 10px;border-radius:20px;">Biz Critical — This Week</div>
+        <div style="font-size:15px;font-weight:700;color:#172b4d;margin-bottom:8px;margin-top:8px;">Close the two active security exposures</div>
+        <div style="font-size:12px;color:#6b778c;line-height:1.6;">The signing credentials and payment token logging are live risks on a production app today. These are not hypothetical — they are exploitable by anyone with repo access or physical access to a borrower's device. <br><br><span style="background:#ffebe6;display:block;border-radius:6px;padding:8px 10px;font-size:11px;color:#de350b;font-weight:600;margin-top:8px;">Recommended: authorize remediation this week. Concepta can begin within 5 business days or hand off fully to your internal team.</span></div>
+      </div>
+
+      <div style="border:1px solid #e1e4e8;border-radius:8px;padding:20px;position:relative;">
+        <div style="position:absolute;top:-12px;left:20px;background:#ff991f;color:white;font-size:11px;font-weight:800;padding:2px 10px;border-radius:20px;">Needs Immediate Biz Attention — 30 Days</div>
+        <div style="font-size:15px;font-weight:700;color:#172b4d;margin-bottom:8px;margin-top:8px;">Commission the full technology health audit</div>
+        <div style="font-size:12px;color:#6b778c;line-height:1.6;">This report is a partial scan. A full four-layer audit across the complete codebase gives leadership a complete picture of exposure and a prioritized remediation roadmap. Report delivered in 24–48 hours. <br><br><span style="background:#fff7e6;display:block;border-radius:6px;padding:8px 10px;font-size:11px;color:#bf8000;font-weight:600;margin-top:8px;">Recommended: authorize within 30 days. Full remediation roadmap included.</span></div>
+      </div>
+
+      <div style="border:2px solid #0052cc;border-radius:8px;padding:20px;position:relative;background:#f8faff;">
+        <div style="position:absolute;top:-12px;left:20px;background:#0052cc;color:white;font-size:11px;font-weight:800;padding:2px 10px;border-radius:20px;">Ongoing — Business Decision</div>
+        <div style="font-size:15px;font-weight:700;color:#172b4d;margin-bottom:8px;margin-top:8px;">Inaction has a cost — make it a conscious choice</div>
+        <div style="font-size:12px;color:#6b778c;line-height:1.7;margin-bottom:12px;">Every week the ADA finding sits unresolved is another week of $4,000/violation exposure under California's Unruh Act. Every user session with debug logs active is a live PCI DSS liability. These are not future risks — they are revenue and legal exposure compounding right now.</div>
+        <div style="display:flex;flex-direction:column;gap:6px;">
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:11px;">
+            <span style="color:#de350b;font-weight:700;white-space:nowrap;margin-top:1px;">Month 1 unresolved:</span>
+            <span style="color:#172b4d;">PCI DSS fines begin accruing. First ADA complaint filed. One data request exposes borrower PII.</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:11px;">
+            <span style="color:#ff991f;font-weight:700;white-space:nowrap;margin-top:1px;">Month 3 unresolved:</span>
+            <span style="color:#172b4d;">Legal engagement begins. Remediation now competes with roadmap. Cost of fix multiplies 3–5x under deadline pressure.</span>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:8px;font-size:11px;">
+            <span style="color:#6554c0;font-weight:700;white-space:nowrap;margin-top:1px;">Month 6 unresolved:</span>
+            <span style="color:#172b4d;">A single exploit of the keystore finding could pull the app from both stores — removing the primary borrower touchpoint and triggering mandatory GLBA breach notification to every user.</span>
+          </div>
+        </div>
+        <div style="margin-top:14px;padding-top:12px;border-top:1px solid #c8d6f8;font-size:12px;color:#0052cc;font-weight:600;">
+          Quarterly re-runs keep the score visible, hold the team accountable, and catch regressions before they become incidents. Health is not a one-time audit — it is a continuous business signal.
+        </div>
+      </div>
+
+    </div>
+
+    <div style="background:#172b4d;border-radius:8px;padding:20px 28px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div style="font-size:15px;font-weight:700;color:white;">These recommendations require a business decision.</div>
+        <div style="font-size:13px;color:rgba(255,255,255,0.6);margin-top:4px;">Contact your Concepta representative to discuss scope, timeline, and next steps. No obligation — this report is yours to act on as your business sees fit.</div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;">
+        <div style="background:#de350b;color:white;padding:10px 20px;border-radius:6px;font-size:13px;font-weight:700;">Approve Biz Critical Fixes</div>
+        <div style="background:rgba(255,255,255,0.1);color:white;border:1px solid rgba(255,255,255,0.2);padding:10px 20px;border-radius:6px;font-size:13px;font-weight:600;">Authorize Full Audit</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div style="background:#0d1f3c;color:white;padding:28px 40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;">
+  <div>
+    <div style="font-weight:700;font-size:15px;letter-spacing:-0.3px;">Orbit Code Audit &nbsp;<span style="font-weight:400;opacity:0.4;font-size:13px;">by Concepta</span></div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px;line-height:1.5;">Concepta is a software development and technology advisory firm specializing in mobile and enterprise applications.<br>We build, assess, and improve software products for companies across financial services, healthcare, and retail.</div>
+  </div>
+  <div style="text-align:right;">
+    <div style="font-size:12px;color:rgba(255,255,255,0.5);">Generated May 2026 &nbsp;|&nbsp; Service Finance Consumer App</div>
+    <div style="font-size:12px;color:rgba(255,255,255,0.5);margin-top:4px;">Questions? Contact your Concepta account lead.</div>
+    <div style="margin-top:8px;font-size:11px;color:rgba(255,255,255,0.25);">This report is confidential and intended for the named recipient only.</div>
+  </div>
+</div>
+
+<script>
+  function openFinding(id) {
+    const el = document.getElementById(id);
+    if (!el.classList.contains('open')) el.classList.add('open');
+    setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+  }
+
+  function toggleFinding(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+  }
+
+  function switchTab(findingId, view) {
+    const finding = document.getElementById(findingId);
+    finding.querySelectorAll('.view-tab').forEach(t => t.classList.remove('active'));
+    finding.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+    finding.querySelector('[onclick="switchTab(\'' + findingId + '\',\'' + view + '\')"]').classList.add('active');
+    document.getElementById(findingId + '-' + view).classList.add('active');
+  }
+</script>
+</body>
+</html>

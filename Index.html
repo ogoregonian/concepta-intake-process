@@ -2,894 +2,201 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Concepta — Intake & Request Processing · Presentation Suite</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concepta Internal Hub</title>
 <style>
-:root {
-  --ink:        #0f0f0f;
-  --ink-mid:    #3a3a3a;
-  --ink-light:  #6b7280;
-  --rule:       #e2ddd8;
-  --paper:      #f7f5f1;
-  --white:      #ffffff;
-  --blue:       #1d3557;
-  --blue-mid:   #2563eb;
-  --blue-light: #dbeafe;
-  --col: 780px;
-}
-
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--paper);
-  color: var(--ink);
-  font-size: 14px;
-  line-height: 1.7;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  background: #0a1220;
   min-height: 100vh;
+  color: white;
+  display: flex; flex-direction: column;
 }
 
-/* ── NAV ── */
-nav {
-  position: sticky; top: 0; z-index: 100;
-  background: #1d3557;
+header {
+  padding: 20px 48px;
   display: flex; align-items: center; justify-content: space-between;
-  padding: 0 32px; height: 56px;
-  box-shadow: 0 2px 12px rgba(0,0,0,.18);
-  gap: 24px;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
 }
-.nav-logo { display: flex; align-items: center; text-decoration: none; flex-shrink: 0; opacity: 1; transition: opacity .2s; }
-.nav-logo:hover { opacity: .75; }
-.nav-links { display: flex; align-items: center; gap: 2px; flex: 1; justify-content: flex-start; overflow-x: auto; scrollbar-width: none; flex-wrap: nowrap; }
-.nav-links::-webkit-scrollbar { display: none; }
-.nav-links a {
-  font-size: 11.5px; font-weight: 600; letter-spacing: .5px;
-  text-transform: uppercase; color: rgba(255,255,255,.8);
-  text-decoration: none; transition: color .15s, background .15s;
-  padding: 5px 10px; border-radius: 4px; white-space: nowrap; flex-shrink: 0;
-}
-.nav-links a:hover { color: #fff; background: rgba(255,255,255,.12); }
-.nav-links a.nav-active {
-  color: #fff;
-  background: rgba(255,255,255,.15);
-  border: 1px solid rgba(255,255,255,.25);
-}
-.nav-links a.nav-templates {
-  color: #fcd34d;
-  border: 1px solid rgba(252,211,77,.35);
-  border-radius: 4px;
-}
-.nav-links a.nav-templates:hover { background: rgba(252,211,77,.12); color: #fde68a; }
-.nav-div { width: 1px; height: 16px; background: rgba(255,255,255,.2); margin: 0 8px; flex-shrink: 0; }
+.brand { font-size: 12px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: white; }
+.brand span { color: #5b9bd5; }
+.header-sub { font-size: 11px; color: rgba(255,255,255,0.25); letter-spacing: 0.5px; }
 
-.nav-logo {
-  display: flex; align-items: center;
-  text-decoration: none; flex-shrink: 0;
-  opacity: 1; transition: opacity .2s;
-}
-.nav-logo:hover { opacity: .8; }
-.nav-links {
-  display: flex; align-items: center; gap: 2px;
-  flex: 1; justify-content: flex-end;
-  overflow-x: auto; scrollbar-width: none;
-}
-.nav-links::-webkit-scrollbar { display: none; }
-.nav-links a {
-  font-size: 11px; font-weight: 600; letter-spacing: .6px;
-  text-transform: uppercase; color: rgba(255,255,255,.6);
-  text-decoration: none; transition: color .2s, background .2s;
-  padding: 5px 10px; border-radius: 4px; white-space: nowrap;
-  flex-shrink: 0;
-}
-.nav-links a:hover { color: #fff; background: rgba(255,255,255,.08); }
-.nav-links a.nav-active {
-  color: #fff; background: rgba(255,255,255,.12);
-  border-bottom: 2px solid rgba(255,255,255,.5);
-}
-.nav-links a.nav-templates {
-  color: #fbbf24; border: 1px solid rgba(251,191,36,.3);
-  border-radius: 4px;
-}
-.nav-links a.nav-templates:hover {
-  background: rgba(251,191,36,.12); color: #fde68a;
-}
-.nav-div {
-  width: 1px; height: 16px;
-  background: rgba(255,255,255,.15);
-  margin: 0 6px; flex-shrink: 0;
-}
-
-
-/* ── HERO ── */
 .hero {
-  background: var(--blue);
-  color: #fff;
-  padding: 64px 40px 56px;
-  position: relative; overflow: hidden;
+  padding: 72px 48px 56px;
+  max-width: 700px;
 }
-.hero::before {
-  content: '';
-  position: absolute; inset: 0;
-  background: radial-gradient(ellipse at 75% 50%, rgba(37,99,235,.3) 0%, transparent 65%);
-  pointer-events: none;
+.hero-label {
+  font-size: 10px; font-weight: 800; letter-spacing: 3px; text-transform: uppercase;
+  color: #6C5CE7; margin-bottom: 16px;
 }
-.hero::after {
-  content: '';
-  position: absolute; bottom: -1px; left: 0; right: 0; height: 40px;
-  background: var(--paper);
-  clip-path: ellipse(55% 100% at 50% 100%);
+.hero-title {
+  font-size: 44px; font-weight: 800; line-height: 1.08;
+  margin-bottom: 16px; color: white;
 }
-.hero-inner { max-width: var(--col); margin: 0 auto; position: relative; }
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 8px;
-  font-size: 10px; font-weight: 600; letter-spacing: 1.5px;
-  text-transform: uppercase; color: rgba(255,255,255,.5);
-  border: 1px solid rgba(255,255,255,.15);
-  border-radius: 20px; padding: 4px 12px; margin-bottom: 20px;
-}
-.hero-eyebrow span { width: 6px; height: 6px; border-radius: 50%; background: #f59e0b; }
-.hero h1 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 40px; line-height: 1.15; color: #fff;
-  margin-bottom: 14px;
-}
-.hero h1 em { font-style: italic; color: rgba(255,255,255,.65); }
-.hero-sub {
-  font-size: 15px; color: rgba(255,255,255,.6);
-  max-width: 520px; margin-bottom: 32px; line-height: 1.65;
-}
-.hero-meta { display: flex; gap: 32px; flex-wrap: wrap; }
-.hero-meta-item { display: flex; flex-direction: column; gap: 2px; }
-.hero-meta-item .label { font-size: 9px; font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255,255,255,.4); }
-.hero-meta-item .value { font-size: 13px; font-weight: 500; color: rgba(255,255,255,.85); }
-.wip-badge {
-  display: inline-flex; align-items: center; gap: 6px;
-  background: rgba(245,158,11,.15); border: 1px solid rgba(245,158,11,.4);
-  border-radius: 4px; padding: 6px 12px;
-  font-size: 11px; font-weight: 600; color: #fbbf24;
-  margin-top: 24px;
+.hero-body {
+  font-size: 16px; color: rgba(255,255,255,0.45); line-height: 1.7; max-width: 560px;
 }
 
-/* ── LAYOUT ── */
-.page { max-width: var(--col); margin: 0 auto; padding: 48px 40px 80px; }
-
-/* ── SECTION LABEL ── */
-.section-label {
-  font-size: 9px; font-weight: 700; letter-spacing: 2px;
-  text-transform: uppercase; color: var(--ink-light);
-  display: flex; align-items: center; gap: 10px;
-  margin-bottom: 20px;
-}
-.section-label::after { content: ''; flex: 1; height: 1px; background: var(--rule); }
-.section-label .num {
-  width: 22px; height: 22px; border-radius: 50%;
-  background: var(--ink); color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 9px; font-weight: 700; flex-shrink: 0;
+.sections {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: rgba(255,255,255,0.06);
+  border-top: 1px solid rgba(255,255,255,0.06);
 }
 
-h2 {
-  font-family: 'DM Serif Display', serif;
-  font-size: 24px; line-height: 1.25; color: var(--ink);
-  margin-bottom: 8px;
-}
-p { color: var(--ink-mid); margin-bottom: 12px; }
-
-/* ── FLOW STEPS ── */
-.flow-steps {
-  display: flex; align-items: flex-start; gap: 0;
-  margin: 24px 0 40px; flex-wrap: wrap;
-}
-.flow-step {
-  display: flex; flex-direction: column; align-items: center;
-  flex: 1; min-width: 120px; position: relative;
-}
-.flow-step:not(:last-child)::after {
-  content: '→';
-  position: absolute; right: -10px; top: 14px;
-  font-size: 16px; color: #94a3b8;
-}
-.fs-num {
-  width: 32px; height: 32px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 700; margin-bottom: 8px;
-  flex-shrink: 0;
-}
-.fs-label { font-size: 11px; font-weight: 600; text-align: center; color: var(--ink); line-height: 1.3; }
-.fs-sub { font-size: 10px; color: var(--ink-light); text-align: center; margin-top: 3px; line-height: 1.3; }
-
-.fs-1 .fs-num { background: #1d3557; color: #fff; }
-.fs-2 .fs-num { background: #dbeafe; color: #1d4ed8; }
-.fs-3 .fs-num { background: #dcfce7; color: #15803d; }
-.fs-4 .fs-num { background: #fee2e2; color: #991b1b; }
-.fs-5 .fs-num { background: #fef3c7; color: #b45309; }
-
-/* ── LIFECYCLE DIAGRAM ── */
-.lifecycle-diagram {
-  display: flex; align-items: center; gap: 0;
-  margin: 24px 0 40px; flex-wrap: wrap; gap: 4px;
-}
-.lc-node {
-  display: flex; flex-direction: column; align-items: center;
-  min-width: 110px; max-width: 130px; text-align: center;
-  flex-shrink: 0;
-}
-.lc-num {
-  width: 32px; height: 32px; border-radius: 50%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 11px; font-weight: 700; margin-bottom: 7px; flex-shrink: 0;
-}
-.lc-label { font-size: 11px; font-weight: 700; color: var(--ink); line-height: 1.3; }
-.lc-sub { font-size: 9px; color: var(--ink-light); margin-top: 3px; line-height: 1.3; }
-.lc-arrow {
-  font-size: 18px; color: #94a3b8; flex-shrink: 0; padding: 0 4px;
-  align-self: center;
-}
-.lc-fork {
-  display: flex; flex-direction: column; align-items: center;
-  flex-shrink: 0;
-}
-.lc-fork-label {
-  font-size: 9px; font-weight: 700; letter-spacing: .8px; text-transform: uppercase;
-  color: var(--ink-light); margin-bottom: 8px; border: 1px solid var(--rule);
-  border-radius: 20px; padding: 2px 10px; background: var(--white);
-}
-.lc-fork-paths {
-  display: flex; gap: 10px; align-items: flex-start;
-}
-.lc-path {
-  display: flex; flex-direction: column; align-items: center; gap: 0;
-}
-.lc-path-badge {
-  font-size: 9px; font-weight: 700; padding: 2px 9px; border-radius: 10px;
-  margin-bottom: 5px; white-space: nowrap;
-}
-.lc-badge-green { background: #dcfce7; color: #15803d; }
-.lc-badge-red { background: #fee2e2; color: #991b1b; }
-.lc-arrow-down { font-size: 14px; color: #94a3b8; line-height: 1; margin-bottom: 4px; }
-.lc-arrow-converge { align-self: center; }
-
-/* ── DOC CARDS ── */
-.doc-cards { display: flex; flex-direction: column; gap: 14px; margin-top: 8px; }
-
-.doc-card {
-  display: flex; align-items: flex-start; gap: 16px;
-  background: var(--white);
-  border: 1.5px solid var(--rule);
-  border-radius: 10px; padding: 20px;
+.section-card {
+  background: #0a1220;
+  padding: 48px 44px 44px;
   text-decoration: none;
-  transition: box-shadow .2s, border-color .2s, transform .15s;
-  cursor: pointer;
-  position: relative; overflow: hidden;
+  color: white;
+  display: flex; flex-direction: column;
+  transition: background 0.2s;
+  position: relative;
+  overflow: hidden;
 }
-.doc-card::before {
-  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 4px;
+.section-card::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 3px;
+  opacity: 0;
+  transition: opacity 0.2s;
 }
-.doc-card:hover {
-  box-shadow: 0 6px 24px rgba(0,0,0,.1);
-  transform: translateY(-1px);
+.section-card:hover { background: #0f1e30; }
+.section-card:hover::before { opacity: 1; }
+
+.section-card.intake::before { background: #1D6A39; }
+.section-card.foundation::before { background: #6C5CE7; }
+.section-card.orbit::before { background: #0891b2; }
+
+.section-num {
+  font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 28px; opacity: 0.3;
 }
-
-.doc-card.brief { border-color: #93c5fd; }
-.doc-card.brief::before { background: #2563eb; }
-.doc-card.brief:hover { border-color: #2563eb; }
-
-.doc-card.d1 { border-color: #a5b4fc; }
-.doc-card.d1::before { background: #4c1d95; }
-.doc-card.d1:hover { border-color: #4c1d95; }
-
-.doc-card.d2 { border-color: #86efac; }
-.doc-card.d2::before { background: #15803d; }
-.doc-card.d2:hover { border-color: #15803d; }
-
-.doc-card.d3 { border-color: #fca5a5; }
-.doc-card.d3::before { background: #991b1b; }
-.doc-card.d3:hover { border-color: #991b1b; }
-
-.doc-card.billing { border-color: #fcd34d; }
-.doc-card.billing::before { background: #b45309; }
-.doc-card.billing:hover { border-color: #b45309; }
-
-.doc-icon {
-  width: 48px; height: 48px; border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 22px; flex-shrink: 0;
+.section-icon { font-size: 40px; margin-bottom: 24px; display: block; }
+.section-label {
+  font-size: 10px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 10px;
 }
-.brief .doc-icon  { background: #dbeafe; }
-.d1 .doc-icon     { background: #ede9fe; }
-.d2 .doc-icon     { background: #dcfce7; }
-.d3 .doc-icon     { background: #fee2e2; }
-.billing .doc-icon { background: #fef3c7; }
+.section-card.intake .section-label { color: #4ade80; }
+.section-card.foundation .section-label { color: #a78bfa; }
+.section-card.orbit .section-label { color: #38bdf8; }
 
-.doc-content { flex: 1; }
-.doc-step {
-  font-size: 9px; font-weight: 700; letter-spacing: 1.2px;
-  text-transform: uppercase; color: var(--ink-light); margin-bottom: 4px;
+.section-title {
+  font-size: 22px; font-weight: 800; line-height: 1.2;
+  margin-bottom: 14px; color: white;
 }
-.doc-title { font-size: 15px; font-weight: 700; color: var(--ink); margin-bottom: 4px; line-height: 1.3; }
-.doc-desc { font-size: 12.5px; color: var(--ink-light); line-height: 1.55; margin-bottom: 10px; }
-.doc-tags { display: flex; gap: 6px; flex-wrap: wrap; }
-.tag {
-  display: inline-flex; align-items: center;
-  font-size: 10px; font-weight: 600; padding: 2px 8px;
-  border-radius: 20px; border: 1px solid;
+.section-desc {
+  font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.7;
+  flex: 1;
 }
-.tag-blue   { background: #dbeafe; color: #1d4ed8; border-color: #93c5fd; }
-.tag-violet { background: #ede9fe; color: #6d28d9; border-color: #c4b5fd; }
-.tag-green  { background: #dcfce7; color: #15803d; border-color: #86efac; }
-.tag-red    { background: #fee2e2; color: #dc2626; border-color: #fca5a5; }
-.tag-amber  { background: #fef3c7; color: #b45309; border-color: #fcd34d; }
-.tag-gray   { background: #f3f4f6; color: #374151; border-color: #d1d5db; }
-.tag-wip    { background: #fff7ed; color: #c2410c; border-color: #fdba74; }
+.section-pages {
+  margin-top: 28px;
+  display: flex; flex-direction: column; gap: 6px;
+}
+.section-page-item {
+  font-size: 11px; color: rgba(255,255,255,0.3);
+  display: flex; align-items: center; gap: 6px;
+}
+.section-page-item::before { content: '—'; opacity: 0.4; }
 
-.doc-arrow {
-  font-size: 13px; font-weight: 700; color: var(--blue-mid);
-  flex-shrink: 0; align-self: center; margin-left: 8px;
-  opacity: 0; transition: opacity .2s;
+.section-cta {
+  margin-top: 32px; padding-top: 20px;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  display: flex; align-items: center; justify-content: space-between;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.5px;
 }
-.doc-card:hover .doc-arrow { opacity: 1; }
+.section-card.intake .section-cta { color: #4ade80; }
+.section-card.foundation .section-cta { color: #a78bfa; }
+.section-card.orbit .section-cta { color: #38bdf8; }
+.cta-arrow { font-size: 20px; transition: transform 0.15s; }
+.section-card:hover .cta-arrow { transform: translateX(4px); }
 
-/* ── TIPS ── */
-.tips {
-  background: var(--white); border: 1px solid var(--rule);
-  border-radius: 10px; padding: 20px 24px;
-  margin-top: 36px;
-}
-.tips h3 { font-size: 13px; font-weight: 700; margin-bottom: 14px; color: var(--ink); }
-.tip { display: flex; gap: 12px; margin-bottom: 10px; font-size: 13px; color: var(--ink-mid); }
-.tip:last-child { margin-bottom: 0; }
-.tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
-
-/* ── FOOTER ── */
 footer {
-  background: var(--ink); color: rgba(255,255,255,.45);
-  text-align: center; padding: 28px;
-  font-size: 11px; letter-spacing: .5px;
+  padding: 20px 48px;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  font-size: 11px; color: rgba(255,255,255,0.2);
+  display: flex; justify-content: space-between; align-items: center;
 }
-
-/* ── ANIMATE IN ── */
-@keyframes fadeUp {
-  from { opacity: 0; transform: translateY(12px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-.doc-card { animation: fadeUp .4s ease both; }
-.doc-card:nth-child(1) { animation-delay: .05s; }
-.doc-card:nth-child(2) { animation-delay: .10s; }
-.doc-card:nth-child(3) { animation-delay: .15s; }
-.doc-card:nth-child(4) { animation-delay: .20s; }
-.doc-card:nth-child(5) { animation-delay: .25s; }
-
-.nav-links a.nav-workflow {
-  color:#fff;
-  background:rgba(77,110,255,.25);
-  border:1px solid rgba(77,110,255,.5);
-  border-radius:4px;
-}
-.nav-links a.nav-workflow:hover {
-  background:rgba(77,110,255,.4);
-  border-color:#4d6eff;
-}
-.nav-links a.nav-workflow.nav-active {
-  background:#4d6eff;
-  border-color:#4d6eff;
-  border-bottom:2px solid #a0b0ff;
-}
-/* ── Beta Pilot links ── */
-.nav-links a.nav-pilot {
-  color:#fde68a;
-  background:rgba(245,158,11,.18);
-  border:1px solid rgba(245,158,11,.45);
-  border-radius:4px;
-  padding:5px 10px;
-}
-.nav-links a.nav-pilot:hover {
-  background:rgba(245,158,11,.32);
-  border-color:#f59e0b;
-  color:#fef3c7;
-}
-.nav-links a.nav-pilot.nav-active {
-  background:#f59e0b;
-  color:#0f172a;
-  border-color:#f59e0b;
-}
-
-.cn-links a.nav-workflow {
-  color:#fff;
-  background:rgba(77,110,255,.25);
-  border:1px solid rgba(77,110,255,.5);
-  border-radius:4px;
-}
-.cn-links a.nav-workflow:hover {
-  background:rgba(77,110,255,.4);
-}
-
-
-/* ── Budget dropdown ── */
-.nav-dropdown{position:relative;flex-shrink:0}
-.nav-dropdown-menu{
-  display:none;
-  position:absolute;top:calc(100% + 4px);left:0;
-  background:#1d3557;
-  border:1px solid rgba(255,255,255,.15);
-  border-radius:6px;
-  min-width:150px;
-  z-index:200;
-  box-shadow:0 8px 24px rgba(0,0,0,.3);
-  overflow:hidden;
-}
-.nav-dropdown:hover .nav-dropdown-menu{display:block}
-.nav-dropdown-menu a{
-  display:block;
-  font-size:11px;font-weight:600;letter-spacing:.5px;
-  text-transform:uppercase;color:rgba(255,255,255,.7);
-  text-decoration:none;padding:8px 14px;white-space:nowrap;
-  transition:background .12s,color .12s;
-}
-.nav-dropdown-menu a:hover{background:rgba(255,255,255,.1);color:#fff}
-.nav-dropdown-menu a.nav-active{color:#fff;background:rgba(255,255,255,.12)}
-.nav-dropdown > a::after{content:' ▾';font-size:9px;opacity:.6}
-
-
-/* ── Dropdown fix — overflow visible ── */
-.nav-links { overflow: visible !important; }
-nav { overflow: visible !important; }
-.nav-dropdown { position: static; }
-.nav-dropdown-menu {
-  position: fixed !important;
-  top: 52px !important;
-  margin-top: 0 !important;
-}
-.nav-dropdown:hover .nav-dropdown-menu { display: block; }
-
 </style>
 </head>
 <body>
 
-<nav>
-  <a href="Index.html" class="nav-logo" title="Home"><svg width="120" height="20" viewBox="0 0 201 33" fill="none" xmlns="http://www.w3.org/2000/svg" style="display:block">
-<path d="M41.4673 22.6537C39.8187 20.8428 38.9963 18.2178 39 14.7786C39.0038 11.3394 39.8262 8.71248 41.4673 6.89787C43.1122 5.08697 45.5118 4.18152 48.666 4.18152C50.7555 4.16768 52.8286 4.54703 54.775 5.29941V8.882C53.0032 8.00664 51.0527 7.54403 49.0725 7.52949H48.9653C47.0569 7.52949 45.5607 8.01757 44.4767 8.99384C43.3926 9.97 42.8525 11.889 42.8563 14.7506C42.8268 16.0424 42.9944 17.3313 43.3531 18.5736C43.5809 19.4472 44.0783 20.2287 44.7759 20.8092C45.3445 21.2551 46.0029 21.5753 46.7069 21.7483C47.4616 21.9236 48.2353 22.0063 49.0104 21.9941C51.0147 21.9922 52.9927 21.5433 54.7976 20.6807V24.2354C52.8505 24.9853 50.7779 25.3646 48.6886 25.3532C45.5344 25.3532 43.1348 24.4478 41.4899 22.6369" fill="white"/>
-<path d="M62.804 11.0065C62.4684 12.2414 62.3144 13.5176 62.3467 14.796C62.3155 16.0706 62.4695 17.3431 62.804 18.5742C63.0131 19.4422 63.4907 20.2238 64.1704 20.8099C64.7114 21.2542 65.3402 21.5817 66.0167 21.7712C67.505 22.0908 69.0452 22.0908 70.5335 21.7712C71.2106 21.5834 71.8398 21.2557 72.3797 20.8099C73.0592 20.2227 73.5384 19.4417 73.7517 18.5742C74.0824 17.3385 74.2345 16.0628 74.2035 14.7848C74.2345 13.5069 74.0824 12.231 73.7517 10.9954C73.537 10.1284 73.0581 9.34786 72.3797 8.75968C71.8415 8.31452 71.2142 7.98693 70.5391 7.79836C69.0508 7.47879 67.5106 7.47879 66.0223 7.79836C65.346 7.98793 64.717 8.31533 64.1761 8.75968C63.4978 9.34696 63.0205 10.1281 62.8098 10.9954L62.804 11.0065ZM59.343 20.1001C58.719 18.4018 58.4222 16.6026 58.468 14.796C58.4222 12.9893 58.719 11.1903 59.343 9.4919C59.8068 8.19677 60.6355 7.06011 61.7314 6.21665C62.6613 5.52686 63.7067 5.00467 64.8198 4.67407C67.0829 4.07023 69.4673 4.07023 71.7305 4.67407C72.8447 5.00567 73.8919 5.52776 74.8245 6.21665C75.9143 7.06222 76.737 8.19867 77.1959 9.4919C77.8246 11.1892 78.1235 12.9888 78.0766 14.796C78.1235 16.6032 77.8246 18.4029 77.1959 20.1001C76.734 21.3947 75.9071 22.5312 74.8132 23.3753C73.8806 24.0642 72.8335 24.5863 71.7191 24.918C69.4559 25.5217 67.0716 25.5217 64.8084 24.918C63.6954 24.5873 62.65 24.0651 61.72 23.3753C60.6243 22.5318 59.7955 21.3953 59.3318 20.1001" fill="white"/>
-<path d="M81.605 25.0514V6.27751C84.3483 4.90344 87.3777 4.18195 90.4523 4.17041C93.0872 4.17041 95.146 4.84676 96.629 6.19927C98.1121 7.55188 98.8649 9.42798 98.8875 11.8276V25.0514H95.0087V11.509C95.0663 10.473 94.7322 9.45276 94.0714 8.64731C93.4428 7.95059 92.1875 7.60033 90.3055 7.59662C88.648 7.5912 86.9999 7.84397 85.4217 8.34549V25.0514H81.605Z" fill="white"/>
-<path d="M105.216 22.6541C103.571 20.8432 102.749 18.2182 102.749 14.779C102.749 11.3398 103.571 8.71294 105.216 6.89833C106.865 5.08743 109.259 4.18198 112.415 4.18198C114.506 4.16864 116.581 4.54799 118.53 5.29978V8.88246C116.756 8.0063 114.804 7.54359 112.822 7.52985H112.765C110.857 7.52985 109.351 8.01803 108.248 8.9942C107.145 9.97046 106.603 11.8894 106.622 14.7511C106.59 16.043 106.758 17.3322 107.119 18.574C107.347 19.4461 107.842 20.2271 108.536 20.8097C109.098 21.2618 109.75 21.5913 110.45 21.7766C111.205 21.9524 111.979 22.0349 112.754 22.0226C114.758 22.02 116.736 21.5711 118.541 20.7091V24.2638C116.592 25.0132 114.517 25.3924 112.426 25.3816C109.27 25.3816 106.876 24.4761 105.228 22.6653" fill="white"/>
-<path d="M126.062 13.5438H136.728C136.675 12.8798 136.556 12.2226 136.372 11.5821C136.172 10.9174 135.892 10.2794 135.536 9.68168C135.155 9.029 134.595 8.49628 133.922 8.14471C133.145 7.74701 132.278 7.55452 131.403 7.58582C129.661 7.58582 128.379 8.03107 127.559 8.92157C126.74 9.81589 126.237 11.3585 126.062 13.5606V13.5438ZM122.246 15.0473C122.246 7.82243 125.298 4.20996 131.403 4.20996H131.449C134.219 4.20996 136.436 5.10799 138.1 6.90394C139.763 8.6999 140.592 11.1032 140.584 14.1139C140.584 15.092 140.545 16.0366 140.465 16.9085H126.124C126.587 20.4371 128.537 22.1995 131.974 22.1958C134.456 22.268 136.918 21.7364 139.144 20.6476V24.0738C136.842 24.994 134.377 25.4482 131.895 25.4096H131.77C130.625 25.4221 129.484 25.2695 128.383 24.9569C127.303 24.6309 126.287 24.1243 125.379 23.4589C124.317 22.633 123.523 21.5179 123.092 20.2508C122.489 18.5751 122.201 16.8036 122.246 15.0249" fill="white"/>
-<path d="M148.838 21.1674C150.244 21.7139 151.742 21.9944 153.253 21.9946C153.989 22.0062 154.723 21.9254 155.438 21.7543C156.092 21.5642 156.7 21.2426 157.223 20.8097C157.875 20.2463 158.34 19.4998 158.555 18.669C158.89 17.4684 159.044 16.2254 159.012 14.9802C159.043 13.6431 158.89 12.3078 158.555 11.012C158.353 10.1335 157.896 9.33297 157.24 8.70918C156.747 8.27034 156.171 7.93382 155.545 7.71997C154.924 7.54093 154.279 7.45426 153.632 7.46289C150.432 7.46289 148.832 8.4875 148.832 10.5368V21.1563L148.838 21.1674ZM145.038 32.8711V10.794C145.02 9.75616 145.275 8.73154 145.778 7.82058C146.112 7.15174 146.569 6.55082 147.127 6.04879C147.881 5.44406 148.752 4.9972 149.685 4.7353C150.964 4.34392 152.299 4.15524 153.637 4.17641C154.395 4.1754 155.15 4.24281 155.895 4.37762C156.744 4.55255 157.56 4.85808 158.312 5.28307C159.174 5.74557 159.941 6.36576 160.571 7.11072C161.308 8.05328 161.851 9.13005 162.169 10.2797C162.615 11.8104 162.828 13.3984 162.8 14.9915C162.847 16.7661 162.562 18.5339 161.959 20.2061C161.524 21.4837 160.711 22.6029 159.628 23.4199C158.713 24.0812 157.695 24.5873 156.613 24.9177C155.511 25.2315 154.371 25.384 153.225 25.3705C151.732 25.3761 150.245 25.1729 148.81 24.7669V32.8711H145.038Z" fill="white"/>
-<path d="M166.369 7.7202L173.782 0.297852V4.50092H179.304V7.7202H173.782V19.5972C173.782 21.1956 174.804 21.995 176.848 21.995H176.888C177.736 22.0152 178.574 21.7983 179.304 21.369V24.7783C178.408 25.1427 177.449 25.3325 176.481 25.3372H176.379C175.84 25.3323 175.303 25.2724 174.776 25.1584C174.071 24.9913 173.386 24.7515 172.732 24.443C171.897 24.0506 171.21 23.4043 170.773 22.5985C170.227 21.5998 169.961 20.4749 170 19.3401V7.7202H166.369Z" fill="white"/>
-<path d="M186.96 18.5124C186.96 20.8337 188.622 21.9945 191.945 21.9945H192.007C195.14 21.9945 196.707 20.8767 196.71 18.641V15.3377C195.516 15.1654 194.31 15.0777 193.102 15.075C192.518 15.0778 191.935 15.1282 191.358 15.226C190.694 15.3409 190.037 15.4976 189.393 15.6955C188.728 15.8915 188.126 16.2578 187.649 16.7575C187.197 17.2318 186.951 17.8611 186.96 18.5124ZM183.166 18.5571C183.139 17.607 183.365 16.6666 183.822 15.8306C184.28 14.9947 184.951 14.2927 185.769 13.7952C187.5 12.655 189.891 12.0849 192.939 12.0849C194.201 12.0816 195.46 12.1618 196.71 12.3252C196.631 10.5926 196.146 9.35738 195.282 8.60289C194.418 7.8483 192.979 7.48499 190.997 7.48499C189.037 7.51458 187.095 7.86194 185.249 8.51342V5.28852C187.254 4.53894 189.379 4.16009 191.522 4.17062C194.416 4.17062 196.65 4.91589 198.224 6.40632C199.797 7.89674 200.586 10.0244 200.589 12.7891V18.7192C200.588 19.1602 200.545 19.5999 200.46 20.0327C200.316 20.6144 200.105 21.1772 199.827 21.7094C199.499 22.3914 199.036 23.0014 198.467 23.5036C197.711 24.1093 196.839 24.5562 195.903 24.8169C194.624 25.2074 193.29 25.396 191.951 25.3758C190.588 25.4067 189.228 25.218 187.926 24.8169C186.977 24.5435 186.093 24.0876 185.323 23.4756C184.73 22.9654 184.248 22.3418 183.905 21.6423C183.616 21.0946 183.4 20.5123 183.261 19.9097C183.184 19.463 183.144 19.0105 183.143 18.5571" fill="white"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M29.0499 5.45796C29.0515 5.29712 29.0196 5.13765 28.9589 4.9887C28.8982 4.83977 28.8072 4.70433 28.6922 4.59018C28.5772 4.47603 28.4415 4.38544 28.2914 4.32362C28.1413 4.2618 27.9816 4.22998 27.8187 4.22998H8.86133V14.2229H17.175C17.6525 14.2229 18.1093 14.4105 18.4462 14.7442C18.7832 15.078 18.9732 15.5306 18.9732 16.0026V24.2426H29.0675V5.45796H29.0499Z" fill="#4d6eff"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M8.86109 14.223H1.10311C0.911479 14.2234 0.72464 14.1676 0.563348 14.0626C0.403653 13.9576 0.279093 13.8081 0.205633 13.6329C0.132174 13.4577 0.111396 13.2648 0.148126 13.0784C0.184856 12.892 0.275895 12.7205 0.411636 12.5856L8.86109 4.22998" fill="#a0b0ff"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M29.0675 24.2427L20.6181 32.6073C20.4839 32.7416 20.3115 32.8333 20.1246 32.8705C19.9362 32.9079 19.743 32.8889 19.5657 32.8164C19.39 32.7439 19.2383 32.6209 19.1329 32.4631C19.0275 32.3055 18.9716 32.1201 18.9732 31.931V24.2427" fill="#a0b0ff"/>
-</svg></a>
-  <div class="nav-links">
-    <a href="Index.html" class="nav-active">Home</a>
-    <a href="Phase1_Start_Here.html" class="nav-pilot">⚡ Pilot — Start Here</a>
-
-    <a href="Diagram_Beta_Pilot_Manual.html" class="nav-pilot">Pilot — Workflow</a>
-
-    <a href="Reference_Phase1_Workflow.html" class="nav-pilot">Pilot — Reference</a>
-
-    <div class="nav-div"></div>
-
-    <a href="Concepta_Intake_Process_Executive_Brief.html">Initiative Brief</a>
-
-    <a href="Workflow_Macro_Visual.html" class="nav-workflow">Future Phase Workflow</a>
-    <div class="nav-div"></div>
-    <a href="Reference_Prerequisites_GoLive.html">Account Setup</a>
-    <a href="Reference_Intake_Form.html">Intake / Request Tracking</a>
-    <a href="Reference_Budget_Model.html">Budget Model</a>
-    <div class="nav-div"></div>
-    <a href="Templates.html" class="nav-templates">⊞ Templates</a>
-    <a href="https://www.notion.so/concepta/Internal-Team-Meetings-17b4767c73b0802fae20ecc7c6981ad5" target="_blank" class="nav-templates" style="margin-left:2px">📋 Meeting Notes</a>
-    <a href="WIP.html" class="nav-wip" style="margin-left:2px">🚧 WIP</a>
-    <a href="Archive.html" class="nav-archive" style="margin-left:4px">📦 Archive</a>
-  </div>
-</nav>
+<header>
+  <div class="brand">Concepta <span>Technology</span></div>
+  <div class="header-sub">Internal Hub &nbsp;·&nbsp; concepta-intake-process.pages.dev</div>
+</header>
 
 <div class="hero">
-  <div class="hero-inner">
-    <div class="hero-eyebrow"><span></span> Intake & Request Processing Initiative</div>
-    <h1>Intake & Request<br><em>Processing Initiative</em></h1>
-    <p class="hero-sub">A structured framework for capturing, validating, categorizing, and routing client requests — with AI-assisted automation, budget-aligned operations, and client-visible billing transparency across all accounts.</p>
-    <div class="hero-meta">
-      <div class="hero-meta-item">
-        <span class="label">Status</span>
-        <span class="value">🚧 Work In Progress</span>
-      </div>
-      <div class="hero-meta-item">
-        <span class="label">Owner</span>
-        <span class="value">Product Delivery Team</span>
-      </div>
-      <div class="hero-meta-item">
-        <span class="label">Scope</span>
-        <span class="value">All Client Accounts</span>
-      </div>
-    </div>
-    <div class="wip-badge">⚠ Process documentation is complete · Manual pilot runs first — AI Agent is Phase 2</div>
-
-    <div style="display:flex;align-items:center;gap:10px;margin-top:14px;flex-wrap:wrap">
-      <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(22,163,74,.15);border:1px solid rgba(22,163,74,.4);border-radius:6px;padding:8px 14px">
-        <span style="width:8px;height:8px;border-radius:50%;background:#4ade80;flex-shrink:0;box-shadow:0 0 6px #4ade80"></span>
-        <span style="font-size:11px;font-weight:700;color:#4ade80;letter-spacing:.3px">PHASE 1 — ACTIVE</span>
-        <span style="font-size:11px;color:rgba(255,255,255,.6)">Manual Pilot · Process &amp; Tooling Validation</span>
-      </div>
-      <div style="font-size:10px;color:rgba(255,255,255,.4);letter-spacing:.3px">Phase 2: AI Agent · Pending pilot sign-off</div>
-    </div>
-
-    <div style="margin-top:16px;background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.15);border-radius:8px;padding:14px 18px;max-width:640px">
-      <div style="font-family:'Syne',sans-serif;font-size:10px;font-weight:700;color:rgba(255,255,255,.4);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px">Pilot Account — Team to Align</div>
-      <div style="font-size:12px;color:rgba(255,255,255,.7);line-height:1.7">
-        The team will decide which account to pilot on in the 2pm session. The pilot account must meet these criteria before the first request can be processed end to end:
-      </div>
-      <div style="margin-top:10px;display:flex;flex-direction:column;gap:5px">
-        <div style="font-size:11px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:flex-start"><span style="color:#fbbf24;flex-shrink:0">→</span>Basecamp 4 Request Board configured with correct columns</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:flex-start"><span style="color:#fbbf24;flex-shrink:0">→</span>Smartsheet Client Request Tracker set up with New Request and Reported Issue forms built and tested</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:flex-start"><span style="color:#fbbf24;flex-shrink:0">→</span>Service budget buckets defined and Zoho epics active</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:flex-start"><span style="color:#fbbf24;flex-shrink:0">→</span>Definition of Done defined for the account</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:flex-start"><span style="color:#fbbf24;flex-shrink:0">→</span>Planning ceremony schedule defined</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:flex-start"><span style="color:#fbbf24;flex-shrink:0">→</span>Production support service defined with dedicated team assigned</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:flex-start"><span style="color:#fbbf24;flex-shrink:0">→</span>SLA response times and severity definitions agreed with client</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:flex-start"><span style="color:#fbbf24;flex-shrink:0">→</span>Slack → Smartsheet notification configured for the account channel</div>
-        <div style="font-size:11px;color:rgba(255,255,255,.6);display:flex;gap:8px;align-items:flex-start"><span style="color:#fbbf24;flex-shrink:0">→</span>PDM confirmed as pilot owner with active client relationship on the account</div>
-      </div>
-      <div style="margin-top:10px;font-size:10px;color:rgba(255,255,255,.35);font-style:italic">Reference: <a href="Reference_Prerequisites_GoLive.html" style="color:rgba(255,255,255,.45);text-decoration:underline">Account Setup Prerequisites →</a></div>
-    </div>
-
-  </div>
+  <div class="hero-label">Internal Resources</div>
+  <div class="hero-title">Concepta<br>Delivery Hub</div>
+  <div class="hero-body">Three practice areas. One place. Select a section below to access its documentation, diagrams, and reference materials.</div>
 </div>
 
-<div class="page">
+<div class="sections">
 
-  <!-- ── BETA PILOT LAUNCH ── -->
-  <div style="background:linear-gradient(135deg,#fef3c7 0%,#fed7aa 100%);border:2px solid #f59e0b;border-radius:14px;padding:24px 28px;margin-bottom:36px;box-shadow:0 4px 18px rgba(245,158,11,.18)">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap">
-      <span style="font-family:'Syne',sans-serif;font-size:10px;font-weight:800;color:#92400e;letter-spacing:1.5px;text-transform:uppercase;background:rgba(245,158,11,.25);border:1px solid #f59e0b;border-radius:20px;padding:4px 12px">⚡ Beta Pilot · Phase 1 Active</span>
-      <span style="font-size:11px;color:#78350f;font-weight:600">Manual process · Validate before AI Agent</span>
+  <!-- INTAKE PROCESS -->
+  <a class="section-card intake" href="Intake_Landing.html">
+    <div class="section-num">01</div>
+    <span class="section-icon">📥</span>
+    <div class="section-label">Client Operations</div>
+    <div class="section-title">Intake Process</div>
+    <div class="section-desc">Standardized client request intake flows, reference documentation, and account setup guides. How requests enter the system and move through delivery.</div>
+    <div class="section-pages">
+      <div class="section-page-item">Request flow diagrams</div>
+      <div class="section-page-item">Reference docs &amp; templates</div>
+      <div class="section-page-item">AI Agent MVP overview</div>
+      <div class="section-page-item">Budget model &amp; T-shirt sizing</div>
     </div>
-    <h2 style="font-family:'Syne',sans-serif;font-size:22px;color:#78350f;margin-bottom:6px">Start Here for the Pilot</h2>
-    <p style="font-size:13px;color:#78350f;line-height:1.6;margin-bottom:18px;max-width:680px">Phase 1 is the team running the workflow manually so we validate the structure on real requests before any of it gets handed to an AI Agent. The three documents below are the operating reference for the pilot.</p>
-
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px">
-
-      <a href="Phase1_Start_Here.html" style="background:#fff;border:1.5px solid #f59e0b;border-radius:10px;padding:16px 18px;text-decoration:none;display:flex;flex-direction:column;gap:6px;transition:transform .15s,box-shadow .15s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 22px rgba(245,158,11,.25)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:#92400e;letter-spacing:1.2px;text-transform:uppercase">⚡ Cliff Notes</div>
-        <div style="font-size:14px;font-weight:700;color:#78350f">Pilot — Start Here</div>
-        <div style="font-size:11.5px;color:#9a3412;line-height:1.5">The kickoff page. Roles, the 8-stage flow, what's different starting now, the three tools we operate in. Read this first.</div>
-        <div style="font-size:10px;color:#c2410c;font-weight:700;margin-top:4px;letter-spacing:.3px">OPEN →</div>
-      </a>
-
-      <a href="Diagram_Beta_Pilot_Manual.html" style="background:#fff;border:1.5px solid #f59e0b;border-radius:10px;padding:16px 18px;text-decoration:none;display:flex;flex-direction:column;gap:6px;transition:transform .15s,box-shadow .15s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 22px rgba(245,158,11,.25)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:#92400e;letter-spacing:1.2px;text-transform:uppercase">🗺 Visual</div>
-        <div style="font-size:14px;font-weight:700;color:#78350f">Pilot — Workflow Diagram</div>
-        <div style="font-size:11.5px;color:#9a3412;line-height:1.5">Three lanes (Client / PDM / DM) × eight phases. Click any step for the What, Who, and Why. Combined view of New Requests + Reported Issues.</div>
-        <div style="font-size:10px;color:#c2410c;font-weight:700;margin-top:4px;letter-spacing:.3px">OPEN →</div>
-      </a>
-
-      <a href="Reference_Phase1_Workflow.html" style="background:#fff;border:1.5px solid #f59e0b;border-radius:10px;padding:16px 18px;text-decoration:none;display:flex;flex-direction:column;gap:6px;transition:transform .15s,box-shadow .15s" onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 22px rgba(245,158,11,.25)'" onmouseout="this.style.transform='';this.style.boxShadow=''">
-        <div style="font-family:'Syne',sans-serif;font-size:9px;font-weight:700;color:#92400e;letter-spacing:1.2px;text-transform:uppercase">📖 Manual</div>
-        <div style="font-size:14px;font-weight:700;color:#78350f">Pilot — Full Reference</div>
-        <div style="font-size:11.5px;color:#9a3412;line-height:1.5">Stage-by-stage detail, stuck-state playbook, source-of-truth rules, and the DM operating mechanics with step-by-step procedures.</div>
-        <div style="font-size:10px;color:#c2410c;font-weight:700;margin-top:4px;letter-spacing:.3px">OPEN →</div>
-      </a>
-
+    <div class="section-cta">
+      Open Intake Process <span class="cta-arrow">→</span>
     </div>
-  </div>
+  </a>
 
-  <!-- ── PRESENTATION FLOW ── -->
-  <div class="section-label"><div class="num">1</div> How Requests Are Processed</div>
-  <h2>The End-to-End Lifecycle</h2>
-  <p>Every request enters through the same intake point, then routes to one of two workflows depending on type. Both paths feed into the same tracking and reporting layer.</p>
-
-  <div class="lifecycle-diagram">
-
-    <!-- Step 1: Intake -->
-    <div class="lc-node lc-start">
-      <div class="lc-num" style="background:#1d3557;color:#fff">1</div>
-      <div class="lc-label">Submit Request</div>
-      <div class="lc-sub">via Basecamp Submission Board</div>
+  <!-- FOUNDATION PLAY -->
+  <a class="section-card foundation" href="Foundation_Landing.html">
+    <div class="section-num">02</div>
+    <span class="section-icon">🏗</span>
+    <div class="section-label">AI Strategy</div>
+    <div class="section-title">Foundation Play</div>
+    <div class="section-desc">Foundational domain and capability framework. AI-enhanced SDLC. The strategic operating model for how Concepta builds and manages software at scale.</div>
+    <div class="section-pages">
+      <div class="section-page-item">Capability framework pitch</div>
+      <div class="section-page-item">SDLC walkthrough (10 min)</div>
+      <div class="section-page-item">Current state vs. AI-native diagrams</div>
+      <div class="section-page-item">Role shifts &amp; bottleneck analysis</div>
     </div>
-
-    <div class="lc-arrow">→</div>
-
-    <!-- Step 2: Validate & Route -->
-    <div class="lc-node lc-blue">
-      <div class="lc-num" style="background:#dbeafe;color:#1d4ed8">2</div>
-      <div class="lc-label">Validate &amp; Route</div>
-      <div class="lc-sub">PDM (manual pilot) · Zoho · Smartsheet</div>
+    <div class="section-cta">
+      Open Foundation Play <span class="cta-arrow">→</span>
     </div>
+  </a>
 
-    <div class="lc-arrow">→</div>
-
-    <!-- Fork -->
-    <div class="lc-fork">
-      <div class="lc-fork-label">Request type?</div>
-      <div class="lc-fork-paths">
-
-        <!-- New Request path -->
-        <div class="lc-path">
-          <div class="lc-path-badge lc-badge-green">New Request</div>
-          <div class="lc-arrow-down">↓</div>
-          <div class="lc-node lc-green">
-            <div class="lc-num" style="background:#dcfce7;color:#15803d">3a</div>
-            <div class="lc-label">Analyze &amp; Scope</div>
-            <div class="lc-sub">PDM · SA · Notion · Smartsheet</div>
-          </div>
-        </div>
-
-        <!-- Production Issue path -->
-        <div class="lc-path">
-          <div class="lc-path-badge lc-badge-red">Production Issue</div>
-          <div class="lc-arrow-down">↓</div>
-          <div class="lc-node lc-red">
-            <div class="lc-num" style="background:#fee2e2;color:#991b1b">3b</div>
-            <div class="lc-label">Triage &amp; Resolve</div>
-            <div class="lc-sub">Prod Support · Dev · QA</div>
-          </div>
-        </div>
-
-      </div>
+  <!-- ORBIT / CODE ANALYSIS -->
+  <a class="section-card orbit" href="Orbit_Landing.html">
+    <div class="section-num">03</div>
+    <span class="section-icon">🔭</span>
+    <div class="section-label">Code Intelligence</div>
+    <div class="section-title">Orbit</div>
+    <div class="section-desc">AI-powered code health monitoring, error intelligence, and observability for client platforms. Proactive issue detection before clients feel the impact.</div>
+    <div class="section-pages">
+      <div class="section-page-item">Live analytics dashboard</div>
+      <div class="section-page-item">Client account reports</div>
+      <div class="section-page-item">Error pattern analysis</div>
+      <div class="section-page-item">Code health scoring</div>
     </div>
-
-    <div class="lc-arrow lc-arrow-converge">→</div>
-
-    <!-- Step 4: Track & Report -->
-    <div class="lc-node lc-amber">
-      <div class="lc-num" style="background:#fef3c7;color:#b45309">4</div>
-      <div class="lc-label">Track &amp; Report</div>
-      <div class="lc-sub">Zoho · Billing View</div>
+    <div class="section-cta">
+      Open Orbit <span class="cta-arrow">→</span>
     </div>
-
-  </div>
-
-  <!-- ── DOCUMENTS ── -->
-  <div class="section-label"><div class="num">2</div> Process Workflows</div>
-  <h2>Understand the Process</h2>
-  <p style="margin-bottom:20px">Start with the Executive Brief for context. For the current operating model, refer to the Beta Pilot section above. The Future Phase Workflow shows the end-state with AI Agent automation — the destination once the pilot is validated.</p>
-
-  <div class="doc-cards">
-
-    <!-- Executive Brief -->
-    <a href="Concepta_Intake_Process_Executive_Brief.html" target="_blank" class="doc-card brief">
-      <div class="doc-icon">📄</div>
-      <div class="doc-content">
-        <div class="doc-step">Start Here</div>
-        <div class="doc-title">Executive Brief — Intake & Request Processing Initiative</div>
-        <div class="doc-desc">The strategic document covering background, goals, operational guidelines (including documentation discipline), workflow stages, data & visibility principles, next steps, and links to all four operational reference documents. Brief by design — detail lives in the reference docs.</div>
-        </div>
-      <div class="doc-arrow">↗</div>
-    </a>
-
-    <!-- Future Phase Workflow Map -->
-    <a href="Workflow_Macro_Visual.html" target="_blank" class="doc-card d1">
-      <div class="doc-icon">🗂️</div>
-      <div class="doc-content">
-        <div class="doc-step">Future Phase · End-State Reference</div>
-        <div class="doc-title">Future Phase Workflow Map — All Three Processes</div>
-        <div class="doc-desc">Interactive swim-lane map showing the end-state workflow including AI Agent automation. Covers all three workflows — Intake Request, New Request, and Reported Issue. Each step is clickable with full details. <strong>This is where we're going. For the current operating model during the manual pilot, see the Beta Pilot section above.</strong></div>
-        </div>
-      <div class="doc-arrow">↗</div>
-    </a>
-
-    <!-- Diagram 2 -->
-
-
-
-  </div>
-
-
-  <hr style="border:none;border-top:1px solid var(--rule);margin:36px 0">
-
-  <!-- ── FUTURE PHASE ── -->
-  <div class="section-label"><div class="num">5</div> Future Phase</div>
-  <h2>AI Agent — Phase 2</h2>
-  <p style="margin-bottom:20px">These documents are ready for reference but not active during the manual pilot. The AI Agent is introduced after the manual process is validated and the team has signed off.</p>
-
-  <div style="background:#f5f3ff;border:1.5px solid #c4b5fd;border-radius:10px;padding:12px 16px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap">
-    <div style="display:flex;align-items:center;gap:10px;flex:1">
-      <span style="font-size:14px;flex-shrink:0">🤖</span>
-      <span style="font-size:12px;color:#4c1d95;line-height:1.6"><strong>Not active during Phase 1.</strong> The AI Agent is introduced only after the manual pilot is validated end to end and the team has signed off. Every step marked "PDM (manual pilot) → AI Agent (Phase 2)" in the Workflow Map is performed by the PDM manually until then.</span>
-    </div>
-    <a href="WIP.html" style="font-family:'DM Serif Display',serif;font-size:11px;font-weight:700;color:#5b21b6;text-decoration:none;white-space:nowrap;background:#ede9fe;border:1px solid #c4b5fd;border-radius:6px;padding:6px 12px">View in 🚧 WIP →</a>
-  </div>
-
-  <div class="doc-cards">
-
-    <a href="Reference_AI_Agent_Technical_Spec.html" target="_blank" class="doc-card" style="border-color:#c4b5fd">
-      <div class="doc-icon" style="background:#f5f3ff">🔧</div>
-      <div class="doc-content">
-        <div class="doc-step">Future Phase · Labs Team</div>
-        <div class="doc-title">AI Agent — Build Specification</div>
-        <div class="doc-desc">Complete technical spec for the Phase 1 MVP build — integrations, triggers, action logic, notification templates, per-account config object, and all 8 acceptance test cases. Intended for the internal labs team and PDM lead.</div>
-        </div>
-      <div class="doc-arrow">↗</div>
-    </a>
-
-    <a href="Reference_AI_Agent_MVP.html" target="_blank" class="doc-card" style="border-color:#c4b5fd">
-      <div class="doc-icon" style="background:#f5f3ff">🤖</div>
-      <div class="doc-content">
-        <div class="doc-step">Future Phase · AI Agent</div>
-        <div class="doc-title">AI Agent MVP Definition & Per-Account Configuration</div>
-        <div class="doc-desc">Phase 1 and Phase 2 scope, 8 MVP acceptance criteria, and the complete per-account configuration checklist for the internal labs team and PDM. Use when configuring the agent on a new account.</div>
-        </div>
-      <div class="doc-arrow">↗</div>
-    </a>
-
-  </div>
-
-  <hr style="border:none;border-top:1px solid var(--rule);margin:36px 0">
-
-  <!-- ── PILOT ACCOUNT ── -->
-  <div class="section-label"><div class="num">3</div> Pilot Rollout</div>
-  <h2>Where We Start</h2>
-  <p style="margin-bottom:20px">The pilot launched on May 4, 2026 across all active client accounts — SFC, Heller, Kingdom Strollers, Anago, Vatos, and Darihana. The PDM and DM teams run the manual process end to end across the portfolio, surfacing what works and what needs to change before the AI Agent layer is added.</p>
-
-  <div style="background:#fff;border:1.5px solid #e2e8f0;border-radius:12px;overflow:hidden;box-shadow:0 2px 10px rgba(0,0,0,.05)">
-
-    <!-- Header -->
-    <div style="background:#f8fafc;border-bottom:1.5px solid #e2e8f0;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px">
-      <div>
-        <div style="font-family:'DM Serif Display',serif;font-size:15px;font-weight:700;color:#0f172a;margin-bottom:3px">Active Client Accounts</div>
-        <div style="font-size:12px;color:#64748b">SFC · Heller · Kingdom Strollers · Anago · Vatos · Darihana</div>
-      </div>
-      <div style="display:inline-flex;align-items:center;gap:7px;background:#f0fdf4;border:1px solid #86efac;border-radius:6px;padding:6px 12px">
-        <span style="font-size:11px">🟢</span>
-        <span style="font-family:'DM Serif Display',serif;font-size:11px;font-weight:700;color:#166534;letter-spacing:.3px">Pilot launched May 4, 2026</span>
-      </div>
-    </div>
-
-    <!-- Requirements -->
-    <div style="padding:20px 24px">
-      <div style="font-family:'DM Serif Display',serif;font-size:12px;font-weight:700;color:#334155;letter-spacing:.5px;text-transform:uppercase;margin-bottom:14px">Per-account setup checklist</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-
-        <div style="display:flex;gap:10px;align-items:flex-start;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px">
-          <span style="font-size:14px;flex-shrink:0">📋</span>
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:3px">Basecamp 4 Request Board</div>
-            <div style="font-size:11px;color:#64748b;line-height:1.5">Configured with standard columns and both intake form cards linked</div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:10px;align-items:flex-start;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px">
-          <span style="font-size:14px;flex-shrink:0">📊</span>
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:3px">Smartsheet Client Request Tracker</div>
-            <div style="font-size:11px;color:#64748b;line-height:1.5">New Request and Reported Issue forms built, tested, and linked to the board</div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:10px;align-items:flex-start;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px">
-          <span style="font-size:14px;flex-shrink:0">💰</span>
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:3px">Budget Buckets &amp; Zoho Epics</div>
-            <div style="font-size:11px;color:#64748b;line-height:1.5">Service budget buckets defined and account epics active in Zoho Sprints</div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:10px;align-items:flex-start;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px">
-          <span style="font-size:14px;flex-shrink:0">✅</span>
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:3px">Definition of Done (DoD)</div>
-            <div style="font-size:11px;color:#64748b;line-height:1.5">Defined, documented, and aligned with the full delivery team for this account</div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:10px;align-items:flex-start;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px">
-          <span style="font-size:14px;flex-shrink:0">📅</span>
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:3px">Planning Ceremonies Defined</div>
-            <div style="font-size:11px;color:#64748b;line-height:1.5">Ceremony schedule agreed — this governs the inactivity threshold for new request monitoring</div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:10px;align-items:flex-start;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px">
-          <span style="font-size:14px;flex-shrink:0">🚨</span>
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:3px">Production Support Setup</div>
-            <div style="font-size:11px;color:#64748b;line-height:1.5">Dedicated Dev + QA team assigned, office hours defined, on-call protocol agreed</div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:10px;align-items:flex-start;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px">
-          <span style="font-size:14px;flex-shrink:0">⏱️</span>
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:3px">SLA Definitions</div>
-            <div style="font-size:11px;color:#64748b;line-height:1.5">Response times, severity tiers, escalation paths, and communication channels agreed with the client</div>
-          </div>
-        </div>
-
-        <div style="display:flex;gap:10px;align-items:flex-start;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px 14px">
-          <span style="font-size:14px;flex-shrink:0">💬</span>
-          <div>
-            <div style="font-size:12px;font-weight:600;color:#0f172a;margin-bottom:3px">Slack → Smartsheet Notification</div>
-            <div style="font-size:11px;color:#64748b;line-height:1.5">Smartsheet automation configured to notify the account Slack channel on new form submissions</div>
-          </div>
-        </div>
-
-      </div>
-
-      <div style="margin-top:16px;background:#f0fdf4;border:1px solid #86efac;border-radius:8px;padding:12px 14px;font-size:12px;color:#166534;line-height:1.65">
-        <strong>How the pilot operates:</strong> the PDM and DM teams process every request end to end using the documented process — no AI Agent, no shortcuts. Every gap, edge case, or friction point gets surfaced (retro Thursdays) and folded back into the docs and templates. The goal is to have the manual process running cleanly across the full portfolio before the AI Agent layer is added.
-      </div>
-    </div>
-
-  </div>
-
-  <hr style="border:none;border-top:1px solid var(--rule);margin:36px 0">
-
-  <!-- ── REFERENCE DOCS ── -->
-  <div class="section-label"><div class="num">4</div> Tools & Reference</div>
-  <h2>Configuration & Daily Use</h2>
-  <p style="margin-bottom:20px">Use these during account setup, intake configuration, and day-to-day operations. Each document covers one operational area in full detail.</p>
-
-  <div class="doc-cards">
-
-    <a href="Reference_Intake_Form.html" target="_blank" class="doc-card brief" style="border-color:#93c5fd">
-      <div class="doc-icon">📋</div>
-      <div class="doc-content">
-        <div class="doc-step">Reference · Intake & Routing</div>
-        <div class="doc-title">Intake & Request Tracking</div>
-        <div class="doc-desc">The canonical page for the two client-facing boards and the Phase 1 intake forms. Covers the Basecamp Submission Board (entry + per-request communication), the Smartsheet Request Tracker (full lifecycle tracking), the 5 shared required fields, severity guidance, the 8-column manual lifecycle, and the DM operational gate at Validate & Assign.</div>
-        </div>
-      <div class="doc-arrow">↗</div>
-    </a>
-
-    <a href="Reference_Budget_Model.html" target="_blank" class="doc-card d2" style="border-color:#86efac">
-      <div class="doc-icon" style="background:#dcfce7">💰</div>
-      <div class="doc-content">
-        <div class="doc-step">Reference B · Budget & Tracking</div>
-        <div class="doc-title">Budget & Service Bucket Model</div>
-        <div class="doc-desc">The five service epics, how hours are allocated per billing cycle, the buffer mechanism, the Service Finance reference allocation model, and per-account setup requirements. Use during account onboarding and client budget alignment conversations.</div>
-        </div>
-      <div class="doc-arrow">↗</div>
-    </a>
-
-
-
-    <a href="Reference_Prerequisites_GoLive.html" target="_blank" class="doc-card billing" style="border-color:#fcd34d">
-      <div class="doc-icon" style="background:#fef3c7">✅</div>
-      <div class="doc-content">
-        <div class="doc-step">Reference D · Account Setup</div>
-        <div class="doc-title">Account Setup Prerequisites</div>
-        <div class="doc-desc">The complete per-account go-live checklist across five categories — Client Alignment, Production Support Structure, Planning & Delivery Ops, Delivery Toolkit, and Tooling & AI Agent Config. Every item must be complete before the framework is operational on a live account.</div>
-        </div>
-      <div class="doc-arrow">↗</div>
-    </a>
-
-    <a href="https://www.notion.so/concepta/Internal-Team-Meetings-17b4767c73b0802fae20ecc7c6981ad5" target="_blank" class="doc-card" style="border-color:#86efac">
-      <div class="doc-icon" style="background:#f0fdf4">📋</div>
-      <div class="doc-content">
-        <div class="doc-step">Internal · Notion</div>
-        <div class="doc-title">Meeting Notes</div>
-        <div class="doc-desc">Internal team meeting notes and working session records — hosted in Notion. Opens in a new tab.</div>
-        </div>
-      <div class="doc-arrow">↗</div>
-    </a>
-
-    <a href="Templates.html" target="_blank" class="doc-card" style="border-color:#c4b5fd">
-      <div class="doc-icon" style="background:#f5f3ff">⊞</div>
-      <div class="doc-content">
-        <div class="doc-step">PMO Toolkit · Templates</div>
-        <div class="doc-title">Templates & Standards Library</div>
-        <div class="doc-desc">Delivery planning templates, intake forms, workflow standards, and definitions used across all accounts — including Mobile App Delivery Plan, Web App Delivery Plan, Estimation Tool, DoD templates, and more.</div>
-        </div>
-      <div class="doc-arrow">↗</div>
-    </a>
-
-  </div>
-
+  </a>
 
 </div>
 
 <footer>
-  <svg width="80" height="13" viewBox="0 0 201 33" fill="none" xmlns="http://www.w3.org/2000/svg" style="vertical-align:middle;margin-right:6px;opacity:.6">
-    <path d="M41.4673 22.6537C39.8187 20.8428 38.9963 18.2178 39 14.7786C39.0038 11.3394 39.8262 8.71248 41.4673 6.89787C43.1122 5.08697 45.5118 4.18152 48.666 4.18152C50.7555 4.16768 52.8286 4.54703 54.775 5.29941V8.882C53.0032 8.00664 51.0527 7.54403 49.0725 7.52949H48.9653C47.0569 7.52949 45.5607 8.01757 44.4767 8.99384C43.3926 9.97 42.8525 11.889 42.8563 14.7506C42.8268 16.0424 42.9944 17.3313 43.3531 18.5736C43.5809 19.4472 44.0783 20.2287 44.7759 20.8092C45.3445 21.2551 46.0029 21.5753 46.7069 21.7483C47.4616 21.9236 48.2353 22.0063 49.0104 21.9941C51.0147 21.9922 52.9927 21.5433 54.7976 20.6807V24.2354C52.8505 24.9853 50.7779 25.3646 48.6886 25.3532C45.5344 25.3532 43.1348 24.4478 41.4899 22.6369" fill="white"/>
-    <path d="M62.804 11.0065C62.4684 12.2414 62.3144 13.5176 62.3467 14.796C62.3155 16.0706 62.4695 17.3431 62.804 18.5742C63.0131 19.4422 63.4907 20.2238 64.1704 20.8099C64.7114 21.2542 65.3402 21.5817 66.0167 21.7712C67.505 22.0908 69.0452 22.0908 70.5335 21.7712C71.2106 21.5834 71.8398 21.2557 72.3797 20.8099C73.0592 20.2227 73.5384 19.4417 73.7517 18.5742C74.0824 17.3385 74.2345 16.0628 74.2035 14.7848C74.2345 13.5069 74.0824 12.231 73.7517 10.9954C73.537 10.1284 73.0581 9.34786 72.3797 8.75968C71.8415 8.31452 71.2142 7.98693 70.5391 7.79836C69.0508 7.47879 67.5106 7.47879 66.0223 7.79836C65.346 7.98793 64.717 8.31533 64.1761 8.75968C63.4978 9.34696 63.0205 10.1281 62.8098 10.9954L62.804 11.0065ZM59.343 20.1001C58.719 18.4018 58.4222 16.6026 58.468 14.796C58.4222 12.9893 58.719 11.1903 59.343 9.4919C59.8068 8.19677 60.6355 7.06011 61.7314 6.21665C62.6613 5.52686 63.7067 5.00467 64.8198 4.67407C67.0829 4.07023 69.4673 4.07023 71.7305 4.67407C72.8447 5.00567 73.8919 5.52776 74.8245 6.21665C75.9143 7.06222 76.737 8.19867 77.1959 9.4919C77.8246 11.1892 78.1235 12.9888 78.0766 14.796C78.1235 16.6032 77.8246 18.4029 77.1959 20.1001C76.734 21.3947 75.9071 22.5312 74.8132 23.3753C73.8806 24.0642 72.8335 24.5863 71.7191 24.918C69.4559 25.5217 67.0716 25.5217 64.8084 24.918C63.6954 24.5873 62.65 24.0651 61.72 23.3753C60.6243 22.5318 59.7955 21.3953 59.3318 20.1001" fill="white"/>
-    <path d="M81.605 25.0514V6.27751C84.3483 4.90344 87.3777 4.18195 90.4523 4.17041C93.0872 4.17041 95.146 4.84676 96.629 6.19927C98.1121 7.55188 98.8649 9.42798 98.8875 11.8276V25.0514H95.0087V11.509C95.0663 10.473 94.7322 9.45276 94.0714 8.64731C93.4428 7.95059 92.1875 7.60033 90.3055 7.59662C88.648 7.5912 86.9999 7.84397 85.4217 8.34549V25.0514H81.605Z" fill="white"/>
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0499 5.45796C29.0515 5.29712 29.0196 5.13765 28.9589 4.9887C28.8982 4.83977 28.8072 4.70433 28.6922 4.59018C28.5772 4.47603 28.4415 4.38544 28.2914 4.32362C28.1413 4.2618 27.9816 4.22998 27.8187 4.22998H8.86133V14.2229H17.175C17.6525 14.2229 18.1093 14.4105 18.4462 14.7442C18.7832 15.078 18.9732 15.5306 18.9732 16.0026V24.2426H29.0675V5.45796H29.0499Z" fill="#4d6eff"/>
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.86109 14.223H1.10311C0.911479 14.2234 0.72464 14.1676 0.563348 14.0626C0.403653 13.9576 0.279093 13.8081 0.205633 13.6329C0.132174 13.4577 0.111396 13.2648 0.148126 13.0784C0.184856 12.892 0.275895 12.7205 0.411636 12.5856L8.86109 4.22998" fill="#a0b0ff"/>
-    <path fill-rule="evenodd" clip-rule="evenodd" d="M29.0675 24.2427L20.6181 32.6073C20.4839 32.7416 20.3115 32.8333 20.1246 32.8705C19.9362 32.9079 19.743 32.8889 19.5657 32.8164C19.39 32.7439 19.2383 32.6209 19.1329 32.4631C19.0275 32.3055 18.9716 32.1201 18.9732 31.931V24.2427" fill="#a0b0ff"/>
-  </svg>
-  — Intake & Request Processing Initiative · Intake & Request Processing Initiative
+  <span>Concepta Technology &nbsp;·&nbsp; Internal Use Only</span>
+  <span>concepta-intake-process.pages.dev</span>
 </footer>
 
 </body>

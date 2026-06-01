@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Foundation Play — Concepta</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F4F2EE; min-height: 100vh; color: #1a1a2e; }
+
+header {
+  background: #0d1b2a; padding: 0 40px; height: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+}
+.back-link { color: rgba(255,255,255,0.5); font-size: 12px; font-weight: 600; text-decoration: none; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+.back-link:hover { color: white; }
+.brand { color: white; font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+.section-pill { background: #6C5CE7; color: white; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; }
+
+.hero { background: linear-gradient(135deg, #0d1b2a, #1a1040); padding: 48px 40px 40px; }
+.hero-label { font-size: 10px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: #a78bfa; margin-bottom: 12px; }
+.hero-title { font-size: 30px; font-weight: 800; color: white; margin-bottom: 10px; }
+.hero-sub { font-size: 14px; color: rgba(255,255,255,0.45); max-width: 640px; line-height: 1.65; }
+
+main { max-width: 1080px; margin: 0 auto; padding: 40px 40px 80px; }
+
+.featured {
+  background: linear-gradient(135deg, #1a1040, #231060);
+  border: 1px solid rgba(108,92,231,0.35);
+  border-radius: 12px; padding: 28px 32px;
+  display: flex; align-items: center; gap: 28px;
+  text-decoration: none; color: white; margin-bottom: 32px;
+  transition: all 0.15s;
+}
+.featured:hover { border-color: rgba(108,92,231,0.7); transform: translateY(-2px); }
+.featured-emoji { font-size: 40px; flex-shrink: 0; }
+.featured-tag { font-size: 9px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #a78bfa; margin-bottom: 8px; }
+.featured-title { font-size: 18px; font-weight: 800; color: white; margin-bottom: 8px; line-height: 1.3; }
+.featured-desc { font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.6; }
+.featured-cta { margin-top: 14px; font-size: 12px; font-weight: 700; color: #a78bfa; display: flex; align-items: center; gap: 6px; }
+
+.group-title { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #888; margin-bottom: 16px; margin-top: 40px; padding-bottom: 8px; border-bottom: 1px solid #ddd; }
+.group-title:first-of-type { margin-top: 0; }
+
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+
+.card {
+  background: white; border-radius: 10px; border: 1px solid #E2DDD9;
+  padding: 20px; text-decoration: none; color: inherit;
+  display: flex; flex-direction: column;
+  transition: all 0.15s; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.09); border-color: #a78bfa; }
+
+.card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+.card-emoji { font-size: 22px; line-height: 1; }
+.tag { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
+.tag.deck { background: #FDF4FF; color: #7E22CE; }
+.tag.diagram { background: #EFF6FF; color: #1D4ED8; }
+.tag.new { background: #DCFCE7; color: #166534; }
+.tag.framework { background: #FFF7ED; color: #9A3412; }
+
+.card-title { font-size: 14px; font-weight: 700; color: #0d1b2a; line-height: 1.35; margin-bottom: 6px; }
+.card-desc { font-size: 12px; color: #777; line-height: 1.55; flex: 1; }
+.card-footer { margin-top: 14px; padding-top: 10px; border-top: 1px solid #f0ede9; display: flex; align-items: center; justify-content: space-between; }
+.card-cta { font-size: 11px; font-weight: 700; color: #6C5CE7; }
+.card-arrow { font-size: 14px; color: #ccc; }
+
+footer { background: #0d1b2a; padding: 20px 40px; text-align: center; color: rgba(255,255,255,0.2); font-size: 11px; }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="back-link" href="Index.html">← Hub</a>
+  <div class="brand">Concepta</div>
+  <div class="section-pill">Foundation Play</div>
+</header>
+
+<div class="hero">
+  <div class="hero-label">AI Strategy</div>
+  <div class="hero-title">Foundation Play</div>
+  <div class="hero-sub">The foundational domain and capability framework that defines what Concepta owns and manages. AI-enhanced SDLC showing how we build and deliver at scale.</div>
+</div>
+
+<main>
+
+  <!-- Featured: SDLC Walkthrough -->
+  <a class="featured" href="SDLC_Walkthrough_10min.html">
+    <div class="featured-emoji">🎯</div>
+    <div>
+      <div class="featured-tag">Start here &nbsp;·&nbsp; 10-minute walkthrough</div>
+      <div class="featured-title">SDLC: Current State vs. AI-Native</div>
+      <div class="featured-desc">Leo's meeting kickoff deck. 8 slides walking through how we build today, where the bottlenecks are, how AI changes each role, and what comes next. Arrow key navigation.</div>
+      <div class="featured-cta">Open Walkthrough →</div>
+    </div>
+  </a>
+
+  <div class="group-title">Strategy &amp; Framework</div>
+  <div class="card-grid">
+
+    <a class="card" href="Foundation_Play_Pitch.html">
+      <div class="card-top"><div class="card-emoji">⚡</div><span class="tag deck">Pitch</span></div>
+      <div class="card-title">Foundation Play — Interactive Pitch</div>
+      <div class="card-desc">The full Foundation Play narrative: why we are doing this, what it means for Concepta, and how the capability framework is structured. Built for team alignment sessions.</div>
+      <div class="card-footer"><span class="card-cta">Open Pitch</span><span class="card-arrow">→</span></div>
+    </a>
+
+  </div>
+
+  <div class="group-title">SDLC Diagrams</div>
+  <div class="card-grid">
+
+    <a class="card" href="SDLC_Current_State.html">
+      <div class="card-top"><div class="card-emoji">📋</div><span class="tag diagram">Diagram</span></div>
+      <div class="card-title">Current State SDLC — Full Swimlane</div>
+      <div class="card-desc">Role-by-role, phase-by-phase view of how Concepta builds software today. Every pain point and bottleneck flagged. Click any card for detail.</div>
+      <div class="card-footer"><span class="card-cta">Open Diagram</span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a class="card" href="SDLC_AI_Enhanced.html">
+      <div class="card-top"><div class="card-emoji">🤖</div><span class="tag new">AI-Native</span></div>
+      <div class="card-title">AI-Enhanced SDLC — Full Swimlane</div>
+      <div class="card-desc">The AI-native target state. Same roles and phases, fundamentally different work distribution. AI actions, role shifts, and automated gates throughout. Click any card for detail.</div>
+      <div class="card-footer"><span class="card-cta">Open Diagram</span><span class="card-arrow">→</span></div>
+    </a>
+
+  </div>
+
+</main>
+
+<footer>Concepta Technology &nbsp;·&nbsp; Internal Use Only</footer>
+</body>
+</html>

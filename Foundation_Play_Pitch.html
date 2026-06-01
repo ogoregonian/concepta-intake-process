@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Foundation Play | Concepta Technology</title>
+<style>
+  :root {
+    --navy: #1B3A6B;
+    --navy-dark: #122850;
+    --blue: #2E75B6;
+    --blue-light: #4A90D4;
+    --sky: #EEF4FB;
+    --white: #FFFFFF;
+    --gray-100: #F8F9FB;
+    --gray-200: #EEF0F4;
+    --gray-400: #9BA3B2;
+    --gray-700: #444C5C;
+    --text: #1A1E2A;
+    --phase1: #C0392B;
+    --phase1-bg: #FDF2F1;
+    --phase2: #2471A3;
+    --phase2-bg: #EBF4FB;
+    --phase3: #1E8449;
+    --phase3-bg: #EAFAF1;
+    --orange: #E67E22;
+    --green: #27AE60;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+    color: var(--text);
+    background: var(--white);
+    font-size: 16px;
+    line-height: 1.6;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: var(--navy-dark);
+    border-bottom: 2px solid var(--blue);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 40px; height: 56px;
+  }
+  .nav-brand { color: var(--white); font-weight: 700; font-size: 14px; letter-spacing: 1px; text-transform: uppercase; }
+  .nav-links { display: flex; gap: 6px; }
+  .nav-links a {
+    color: rgba(255,255,255,0.7); text-decoration: none;
+    font-size: 13px; padding: 6px 12px; border-radius: 4px;
+    transition: all 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); background: rgba(255,255,255,0.1); }
+
+  /* HERO */
+  .hero {
+    background-color: #122850;
+    background-image: linear-gradient(135deg, #0D1F3C 0%, #1B3A6B 55%, #1E4D8C 100%);
+    color: #FFFFFF;
+    padding: 120px 60px 80px;
+    min-height: 520px;
+    display: flex; flex-direction: column; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; top: 0; right: 0; bottom: 0;
+    width: 40%;
+    background: radial-gradient(ellipse at right, rgba(46,117,182,0.25) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-eyebrow {
+    font-size: 12px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: #9EC5E8;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: clamp(32px, 5vw, 56px); font-weight: 800; line-height: 1.1;
+    margin-bottom: 16px; max-width: min(700px, 100%);
+    color: #FFFFFF;
+  }
+  .hero-sub {
+    font-size: clamp(16px, 2vw, 20px); color: #C8DDEF;
+    margin-bottom: 40px; max-width: min(600px, 100%); line-height: 1.5;
+  }
+  .north-star {
+    background: rgba(255,255,255,0.1);
+    border-left: 4px solid #4A90D4;
+    border-radius: 0 8px 8px 0;
+    padding: 20px 28px;
+    max-width: min(760px, 100%);
+    font-size: clamp(15px, 1.6vw, 17px); line-height: 1.65;
+    color: #E8F2FC;
+    font-style: italic;
+  }
+  .north-star strong { color: #FFFFFF; font-style: normal; }
+
+  /* SECTION */
+  section { padding: 80px clamp(24px, 6vw, 80px); }
+  section:not(.hero):nth-child(even) { background: var(--gray-100); }
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--blue);
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(22px, 3vw, 32px); font-weight: 800; color: var(--navy);
+    margin-bottom: 16px; max-width: min(720px, 100%); line-height: 1.25;
+  }
+  .section-body {
+    font-size: clamp(15px, 1.6vw, 17px); color: var(--gray-700);
+    max-width: min(760px, 100%); line-height: 1.7; margin-bottom: 48px;
+  }
+
+  /* STAT CARDS */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 48px;
+  }
+  .stat-card {
+    background: var(--white);
+    border: 1px solid var(--gray-200);
+    border-top: 4px solid var(--navy);
+    border-radius: 8px;
+    padding: 24px 20px;
+  }
+  .stat-number {
+    font-size: 36px; font-weight: 800; color: var(--navy);
+    line-height: 1; margin-bottom: 8px;
+  }
+  .stat-label { font-size: 14px; color: var(--gray-700); line-height: 1.4; margin-bottom: 10px; }
+  .stat-source { font-size: 11px; color: var(--gray-400); font-style: italic; }
+
+  .danger-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+  }
+  .danger-card {
+    background: var(--white);
+    border: 1px solid #FADBD8;
+    border-top: 4px solid var(--phase1);
+    border-radius: 8px;
+    padding: 24px 20px;
+  }
+  .danger-number {
+    font-size: 36px; font-weight: 800; color: var(--phase1);
+    line-height: 1; margin-bottom: 8px;
+  }
+
+  /* TWO BETS */
+  .bets-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+    max-width: 900px;
+  }
+  .bet-card {
+    border-radius: 10px;
+    padding: 32px;
+  }
+  .bet-card.concepta {
+    background: var(--navy);
+    color: var(--white);
+  }
+  .bet-card.competitor {
+    background: var(--gray-200);
+    color: var(--text);
+    border: 2px dashed var(--gray-400);
+  }
+  .bet-card h3 { font-size: 20px; font-weight: 700; margin-bottom: 8px; }
+  .bet-card .bet-sub { font-size: 13px; opacity: 0.7; margin-bottom: 20px; }
+  .bet-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 8px 0; border-bottom: 1px solid rgba(255,255,255,0.1);
+    font-size: 15px;
+  }
+  .bet-card.competitor .bet-row { border-color: rgba(0,0,0,0.08); }
+  .bet-check { font-size: 18px; }
+  .bet-x { font-size: 18px; color: var(--phase1); }
+  .pullquote {
+    background: var(--sky);
+    border-left: 5px solid var(--blue);
+    border-radius: 0 8px 8px 0;
+    padding: 24px 32px;
+    font-size: 18px;
+    font-style: italic;
+    color: var(--navy);
+    margin-top: 40px;
+    max-width: 760px;
+    line-height: 1.6;
+  }
+
+  /* CAPABILITIES */
+  .filter-bar {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    margin-bottom: 32px; align-items: center;
+  }
+  .filter-label { font-size: 13px; font-weight: 600; color: var(--gray-700); margin-right: 4px; }
+  .filter-btn {
+    border: 1.5px solid var(--gray-200);
+    background: var(--white);
+    color: var(--gray-700);
+    padding: 7px 16px; border-radius: 20px;
+    font-size: 13px; font-weight: 500; cursor: pointer;
+    transition: all 0.18s;
+  }
+  .filter-btn:hover { border-color: var(--blue); color: var(--blue); }
+  .filter-btn.active {
+    background: var(--navy); border-color: var(--navy);
+    color: var(--white);
+  }
+  .phase-filter-btn {
+    padding: 6px 14px; border-radius: 20px;
+    font-size: 12px; font-weight: 700; cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.18s;
+  }
+  .phase-filter-btn.p1 { background: var(--phase1-bg); color: var(--phase1); border-color: #E8A49A; }
+  .phase-filter-btn.p1.active { background: var(--phase1); color: var(--white); }
+  .phase-filter-btn.p2 { background: var(--phase2-bg); color: var(--phase2); border-color: #A8D1EF; }
+  .phase-filter-btn.p2.active { background: var(--phase2); color: var(--white); }
+  .phase-filter-btn.p3 { background: var(--phase3-bg); color: var(--phase3); border-color: #A9DFBF; }
+  .phase-filter-btn.p3.active { background: var(--phase3); color: var(--white); }
+
+  .caps-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+  }
+  .cap-card {
+    background: var(--white);
+    border: 1.5px solid var(--gray-200);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.2s;
+    overflow: hidden;
+  }
+  .cap-card:hover { border-color: var(--blue); box-shadow: 0 4px 16px rgba(46,117,182,0.12); transform: translateY(-2px); }
+  .orbit-card { border-top: 4px solid #C0392B !important; }
+  .orbit-card-partial { border-top: 4px solid #95A5A6 !important; }
+  .cap-orbit-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    margin-top: 8px;
+    background: #1B3A6B; color: #fff;
+    font-size: 11px; font-weight: 800; letter-spacing: 0.8px;
+    text-transform: uppercase; padding: 4px 10px 4px 8px;
+    border-radius: 20px; border: 1.5px solid #C0392B;
+  }
+  .cap-orbit-partial { background: #2C3E50; border-color: #95A5A6; }
+  .cap-orbit-dot {
+    width: 7px; height: 7px; border-radius: 50%;
+    background: #C0392B; display: inline-block; flex-shrink: 0;
+  }
+  .cap-orbit-partial .cap-orbit-dot { background: #95A5A6; }
+
+  /* Orbit coverage detail block */
+  .orbit-coverage-block {
+    margin: 10px 20px 0;
+    border-radius: 7px;
+    font-size: 12px;
+    overflow: hidden;
+    border: 1px solid #C0392B22;
+  }
+  .orbit-coverage-block.partial { border-color: #95A5A622; }
+  .orbit-coverage-header {
+    background: #1B3A6B; color: #fff;
+    font-size: 10px; font-weight: 800; letter-spacing: 1px;
+    text-transform: uppercase; padding: 5px 12px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .orbit-coverage-block.partial .orbit-coverage-header { background: #2C3E50; }
+  .orbit-coverage-body { padding: 10px 12px; background: #f7f9fc; display: flex; flex-direction: column; gap: 3px; }
+  .orbit-coverage-block.partial .orbit-coverage-body { background: #f5f5f5; }
+  .orbit-cov-row { display: flex; align-items: flex-start; gap: 7px; font-size: 12px; color: #333; line-height: 1.45; }
+  .orbit-cov-dot { width: 6px; height: 6px; border-radius: 50%; margin-top: 4px; flex-shrink: 0; }
+  .orbit-cov-dot.yes { background: #27AE60; }
+  .orbit-cov-dot.no  { background: #BDC3C7; }
+  .orbit-cov-label.no { color: #888; font-style: italic; }
+  .orbit-cov-divider { height: 1px; background: #e0e0e0; margin: 5px 0; }
+
+  /* PROPOSED capability card */
+  .cap-card.proposed-card {
+    border-top: 4px dashed #9B59B6 !important;
+    opacity: 0.92;
+  }
+  .proposed-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: #F5EEF8; color: #7D3C98;
+    font-size: 10px; font-weight: 800; letter-spacing: 1px;
+    text-transform: uppercase; padding: 4px 10px;
+    border-radius: 20px; border: 1.5px dashed #9B59B6;
+    margin-top: 8px;
+  }
+  .proposed-note {
+    margin: 12px 20px 0;
+    background: #F9F0FF;
+    border: 1px dashed #9B59B6;
+    border-radius: 7px;
+    padding: 10px 14px;
+    font-size: 12px;
+    color: #6C3483;
+    line-height: 1.5;
+  }
+
+  .cap-card.hidden { display: none; }
+  .cap-header {
+    padding: 20px 20px 16px;
+    border-bottom: 1px solid var(--gray-200);
+    display: flex; justify-content: space-between; align-items: flex-start; gap: 12px;
+  }
+  .cap-num {
+    font-size: 11px; font-weight: 700; color: var(--gray-400);
+    text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;
+  }
+  .cap-name { font-size: 15px; font-weight: 700; color: var(--navy); line-height: 1.3; }
+  .phase-badge {
+    flex-shrink: 0;
+    font-size: 10px; font-weight: 800; letter-spacing: 0.5px;
+    padding: 4px 8px; border-radius: 4px; text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .phase-badge.p1 { background: var(--phase1-bg); color: var(--phase1); }
+  .phase-badge.p2 { background: var(--phase2-bg); color: var(--phase2); }
+  .phase-badge.p3 { background: var(--phase3-bg); color: var(--phase3); }
+  .cap-area-tag {
+    display: inline-block;
+    font-size: 10px; font-weight: 600; color: var(--blue);
+    background: var(--sky); border-radius: 3px;
+    padding: 2px 7px; margin-bottom: 8px;
+  }
+  .cap-body { padding: 16px 20px; }
+  .cap-what { font-size: 13px; color: var(--gray-700); line-height: 1.5; margin-bottom: 12px; }
+  .cap-stat {
+    background: var(--gray-100);
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px; font-weight: 600; color: var(--navy);
+    margin-bottom: 8px;
+    border-left: 3px solid var(--blue);
+  }
+  .cap-source { font-size: 11px; color: var(--gray-400); font-style: italic; }
+  .cap-expand { display: none; padding: 0 20px 16px; }
+  .cap-expand.open { display: block; }
+  .cap-why {
+    background: var(--sky); border-radius: 6px;
+    padding: 12px 14px; font-size: 13px; color: var(--navy);
+    line-height: 1.5; margin-bottom: 8px;
+  }
+  .cap-why strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--blue); margin-bottom: 4px; }
+  .expand-btn {
+    width: 100%; background: none; border: none; cursor: pointer;
+    font-size: 12px; color: var(--blue); font-weight: 600;
+    padding: 8px 20px 12px; text-align: left;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .expand-icon { transition: transform 0.2s; display: inline-block; }
+  .expand-icon.open { transform: rotate(180deg); }
+
+  /* PHASE PRIORITY */
+  .phase-section { margin-bottom: 48px; }
+  .phase-header {
+    display: flex; align-items: center; gap: 16px;
+    margin-bottom: 20px; padding-bottom: 12px;
+    border-bottom: 2px solid var(--gray-200);
+  }
+  .phase-label {
+    font-size: 13px; font-weight: 800; padding: 6px 14px;
+    border-radius: 6px; text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .phase-label.p1 { background: var(--phase1); color: var(--white); }
+  .phase-label.p2 { background: var(--phase2); color: var(--white); }
+  .phase-label.p3 { background: var(--phase3); color: var(--white); }
+  .phase-desc { font-size: 15px; color: var(--gray-700); }
+  .phase-caps-list {
+    display: flex; flex-wrap: wrap; gap: 10px;
+  }
+  .phase-cap-pill {
+    background: var(--white); border: 1.5px solid var(--gray-200);
+    border-radius: 20px; padding: 7px 16px;
+    font-size: 13px; font-weight: 500; color: var(--text);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .phase-cap-pill .pill-num {
+    font-size: 11px; font-weight: 700; color: var(--white);
+    background: var(--navy); border-radius: 50%;
+    width: 20px; height: 20px; display: flex;
+    align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  /* ACTION PLAN */
+  .action-steps { display: flex; flex-direction: column; gap: 20px; max-width: 860px; }
+  .action-step {
+    display: flex; gap: 24px; align-items: flex-start;
+    background: var(--white); border-radius: 10px;
+    border: 1.5px solid var(--gray-200);
+    padding: 24px 28px;
+    transition: border-color 0.2s;
+  }
+  .action-step:hover { border-color: var(--blue); }
+  .step-num {
+    flex-shrink: 0; width: 44px; height: 44px;
+    background: var(--navy); color: var(--white);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 18px; font-weight: 800;
+  }
+  .step-content h4 { font-size: 17px; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+  .step-content p { font-size: 15px; color: var(--gray-700); line-height: 1.6; }
+  .step-tag {
+    display: inline-block; margin-top: 10px;
+    font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.5px; padding: 3px 10px; border-radius: 3px;
+  }
+  .step-tag.today { background: #FEF9E7; color: var(--orange); border: 1px solid #F9E79F; }
+  .step-tag.week { background: var(--sky); color: var(--blue); border: 1px solid #AED6F1; }
+  .step-tag.month { background: var(--phase3-bg); color: var(--phase3); border: 1px solid #A9DFBF; }
+
+  /* COMMERCIAL MODEL */
+  .model-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 32px;
+    max-width: 960px; margin-bottom: 48px;
+  }
+  .model-card {
+    border-radius: 10px; overflow: hidden;
+    border: 1.5px solid var(--gray-200);
+  }
+  .model-card-header {
+    padding: 18px 24px;
+    font-size: 13px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+  .model-card.old .model-card-header { background: #FDF2F2; color: var(--phase1); border-bottom: 1px solid #FADBD8; }
+  .model-card.new .model-card-header { background: var(--navy); color: var(--white); }
+  .model-card-body { padding: 24px; background: var(--white); }
+  .model-bar-wrap { margin-bottom: 16px; }
+  .model-bar-label {
+    display: flex; justify-content: space-between;
+    font-size: 13px; margin-bottom: 6px;
+  }
+  .model-bar-label span:first-child { font-weight: 600; color: var(--text); }
+  .model-bar-label span:last-child { color: var(--gray-400); font-size: 12px; }
+  .model-bar { height: 28px; border-radius: 4px; position: relative; overflow: hidden; }
+  .model-bar-fill { height: 100%; border-radius: 4px; display: flex; align-items: center; padding-left: 10px; font-size: 12px; font-weight: 700; color: var(--white); }
+  .model-note {
+    margin-top: 16px; padding-top: 16px;
+    border-top: 1px solid var(--gray-200);
+    font-size: 13px; color: var(--gray-700); line-height: 1.5;
+  }
+  .commercial-insight {
+    background: var(--navy); color: var(--white);
+    border-radius: 10px; padding: 32px 36px;
+    max-width: 860px;
+  }
+  .commercial-insight h3 { font-size: 22px; font-weight: 700; margin-bottom: 16px; }
+  .commercial-insight p { font-size: 16px; line-height: 1.7; opacity: 0.9; margin-bottom: 12px; }
+  .insight-points { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+  .insight-point { display: flex; gap: 14px; align-items: flex-start; }
+  .insight-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+  .insight-text { font-size: 15px; line-height: 1.6; opacity: 0.9; }
+  .insight-text strong { color: var(--white); opacity: 1; }
+
+  /* ARCHIVE */
+  .archive-subnav {
+    display: flex; gap: 8px; margin-bottom: 28px;
+  }
+  .archive-subtab {
+    padding: 8px 22px; border-radius: 6px;
+    font-size: 13px; font-weight: 600;
+    border: 1.5px solid var(--gray-200);
+    background: var(--white); color: var(--gray-700);
+    cursor: pointer; transition: all 0.2s;
+  }
+  .archive-subtab.active { background: var(--navy); color: var(--white); border-color: var(--navy); }
+  .archive-subtab:hover:not(.active) { border-color: var(--blue); color: var(--blue); }
+  .archive-frame-wrap {
+    width: 100%; height: 82vh; min-height: 560px;
+    border-radius: 10px; overflow: hidden;
+    border: 1.5px solid var(--gray-200);
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+  }
+  .archive-frame-wrap iframe { width: 100%; height: 100%; border: none; display: block; }
+
+  /* FOOTER */
+  footer {
+    background: var(--navy-dark); color: rgba(255,255,255,0.6);
+    text-align: center; padding: 32px;
+    font-size: 13px;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .stats-grid, .danger-grid { grid-template-columns: repeat(2, 1fr); }
+    .caps-grid { grid-template-columns: repeat(2, 1fr); }
+    .model-grid, .bets-grid { grid-template-columns: 1fr; }
+    nav { padding: 0 20px; }
+  }
+  @media (max-width: 600px) {
+    .stats-grid, .danger-grid, .caps-grid { grid-template-columns: 1fr; }
+    .bets-grid { grid-template-columns: 1fr; }
+    nav { padding: 0 16px; }
+    .nav-links { gap: 12px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">Concepta Technology</div>
+  <div class="nav-links">
+    <a href="#shift">The Shift</a>
+    <a href="#bets">Our Two Bets</a>
+    <a href="#capabilities">Capabilities</a>
+    <a href="#priority">Align on Phase 1</a>
+    <a href="#next-steps">Next Steps</a>
+    <a href="#vision">Where This Goes</a>
+    <a href="#honest">Where We Are</a>
+    <a href="#verticals">Verticals</a>
+    <a href="#commercial">New Prospects</a>
+    <a href="#code-analysis">Code Analysis</a>
+    <a href="#archive">Archive</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <div class="hero-eyebrow">Concepta Technology &nbsp;|&nbsp; Internal Strategic Brief &nbsp;|&nbsp; May 2026</div>
+  <h1>The Foundation Play</h1>
+  <div class="hero-sub">How Concepta stays indispensable in an AI-first world</div>
+  <div class="north-star">
+    <strong>Our North Star:</strong> Concepta is building two layers at once. The efficiency tools that give clients the ability to build what they want, when they want it, and take it to market on their own terms. And the <strong>foundational layer underneath all of it</strong> that keeps every solution operable, usable, secure, compliant, and insightful -- no matter how fast they build or who does the building. <strong>Speed is the offer. The foundation is what makes it last.</strong>
+  </div>
+</section>
+
+<!-- THE SHIFT -->
+<section id="shift">
+  <div class="section-label">The Shift</div>
+  <div class="section-title">AI is already here. It is moving faster than most agencies are ready to handle.</div>
+  <div class="section-body">The productivity numbers are real and they are not subtle. But the speed of AI is creating a second problem that the headlines are not covering -- and that problem is where Concepta's opportunity lives.</div>
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-number">55.8%</div>
+      <div class="stat-label">faster task completion with AI coding tools</div>
+      <div class="stat-source">GitHub Copilot Research</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">2x</div>
+      <div class="stat-label">faster on common development tasks with AI assistance</div>
+      <div class="stat-source">McKinsey, 2023</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">70-90%</div>
+      <div class="stat-label">of Anthropic's own codebase is now AI-generated</div>
+      <div class="stat-source">Anthropic, 2025</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-number">76%</div>
+      <div class="stat-label">of developers are already using or planning to use AI tools</div>
+      <div class="stat-source">Stack Overflow Developer Survey, 2024</div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-top: 48px;">But faster code is not safer code.</div>
+  <div class="section-body" style="margin-bottom: 24px;">In March 2026, Fortune reported production outages at a major technology company linked to AI-assisted changes. A separate incident: an engineer using an AI agent destroyed a live production database after removing required safety checks. These are not edge cases.</div>
+
+  <div class="danger-grid">
+    <div class="danger-card">
+      <div class="danger-number">10x</div>
+      <div class="stat-label">more security issues introduced by developers using AI vs. those who do not</div>
+      <div class="stat-source">Apiiro Research</div>
+    </div>
+    <div class="danger-card">
+      <div class="danger-number">1.7x</div>
+      <div class="stat-label">more issues overall in AI-authored code vs. human-written code</div>
+      <div class="stat-source">CodeRabbit, December 2025</div>
+    </div>
+    <div class="danger-card">
+      <div class="danger-number">3-4x</div>
+      <div class="stat-label">faster technical debt accumulation from AI-generated code with no governance</div>
+      <div class="stat-source">David Loker, VP AI, CodeRabbit</div>
+    </div>
+    <div class="danger-card">
+      <div class="danger-number">30%</div>
+      <div class="stat-label">of senior engineers say fixing AI output consumed most of the time they saved</div>
+      <div class="stat-source">Fastly Developer Survey, July 2025</div>
+    </div>
+  </div>
+
+  <div class="pullquote" style="margin-top:32px;">Bain &amp; Company (September 2025): even though software development was one of the first industries to deploy generative AI, actual savings have been <strong>modest</strong> and results in enterprise environments <strong>"haven't lived up to the hype."</strong> Speed gains at the feature level are real. The downstream consequences are invisible until something breaks.</div>
+
+  <div class="section-body" style="margin-top:32px;margin-bottom:0;max-width:760px;font-weight:600;color:#1B3A6B;">The Foundation Play is not the answer to AI being slow. It is the answer to AI being dangerously fast.</div>
+</section>
+
+<!-- OUR TWO BETS -->
+<section id="bets">
+  <div class="section-label">Our Bet</div>
+  <div class="section-title">Most agencies made one bet. Concepta is making two. That's what sets us apart.</div>
+  <div class="section-body">Sparq built Intelligence Studio and Snowflake Intelligence, claiming $220M in annual client cost savings through AI-optimized data workflows. That is a real capability and a real market position. It is also the entirety of their bet. When a production system fails at 2am, when a breach surfaces, when an ADA gap becomes a lawsuit -- Intelligence Studio does not answer.</div>
+
+  <div class="bets-grid">
+    <div class="bet-card competitor">
+      <h3>The Efficiency-Only Bet</h3>
+      <div class="bet-sub">Sparq, most other agencies</div>
+      <div class="bet-row"><span class="bet-check">✓</span> AI tools and workflow automation</div>
+      <div class="bet-row"><span class="bet-check">✓</span> Speed of delivery and cost savings</div>
+      <div class="bet-row"><span class="bet-x">✗</span> Foundation layer ownership</div>
+      <div class="bet-row"><span class="bet-x">✗</span> Production accountability at 2am</div>
+      <div class="bet-row"><span class="bet-x">✗</span> Security and compliance standard</div>
+      <div class="bet-row"><span class="bet-x">✗</span> Data layer and audience intelligence</div>
+    </div>
+    <div class="bet-card concepta">
+      <h3>The Foundation Play</h3>
+      <div class="bet-sub">Concepta Technology</div>
+      <div class="bet-row"><span class="bet-check">✓</span> AI tools and workflow automation (Stargate)</div>
+      <div class="bet-row"><span class="bet-check">✓</span> Speed of delivery and cost savings</div>
+      <div class="bet-row"><span class="bet-check">✓</span> 16-capability foundational standard</div>
+      <div class="bet-row"><span class="bet-check">✓</span> Production accountability on every engagement</div>
+      <div class="bet-row"><span class="bet-check">✓</span> Security, compliance, and governance gates</div>
+      <div class="bet-row"><span class="bet-check">✓</span> Data layer and audience intelligence</div>
+    </div>
+  </div>
+
+  <div style="margin-top:40px;padding:28px 36px;background:var(--navy);border-radius:10px;max-width:min(820px,100%);border-left:5px solid #C0392B;">
+    <p style="font-size:clamp(17px,2vw,22px);font-weight:700;color:#fff;line-height:1.5;margin:0;">
+      Freelancers sell hours. Staff augmentation firms sell capacity.<br>
+      <span style="color:#AED6F1;">Concepta gives clients velocity and owns the foundation that makes velocity sustainable.</span>
+    </p>
+    <p style="font-size:14px;color:#7FB3D3;margin:14px 0 0;font-style:italic;letter-spacing:0.3px;">That offer does not exist anywhere else in our market. Or at least not for now.</p>
+  </div>
+</section>
+
+<!-- CAPABILITIES -->
+<section id="capabilities">
+  <div class="section-label">The Framework</div>
+  <div class="section-title">16 Foundational Capabilities. Five areas. One standard.</div>
+  <div class="section-body">Every solution Concepta touches is held to this framework -- not as a one-time setup, but as an evolving practice. What good looks like at 1,000 users is different from 100,000 users. The framework defines both. Click any card to expand the detail.</div>
+
+  <div class="filter-bar">
+    <span class="filter-label">Filter by area:</span>
+    <button class="filter-btn active" onclick="filterCaps('all', this)">All 16</button>
+    <button class="filter-btn" onclick="filterCaps('Visibility &amp; Delivery', this)">Visibility &amp; Delivery</button>
+    <button class="filter-btn" onclick="filterCaps('Security &amp; Compliance', this)">Security &amp; Compliance</button>
+    <button class="filter-btn" onclick="filterCaps('Client Continuity', this)">Client Continuity</button>
+    <button class="filter-btn" onclick="filterCaps('Governance &amp; Safety', this)">Governance &amp; Safety</button>
+    <button class="filter-btn" onclick="filterCaps('Data Layer', this)">Data Layer</button>
+    <button class="filter-btn" onclick="filterCaps('Strategic Advisory', this)" style="border-style:dashed;color:#7D3C98;border-color:#9B59B6;">Strategic Advisory</button>
+    <span style="margin-left:16px; color: var(--gray-400); font-size:12px;">Filter by priority:</span>
+    <button class="phase-filter-btn p1" onclick="filterPhase(1, this)">High Priority</button>
+    <button class="phase-filter-btn p2" onclick="filterPhase(2, this)">Medium Priority</button>
+    <button class="phase-filter-btn p3" onclick="filterPhase(3, this)">Differentiator</button>
+  </div>
+
+  <div style="display:flex;align-items:center;gap:10px;margin-bottom:24px;padding:12px 16px;background:#EEF4FB;border-radius:8px;border-left:4px solid #1B3A6B;">
+    <span style="display:inline-flex;align-items:center;gap:6px;background:#1B3A6B;color:#fff;font-size:11px;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;padding:4px 10px 4px 8px;border-radius:20px;border:1.5px solid #C0392B;white-space:nowrap;flex-shrink:0;"><span style="width:7px;height:7px;border-radius:50%;background:#C0392B;display:inline-block;"></span>Analyzed by Orbit</span>
+    <span style="font-size:13px;color:#1B3A6B;font-weight:600;">Orbit static analysis surfaces findings across 7 capabilities. Full static analysis: #4 Dependency, #5 Security, #7 Data Protection, #10 Documentation. Partially surfaced: #1 Observability, #2 Testing, #15 IAM. Surfacing findings is not the same as owning the capability -- each still needs a human owner.</span>
+  </div>
+
+  <div class="caps-grid" id="capsGrid"></div>
+</section>
+
+<!-- PHASE PRIORITY -->
+<section id="priority">
+  <div class="section-label">Align on Phase 1</div>
+  <div class="section-title">We decide this together. Not all 16 can go first.</div>
+  <div class="section-body">Before we assign anything to Phase 1, we need to do three things as a team: agree on which capabilities carry the most immediate risk, identify who has real familiarity and experience with each one, and pressure-test the shortlist with Stargate dev to understand what AI workflows they are already building around these areas. Phase 1 is not a list someone hands down. It is what this team commits to owning.</div>
+
+  <!-- Step 1 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;max-width:1000px;margin:40px 0 48px;">
+
+    <div style="background:#fff;border:1.5px solid #D5DBDB;border-top:4px solid #1B3A6B;border-radius:10px;padding:26px 24px;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#1B3A6B;margin-bottom:10px;">Step 1 &nbsp; Prioritize</div>
+      <div style="font-size:16px;font-weight:700;color:#1B3A6B;margin-bottom:12px;">Which capabilities must happen first?</div>
+      <p style="font-size:13px;color:#5D6D7E;line-height:1.6;margin:0;">Walk the 16 as a team. Flag what is highest risk if left unaddressed -- client exposure, security liability, delivery failure. The team votes. No one person decides.</p>
+    </div>
+
+    <div style="background:#fff;border:1.5px solid #D5DBDB;border-top:4px solid #2471A3;border-radius:10px;padding:26px 24px;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#2471A3;margin-bottom:10px;">Step 2 &nbsp; Own It</div>
+      <div style="font-size:16px;font-weight:700;color:#1B3A6B;margin-bottom:12px;">Who has the familiarity to own it?</div>
+      <p style="font-size:13px;color:#5D6D7E;line-height:1.6;margin:0;">For each Phase 1 pick, we identify who has the hands-on experience. That person becomes the product owner -- they define the process, workflow, tooling, and standard. Not a coordinator. An owner.</p>
+    </div>
+
+    <div style="background:#fff;border:1.5px solid #D5DBDB;border-top:4px solid #117A65;border-radius:10px;padding:26px 24px;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#117A65;margin-bottom:10px;">Step 3 &nbsp; Validate</div>
+      <div style="font-size:16px;font-weight:700;color:#1B3A6B;margin-bottom:12px;">What is Stargate already building?</div>
+      <p style="font-size:13px;color:#5D6D7E;line-height:1.6;margin:0;">Take the shortlist to Stargate dev. For each capability, ask: what AI workflows are you building here? Where can we plug in versus build from scratch? Feasibility informs sequencing.</p>
+    </div>
+
+  </div>
+
+  <!-- What product ownership means -->
+  <div style="background:#1B3A6B;border-radius:12px;padding:32px 36px;max-width:1000px;margin-bottom:48px;">
+    <div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#AED6F1;margin-bottom:16px;">What it means to be a capability product owner</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0 48px;">
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:14px;margin:0;padding:0;">
+        <li style="font-size:14px;color:#fff;line-height:1.5;padding-left:20px;position:relative;"><span style="position:absolute;left:0;color:#5DADE2;font-weight:700;">&#8250;</span>You define what "done" looks like for this capability across all engagements</li>
+        <li style="font-size:14px;color:#fff;line-height:1.5;padding-left:20px;position:relative;"><span style="position:absolute;left:0;color:#5DADE2;font-weight:700;">&#8250;</span>You document the process, workflow, and tooling decisions</li>
+        <li style="font-size:14px;color:#fff;line-height:1.5;padding-left:20px;position:relative;"><span style="position:absolute;left:0;color:#5DADE2;font-weight:700;">&#8250;</span>You set the standard and hold the team to it on every project</li>
+      </ul>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:14px;margin:0;padding:0;">
+        <li style="font-size:14px;color:#fff;line-height:1.5;padding-left:20px;position:relative;"><span style="position:absolute;left:0;color:#5DADE2;font-weight:700;">&#8250;</span>You are the escalation point when a project deviates from the standard</li>
+        <li style="font-size:14px;color:#fff;line-height:1.5;padding-left:20px;position:relative;"><span style="position:absolute;left:0;color:#5DADE2;font-weight:700;">&#8250;</span>You work directly with Stargate dev on AI workflow integration for your area</li>
+        <li style="font-size:14px;color:#fff;line-height:1.5;padding-left:20px;position:relative;"><span style="position:absolute;left:0;color:#5DADE2;font-weight:700;">&#8250;</span>You own the iteration -- as the capability matures, you drive it forward</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Stargate thread -->
+  <div style="background:#EBF5FB;border:1.5px solid #AED6F1;border-left:4px solid #2471A3;border-radius:10px;padding:26px 32px;max-width:1000px;">
+    <div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#2471A3;margin-bottom:10px;">The Stargate Thread</div>
+    <p style="font-size:14px;color:#1B3A6B;line-height:1.7;margin:0;">Stargate dev is actively building AI workflows. Before Phase 1 is locked, every capability owner needs to sit with Stargate dev and ask: what are you building that touches this area? Some of our Phase 1 capabilities may already have AI coverage in progress. Others may need Stargate input to determine whether a manual process is even the right answer. Feasibility conversations happen before commitments are made -- not after.</p>
+  </div>
+
+</section>
+
+<!-- WHERE WE ARE TODAY -->
+<section id="honest">
+  <div class="section-label">Honest Assessment</div>
+  <div class="section-title">Where we are today. We are not there yet. That is the point.</div>
+  <div class="section-body">This framework is not a claim that Concepta has arrived. It is the definition of where we are going and the standard we are holding ourselves to. The gap between where we are and where this framework says we should be is our internal product roadmap.</div>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:960px;margin-bottom:40px;">
+    <div style="background:#FDF2F2;border:1px solid #FADBD8;border-left:4px solid #C0392B;border-radius:8px;padding:24px 28px;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#C0392B;margin-bottom:16px;">Known Gaps Right Now</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;">
+        <li style="font-size:14px;color:#444C5C;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:#C0392B;font-weight:700;">&#8250;</span>Sentry installed but not meaningfully configured</li>
+        <li style="font-size:14px;color:#444C5C;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:#C0392B;font-weight:700;">&#8250;</span>No security scanning pipeline on our repositories</li>
+        <li style="font-size:14px;color:#444C5C;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:#C0392B;font-weight:700;">&#8250;</span>Documentation practices inconsistent across engagements</li>
+        <li style="font-size:14px;color:#444C5C;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:#C0392B;font-weight:700;">&#8250;</span>Incident response is informal -- no defined escalation paths</li>
+        <li style="font-size:14px;color:#444C5C;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:#C0392B;font-weight:700;">&#8250;</span>No standard for reviewing client or AI-generated code before it ships</li>
+        <li style="font-size:14px;color:#444C5C;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:#C0392B;font-weight:700;">&#8250;</span>No shared event taxonomy, no cross-solution data layer -- each project is an island</li>
+      </ul>
+    </div>
+    <div style="background:var(--sky);border:1px solid #AED6F1;border-left:4px solid var(--blue);border-radius:8px;padding:24px 28px;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:16px;">What This Framework Does</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:12px;">
+        <li style="font-size:14px;color:#1B3A6B;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);font-weight:700;">&#8250;</span>Names every gap with a concrete capability definition</li>
+        <li style="font-size:14px;color:#1B3A6B;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);font-weight:700;">&#8250;</span>Assigns accountability to every team lead by discipline</li>
+        <li style="font-size:14px;color:#1B3A6B;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);font-weight:700;">&#8250;</span>Becomes the internal roadmap -- visible, trackable, escalatable</li>
+        <li style="font-size:14px;color:#1B3A6B;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);font-weight:700;">&#8250;</span>Makes capability health part of every account leadership review</li>
+        <li style="font-size:14px;color:#1B3A6B;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);font-weight:700;">&#8250;</span>Stargate and all internal Concepta products held to the same standard</li>
+        <li style="font-size:14px;color:#1B3A6B;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);font-weight:700;">&#8250;</span>Data layer is the highest-priority open capability -- it needs an owner today</li>
+      </ul>
+    </div>
+  </div>
+  <div class="pullquote">These are gaps that exist across most software agencies, and most of our clients do not know they exist. But <strong>we know</strong>. And closing them is the whole point of this framework.</div>
+</section>
+
+<!-- VERTICALS -->
+<section id="verticals">
+  <div class="section-label">Vertical Foundations</div>
+  <div class="section-title">The foundation is not one-size-fits-all. It is calibrated to the industry.</div>
+  <div class="section-body">A software agency serving a bank, an e-commerce retailer, and an internal operations team is not serving the same foundation problem three times. The underlying 16 capabilities are the same -- the calibration reflects the actual risk environment each client operates in.</div>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px;max-width:1080px;">
+    <div style="background:var(--white);border:1.5px solid var(--gray-200);border-top:4px solid var(--navy);border-radius:10px;overflow:hidden;">
+      <div style="background:var(--navy);padding:20px 24px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9EC5E8;margin-bottom:6px;">Financial Services</div>
+        <div style="font-size:17px;font-weight:700;color:#fff;">Banks, lending platforms, payment-adjacent software</div>
+      </div>
+      <div style="padding:24px;">
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+          <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:14px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);">&#8250;</span>PCI-DSS and SOC 2 gates built into every deployment pipeline -- not bolted on after launch</li>
+          <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:14px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);">&#8250;</span>Immutable audit trails for all data access and financial transactions, structured to survive a regulatory inquiry</li>
+          <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:14px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);">&#8250;</span>Incident response runbooks accounting for financial and reputational cost of downtime</li>
+          <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:14px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);">&#8250;</span>Observability is not optional -- without telemetry, client claims become the narrative</li>
+        </ul>
+      </div>
+    </div>
+    <div style="background:var(--white);border:1.5px solid var(--gray-200);border-top:4px solid var(--blue);border-radius:10px;overflow:hidden;">
+      <div style="background:var(--blue);padding:20px 24px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#D6EAF8;margin-bottom:6px;">E-Commerce &amp; Consumer Products</div>
+        <div style="font-size:17px;font-weight:700;color:#fff;">Retail platforms, consumer apps, subscription businesses</div>
+      </div>
+      <div style="padding:24px;">
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+          <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:14px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);">&#8250;</span>Peak load architecture designed before the campaign -- not after the crash</li>
+          <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:14px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);">&#8250;</span>Payment rails and checkout flows tested, monitored, and incident-ready at all times</li>
+          <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:14px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);">&#8250;</span>Feature flag infrastructure so clients ship experiments safely without touching core logic</li>
+          <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:14px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);">&#8250;</span>Audience intelligence connecting campaign activity to product behavior -- closed loop from spend to retention</li>
+        </ul>
+      </div>
+    </div>
+    <div style="background:var(--white);border:1.5px solid var(--gray-200);border-top:4px solid var(--phase3);border-radius:10px;overflow:hidden;">
+      <div style="background:var(--phase3);padding:20px 24px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#D5F5E3;margin-bottom:6px;">Internal &amp; Admin Systems</div>
+        <div style="font-size:17px;font-weight:700;color:#fff;">Ops tools, internal portals, workflow automation</div>
+      </div>
+      <div style="padding:24px;">
+        <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+          <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:14px;position:relative;"><span style="position:absolute;left:0;color:var(--phase3);">&#8250;</span>SSO and RBAC implemented at the foundation level -- not hacked in later when compliance asks</li>
+          <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:14px;position:relative;"><span style="position:absolute;left:0;color:var(--phase3);">&#8250;</span>Audit logging for every action by every user, by default, structured for retrieval</li>
+          <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:14px;position:relative;"><span style="position:absolute;left:0;color:var(--phase3);">&#8250;</span>Documentation standards that ensure the tool survives the person who built it</li>
+          <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:14px;position:relative;"><span style="position:absolute;left:0;color:var(--phase3);">&#8250;</span>Change governance that applies even when the client's own team is building -- internal tools often bypass scrutiny applied to consumer-facing software</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEXT STEPS -->
+<section id="next-steps">
+  <div class="section-label">Next Steps</div>
+  <div class="section-title">Three decisions to make today. Everything else follows from them.</div>
+  <div class="section-body">This framework is a first draft brought to the table for alignment -- not a final mandate. Leadership decides which capabilities are MVP, who owns each one, and what the commit date is. That is the output of this meeting. Everything below is what happens after those three decisions are made.</div>
+
+  <div style="background:#1B3A6B;border-radius:10px;padding:28px 32px;max-width:860px;margin-bottom:40px;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9EC5E8;margin-bottom:16px;">Decisions needed in this room today</div>
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="flex-shrink:0;width:28px;height:28px;background:#2E75B6;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;">A</div>
+        <div style="color:#E8F2FC;font-size:15px;line-height:1.6;"><strong style="color:#fff;">Which capabilities are MVP?</strong> Leadership selects the subset the team will fully operationalize first. Not aspirational -- these are the ones we can be held to on every engagement starting now.</div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="flex-shrink:0;width:28px;height:28px;background:#2E75B6;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;">B</div>
+        <div style="color:#E8F2FC;font-size:15px;line-height:1.6;"><strong style="color:#fff;">Who owns each one?</strong> One named person per capability -- a team lead or discipline lead who is accountable for maintaining the standard. Not a committee. A name.</div>
+      </div>
+      <div style="display:flex;gap:14px;align-items:flex-start;">
+        <div style="flex-shrink:0;width:28px;height:28px;background:#2E75B6;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:800;color:#fff;">C</div>
+        <div style="color:#E8F2FC;font-size:15px;line-height:1.6;"><strong style="color:#fff;">What is the commit date?</strong> When do the MVP capabilities go live on all new engagements? This date anchors everything downstream.</div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- WORKING SESSION TOOL -->
+  <div style="margin-top:40px;">
+    <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#2E75B6;margin-bottom:12px;">Work Through It Now</div>
+    <div style="font-size:17px;color:#444C5C;max-width:760px;line-height:1.6;margin-bottom:32px;">Click each capability to mark it as MVP. Assign an owner. Define the Stargate trigger. Target: 5 to 7 capabilities. The summary panel at the bottom updates live.</div>
+
+    <!-- PROGRESS BAR -->
+    <div style="background:#EEF0F4;border-radius:10px;padding:20px 28px;margin-bottom:28px;display:flex;align-items:center;gap:32px;flex-wrap:wrap;">
+      <div style="display:flex;flex-direction:column;gap:4px;">
+        <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9BA3B2;">Capabilities Selected</div>
+        <div style="display:flex;align-items:baseline;gap:8px;">
+          <span id="mvp-count" style="font-size:40px;font-weight:800;color:#1B3A6B;line-height:1;">0</span>
+          <span style="font-size:16px;color:#9BA3B2;">/ 16 &nbsp; target: 5-7</span>
+        </div>
+      </div>
+      <div style="flex:1;min-width:200px;">
+        <div style="height:8px;background:#D5DDE8;border-radius:4px;overflow:hidden;margin-bottom:6px;">
+          <div id="mvp-bar" style="height:100%;width:0%;background:linear-gradient(90deg,#2E75B6,#1B3A6B);border-radius:4px;transition:width 0.3s;"></div>
+        </div>
+        <div id="mvp-bar-label" style="font-size:13px;color:#9BA3B2;"></div>
+      </div>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+        <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:#444C5C;"><span style="width:12px;height:12px;border-radius:2px;background:#C0392B;display:inline-block;"></span>High complexity</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:#444C5C;"><span style="width:12px;height:12px;border-radius:2px;background:#D68910;display:inline-block;"></span>Medium</div>
+        <div style="display:flex;align-items:center;gap:6px;font-size:13px;color:#444C5C;"><span style="width:12px;height:12px;border-radius:2px;background:#27AE60;display:inline-block;"></span>Low</div>
+        <div style="width:1px;height:16px;background:#D5DDE8;margin:0 4px;"></div>
+        <span class="orbit-badge" style="pointer-events:none;"><span class="orbit-dot"></span>Orbit Audit</span>
+        <span style="font-size:12px;color:#9BA3B2;">= capability covered by Orbit code analysis</span>
+      </div>
+    </div>
+
+    <!-- CAPABILITY ROWS -->
+    <div id="session-caps" style="display:flex;flex-direction:column;gap:8px;margin-bottom:40px;"></div>
+
+    <!-- DECISION SUMMARY -->
+    <div style="background:#1B3A6B;border-radius:10px;padding:28px 32px;margin-top:8px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9EC5E8;margin-bottom:16px;">Session Summary -- MVP Decisions</div>
+      <div id="summary-empty" style="color:rgba(255,255,255,0.45);font-size:15px;font-style:italic;">No capabilities selected yet. Click a capability above to add it to the MVP list.</div>
+      <div id="summary-list" style="display:flex;flex-direction:column;gap:10px;"></div>
+      <div id="commit-block" style="display:none;margin-top:24px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.15);">
+        <div style="font-size:13px;color:#9EC5E8;font-weight:600;margin-bottom:8px;">Commit Date for All MVP Capabilities</div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <input id="commit-date" type="text" placeholder="e.g. July 1, 2026" style="background:rgba(255,255,255,0.1);border:1.5px solid rgba(255,255,255,0.2);border-radius:6px;padding:8px 14px;color:#fff;font-size:15px;width:260px;outline:none;" />
+          <span style="color:rgba(255,255,255,0.5);font-size:13px;">This anchors everything downstream.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .sess-cap { border:1.5px solid #EEF0F4; border-radius:10px; background:#fff; overflow:hidden; transition:all 0.2s; }
+    .sess-cap:hover { border-color:#2E75B6; box-shadow:0 2px 12px rgba(46,117,182,0.1); }
+    .sess-cap.selected { border-color:#1B3A6B; background:#EEF4FB; }
+    .sess-cap-top { display:flex; align-items:center; gap:0; cursor:pointer; padding:0; }
+    .sess-check { width:52px; min-width:52px; height:100%; display:flex; align-items:center; justify-content:center; font-size:22px; padding:16px; border-right:1px solid #EEF0F4; transition:background 0.2s; }
+    .sess-cap.selected .sess-check { background:#1B3A6B; border-right-color:#1B3A6B; }
+    .sess-cap-body { flex:1; padding:14px 20px; display:flex; align-items:center; gap:20px; flex-wrap:wrap; }
+    .sess-num { font-size:13px; font-weight:700; color:#9BA3B2; min-width:20px; }
+    .sess-name { font-size:15px; font-weight:700; color:#1B3A6B; min-width:220px; flex:1; }
+    .sess-cap.selected .sess-name { color:#1B3A6B; }
+    .sess-area { font-size:12px; color:#9BA3B2; font-style:italic; min-width:160px; }
+    .sess-complexity { font-size:11px; font-weight:700; padding:3px 10px; border-radius:20px; white-space:nowrap; }
+    .complexity-H { background:#FDECEC; color:#C0392B; }
+    .complexity-M { background:#FEF5E7; color:#D68910; }
+    .complexity-L { background:#EAFAF1; color:#27AE60; }
+    .sess-expand { padding:0 18px; cursor:pointer; color:#9BA3B2; font-size:20px; transition:transform 0.2s; user-select:none; }
+    .sess-expand.open { transform:rotate(180deg); }
+    .sess-detail { display:none; border-top:1px solid #EEF0F4; padding:16px 20px 16px 72px; background:#F8F9FB; }
+    .sess-detail.open { display:block; }
+    .sess-detail-label { font-size:11px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:#2E75B6; margin-bottom:6px; }
+    .sess-detail-text { font-size:14px; color:#444C5C; line-height:1.6; margin-bottom:14px; }
+    .sess-owner-row { display:flex; align-items:center; gap:12px; margin-top:8px; }
+    .sess-owner-label { font-size:13px; font-weight:600; color:#444C5C; white-space:nowrap; }
+    .sess-owner-input { border:1.5px solid #D5DDE8; border-radius:6px; padding:7px 12px; font-size:14px; color:#1A1E2A; outline:none; width:220px; transition:border-color 0.2s; }
+    .sess-owner-input:focus { border-color:#2E75B6; }
+    .sess-note-input { border:1.5px solid #D5DDE8; border-radius:6px; padding:7px 12px; font-size:14px; color:#1A1E2A; outline:none; flex:1; transition:border-color 0.2s; }
+    .sess-note-input:focus { border-color:#2E75B6; }
+    .orbit-badge {
+      display:inline-flex; align-items:center; gap:5px;
+      background:#1B3A6B; color:#fff;
+      font-size:10px; font-weight:800; letter-spacing:0.8px;
+      text-transform:uppercase; padding:3px 9px 3px 7px;
+      border-radius:20px; white-space:nowrap;
+      border:1.5px solid #C0392B;
+      flex-shrink:0;
+    }
+    .orbit-badge .orbit-dot {
+      width:6px; height:6px; border-radius:50%;
+      background:#C0392B; display:inline-block; flex-shrink:0;
+    }
+    .orbit-badge-partial {
+      background:#2C3E50; border-color:#7F8C8D;
+    }
+    .orbit-badge-partial .orbit-dot { background:#95A5A6; }
+  </style>
+
+  <script>
+  (function(){
+    const CAPS = [
+      {n:1, name:"Observability & Error Intelligence", area:"Visibility & Delivery", cx:"M", orbit:"partial",
+       stargate:"Error event fires Stargate; AI classifies severity and affected components; owner notified; AI drafts incident summary. Human reviews.",
+       owner:"Christiano"},
+      {n:2, name:"Testing & Quality Assurance", area:"Visibility & Delivery", cx:"M", orbit:"partial",
+       stargate:"Feature ticket moves to dev; Stargate triggers AI test plan; Playwright and API agents run suite; validation artifacts attached to ticket. Human approves before merge.",
+       owner:"Kauan"},
+      {n:3, name:"CI/CD & Release Management", area:"Visibility & Delivery", cx:"M",
+       stargate:"PR opened; Stargate runs lint, test, and security scan; AI summarizes failures with suggested fixes; human approves merge. No manual override path.",
+       owner:"Rodrigo + Christiano"},
+      {n:4, name:"Dependency & Code Health", area:"Visibility & Delivery", cx:"L", orbit:"full",
+       stargate:"Scheduled weekly job; AI scans dependency graph for CVEs and EOL packages; generates prioritized risk report; owner reviews and triages.",
+       owner:"Andre"},
+      {n:5, name:"Security & Vulnerability Management", area:"Security & Compliance", cx:"H", orbit:"full",
+       stargate:"Code analysis script outputs findings; Stargate routes by severity; AI generates triage and remediation plan; SA approves fix plan before implementation begins.",
+       owner:"Rodrigo"},
+      {n:6, name:"Accessibility & Platform Compliance", area:"Security & Compliance", cx:"M",
+       stargate:"Pre-release; AI WCAG scan on changed components; generates compliance checklist; human reviews flagged items before App Store submission.",
+       owner:"Bruno"},
+      {n:7, name:"Data Protection & Privacy", area:"Security & Compliance", cx:"M", orbit:"full",
+       stargate:"New feature touches user data; AI maps data flows; generates GDPR/CCPA compliance checklist; human validates before feature ships.",
+       owner:"Andre"},
+      {n:8, name:"Analytics & Product Instrumentation", area:"Visibility & Delivery", cx:"L",
+       stargate:"Feature merged; Stargate triggers AI instrumentation audit; checks core user flows are covered; generates gaps report as release gate. Human signs off.",
+       owner:"Kauan"},
+      {n:9, name:"Incident Response & Client Communication", area:"Client Continuity", cx:"L",
+       stargate:"P1/P2 alert fires; AI drafts client notification and internal runbook; human reviews and approves before send. Post-incident: AI generates review summary.",
+       owner:"Rodrigo"},
+      {n:10, name:"Documentation & Knowledge Transfer", area:"Client Continuity", cx:"L", orbit:"full",
+       stargate:"Feature moves to Done; AI drafts README, decision record, and deployment notes; human reviews as part of Definition of Done.",
+       owner:"Andre"},
+      {n:11, name:"Change Governance", area:"Governance & Safety", cx:"M",
+       stargate:"Every PR triggers Stargate; AI reviews for security, test coverage, quality, OWASP LLM Top 10; generates structured review report; human approves or blocks. No self-approval.",
+       owner:"Kauan + Christiano"},
+      {n:12, name:"Data Layer & Audience Intelligence", area:"Data Layer", cx:"H",
+       stargate:"Scheduled weekly/monthly; Stargate pulls Firebase/BigQuery events; AI generates audience-aware insight report (dev, client, exec views); human reviews and distributes.",
+       owner:"Kauan"},
+      {n:13, name:"Performance & Scalability Engineering", area:"Visibility & Delivery", cx:"H",
+       stargate:"Pre-release gate; AI performance analysis against baseline; flags regressions; automated rollback trigger if thresholds exceeded post-deploy. Human approves before deployment.",
+       owner:"Christiano"},
+      {n:14, name:"Disaster Recovery & Business Continuity", area:"Client Continuity", cx:"M",
+       stargate:"Scheduled drill; AI validates backup integrity against RTO/RPO; generates drill report; human signs off. First test is not the actual disaster.",
+       owner:"Rodrigo"},
+      {n:15, name:"Identity & Access Management", area:"Security & Compliance", cx:"M", orbit:"partial",
+       stargate:"Team change event; AI generates list of access to provision or revoke; human approves all changes before execution. AI agent access to production explicitly scoped and logged.",
+       owner:"Christiano + Kauan"},
+      {n:16, name:"Feature Management & Progressive Delivery", area:"Governance & Safety", cx:"H",
+       stargate:"Flag activated; Stargate monitors rollout metrics in real time; AI alerts on anomalies (error rate, conversion drop); human controls rollback without code deploy.",
+       owner:"Christiano"},
+    ];
+
+    const cxLabel = {H:"High complexity", M:"Medium complexity", L:"Low complexity"};
+    const selected = {};
+    const owners = {};
+    const notes = {};
+
+    function updateCount() {
+      const sel = Object.values(selected).filter(Boolean).length;
+      document.getElementById('mvp-count').textContent = sel;
+      const pct = Math.min(100, (sel/7)*100);
+      document.getElementById('mvp-bar').style.width = pct + '%';
+      const label = sel === 0 ? 'Select 5 to 7 capabilities' :
+                    sel < 5 ? `${5-sel} more to reach minimum` :
+                    sel <= 7 ? `Good -- ${7-sel} remaining in recommended range` :
+                    `${sel-7} over recommended maximum`;
+      document.getElementById('mvp-bar-label').textContent = label;
+      document.getElementById('mvp-bar').style.background =
+        sel < 5 ? 'linear-gradient(90deg,#D68910,#E67E22)' :
+        sel <= 7 ? 'linear-gradient(90deg,#27AE60,#1E8449)' :
+                   'linear-gradient(90deg,#C0392B,#A93226)';
+      updateSummary();
+    }
+
+    function updateSummary() {
+      const list = document.getElementById('summary-list');
+      const empty = document.getElementById('summary-empty');
+      const commit = document.getElementById('commit-block');
+      const items = CAPS.filter(c => selected[c.n]);
+      empty.style.display = items.length ? 'none' : '';
+      commit.style.display = items.length ? '' : 'none';
+      list.innerHTML = items.map(c => `
+        <div style="background:rgba(255,255,255,0.07);border-radius:8px;padding:12px 16px;display:flex;gap:16px;align-items:flex-start;">
+          <div style="font-size:13px;font-weight:700;color:#9EC5E8;min-width:20px;">${c.n}</div>
+          <div style="flex:1;">
+            <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:2px;">${c.name}</div>
+            <div style="font-size:13px;color:#9EC5E8;">Owner: <strong style="color:#fff;">${owners[c.n]||'Not assigned'}</strong></div>
+            ${notes[c.n] ? `<div style="font-size:13px;color:#C8DDEF;margin-top:4px;font-style:italic;">${notes[c.n]}</div>` : ''}
+          </div>
+          <div style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;white-space:nowrap;${c.cx==='H'?'background:rgba(192,57,43,0.3);color:#F1948A;':c.cx==='M'?'background:rgba(214,137,16,0.3);color:#F9CA75;':'background:rgba(39,174,96,0.3);color:#7DCEA0;'}">${cxLabel[c.cx]}</div>
+        </div>`).join('');
+    }
+
+    function buildRows() {
+      const container = document.getElementById('session-caps');
+      CAPS.forEach(c => {
+        const row = document.createElement('div');
+        row.className = 'sess-cap';
+        row.id = 'cap-'+c.n;
+
+        const cxClass = 'complexity-'+c.cx;
+        const orbitBadge = c.orbit === 'full'
+          ? `<span class="orbit-badge"><span class="orbit-dot"></span>Orbit Audit</span>`
+          : c.orbit === 'partial'
+          ? `<span class="orbit-badge orbit-badge-partial"><span class="orbit-dot"></span>Orbit Partial</span>`
+          : '';
+        row.innerHTML = `
+          <div class="sess-cap-top">
+            <div class="sess-check" id="check-${c.n}">○</div>
+            <div class="sess-cap-body" onclick="toggleCap(${c.n})">
+              <div class="sess-num">${c.n}</div>
+              <div class="sess-name">${c.name}</div>
+              <div class="sess-area">${c.area}</div>
+              <div class="sess-complexity ${cxClass}">${cxLabel[c.cx]}</div>
+              ${orbitBadge}
+            </div>
+            <div class="sess-expand" id="exp-${c.n}" onclick="toggleDetail(${c.n})">&#8964;</div>
+          </div>
+          <div class="sess-detail" id="det-${c.n}">
+            <div class="sess-detail-label">Stargate Workflow Trigger</div>
+            <div class="sess-detail-text">${c.stargate}</div>
+            <div class="sess-owner-row">
+              <div class="sess-owner-label">Suggested owner:</div>
+              <input class="sess-owner-input" id="own-${c.n}" type="text" placeholder="${c.owner}" value="${c.owner}" oninput="updateOwner(${c.n},this.value)" />
+              <div class="sess-owner-label" style="margin-left:12px;">Notes:</div>
+              <input class="sess-note-input" id="note-${c.n}" type="text" placeholder="Stargate workflow notes, dependencies, decisions..." oninput="updateNote(${c.n},this.value)" />
+            </div>
+          </div>`;
+        container.appendChild(row);
+      });
+    }
+
+    window.toggleCap = function(n) {
+      selected[n] = !selected[n];
+      const row = document.getElementById('cap-'+n);
+      const chk = document.getElementById('check-'+n);
+      if (selected[n]) {
+        row.classList.add('selected');
+        chk.textContent = '✓';
+        chk.style.color = '#fff';
+        if (!owners[n]) owners[n] = CAPS.find(c=>c.n===n).owner;
+      } else {
+        row.classList.remove('selected');
+        chk.textContent = '○';
+        chk.style.color = '';
+      }
+      updateCount();
+    };
+
+    window.toggleDetail = function(n) {
+      const det = document.getElementById('det-'+n);
+      const exp = document.getElementById('exp-'+n);
+      const open = det.classList.contains('open');
+      det.classList.toggle('open');
+      exp.classList.toggle('open');
+    };
+
+    window.updateOwner = function(n, val) {
+      owners[n] = val;
+      updateSummary();
+    };
+
+    window.updateNote = function(n, val) {
+      notes[n] = val;
+      updateSummary();
+    };
+
+    buildRows();
+    updateCount();
+  })();
+  </script>
+</section>
+
+<!-- WHERE THIS GOES -->
+<section id="vision">
+  <div class="section-label">Where This Goes</div>
+  <div class="section-title">The foundation becomes a system. The system runs inside Stargate.</div>
+  <div class="section-body">The MVP capabilities and playbooks are the first layer. Here is how they evolve into something that scales.</div>
+
+  <div style="display:flex;flex-direction:column;gap:20px;max-width:860px;">
+
+    <div style="background:#fff;border:1.5px solid #EEF0F4;border-left:4px solid #1B3A6B;border-radius:0 10px 10px 0;padding:24px 28px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#2E75B6;margin-bottom:8px;">Layer 1 &nbsp;|&nbsp; Ownership</div>
+      <div style="font-size:16px;font-weight:700;color:#1B3A6B;margin-bottom:8px;">Each MVP capability gets a named product owner</div>
+      <div style="font-size:15px;color:#444C5C;line-height:1.7;">Ownership is assigned based on familiarity and experience with that specific capability area -- not availability. The owner defines what good looks like, maintains the standard, and is accountable when something slips. One name. Not a committee.</div>
+    </div>
+
+    <div style="background:#fff;border:1.5px solid #EEF0F4;border-left:4px solid #2E75B6;border-radius:0 10px 10px 0;padding:24px 28px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#2E75B6;margin-bottom:8px;">Layer 2 &nbsp;|&nbsp; Playbooks</div>
+      <div style="font-size:16px;font-weight:700;color:#1B3A6B;margin-bottom:8px;">Each capability gets a living operational playbook</div>
+      <div style="font-size:15px;color:#444C5C;line-height:1.7;">Four things defined per capability: the workflow (how it operates day to day), failure fallbacks (what happens when a tool goes down, a vendor changes, or a team member leaves), evolution triggers (what causes a review -- tool updates, new regulations, contract changes, performance gaps), and defined policies for how and when it runs. This is not a static document. It updates as the ecosystem around it changes.</div>
+    </div>
+
+    <div style="background:#fff;border:1.5px solid #EEF0F4;border-left:4px solid #4A90D4;border-radius:0 10px 10px 0;padding:24px 28px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#2E75B6;margin-bottom:8px;">Layer 3 &nbsp;|&nbsp; Skills</div>
+      <div style="font-size:16px;font-weight:700;color:#1B3A6B;margin-bottom:8px;">Playbooks get encoded as executable AI skills</div>
+      <div style="font-size:15px;color:#444C5C;line-height:1.7;">Once a playbook is defined, it becomes a skill -- a structured, repeatable workflow that AI can execute. Run a capability health check against a codebase. Generate an audit report for a client engagement. Flag when a tool update changes a workflow. Prompt an owner when a policy review is due. The playbook stops being a document and starts being something that runs.</div>
+    </div>
+
+    <div style="background:#1B3A6B;border-radius:10px;padding:28px 32px;">
+      <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#9EC5E8;margin-bottom:8px;">Layer 4 &nbsp;|&nbsp; Stargate Integration</div>
+      <div style="font-size:16px;font-weight:700;color:#fff;margin-bottom:8px;">The foundation and the AI tooling become one system</div>
+      <div style="font-size:15px;color:#C8DDEF;line-height:1.7;">Over time, the capability skills live inside Stargate. Every workflow Stargate runs for a client automatically passes through the foundational standard -- not as a separate audit after the fact, but built into the workflow itself. Stargate delivers the speed. The capability layer is what makes that speed trustworthy. That is how this answers the question of how AI connects to the foundation.</div>
+    </div>
+
+  </div>
+</section>
+
+<!-- COMMERCIAL MODEL -->
+<section id="commercial">
+  <div class="section-label">New Prospect Model</div>
+  <div class="section-title">Foundation first. Features on top. This is how the estimate changes.</div>
+  <div class="section-body">The commercial shift is structural. Foundation work is more estimable than feature work -- it is defined by a known framework with specific components, not by user stories that change. Making it the anchor of the proposal changes what Concepta sells and what the client buys.</div>
+
+  <div class="model-grid">
+    <div class="model-card old">
+      <div class="model-card-header">Old Engagement Model</div>
+      <div class="model-card-body">
+        <div class="model-bar-wrap">
+          <div class="model-bar-label"><span>Feature Development</span><span>70-75% of estimate</span></div>
+          <div class="model-bar" style="background:#FADBD8;">
+            <div class="model-bar-fill" style="width:73%; background:var(--phase1);">73%</div>
+          </div>
+        </div>
+        <div class="model-bar-wrap">
+          <div class="model-bar-label"><span>Setup &amp; Infrastructure</span><span>15-20% (implied)</span></div>
+          <div class="model-bar" style="background:#F5EEF8;">
+            <div class="model-bar-fill" style="width:18%; background:#8E44AD;">18%</div>
+          </div>
+        </div>
+        <div class="model-bar-wrap">
+          <div class="model-bar-label"><span>Foundation Work</span><span>~10% absorbed/hidden</span></div>
+          <div class="model-bar" style="background:var(--gray-200);">
+            <div class="model-bar-fill" style="width:9%; background:var(--gray-400);">9%</div>
+          </div>
+        </div>
+        <div class="model-note">Foundation gaps accumulate silently. The client does not know what they are not getting. Concepta absorbs the risk when something breaks.</div>
+      </div>
+    </div>
+    <div class="model-card new">
+      <div class="model-card-header">New Engagement Model</div>
+      <div class="model-card-body">
+        <div class="model-bar-wrap">
+          <div class="model-bar-label"><span>Foundation Layer (Phase 1)</span><span>Explicit line item</span></div>
+          <div class="model-bar" style="background:var(--sky);">
+            <div class="model-bar-fill" style="width:35%; background:var(--navy);">35%</div>
+          </div>
+        </div>
+        <div class="model-bar-wrap">
+          <div class="model-bar-label"><span>Feature Development</span><span>AI-assisted, faster pace</span></div>
+          <div class="model-bar" style="background:var(--sky);">
+            <div class="model-bar-fill" style="width:55%; background:var(--blue);">55%</div>
+          </div>
+        </div>
+        <div class="model-bar-wrap">
+          <div class="model-bar-label"><span>Foundation Maintenance</span><span>Retainer (recurring)</span></div>
+          <div class="model-bar" style="background:var(--phase3-bg);">
+            <div class="model-bar-fill" style="width:10%; background:var(--phase3);">10%</div>
+          </div>
+        </div>
+        <div class="model-note">Client understands exactly what they are buying. Features are delivered faster with AI tooling. The foundation cost is offset by AI-assisted feature speed. Concepta earns a recurring retainer for owning what they built.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="commercial-insight">
+    <h3>Why this model works commercially</h3>
+    <div class="insight-points">
+      <div class="insight-point">
+        <div class="insight-icon">⚡</div>
+        <div class="insight-text"><strong>The foundation offsets itself.</strong> AI-assisted feature development delivers the same feature scope in less engineering time. That speed differential pays for the foundation layer. The client gets more, not just a different allocation of cost.</div>
+      </div>
+      <div class="insight-point">
+        <div class="insight-icon">📋</div>
+        <div class="insight-text"><strong>Foundation work is estimable.</strong> It is defined by a 16-capability framework with known components, not by user stories that change. This means Concepta can price it accurately and clients can evaluate it clearly.</div>
+      </div>
+      <div class="insight-point">
+        <div class="insight-icon">🔄</div>
+        <div class="insight-text"><strong>The retainer is the commercial engine.</strong> Clients paying for ongoing Foundation Health -- monitoring, governance, compliance, and data layer evolution -- are clients who see value every week. Not just when something breaks. This is how Concepta moves from project vendor to indispensable partner.</div>
+      </div>
+      <div class="insight-point">
+        <div class="insight-icon">🛡️</div>
+        <div class="insight-text"><strong>The cost of absence is documented.</strong> A client claimed a production bug was costing $2.7M per day. No telemetry to prove otherwise. A separate client was sued for $3.7M over ADA gaps visible in their codebase. The framework workbook documents the cost-of-absence case for every capability. That is the sales conversation.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CODE ANALYSIS -->
+<section id="code-analysis">
+  <div class="section-label">Code Analysis</div>
+  <div class="section-title">Orbit in action on a live engagement.</div>
+  <div class="section-body">The MVP is built and running on real codebases. We are in active polish based on peer review and internal feedback. The mock dashboard and report below are the current outputs. Next milestone: first prospect delivery.</div>
+
+  <!-- Status strip -->
+  <div style="display:flex;align-items:center;gap:12px;margin-bottom:32px;padding:16px 20px;background:var(--navy);border-radius:10px;max-width:960px;flex-wrap:wrap;">
+    <span style="background:#27AE60;color:#fff;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;white-space:nowrap;">MVP Built</span>
+    <span style="background:rgba(255,255,255,0.12);color:#9EC5E8;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;white-space:nowrap;">Peer Review Complete</span>
+    <span style="background:#E67E22;color:#fff;font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:20px;white-space:nowrap;">Polishing In Progress</span>
+    <span style="color:rgba(255,255,255,0.5);font-size:13px;margin-left:4px;">Next: First Prospect Demo</span>
+  </div>
+
+  <!-- Two-column: what we're improving + next milestone -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:960px;margin-bottom:40px;">
+    <div style="background:var(--white);border:1.5px solid var(--gray-200);border-radius:10px;padding:24px 28px;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--blue);margin-bottom:16px;">Active Improvements from Peer Review</div>
+      <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;">
+        <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);font-weight:700;">&#8250;</span><strong>Executive summary</strong> -- clear, non-technical, actionable for non-developer stakeholders</li>
+        <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);font-weight:700;">&#8250;</span><strong>Score clarity</strong> -- A-F grading with explicit thresholds explained; removing ambiguous 0-100 raw scores from lead position</li>
+        <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);font-weight:700;">&#8250;</span><strong>Code snippets + file/line references</strong> for every security and technical debt finding</li>
+        <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);font-weight:700;">&#8250;</span><strong>Section reorder</strong> -- action plan leads; architectural overview moves to appendix</li>
+        <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);font-weight:700;">&#8250;</span><strong>Process metrics separated</strong> from static code metrics (AI agent count, confidence level moved out of headline)</li>
+        <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);font-weight:700;">&#8250;</span><strong>Human verification gate</strong> -- AI findings validated by a reviewer before any external delivery</li>
+        <li style="font-size:13px;color:#444C5C;line-height:1.5;padding-left:16px;position:relative;"><span style="position:absolute;left:0;color:var(--blue);font-weight:700;">&#8250;</span><strong>SME context input</strong> -- project overview from a subject matter expert fed into agent context to reduce assumptions</li>
+      </ul>
+    </div>
+    <div style="background:var(--navy);border-radius:10px;padding:24px 28px;display:flex;flex-direction:column;gap:20px;">
+      <div style="font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#9EC5E8;">Product Roadmap</div>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="background:#27AE60;color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:12px;white-space:nowrap;margin-top:2px;">Now</div>
+          <div style="font-size:13px;color:#C8DDEF;line-height:1.5;">Polished report in Word/PDF -- clear findings, exec summary, code snippets, human-verified. Delivered to first prospect within the week.</div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="background:var(--blue);color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:12px;white-space:nowrap;margin-top:2px;">Phase 2</div>
+          <div style="font-size:13px;color:#C8DDEF;line-height:1.5;">Interactive dashboard -- filter by severity, area, and module. Prospect can explore findings, not just read them. No static PDF.</div>
+        </div>
+        <div style="display:flex;gap:14px;align-items:flex-start;">
+          <div style="background:#8E44AD;color:#fff;font-size:10px;font-weight:800;padding:3px 9px;border-radius:12px;white-space:nowrap;margin-top:2px;">Phase 3</div>
+          <div style="font-size:13px;color:#C8DDEF;line-height:1.5;">Conversational AI layer -- prospect annotates findings, adds context, asks follow-up questions. Database-backed. Ties directly into Stargate remediation workflows.</div>
+        </div>
+      </div>
+      <div style="margin-top:auto;padding-top:16px;border-top:1px solid rgba(255,255,255,0.1);font-size:13px;color:#9EC5E8;font-style:italic;">The mock dashboard below is a preview of Phase 2. The report is the current Phase 1 output being refined.</div>
+    </div>
+  </div>
+
+  <div class="archive-subnav">
+    <button class="archive-subtab active" onclick="switchCodeTab(this,'ca-dashboard')">Mock Dashboard</button>
+    <button class="archive-subtab" onclick="switchCodeTab(this,'ca-report')">Mock Report</button>
+  </div>
+  <div class="archive-frame-wrap" id="ca-dashboard">
+    <iframe src="Orbit_Mock_Dashboard.html" title="Orbit Mock Dashboard"></iframe>
+  </div>
+  <div class="archive-frame-wrap" id="ca-report" style="display:none;">
+    <iframe src="Orbit_Mock_Report.pdf" title="Orbit Mock Report"></iframe>
+  </div>
+</section>
+
+<!-- ARCHIVE -->
+<section id="archive">
+  <div class="section-label">Archive</div>
+  <div class="section-title">Previous Materials</div>
+  <div class="section-body">Earlier versions and source materials used to develop the Foundation Play framework.</div>
+  <div class="archive-subnav">
+    <button class="archive-subtab active">Initial Pitch</button>
+  </div>
+  <div class="archive-frame-wrap">
+    <iframe src="Initial_Pitch.html" title="Initial Pitch -- Foundational Capabilities"></iframe>
+  </div>
+</section>
+
+<footer>
+  Concepta Technology &nbsp;|&nbsp; The Foundation Play &nbsp;|&nbsp; Internal Strategic Brief &nbsp;|&nbsp; May 2026
+</footer>
+
+<script>
+function switchCodeTab(btn, panelId) {
+  document.querySelectorAll('#code-analysis .archive-subtab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.querySelectorAll('#code-analysis .archive-frame-wrap').forEach(p => p.style.display = 'none');
+  document.getElementById(panelId).style.display = '';
+}
+
+const caps = [
+  { num:1,  name:"Observability & Error Intelligence",       area:"Visibility & Delivery", phase:1, orbit:"partial",
+    what:"Ongoing monitoring of application health, errors, and performance that expands with every new feature.",
+    why:"Every new feature adds failure points that did not exist before. Without real-time visibility, problems are found by users, not by the team. We have spent forensic hours at client budget proving a $2.7M/day claim wrong because we had no telemetry.",
+    stat:"53% of mobile users abandon sessions after encountering errors", source:"Google Research",
+    orbitCovers: [
+      { yes: true,  text: "Detects logging/monitoring tooling present in the stack (e.g., Serilog identified in heller-api)" },
+      { yes: true,  text: "Flags modules with no error tracking instrumentation as a tech debt finding" },
+      { yes: true,  text: "Scores stack maturity dimension -- surfaces outdated or absent observability tooling" },
+    ],
+    orbitMissing: [
+      { text: "Does not configure alerting, error budgets, dashboards, or on-call routing" },
+      { text: "Does not set up Sentry, Datadog, or any monitoring platform -- detection only" },
+    ]},
+
+  { num:2,  name:"Testing & Quality Assurance",              area:"Visibility & Delivery", phase:1, orbit:"partial",
+    what:"A living test suite that expands alongside the product. Regression coverage grows to protect everything built before each new addition.",
+    why:"Features build on top of features. Without a regression foundation, every new addition is a risk to everything that already works. Poor software quality costs the US economy $2.41 trillion annually.",
+    stat:"$2.41 trillion in annual losses linked to inadequate testing", source:"NIST Consortium for IT Software Quality",
+    orbitCovers: [
+      { yes: true,  text: "Scores test architecture quality per module (heller-api scored 58/100 on this dimension)" },
+      { yes: true,  text: "Identifies test files present and maps which modules have zero test coverage" },
+      { yes: true,  text: "Surfaces untested critical paths as findings in the tech debt inventory" },
+    ],
+    orbitMissing: [
+      { text: "Does not write tests, set coverage thresholds, or configure CI test gates" },
+      { text: "Does not enforce or monitor test coverage over time -- snapshot only" },
+    ]},
+
+  { num:3,  name:"CI/CD & Release Management",              area:"Visibility & Delivery", phase:1,
+    what:"Delivery infrastructure that scales with the solution, including documented deployment rollback procedures for every release.",
+    why:"Manual coordination of releases does not scale. Elite DevOps performers deploy 182x more frequently with 2,604x faster recovery times. Every additional developer without CI/CD increases collision risk.",
+    stat:"Elite performers deploy 182x more frequently with 2,604x faster recovery", source:"DORA / Accelerate Report" },
+
+  { num:13, name:"Performance & Scalability Engineering",    area:"Visibility & Delivery", phase:2,
+    what:"Load testing, stress testing, and benchmarking before major releases and at user-count milestones. Performance budgets tracked in CI. Automated rollback triggers tied to regression thresholds.",
+    why:"A solution can be fully functional, monitored, and bug-free and still collapse under traffic. Every major campaign or viral moment is an uncontrolled experiment if limits were never defined.",
+    stat:"1-second mobile load delay reduces conversions by up to 20%", source:"Google / Deloitte Mobile Speed Study" },
+
+  { num:5,  name:"Security & Vulnerability Management",     area:"Security & Compliance", phase:1, orbit:"full",
+    what:"Active management of the solution's security posture as its attack surface grows with every new feature, integration, and user role.",
+    why:"AI coding tools introduce 10x more security issues. The attack surface is not static. Anthropic launched Project Glasswing after their own model found a 27-year-old flaw in OpenBSD and a 16-year-old vulnerability in FFmpeg.",
+    stat:"10x more security issues from AI-assisted development", source:"Apiiro Research",
+    orbitCovers: [
+      { yes: true,  text: "Full OWASP Top 10 audit with CWE classification, severity rating, and file/line references" },
+      { yes: true,  text: "Prioritized findings across Critical, High, Medium, Low -- each with specific remediation steps" },
+      { yes: true,  text: "heller-api: 122 findings, 59/100 security score, including 3 Critical credential exposures in git history" },
+      { yes: true,  text: "Covers injection risks, insecure configs, business logic flaws, and hardcoded secrets" },
+    ],
+    orbitMissing: []},
+
+  { num:4,  name:"Dependency & Code Health",                area:"Security & Compliance", phase:1, orbit:"full",
+    what:"Proactive stewardship of every third-party library, framework, and internal module the solution depends on.",
+    why:"Every library added is a maintenance obligation that never goes away. Unmanaged dependency graphs accumulate vulnerabilities, incompatibilities, and legal exposure silently.",
+    stat:"Average 197 days to identify a breach from a compromised dependency", source:"IBM Security Report",
+    orbitCovers: [
+      { yes: true,  text: "Scores dependency hygiene as a standalone dimension -- heller-api scored 0/100 (flagged Critical)" },
+      { yes: true,  text: "Catalogs every third-party package with version age, outdated status, and CVE risk (e.g., .NET 4.6.2, EF6, AutoMapper 3.2.1 all flagged)" },
+      { yes: true,  text: "Maps full module dependency graph, flags directional violations and circular dependencies" },
+      { yes: true,  text: "Technical debt inventory categorizes dependency issues by severity and estimated remediation effort" },
+    ],
+    orbitMissing: []},
+
+  { num:7,  name:"Data Protection & Privacy",               area:"Security & Compliance", phase:1, orbit:"full",
+    what:"Ongoing governance of data flows as the solution's data model grows. Consent, retention, and GDPR/CCPA compliance reviewed with every feature that touches user data.",
+    why:"Privacy obligations multiply with data complexity. What starts as an email address can evolve into behavioral tracking without anyone noticing the compliance exposure.",
+    stat:"Average GDPR fine: $1.3M; maximum: 4% of global annual turnover", source:"GDPR Article 83 / IAPP",
+    orbitCovers: [
+      { yes: true,  text: "Audits PII exposure patterns across all modules -- flags sensitive data in logs, API responses, and source code" },
+      { yes: true,  text: "Detects sensitive data committed to git history (AWS keys, API tokens found in heller-api)" },
+      { yes: true,  text: "Flags encryption gaps at rest and in transit, insecure credential storage, and GDPR/CCPA risk patterns" },
+      { yes: true,  text: "Data layer assessment maps all data handling across modules with OWASP A02/A07 classification" },
+    ],
+    orbitMissing: []},
+
+  { num:6,  name:"Accessibility & Platform Compliance",     area:"Security & Compliance", phase:2,
+    what:"Continuous WCAG, App Store, and legal compliance maintenance as new features are introduced and platform requirements change.",
+    why:"A Concepta client was sued for $3.7 million over ADA accessibility gaps that were visible in their codebase the entire time. Compliance is not a one-time audit -- it breaks with every new feature.",
+    stat:"ADA digital accessibility lawsuits increased 300% over 5 years", source:"UsableNet Annual Report" },
+
+  { num:15, name:"Identity & Access Management",            area:"Security & Compliance", phase:1, orbit:"partial",
+    what:"Formal governance of who and what can access every layer of the solution -- including AI agents. Least-privilege access, quarterly reviews, MFA, secrets management, and immediate revocation on departure.",
+    why:"Access sprawl is invisible until it becomes a breach. Compromised credentials are the primary attack vector across all web application breaches. AI agent access to production without scope limits is an emerging and rapidly growing risk.",
+    stat:"Compromised credentials: primary attack vector in the majority of breaches", source:"Verizon DBIR 2025",
+    orbitCovers: [
+      { yes: true,  text: "Audits authentication mechanisms present (OAuth 2.0, Bearer tokens, ASP.NET Identity identified in heller-api)" },
+      { yes: true,  text: "Flags hardcoded credentials, insecure secret storage, and missing token validation (3 Critical findings in heller-api)" },
+      { yes: true,  text: "Surfaces auth/authz gaps: overly broad permissions, missing access guards, session management issues" },
+    ],
+    orbitMissing: [
+      { text: "Does not implement MFA, conduct role reviews, or configure least-privilege access controls" },
+      { text: "Does not set up secrets management tooling or enforce access revocation policies" },
+    ]},
+
+  { num:9,  name:"Incident Response & Client Communication",area:"Client Continuity", phase:1,
+    what:"Defined escalation paths, severity classifications, and client communication protocols that evolve as the user base and solution complexity grow.",
+    why:"Without a defined response process, the client narrative fills the vacuum at any price they set. The $2.7M/day claim was a vacuum problem. Organizations with high IR readiness reduce breach costs by $1.49M on average.",
+    stat:"High IR readiness reduces breach cost by $1.49M on average", source:"IBM / Ponemon Institute" },
+
+  { num:8,  name:"Analytics & Product Instrumentation",     area:"Client Continuity", phase:2,
+    what:"A living instrumentation layer so every meaningful feature is measurable before it ships. Analytics architecture evolves to support increasingly sophisticated client questions.",
+    why:"Features that are not instrumented are invisible. Decisions about what to build next are made in the dark. Data-driven organizations are 23x more likely to acquire customers.",
+    stat:"Data-driven organizations 23x more likely to acquire customers", source:"McKinsey Global Institute" },
+
+  { num:10, name:"Documentation & Knowledge Transfer",      area:"Client Continuity", phase:2, orbit:"full",
+    what:"A living knowledge base that grows with every architectural decision, environment change, and significant feature. Updated as part of delivery, not after the fact.",
+    why:"Knowledge debt compounds. Every undocumented decision creates a dependency on the person who made it. Internal systems have the highest rate of knowledge loss when team members leave.",
+    stat:"Developers spend 17.3 hours per week on knowledge-related friction", source:"Stripe / IDC Developer Report",
+    orbitCovers: [
+      { yes: true,  text: "Phase 1 produces full architecture overview: tech stack, layers, business flows, module map, integrations" },
+      { yes: true,  text: "Phase 2 generates per-module documentation with business rules, data flows, dependencies, and quality scores" },
+      { yes: true,  text: "Report includes executive summary, prioritized action plan, and module-level scorecards (quality/security/debt)" },
+      { yes: true,  text: "Documentation quality scored as a dimension -- heller-api: 48/100, gaps specifically identified" },
+    ],
+    orbitMissing: []},
+
+  { num:11, name:"Change Governance",                       area:"Governance & Safety", phase:1,
+    what:"Formal review gates for all code entering production -- regardless of author. Client code, Concepta code, and AI-generated code all pass the same quality, security, and compliance gates.",
+    why:"In an era where AI-generated code introduces 10x more security issues, code review cannot be optional or inconsistent. Every ungated AI commit is a trust exercise with production.",
+    stat:"AI-authored code contains 1.7x more issues; tech debt 3-4x faster", source:"CodeRabbit, December 2025" },
+
+  { num:16, name:"Feature Management & Progressive Delivery",area:"Governance & Safety", phase:2,
+    what:"Feature flags that separate code deployment from feature activation. Every new feature ships behind a flag, released progressively: internal first, then 1%, 10%, 50%, 100% -- with an instant kill switch at any stage.",
+    why:"When something slips through every guardrail and still causes problems in production, a flag kill takes seconds with no engineering required. A deployment rollback takes hours and requires someone awake at 2am.",
+    stat:"Etsy, GitHub, and Netflix attribute reliability gains to progressive delivery", source:"LaunchDarkly ROI Study / Accelerate" },
+
+  { num:14, name:"Disaster Recovery & Business Continuity", area:"Governance & Safety", phase:1,
+    what:"Tested procedures for restoring data and infrastructure when something is not just broken, but gone. Defined RTO/RPO per solution, automated backups, data rollback scripts, and recovery drills run before an actual incident requires them.",
+    why:"An engineer using an AI coding agent destroyed a live production database after removing required safety checks. Without tested recovery procedures, the outcome is permanent data loss and an undefined recovery window. Average breach cost: $4.88M.",
+    stat:"Average data breach cost: $4.88M (IBM 2024); permanent loss without tested recovery", source:"Fortune March 2026 | IBM Cost of a Data Breach 2024" },
+
+  { num:12, name:"Data Layer & Audience Intelligence",      area:"Data Layer", phase:3,
+    what:"A unified event taxonomy, cross-solution analytical reporting, and audience-aware dashboards that give clients, project teams, and executives a clear picture of how their software is performing and who is using it.",
+    why:"Each project is an island. The question is no longer just whether software works -- it is whether it tells its owners what they need to know. We built a Power BI-equivalent dashboard from existing APIs and a Claude skill with no new infrastructure.",
+    stat:"Data-driven organizations 19x more likely to be profitable", source:"McKinsey Global Institute" },
+
+  { num:17, name:"Product Advisory & Feature ROI",           area:"Strategic Advisory", phase:3, proposed:true,
+    what:"A structured layer that helps clients qualify and validate feature ideas before money is committed. Includes a lightweight feature qualification framework, ROI forecasting based on real product data, and periodic strategic roadmap reviews.",
+    why:"Most clients have no gate between 'someone had an idea in a meeting' and 'the dev team is building it.' Features get built without a business case, ship without instrumentation, and are never measured against a return. This capability puts a qualification step before every roadmap commitment -- validating the idea, estimating the cost, forecasting the return, and tracking actuals over time. It moves Concepta from the execution conversation into the investment conversation.",
+    stat:"Companies that validate features before building reduce wasted development spend by 35%+", source:"Pragmatic Institute / Product Management Research" },
+];
+
+// Render capability cards
+const grid = document.getElementById('capsGrid');
+caps.forEach(cap => {
+  const phaseClass = `p${cap.phase}`;
+  const phaseLabels = { 1: 'High Priority', 2: 'Medium Priority', 3: 'Differentiator' };
+  const card = document.createElement('div');
+  card.className = 'cap-card' + (cap.proposed ? ' proposed-card' : cap.orbit === 'full' ? ' orbit-card' : cap.orbit === 'partial' ? ' orbit-card-partial' : '');
+  card.dataset.area = cap.area;
+  card.dataset.phase = cap.phase;
+  const orbitBadgeHtml = cap.orbit === 'full'
+    ? `<div class="cap-orbit-badge"><span class="cap-orbit-dot"></span>Static analysis performed by Orbit</div>`
+    : cap.orbit === 'partial'
+    ? `<div class="cap-orbit-badge cap-orbit-partial"><span class="cap-orbit-dot"></span>Partially surfaced by Orbit static analysis</div>`
+    : '';
+
+  // Build orbit coverage detail block
+  let orbitDetailHtml = '';
+  if (cap.orbit && cap.orbitCovers) {
+    const isPartial = cap.orbit === 'partial';
+    const covRows = cap.orbitCovers.map(r =>
+      `<div class="orbit-cov-row"><div class="orbit-cov-dot yes"></div><span class="orbit-cov-label">${r.text}</span></div>`
+    ).join('');
+    const missingRows = (cap.orbitMissing || []).map(r =>
+      `<div class="orbit-cov-row"><div class="orbit-cov-dot no"></div><span class="orbit-cov-label no">${r.text}</span></div>`
+    ).join('');
+    const divider = missingRows ? `<div class="orbit-cov-divider"></div>` : '';
+    orbitDetailHtml = `
+      <div class="orbit-coverage-block${isPartial ? ' partial' : ''}">
+        <div class="orbit-coverage-header">
+          <span style="opacity:0.7;">&#9679;</span> What Orbit static analysis surfaces for this capability
+        </div>
+        <div class="orbit-coverage-body">
+          ${covRows}${divider}${missingRows}
+        </div>
+      </div>`;
+  }
+
+  const topBadge = cap.proposed
+    ? `<div class="proposed-badge">&#9643; Proposed -- Up for discussion</div>`
+    : orbitBadgeHtml;
+  const phasePill = cap.proposed
+    ? ``
+    : `<div class="phase-badge ${phaseClass}">${phaseLabels[cap.phase]}</div>`;
+  const proposedNote = cap.proposed
+    ? `<div class="proposed-note">&#128161; Brain dump item. Not confirmed. Needs team input -- is this something we believe in and can own?</div>`
+    : '';
+
+  card.innerHTML = `
+    <div class="cap-header">
+      <div>
+        <div class="cap-num">Capability ${cap.num}</div>
+        <div class="cap-name">${cap.name}</div>
+        ${topBadge}
+      </div>
+      ${phasePill}
+    </div>
+    <div class="cap-body">
+      <div class="cap-area-tag">${cap.area}</div>
+      <div class="cap-what">${cap.what}</div>
+      <div class="cap-stat">${cap.stat}</div>
+      <div class="cap-source">Source: ${cap.source}</div>
+    </div>
+    ${proposedNote}
+    ${orbitDetailHtml}
+    <button class="expand-btn" onclick="toggleExpand(this)">
+      <span class="expand-icon">▼</span><span class="expand-label"> Why this matters</span>
+    </button>
+    <div class="cap-expand">
+      <div class="cap-why"><strong>Why it matters</strong>${cap.why}</div>
+    </div>
+  `;
+  grid.appendChild(card);
+});
+
+function toggleExpand(btn) {
+  const expandDiv = btn.nextElementSibling;
+  const icon = btn.querySelector('.expand-icon');
+  const isOpen = expandDiv.classList.toggle('open');
+  icon.classList.toggle('open', isOpen);
+  btn.querySelector('.expand-label').textContent = isOpen ? ' Hide detail' : ' Why this matters';
+}
+
+let activeAreaFilter = 'all';
+let activePhaseFilter = null;
+
+function filterCaps(area, btn) {
+  activeAreaFilter = area;
+  activePhaseFilter = null;
+  document.querySelectorAll('.phase-filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  applyFilters();
+}
+
+function filterPhase(phase, btn) {
+  activePhaseFilter = btn.classList.contains('active') ? null : phase;
+  activeAreaFilter = 'all';
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.filter-btn').classList.add('active');
+  document.querySelectorAll('.phase-filter-btn').forEach(b => b.classList.remove('active'));
+  if (activePhaseFilter) btn.classList.add('active');
+  applyFilters();
+}
+
+function applyFilters() {
+  document.querySelectorAll('.cap-card').forEach(card => {
+    const areaMatch = activeAreaFilter === 'all' || card.dataset.area === activeAreaFilter;
+    const phaseMatch = !activePhaseFilter || parseInt(card.dataset.phase) === activePhaseFilter;
+    card.classList.toggle('hidden', !(areaMatch && phaseMatch));
+  });
+}
+</script>
+</body>
+</html>

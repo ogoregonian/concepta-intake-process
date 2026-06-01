@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Intake Process — Concepta</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F4F2EE; min-height: 100vh; color: #1a1a2e; }
+
+header {
+  background: #0d1b2a; padding: 0 40px; height: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+}
+.back-link { color: rgba(255,255,255,0.5); font-size: 12px; font-weight: 600; text-decoration: none; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+.back-link:hover { color: white; }
+.brand { color: white; font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+.section-pill { background: #1D6A39; color: white; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; }
+
+.hero { background: linear-gradient(135deg, #0d1b2a, #14301a); padding: 48px 40px 40px; }
+.hero-label { font-size: 10px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: #4ade80; margin-bottom: 12px; }
+.hero-title { font-size: 30px; font-weight: 800; color: white; margin-bottom: 10px; }
+.hero-sub { font-size: 14px; color: rgba(255,255,255,0.45); max-width: 600px; line-height: 1.65; }
+
+main { max-width: 1080px; margin: 0 auto; padding: 40px 40px 80px; }
+
+.group-title { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #888; margin-bottom: 16px; margin-top: 40px; padding-bottom: 8px; border-bottom: 1px solid #ddd; }
+.group-title:first-child { margin-top: 0; }
+
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; margin-bottom: 8px; }
+
+.card {
+  background: white; border-radius: 10px; border: 1px solid #E2DDD9;
+  padding: 20px; text-decoration: none; color: inherit;
+  display: flex; flex-direction: column;
+  transition: all 0.15s; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.09); border-color: #4ade80; }
+
+.card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+.card-emoji { font-size: 22px; line-height: 1; }
+.tag { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
+.tag.diagram { background: #EFF6FF; color: #1D4ED8; }
+.tag.ref { background: #F1F5F9; color: #475569; }
+.tag.template { background: #FFF7ED; color: #9A3412; }
+.tag.overview { background: #F0FDF4; color: #166534; }
+
+.card-title { font-size: 14px; font-weight: 700; color: #0d1b2a; line-height: 1.35; margin-bottom: 6px; }
+.card-desc { font-size: 12px; color: #777; line-height: 1.55; flex: 1; }
+.card-footer { margin-top: 14px; padding-top: 10px; border-top: 1px solid #f0ede9; display: flex; align-items: center; justify-content: space-between; }
+.card-cta { font-size: 11px; font-weight: 700; color: #1D6A39; }
+.card-arrow { font-size: 14px; color: #ccc; }
+
+footer { background: #0d1b2a; padding: 20px 40px; text-align: center; color: rgba(255,255,255,0.2); font-size: 11px; }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="back-link" href="Index.html">← Hub</a>
+  <div class="brand">Concepta</div>
+  <div class="section-pill">Intake Process</div>
+</header>
+
+<div class="hero">
+  <div class="hero-label">Client Operations</div>
+  <div class="hero-title">Intake Process</div>
+  <div class="hero-sub">Standardized client request flows, reference documentation, and account setup guides. How every request enters the system and moves through delivery.</div>
+</div>
+
+<main>
+
+  <div class="group-title">Process Flows</div>
+  <div class="card-grid">
+
+    <a class="card" href="Concepta_Intake_Process_Executive_Summary.html">
+      <div class="card-top"><div class="card-emoji">📄</div><span class="tag overview">Overview</span></div>
+      <div class="card-title">Intake Process — Executive Summary</div>
+      <div class="card-desc">High-level overview of the standardized client request intake model. The what, why, and how.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a class="card" href="Diagram_1_Intake_Request.html">
+      <div class="card-top"><div class="card-emoji">🔄</div><span class="tag diagram">Diagram</span></div>
+      <div class="card-title">Diagram 1 — Intake Request Flow</div>
+      <div class="card-desc">End-to-end flow for all incoming client requests from Basecamp submission through ticket creation.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a class="card" href="Diagram_2_New_Request.html">
+      <div class="card-top"><div class="card-emoji">✨</div><span class="tag diagram">Diagram</span></div>
+      <div class="card-title">Diagram 2 — New Feature Request</div>
+      <div class="card-desc">Flow for new feature and enhancement requests through SA review, AC creation, sprint planning, and delivery.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a class="card" href="Diagram_3_Production_Issue.html">
+      <div class="card-top"><div class="card-emoji">🚨</div><span class="tag diagram">Diagram</span></div>
+      <div class="card-title">Diagram 3 — Production Issue</div>
+      <div class="card-desc">Escalation and resolution flow for production bugs. Severity triage, assignment, and client communication.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+    </a>
+
+  </div>
+
+  <div class="group-title">Reference Documentation</div>
+  <div class="card-grid">
+
+    <a class="card" href="Reference_AI_Agent_MVP.html">
+      <div class="card-top"><div class="card-emoji">🤖</div><span class="tag ref">Reference</span></div>
+      <div class="card-title">AI Agent MVP</div>
+      <div class="card-desc">What the intake AI Agent automates, how it connects to Zoho Sprints and Basecamp, and what it replaces.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a class="card" href="Reference_Budget_Model.html">
+      <div class="card-top"><div class="card-emoji">📊</div><span class="tag ref">Reference</span></div>
+      <div class="card-title">Budget Model</div>
+      <div class="card-desc">Service budget structure, budget bucket definitions, allocation rules, and hour tracking per client contract.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a class="card" href="Reference_Intake_Form.html">
+      <div class="card-top"><div class="card-emoji">📝</div><span class="tag ref">Reference</span></div>
+      <div class="card-title">Intake Form Fields</div>
+      <div class="card-desc">Field-by-field breakdown of the standardized intake form. Required fields, validation rules, and guidance for complete submissions.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a class="card" href="Reference_Prerequisites_GoLive.html">
+      <div class="card-top"><div class="card-emoji">✅</div><span class="tag ref">Reference</span></div>
+      <div class="card-title">Prerequisites — Go-Live Checklist</div>
+      <div class="card-desc">What must be in place before a client account goes live on the intake process. Technical and operational readiness.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a class="card" href="Reference_TShirt_Sizing.html">
+      <div class="card-top"><div class="card-emoji">👕</div><span class="tag ref">Reference</span></div>
+      <div class="card-title">T-Shirt Sizing Guide</div>
+      <div class="card-desc">Effort estimation framework. What each size tier means in hours and how sizing drives sprint capacity planning.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+    </a>
+
+    <a class="card" href="Client_Billing_View.html">
+      <div class="card-top"><div class="card-emoji">💳</div><span class="tag ref">Reference</span></div>
+      <div class="card-title">Client Billing View</div>
+      <div class="card-desc">How client billing is structured, tracked, and communicated. Budget allocation and invoice transparency.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+    </a>
+
+  </div>
+
+  <div class="group-title">Templates</div>
+  <div class="card-grid">
+
+    <a class="card" href="Smartsheet_Account_Setup_Template.html">
+      <div class="card-top"><div class="card-emoji">📋</div><span class="tag template">Template</span></div>
+      <div class="card-title">Smartsheet Account Setup Template</div>
+      <div class="card-desc">Step-by-step guide for configuring a new client account in Smartsheet with intake form wiring and Zoho integration.</div>
+      <div class="card-footer"><span class="card-cta">Open</span><span class="card-arrow">→</span></div>
+    </a>
+
+  </div>
+
+</main>
+
+<footer>Concepta Technology &nbsp;·&nbsp; Internal Use Only</footer>
+</body>
+</html>

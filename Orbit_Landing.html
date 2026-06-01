@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orbit — Code Analysis Tool — Concepta</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F4F2EE; min-height: 100vh; color: #1a1a2e; }
+
+header {
+  background: #0d1b2a; padding: 0 40px; height: 52px;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+}
+.back-link { color: rgba(255,255,255,0.5); font-size: 12px; font-weight: 600; text-decoration: none; letter-spacing: 0.5px; display: flex; align-items: center; gap: 6px; }
+.back-link:hover { color: white; }
+.brand { color: white; font-size: 12px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; }
+.section-pill { background: #0891b2; color: white; font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; padding: 4px 12px; border-radius: 20px; }
+
+.hero { background: linear-gradient(135deg, #0d1b2a, #071e2e); padding: 48px 40px 40px; }
+.hero-label { font-size: 10px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: #38bdf8; margin-bottom: 12px; }
+.hero-title { font-size: 30px; font-weight: 800; color: white; margin-bottom: 10px; }
+.hero-sub { font-size: 14px; color: rgba(255,255,255,0.45); max-width: 640px; line-height: 1.65; }
+.hero-tagline {
+  display: inline-block; margin-top: 16px;
+  background: rgba(56,189,248,0.1); border: 1px solid rgba(56,189,248,0.25);
+  color: #38bdf8; font-size: 12px; font-weight: 600; padding: 6px 14px; border-radius: 6px;
+}
+
+main { max-width: 1080px; margin: 0 auto; padding: 40px 40px 80px; }
+
+.coming-soon-banner {
+  background: rgba(8,145,178,0.07); border: 1px solid rgba(8,145,178,0.2);
+  border-radius: 10px; padding: 16px 20px; margin-bottom: 32px;
+  display: flex; align-items: center; gap: 12px;
+  font-size: 13px; color: #555; line-height: 1.5;
+}
+.coming-soon-banner .icon { font-size: 20px; flex-shrink: 0; }
+.coming-soon-banner strong { color: #0891b2; }
+
+.group-title { font-size: 11px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #888; margin-bottom: 16px; margin-top: 40px; padding-bottom: 8px; border-bottom: 1px solid #ddd; }
+.group-title:first-of-type { margin-top: 0; }
+
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 14px; }
+
+.card {
+  background: white; border-radius: 10px; border: 1px solid #E2DDD9;
+  padding: 20px; text-decoration: none; color: inherit;
+  display: flex; flex-direction: column;
+  transition: all 0.15s; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(0,0,0,0.09); border-color: #38bdf8; }
+.card.placeholder { opacity: 0.55; cursor: default; }
+.card.placeholder:hover { transform: none; box-shadow: 0 1px 3px rgba(0,0,0,0.04); border-color: #E2DDD9; }
+
+.card-top { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 10px; }
+.card-emoji { font-size: 22px; line-height: 1; }
+.tag { font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 4px; }
+.tag.dashboard { background: #E0F2FE; color: #0369A1; }
+.tag.report { background: #F0FDF4; color: #166534; }
+.tag.soon { background: #F1F5F9; color: #64748B; }
+
+.card-title { font-size: 14px; font-weight: 700; color: #0d1b2a; line-height: 1.35; margin-bottom: 6px; }
+.card-desc { font-size: 12px; color: #777; line-height: 1.55; flex: 1; }
+.card-footer { margin-top: 14px; padding-top: 10px; border-top: 1px solid #f0ede9; display: flex; align-items: center; justify-content: space-between; }
+.card-cta { font-size: 11px; font-weight: 700; color: #0891b2; }
+.card.placeholder .card-cta { color: #aaa; }
+.card-arrow { font-size: 14px; color: #ccc; }
+
+footer { background: #0d1b2a; padding: 20px 40px; text-align: center; color: rgba(255,255,255,0.2); font-size: 11px; }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="back-link" href="Index.html">← Hub</a>
+  <div class="brand">Concepta</div>
+  <div class="section-pill">Orbit</div>
+</header>
+
+<div class="hero">
+  <div class="hero-label">Code Intelligence</div>
+  <div class="hero-title">Orbit</div>
+  <div class="hero-sub">AI-powered code health monitoring, error intelligence, and observability for client platforms. Proactive issue detection before clients feel the impact.</div>
+  <div class="hero-tagline">Code Analysis Tool</div>
+</div>
+
+<main>
+
+  <div class="coming-soon-banner">
+    <span class="icon">🔭</span>
+    <div>Orbit is in active development. The dashboard and account reports below are working prototypes. Additional client reports and the live data integration layer are being added as the product evolves. <strong>Add new client reports to this page as they are created.</strong></div>
+  </div>
+
+  <div class="group-title">Dashboard &amp; Demo</div>
+  <div class="card-grid">
+
+    <a class="card" href="Orbit_Mock_Dashboard.html">
+      <div class="card-top"><div class="card-emoji">📊</div><span class="tag dashboard">Dashboard</span></div>
+      <div class="card-title">Orbit Analytics Dashboard</div>
+      <div class="card-desc">Working prototype of the Orbit observability dashboard. Error intelligence, code health scoring, and deployment risk across client accounts.</div>
+      <div class="card-footer"><span class="card-cta">Open Dashboard</span><span class="card-arrow">→</span></div>
+    </a>
+
+  </div>
+
+  <div class="group-title">Client Account Reports</div>
+  <div class="card-grid">
+
+    <a class="card" href="service-finance-orbit-report.html">
+      <div class="card-top"><div class="card-emoji">🏦</div><span class="tag report">Report</span></div>
+      <div class="card-title">Service Finance — Orbit Report</div>
+      <div class="card-desc">Code health analysis, error pattern findings, and observability assessment for the Service Finance account.</div>
+      <div class="card-footer"><span class="card-cta">Open Report</span><span class="card-arrow">→</span></div>
+    </a>
+
+    <div class="card placeholder">
+      <div class="card-top"><div class="card-emoji">➕</div><span class="tag soon">Coming Soon</span></div>
+      <div class="card-title">Add Client Report</div>
+      <div class="card-desc">Upload additional client account reports here as they are completed. Each report becomes a card in this section.</div>
+      <div class="card-footer"><span class="card-cta">Placeholder</span></div>
+    </div>
+
+  </div>
+
+</main>
+
+<footer>Concepta Technology &nbsp;·&nbsp; Internal Use Only</footer>
+</body>
+</html>

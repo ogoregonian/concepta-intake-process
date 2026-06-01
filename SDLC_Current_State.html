@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concepta — SDLC Current State</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F0EDE6; min-height: 100vh; }
+
+.top-nav { background: #0d1b2a; display: flex; align-items: center; padding: 0 16px; height: 44px; position: sticky; top: 0; z-index: 100; gap: 2px; }
+.top-nav .logo { color: white; font-size: 11px; font-weight: 800; letter-spacing: 2px; margin-right: 16px; text-transform: uppercase; }
+.nav-tab { color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 600; padding: 0 14px; height: 44px; display: flex; align-items: center; cursor: pointer; text-decoration: none; letter-spacing: 0.5px; border-bottom: 3px solid transparent; text-transform: uppercase; white-space: nowrap; }
+.nav-tab:hover { color: white; background: rgba(255,255,255,0.07); }
+.nav-tab.active { color: white; border-bottom-color: #E85D26; }
+
+.page-banner { background: #162236; padding: 10px 20px; display: flex; align-items: center; gap: 12px; }
+.page-banner .badge { background: #C0392B; color: white; font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 10px; }
+.page-banner .title { color: white; font-size: 13px; font-weight: 700; }
+.page-banner .sub { color: rgba(255,255,255,0.45); font-size: 11px; }
+
+.diagram-wrapper { overflow-x: auto; padding-bottom: 40px; }
+
+.phase-header { display: grid; position: sticky; top: 44px; z-index: 50; background: #1a2744; border-bottom: 2px solid rgba(255,255,255,0.08); }
+.role-label-header { background: #0d1b2a; min-width: 48px; width: 48px; }
+.phase-col-header { background: #1a2744; color: white; padding: 10px 8px 8px; text-align: center; border-left: 1px solid rgba(255,255,255,0.08); min-width: 155px; }
+.phase-badge { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: rgba(255,255,255,0.15); font-size: 10px; font-weight: 800; margin-bottom: 5px; }
+.phase-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+.phase-name { font-size: 9.5px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; line-height: 1.3; color: rgba(255,255,255,0.9); }
+
+.swimlane-grid { display: flex; flex-direction: column; }
+.swimlane-row { display: grid; border-top: 1px solid #DDD8D0; min-height: 110px; }
+.role-label-cell { width: 48px; min-width: 48px; background: white; border-right: 1px solid #DDD8D0; display: flex; align-items: center; justify-content: center; padding: 6px 0; }
+.role-label-text { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 8.5px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #666; white-space: nowrap; }
+
+.phase-cell { min-width: 155px; padding: 10px; border-left: 1px solid #DDD8D0; background: #F0EDE6; vertical-align: top; }
+
+.card { background: white; border-radius: 6px; padding: 10px 10px 9px; border: 1px solid #E2DED9; box-shadow: 0 1px 3px rgba(0,0,0,0.05); height: 100%; }
+.card.pain { border-color: #F5C0BA; background: #FFF6F5; }
+.pain-label { font-size: 8.5px; font-weight: 800; color: #B03A2E; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 3px; }
+.card-title { font-size: 11.5px; font-weight: 700; color: #111; line-height: 1.3; margin-bottom: 4px; }
+.card-desc { font-size: 10.5px; color: #777; line-height: 1.45; margin-bottom: 7px; }
+.details-link { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #999; cursor: pointer; margin-bottom: 7px; }
+.details-link:hover { color: #444; }
+.tags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 2px; }
+.tag { padding: 2px 7px; border-radius: 10px; font-size: 9px; font-weight: 700; color: white; letter-spacing: 0.2px; }
+
+.inactive { font-size: 10px; color: #B0A898; font-style: italic; line-height: 1.45; padding: 2px 0; }
+
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: white; border-radius: 10px; padding: 28px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; position: relative; box-shadow: 0 24px 80px rgba(0,0,0,0.22); }
+.modal-close { position: absolute; top: 12px; right: 14px; font-size: 18px; cursor: pointer; color: #888; background: none; border: none; line-height: 1; padding: 4px; }
+.modal-title { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #111; margin-bottom: 20px; padding-right: 28px; line-height: 1.3; }
+.modal-sec { margin-bottom: 0; }
+.modal-sec-label { display: flex; align-items: center; gap: 5px; font-size: 9.5px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin-bottom: 6px; }
+.modal-sec-text { font-size: 13px; color: #333; line-height: 1.65; }
+.modal-hr { border: none; border-top: 1px solid #f0f0f0; margin: 14px 0; }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <span class="logo">Concepta</span>
+  <a class="nav-tab active" href="SDLC_Current_State.html">📋 Current State SDLC</a>
+  <a class="nav-tab" href="SDLC_AI_Enhanced.html">🤖 AI-Enhanced SDLC</a>
+</nav>
+
+<div class="page-banner">
+  <span class="badge">Current State</span>
+  <span class="title">SDLC: How We Build Today</span>
+  <span class="sub">Time, budget, and resource capacity are being lost to a reactive, lean operating model that was never designed to scale. The result: ambiguity, rework, and client budgets spent on coordination overhead instead of meaningful outcomes.</span>
+</div>
+
+<div class="diagram-wrapper">
+  <div id="diagram"></div>
+</div>
+
+<div class="modal-overlay" id="overlay" onclick="closeOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modal-title"></div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+const PHASES = [
+  { num:1,  icon:'📥', name:'Request\nIntake' },
+  { num:2,  icon:'📋', name:'Backlog\n(Init. Reqs)' },
+  { num:3,  icon:'⏳', name:'SA Review\nQueue' },
+  { num:4,  icon:'🔍', name:'SA\nReview' },
+  { num:5,  icon:'📝', name:'AC\nQueue' },
+  { num:6,  icon:'🗓', name:'Sprint\nPlanning' },
+  { num:7,  icon:'💻', name:'Development' },
+  { num:8,  icon:'👀', name:'Code\nReview' },
+  { num:9,  icon:'🧪', name:'QA\nTesting' },
+  { num:10, icon:'🚀', name:'Staging' },
+  { num:11, icon:'✅', name:'Production\nDeploy' },
+];
+
+const ROLES = [
+  { key:'CLIENT', label:'CLIENT /\nREQUESTOR' },
+  { key:'PM', label:'PM /\nPRODUCT' },
+  { key:'SA', label:'SA' },
+  { key:'DEV', label:'DEVELOPER' },
+  { key:'QA', label:'QA' },
+];
+
+function t(label, color) { return { label, color }; }
+const C = { slack:'#E8722A', email:'#636E72', zoho:'#2A6496', gh:'#24292E', manual:'#8B6914', pain:'#C0392B', bc:'#1B6B3A', smartsheet:'#00897B' };
+
+const GRID = {
+  CLIENT: {
+    1:  { pain:false, title:'Submits via Basecamp 4 Request Board', desc:'Structured intake pilot is live (May 2026). Gives clients a consistent entry point — all processing downstream is still manual.',
+      tags:[t('Basecamp 4',C.bc),t('Slack',C.slack)],
+      who:'Client requestor or internal stakeholder',
+      what:'Client submits a request through the Basecamp 4 Request Board using a structured intake form. Before the pilot, requests arrived via Slack, email, or verbally with no standard format. The pilot standardizes entry, but everything after still requires human effort.',
+      why:'The manual pilot validates the intake structure before any AI automation is added. The entry point is now standardized, but routing, validation, and backlog creation still depend entirely on the PDM.' },
+    2:  { inactive:'Not active — PDM is managing the ticket internally.' },
+    3:  { inactive:'Not active — SA queue is internal.' },
+    4:  { inactive:'Not active during SA review.' },
+    5:  { inactive:'Not active — QA is creating AC scenarios internally.' },
+    6:  { inactive:'Not active during sprint planning.' },
+    7:  { inactive:'Available for urgent clarification questions only.' },
+    8:  { inactive:'Not active during code review.' },
+    9:  { inactive:'Not involved in QA testing.' },
+    10: { inactive:'Not active during staging deploy.' },
+    11: { pain:false, title:'Receives release update', desc:'Informed via Slack or email. Often unclear what changed or what to validate.',
+      tags:[t('Slack',C.slack),t('Email / Verbal',C.email)],
+      who:'Client requestor',
+      what:'Client is notified the feature has shipped, typically via a Slack message. No standardized release note format exists.',
+      why:'No release communication process is defined. Clients often do not know what shipped or what to validate, leading to follow-up questions and another loop.' },
+  },
+  PM: {
+    1:  { pain:false, title:'PDM validates & routes — creates ticket with initial requirements', desc:'PDM reviews Basecamp submission, creates Zoho ticket with initial requirements, places in backlog.',
+      tags:[t('Basecamp 4',C.bc),t('Smartsheet',C.smartsheet),t('Zoho Sprints',C.zoho)],
+      who:'PDM (Product Delivery Manager)',
+      what:'PDM receives the Basecamp submission, validates it for completeness, creates the Zoho Sprints ticket with the initial requirements attached, and places it in the backlog. Every step is a manual human action.',
+      why:'The PDM is the sole validation and routing engine. The intake pilot standardizes entry, but the PDM still owns every downstream action before the ticket can move to SA.' },
+    2:  { pain:false, title:'Ticket sits in backlog with initial requirements', desc:'Zoho ticket has initial requirements. Waits for SA to become available before it can advance.',
+      tags:[t('Zoho Sprints',C.zoho)],
+      who:'PDM / Delivery Manager',
+      what:'The ticket with initial requirements is now in the Zoho backlog. PDM monitors the queue and waits for SA bandwidth to open up before moving it to the "Ready for SA Review" column.',
+      why:'Even a well-scoped ticket can sit here for days or weeks waiting for the next available SA slot. Queue depth depends entirely on shared resource availability across all active accounts.' },
+    3:  { pain:true, title:'Moves ticket to "Ready for SA Review" — waits', desc:'First resourcing gate. Nothing moves until an SA is allocated. Back and forth begins when they finally pick it up.',
+      tags:[t('Zoho Sprints',C.zoho),t('Slack',C.slack),t('⚠ Bottleneck',C.pain)],
+      who:'PDM / Delivery Manager',
+      what:'PDM moves the ticket to the "Ready for SA Review" bucket in Zoho. The ticket now waits for an SA to be formally allocated. When the SA picks it up, a back-and-forth loop begins: SA asks questions, PDM goes back to the client, client responds, PDM updates ticket, SA re-reviews. This cycle repeats until the SA is satisfied.',
+      why:'SA bandwidth is the gating constraint. Budget does not allow for dedicated SA per account. SAs work across multiple accounts simultaneously. A ticket can sit in the queue for days before anyone picks it up — and the investigation adds more time on top. For complex requests Gabriel reports this stage alone takes up to 1 week.' },
+    4:  { pain:false, title:'Bridges SA questions back to client', desc:'SA asks clarifying questions. PDM loops back to client, updates ticket. Cycle repeats.',
+      tags:[t('Zoho Sprints',C.zoho),t('Slack',C.slack)],
+      who:'PDM / Delivery Manager',
+      what:'PDM serves as the go-between during SA review: answering SA questions, looping back to the client for missing context, updating the Zoho ticket, and waiting for SA to continue the review.',
+      why:'Every gap the SA finds re-opens a loop between PDM, client, and SA. There is no shared codebase reference the SA can pull directly. The PDM translation role does not end at intake.' },
+    5:  { pain:true, title:'Moves ticket to "Ready for AC" — waits again', desc:'Second resourcing gate. SA cleared it — now waiting for QA to be allocated to write AC scenarios.',
+      tags:[t('Zoho Sprints',C.zoho),t('⚠ Bottleneck',C.pain)],
+      who:'PDM / Delivery Manager',
+      what:'After SA sign-off, PDM moves the ticket to the "Ready for AC" bucket. QA must now be allocated to write acceptance criteria scenarios. Like the SA queue, this depends on QA bandwidth being available across all active accounts.',
+      why:'Same resourcing constraint that blocked at SA now blocks at AC creation. A ticket that already waited for SA allocation may wait additional days for QA. Budget does not allow for dedicated QA allocation per account.' },
+    6:  { pain:false, title:'Prioritizes & moves to sprint', desc:'Reviews capacity, moves AC-complete tickets into the active sprint.',
+      tags:[t('Zoho Sprints',C.zoho)],
+      who:'PDM / Delivery Manager',
+      what:'PDM reviews the backlog of tickets with completed AC scenarios, assesses developer capacity for the sprint, and moves selected tickets into the active sprint.',
+      why:'Tickets that have cleared every previous gate can still be bumped if developer bandwidth is not available for the sprint.' },
+    7:  { pain:false, title:'Available for clarification mid-build', desc:'Reactively answers developer questions when requirements or AC are still unclear after all the preceding steps.',
+      tags:[t('Slack',C.slack),t('Zoho Sprints',C.zoho)],
+      who:'PDM / Delivery Manager',
+      what:'Developer asks PDM questions about requirements or AC during active development. PDM answers reactively.',
+      why:'Despite SA review, AC creation, and sprint planning, gaps in requirements still surface during development. The PDM ends up in a reactive support role at the point in the cycle when they should be planning ahead.' },
+    8:  { inactive:'Not active during code review.' },
+    9:  { pain:false, title:'Available for QA questions', desc:'QA escalates unclear AC to PDM. The same ambiguity loop surfaces again, later.',
+      tags:[t('Slack',C.slack)],
+      who:'PDM / Delivery Manager',
+      what:'When QA encounters ambiguous AC or unexpected behavior, they escalate to the PDM who may need to re-engage the client or SA.',
+      why:'AC gaps not caught earlier surface at QA — adding another loop at the worst possible time in the cycle.' },
+    10: { inactive:'Not active during staging deploy.' },
+    11: { pain:false, title:'Signs off on release', desc:'Approves production deploy after QA sign-off. Informal — typically a Slack message.',
+      tags:[t('Zoho Sprints',C.zoho),t('Slack',C.slack)],
+      who:'PDM / Delivery Manager',
+      what:'PDM gives final approval for the production deployment, typically via Slack. No structured checklist validates that all required criteria are met.',
+      why:'Sign-off is based on trust that QA caught everything rather than a verified checklist of completed criteria.' },
+  },
+  SA: {
+    1:  { inactive:'Not active at intake.' },
+    2:  { inactive:'Not active — ticket is in the backlog queue.' },
+    3:  { pain:true, title:'Waiting for allocation — ticket queued', desc:'SA bandwidth is shared across all active accounts. Ticket sits in "Ready for SA Review" until a slot opens.',
+      tags:[t('Zoho Sprints',C.zoho),t('⚠ Bottleneck',C.pain)],
+      who:'Solutions Architect',
+      what:'The ticket is in the "Ready for SA Review" queue. The SA has not yet been assigned. SA time is shared across all active client accounts simultaneously. If at capacity, the ticket waits — even if the PDM has everything ready.',
+      why:'No dedicated SA per account. Budget constraints mean SA time is a shared, limited resource. The queue backs up when multiple accounts have concurrent SA review needs.' },
+    4:  { pain:false, title:'Manual feasibility review — back and forth with PDM', desc:'Investigates codebase manually. Simple: ~10-15 min. Complex: up to 1 week. Back and forth with PDM throughout.',
+      tags:[t('Zoho Sprints',C.zoho),t('Slack',C.slack)],
+      who:'Solutions Architect (e.g. Cristiano)',
+      what:'SA manually reads the codebase, evaluates architecture, estimates complexity, and identifies dependencies. Questions go back to the PDM who loops back to the client. For simple requests (like a UI-only change) this can be as fast as 10-15 minutes. For complex requests involving new integrations or architectural decisions it can take a full week.',
+      why:'No automated pre-check against the codebase exists. Every feasibility review starts from scratch. The total delay combines queue wait time plus investigation time.' },
+    5:  { pain:false, title:'Signs off — ticket moves to AC queue', desc:'SA approves. PDM moves ticket to "Ready for AC".',
+      tags:[t('Zoho Sprints',C.zoho)],
+      who:'Solutions Architect',
+      what:'SA confirms the ticket is technically feasible and the initial requirements are sound. PDM moves the ticket to the "Ready for AC" bucket for QA to write scenarios.',
+      why:'SA sign-off is a hard gate — nothing moves to AC until cleared. If the SA surfaces new issues, the loop reopens before sign-off is given.' },
+    6:  { inactive:'Not active in sprint planning.' },
+    7:  { pain:false, title:'Available for escalations mid-build', desc:'Developers escalate unexpected architectural questions. SA ends up in reactive support.',
+      tags:[t('Slack',C.slack)],
+      who:'Solutions Architect',
+      what:'SA answers architectural questions from developers when unexpected complexity or edge cases emerge during implementation.',
+      why:'Despite the upfront feasibility review, technical surprises still surface mid-development. The SA ends up in a reactive support role on top of their active account work.' },
+    8:  { pain:false, title:'Occasional architectural PR review', desc:'Reviews PRs with significant architectural impact — triggered manually, no automated flagging.',
+      tags:[t('GitHub',C.gh)],
+      who:'Solutions Architect',
+      what:'For PRs making significant architectural decisions, the SA performs an additional review beyond the standard developer code review.',
+      why:'No automated mechanism flags which PRs need SA involvement. SA participation is triggered reactively — sometimes after the code is already written.' },
+    9:  { inactive:'Not active during QA testing.' },
+    10: { inactive:'Not active during staging.' },
+    11: { inactive:'Not active for production deploy.' },
+  },
+  DEV: {
+    1:  { inactive:'Not active at intake.' },
+    2:  { inactive:'Not active — ticket is in the backlog.' },
+    3:  { inactive:'Not active during SA review queue.' },
+    4:  { inactive:'Not active during SA review.' },
+    5:  { inactive:'Not active during AC creation.' },
+    6:  { pain:false, title:'Reviews sprint items — still has questions', desc:'Dev reviews the sprint backlog. Despite SA review and QA-written AC, clarifying questions remain. Sprint planning becomes a clarification session.',
+      tags:[t('Zoho Sprints',C.zoho),t('Slack',C.slack)],
+      who:'Developer',
+      what:'Developer reviews the tickets entering the sprint and asks remaining questions before the sprint begins. In practice this becomes the last clarification loop before code gets written.',
+      why:'AC written by QA and requirements reviewed by SA still leave gaps that developers need to resolve. The back-and-forth that started at intake has not fully resolved by the time dev begins.' },
+    7:  { pain:true, title:'Writes code manually — after waiting for allocation', desc:'Third resourcing gate. Developer must be formally assigned before work can start. Budget limits mean tickets wait even when fully scoped and AC-complete.',
+      tags:[t('GitHub',C.gh),t('Manual',C.manual),t('⚠ Pain Point',C.pain)],
+      who:'Developer',
+      what:'A sprint-ready ticket with complete AC still has to wait for a developer to be allocated. Budget constraints limit development capacity. Once allocated, the developer writes code manually — one task at a time, no parallel worktrees, no AI assistance, no automated test generation.',
+      why:'Third resourcing gate in the process — after SA queue and AC queue. Every task is a clean-slate manual effort. There is no way to increase throughput without increasing headcount.' },
+    8:  { pain:true, title:'2-3 hour manual code review', desc:'Reviewer must manually rebuild context for every PR. One PR at a time. No automated diff summary.',
+      tags:[t('GitHub',C.gh),t('⚠ Slow',C.pain)],
+      who:'Senior Developer',
+      what:'Code review requires a senior developer to manually read all changed files, rebuild the business context from the ticket, verify the implementation against AC, and check for bugs. Each PR takes 2-3 focused hours.',
+      why:'Without AI-assisted diff summaries, reviewers start from zero on every PR. This creates a bottleneck that delays the merge-to-staging cycle and pulls senior developers away from active work.' },
+    9:  { pain:false, title:'Available for bug fixes', desc:'Responds to QA bug reports — a context switch back to already-completed work.',
+      tags:[t('Zoho Sprints',C.zoho),t('Slack',C.slack)],
+      who:'Developer',
+      what:'Developer responds to QA bug reports, requiring a context switch back to features previously considered complete.',
+      why:'No automated tests catch regressions before QA, so developers are regularly pulled back to earlier work during the testing phase.' },
+    10: { pain:false, title:'Manual staging deploy', desc:'Developer manually triggers the staging deployment. No automated CICD pipeline.',
+      tags:[t('Manual',C.manual),t('GitHub',C.gh)],
+      who:'Developer',
+      what:'Developer manually triggers the staging deployment. No fully automated CICD pipeline exists.',
+      why:'Every staging deploy is a manual action that takes developer attention away from active work.' },
+    11: { pain:false, title:'Manual production release', desc:'Production deploy after QA and PDM sign-off. Manual process with no automated gates.',
+      tags:[t('Manual',C.manual),t('GitHub',C.gh)],
+      who:'Developer',
+      what:'Developer manually triggers the production deployment after QA and PDM sign-off. Post-deploy monitoring is manual.',
+      why:'Without automated deploy pipelines, production releases carry manual risk and require developer focus at every step.' },
+  },
+  QA: {
+    1:  { inactive:'Not active at intake.' },
+    2:  { inactive:'Not active — ticket is in the backlog.' },
+    3:  { inactive:'Not active during SA review queue.' },
+    4:  { inactive:'Not active during SA review.' },
+    5:  { pain:true, title:'Waiting for allocation — then writes AC scenarios', desc:'Second resourcing gate. QA must be allocated before AC work starts. When available, QA writes acceptance criteria scenarios from SA-reviewed requirements.',
+      tags:[t('Zoho Sprints',C.zoho),t('Manual',C.manual),t('⚠ Bottleneck',C.pain)],
+      who:'QA',
+      what:'The ticket is in the "Ready for AC" queue. QA must be formally allocated before writing can begin. Once available, QA writes acceptance criteria scenarios based on the initial requirements and SA review notes. There is back and forth here too — gaps in the requirements mean QA has to loop back to the PDM for clarification.',
+      why:'A ticket that already waited for SA allocation now waits for QA allocation. AC quality depends entirely on QA having enough context from the initial requirements and SA notes. Gaps at intake compound here.' },
+    6:  { inactive:'Not active in sprint planning.' },
+    7:  { inactive:'Not active during development.' },
+    8:  { inactive:'Not active during code review.' },
+    9:  { pain:true, title:'Manual testing only — sole quality gate', desc:'No automation. No device catalog. No integration test coverage. QA is the only thing standing between staging and production.',
+      tags:[t('Manual',C.manual),t('⚠ Bottleneck',C.pain)],
+      who:'QA',
+      what:'QA performs manual functional testing against the AC scenarios they wrote. There are no automated regression tests, no device catalog for cross-platform testing, and no integration test coverage for third-party flows such as TransUnion or Experian. QA is the sole quality gate before staging.',
+      why:'Automated test infrastructure has not been built. All quality assurance depends on one person\'s manual testing speed. Devices, browsers, and edge cases are routinely missed.' },
+    10: { pain:false, title:'Retesting on staging', desc:'Re-runs manual tests in staging before production sign-off. Duplicates Phase 9 effort.',
+      tags:[t('Manual',C.manual)],
+      who:'QA',
+      what:'QA re-runs manual tests in the staging environment to verify the feature behaves correctly after deploy.',
+      why:'Without automated tests, QA manually re-runs the same scenarios in staging that they ran in Phase 9. Duplicated effort with no additional coverage.' },
+    11: { pain:false, title:'Final sign-off', desc:'Formally approves production deploy. Informal — typically a Slack message.',
+      tags:[t('Slack',C.slack)],
+      who:'QA',
+      what:'QA confirms the feature has passed all manual tests and issues sign-off for production deployment.',
+      why:'The approval gate exists but is informal. No structured checklist or automated pass/fail gate validates readiness before sign-off is given.' },
+  },
+};
+
+function render() {
+  const n = PHASES.length;
+  const d = document.getElementById('diagram');
+
+  // Header
+  let h = `<div class="phase-header" style="grid-template-columns:48px repeat(${n},minmax(155px,1fr))">`;
+  h += `<div class="role-label-header"></div>`;
+  PHASES.forEach(p => {
+    h += `<div class="phase-col-header">
+      <div style="display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:4px">
+        <span class="phase-badge">${p.num}</span>
+        <span class="phase-icon">${p.icon}</span>
+      </div>
+      <div class="phase-name">${p.name.replace('\n','<br>')}</div>
+    </div>`;
+  });
+  h += `</div>`;
+
+  // Rows
+  let g = `<div class="swimlane-grid">`;
+  ROLES.forEach(role => {
+    g += `<div class="swimlane-row" style="grid-template-columns:48px repeat(${n},minmax(155px,1fr))">`;
+    g += `<div class="role-label-cell"><span class="role-label-text">${role.label}</span></div>`;
+    PHASES.forEach(ph => {
+      const c = GRID[role.key]?.[ph.num];
+      g += `<div class="phase-cell">`;
+      if (!c) {
+        g += '';
+      } else if (c.inactive) {
+        g += `<div class="inactive">${c.inactive}</div>`;
+      } else {
+        const id = `${role.key}_${ph.num}`;
+        g += `<div class="${c.pain ? 'card pain' : 'card'}">
+          ${c.pain ? '<div class="pain-label">⚠ Pain Point</div>' : ''}
+          <div class="card-title">${c.title}</div>
+          <div class="card-desc">${c.desc}</div>
+          <div class="details-link" onclick="openModal('${id}')">🖱 Click for details</div>
+          <div class="tags">${c.tags.map(t=>`<span class="tag" style="background:${t.color}">${t.label}</span>`).join('')}</div>
+        </div>`;
+      }
+      g += `</div>`;
+    });
+    g += `</div>`;
+  });
+  g += `</div>`;
+
+  d.innerHTML = h + g;
+}
+
+function openModal(id) {
+  const [rk, pn] = id.split('_');
+  const c = GRID[rk]?.[parseInt(pn)];
+  if (!c || c.inactive) return;
+  document.getElementById('modal-title').textContent = c.title;
+  document.getElementById('modal-body').innerHTML = `
+    <div class="modal-sec">
+      <div class="modal-sec-label"><span>👤</span> WHO</div>
+      <div class="modal-sec-text">${c.who}</div>
+    </div>
+    <div class="modal-hr"></div>
+    <div class="modal-sec">
+      <div class="modal-sec-label"><span>⚡</span> WHAT HAPPENS</div>
+      <div class="modal-sec-text">${c.what}</div>
+    </div>
+    <div class="modal-hr"></div>
+    <div class="modal-sec">
+      <div class="modal-sec-label"><span>💡</span> WHY THIS IS A PROBLEM</div>
+      <div class="modal-sec-text">${c.why}</div>
+    </div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeOverlay(e) { if (e.target.id === 'overlay') closeModal(); }
+function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+
+render();
+</script>
+</body>
+</html>

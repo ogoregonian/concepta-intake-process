@@ -1,0 +1,490 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concepta — AI-Enhanced SDLC</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F0EDE6; min-height: 100vh; }
+
+.top-nav { background: #0d1b2a; display: flex; align-items: center; padding: 0 16px; height: 44px; position: sticky; top: 0; z-index: 100; gap: 2px; }
+.top-nav .logo { color: white; font-size: 11px; font-weight: 800; letter-spacing: 2px; margin-right: 16px; text-transform: uppercase; }
+.nav-tab { color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 600; padding: 0 14px; height: 44px; display: flex; align-items: center; cursor: pointer; text-decoration: none; letter-spacing: 0.5px; border-bottom: 3px solid transparent; text-transform: uppercase; white-space: nowrap; }
+.nav-tab:hover { color: white; background: rgba(255,255,255,0.07); }
+.nav-tab.active { color: white; border-bottom-color: #6C5CE7; }
+
+.page-banner { background: #162236; padding: 10px 20px; display: flex; align-items: center; gap: 12px; }
+.page-banner .badge { background: #1D6A39; color: white; font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 10px; }
+.page-banner .title { color: white; font-size: 13px; font-weight: 700; }
+.page-banner .sub { color: rgba(255,255,255,0.45); font-size: 11px; }
+
+.diagram-wrapper { overflow-x: auto; padding-bottom: 40px; }
+
+.phase-header { display: grid; position: sticky; top: 44px; z-index: 50; background: #1a2744; border-bottom: 2px solid rgba(255,255,255,0.08); }
+.role-label-header { background: #0d1b2a; min-width: 48px; width: 48px; }
+.phase-col-header { background: #1a2744; color: white; padding: 10px 8px 8px; text-align: center; border-left: 1px solid rgba(255,255,255,0.08); min-width: 155px; }
+.phase-badge { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: rgba(108,92,231,0.4); font-size: 10px; font-weight: 800; margin-bottom: 5px; }
+.phase-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+.phase-name { font-size: 9.5px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; line-height: 1.3; color: rgba(255,255,255,0.9); }
+
+.swimlane-grid { display: flex; flex-direction: column; }
+.swimlane-row { display: grid; border-top: 1px solid #DDD8D0; min-height: 110px; }
+.swimlane-row.ai-row { background: #F5F0FF; }
+.swimlane-row.ai-row .phase-cell { background: #F5F0FF; }
+.role-label-cell { width: 48px; min-width: 48px; background: white; border-right: 1px solid #DDD8D0; display: flex; align-items: center; justify-content: center; padding: 6px 0; }
+.role-label-cell.ai-label { background: #EDE8FF; }
+.role-label-text { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 8.5px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #666; white-space: nowrap; }
+.role-label-text.ai-text { color: #6C5CE7; }
+
+.phase-cell { min-width: 155px; padding: 10px; border-left: 1px solid #DDD8D0; background: #F0EDE6; vertical-align: top; }
+
+.card { background: white; border-radius: 6px; padding: 10px 10px 9px; border: 1px solid #E2DED9; box-shadow: 0 1px 3px rgba(0,0,0,0.05); height: 100%; }
+.card.ai { border-color: #C4B5FD; background: #FAF8FF; }
+.card.shift { border-color: #A7F3D0; background: #F0FFF8; }
+.ai-label { font-size: 8.5px; font-weight: 800; color: #5B21B6; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 3px; }
+.shift-label { font-size: 8.5px; font-weight: 800; color: #065F46; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; }
+.card-title { font-size: 11.5px; font-weight: 700; color: #111; line-height: 1.3; margin-bottom: 4px; }
+.card-desc { font-size: 10.5px; color: #777; line-height: 1.45; margin-bottom: 7px; }
+.details-link { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #999; cursor: pointer; margin-bottom: 7px; }
+.details-link:hover { color: #444; }
+.tags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 2px; }
+.tag { padding: 2px 7px; border-radius: 10px; font-size: 9px; font-weight: 700; color: white; letter-spacing: 0.2px; }
+
+.inactive { font-size: 10px; color: #B0A898; font-style: italic; line-height: 1.45; padding: 2px 0; }
+.auto-gate { font-size: 10px; color: #065F46; font-style: italic; line-height: 1.45; padding: 2px 0; background: #D1FAE5; border-radius: 4px; padding: 5px 7px; font-style: normal; font-weight: 600; }
+
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: white; border-radius: 10px; padding: 28px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; position: relative; box-shadow: 0 24px 80px rgba(0,0,0,0.22); }
+.modal-close { position: absolute; top: 12px; right: 14px; font-size: 18px; cursor: pointer; color: #888; background: none; border: none; line-height: 1; padding: 4px; }
+.modal-title { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #111; margin-bottom: 20px; padding-right: 28px; line-height: 1.3; }
+.modal-sec { margin-bottom: 0; }
+.modal-sec-label { display: flex; align-items: center; gap: 5px; font-size: 9.5px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin-bottom: 6px; }
+.modal-sec-text { font-size: 13px; color: #333; line-height: 1.65; }
+.modal-hr { border: none; border-top: 1px solid #f0f0f0; margin: 14px 0; }
+.ai-banner { background: linear-gradient(135deg,#6C5CE7,#a78bfa); color: white; border-radius: 6px; padding: 8px 12px; margin-bottom: 16px; font-size: 11px; font-weight: 600; }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <span class="logo">Concepta</span>
+  <a class="nav-tab" href="SDLC_Current_State.html">📋 Current State SDLC</a>
+  <a class="nav-tab active" href="SDLC_AI_Enhanced.html">🤖 AI-Enhanced SDLC</a>
+</nav>
+
+<div class="page-banner">
+  <span class="badge">AI-Enhanced</span>
+  <span class="title">SDLC: From Reactive to Predictable</span>
+  <span class="sub">We own the outcome, not just the output. AI-driven delivery, data-informed decisions, and budget spend that creates measurable value — every cycle, every account.</span>
+</div>
+
+<div class="diagram-wrapper">
+  <div id="diagram"></div>
+</div>
+
+<div class="modal-overlay" id="overlay" onclick="closeOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modal-title"></div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+const PHASES = [
+  { num:1, icon:'📥', name:'Structured\nIntake' },
+  { num:2, icon:'🔬', name:'AI\nFeasibility' },
+  { num:3, icon:'📄', name:'ADR\nGeneration' },
+  { num:4, icon:'✅', name:'SA\nApproval' },
+  { num:5, icon:'🎨', name:'AI\nPrototype' },
+  { num:6, icon:'⚡', name:'Parallel\nDevelopment' },
+  { num:7, icon:'🔒', name:'Auto\nPR Gates' },
+  { num:8, icon:'👁', name:'Code Review\n(10 min)' },
+  { num:9, icon:'🧪', name:'Auto\nStaging Tests' },
+  { num:10, icon:'📱', name:'QA Edge\nCases' },
+  { num:11, icon:'🚀', name:'Production\nDeploy' },
+];
+
+const ROLES = [
+  { key:'CLIENT', label:'CLIENT /\nREQUESTOR', ai: false },
+  { key:'PM', label:'PM /\nPRODUCT', ai: false },
+  { key:'SA', label:'SA', ai: false },
+  { key:'AI', label:'AI /\nCLAUDE', ai: true },
+  { key:'DEV', label:'DEVELOPER', ai: false },
+  { key:'QA', label:'QA', ai: false },
+];
+
+function t(label, color) { return { label, color }; }
+const C = {
+  claude:'#6C5CE7', gh:'#24292E', actions:'#2E8B57', figma:'#F24E1E',
+  intake:'#0891B2', zoho:'#2A6496', slack:'#E8722A', maestro:'#0D9488',
+  whisper:'#8B5CF6', adrs:'#7C3AED', shift:'#065F46', auto:'#1D6A39'
+};
+
+const GRID = {
+  CLIENT: {
+    1: { type:'card', title:'Submits via Basecamp 4 Request Board', desc:'Structured intake form captures: what, why, priority, affected users, constraints. AI Agent routes and validates automatically — no PDM translation required.',
+      tags:[t('Basecamp 4','#1B6B3A'),t('Intake Form',C.intake)],
+      who:'Client requestor or internal stakeholder',
+      what:'Client submits through the Basecamp 4 Request Board using a structured intake form. The AI Agent (Phase 2 of Concepta\'s live intake pilot) immediately validates completeness, categorizes the request type, and routes it to the correct workflow in Smartsheet and Zoho Sprints — with no manual PDM handling required.',
+      what_ai:'The AI Agent replaces the PDM\'s manual validation and routing loop. It checks for missing fields, categorizes (New Request vs. Production Issue), assigns to the correct service budget bucket, and triggers the Zoho Sprints ticket creation automatically. What took a human 15-30 minutes happens in seconds.',
+      why_shift:'The manual pilot running since May 2026 validated the intake structure on real accounts. The AI Agent automates everything the PDM was doing manually — so budget constraints no longer create a queue at the front door. Requests flow directly into the right workflow.' },
+    2: { inactive:'Not active — AI is running the feasibility check.' },
+    3: { inactive:'Not active during ADR generation.' },
+    4: { type:'shift', title:'Reviews & approves requirements', desc:'SA-approved ADR sent to client for formal sign-off before dev starts.',
+      tags:[t('Intake Portal',C.intake)],
+      who:'Client requestor',
+      what:'Client reviews the AI-generated requirements document (ADR) and formally approves before development begins. This replaces informal verbal sign-off.',
+      what_ai:'The ADR is generated in structured, readable format — not PM-written prose. The client sees exactly what will be built, in plain language, with acceptance criteria they can validate.',
+      why_shift:'Formal client sign-off before dev starts eliminates the "that\'s not what I asked for" problem at QA. Expectations are aligned before a line of code is written.' },
+    5: { type:'card', title:'Reviews AI-generated prototype', desc:'Sees Figma mockup, gives feedback in the same session. Claude updates instantly.',
+      tags:[t('Figma',C.figma)],
+      who:'Client requestor',
+      what:'Client reviews the Claude-generated Figma prototype and provides feedback in real time. Changes are reflected immediately in the same session.',
+      what_ai:'Claude generates the prototype from the structured intake form and existing design library. Client feedback is fed back into Claude in the same conversation to update the design.',
+      why_shift:'Prototype review that used to take days of back-and-forth now happens in a single session. Clients can see what they\'re getting before development starts.' },
+    6: { inactive:'Not active during development.' },
+    7: { inactive:'Not active during automated PR gates.' },
+    8: { inactive:'Not active during code review.' },
+    9: { inactive:'Not active during automated staging tests.' },
+    10: { inactive:'Available for questions if QA needs business clarification.' },
+    11: { type:'card', title:'Final acceptance', desc:'Reviews what shipped and formally approves production release.',
+      tags:[t('Slack',C.slack)],
+      who:'Client requestor',
+      what:'Client reviews the completed feature against the ADR acceptance criteria they signed off on in Phase 4. Approves production release.',
+      what_ai:'Because client expectations were locked in during Phase 4 with an AI-generated ADR, there are no surprises at this stage. The approval is a confirmation, not a negotiation.',
+      why_shift:'Client sign-off is a formality, not a discovery session — because the client approved exactly what was built before development started.' },
+  },
+  PM: {
+    1: { type:'card', title:'Reviews routed ticket — no translation loop', desc:'AI Agent routes to Smartsheet + Zoho. PDM reviews the classified ticket and adds portfolio context. Budget bucket check is automatic.',
+      tags:[t('Smartsheet','#00897B'),t('Zoho Sprints',C.zoho)],
+      who:'PDM (Product Delivery Manager)',
+      what:'PDM receives an already-validated, categorized, and routed ticket from the AI Agent. The service budget bucket has already been identified and checked. PDM reviews for portfolio fit and strategic priority, then confirms the ticket can proceed to feasibility.',
+      what_ai:'Budget bucket allocation, request categorization, and routing happen automatically. PDM no longer needs to manually check whether hours are available or which epic to assign -- the AI Agent has already resolved these against the per-account configuration.',
+      why_shift:'The resource allocation bottleneck Anne identified is resolved here. Budget checking moves from a manual PDM task to an automated gate. No request sits waiting for a human to check the numbers.' },
+    2: { type:'card', title:'Prompts Claude with request + codebase context', desc:'Runs feasibility check by giving Claude the intake form + codebase + workflow perspective.',
+      tags:[t('Claude',C.claude),t('GitHub',C.gh)],
+      who:'PM / Product Manager',
+      what:'PM initiates the AI feasibility check by giving Claude the completed intake form, the codebase context, and their own workflow perspective on the request. Claude analyzes feasibility, complexity, and implementation path.',
+      what_ai:'Claude reads the codebase directly and checks whether the request is feasible, how complex it is, and what the implementation path would be. This takes minutes, not days.',
+      why_shift:'SA feasibility review used to be the bottleneck. AI pre-analysis dramatically reduces the SA investigation surface area — SA reviews a pre-analyzed plan, not a raw request.' },
+    3: { type:'card', title:'Reviews AI-generated ADR iterations', desc:'Reviews the ADR as Claude iterates. Provides feedback. Sends to SA for final approval.',
+      tags:[t('Claude',C.claude),t('Zoho Sprints',C.zoho)],
+      who:'PM / Product Manager',
+      what:'PM reviews the ADR as Claude generates and iterates on it (typically 2-3 rounds). PM provides feedback on business accuracy and completeness, then forwards the approved ADR to the SA.',
+      what_ai:'Claude generates the full ADR from the intake form, feasibility analysis, and codebase context. PM validates business accuracy rather than writing requirements from scratch.',
+      why_shift:'PM no longer writes requirements from scratch. PM reviews, validates, and approves AI-generated requirements. Role shifts from authoring to quality control.' },
+    4: { type:'shift', title:'Sends requirements to client for approval', desc:'Formal sign-off process before development begins.',
+      tags:[t('Intake Portal',C.intake)],
+      who:'PM / Product Manager',
+      what:'PM sends the SA-approved ADR to the client for formal sign-off. This is a structured approval step, not a casual check.',
+      what_ai:'The ADR is in a clean, readable format generated by Claude. The PM doesn\'t need to rewrite or reformat anything before sending.',
+      why_shift:'A formal client approval gate before development eliminates late-stage "that\'s not what I asked for" feedback.' },
+    5: { type:'card', title:'Shares prototype with client', desc:'Presents Claude-generated Figma mockup to client. Iterates on feedback in real time.',
+      tags:[t('Claude',C.claude),t('Figma',C.figma)],
+      who:'PM / Product Manager',
+      what:'PM presents the Claude-generated Figma prototype to the client and facilitates the review session. Client feedback is fed back to Claude for immediate updates.',
+      what_ai:'Claude generates the initial Figma prototype from the intake form and design library. PM doesn\'t need a designer for initial mockup — Claude handles it.',
+      why_shift:'Prototype creation that used to require a designer and multiple sessions now happens in a single PM-facilitated conversation with Claude.' },
+    6: { inactive:'Not active during parallel development.' },
+    7: { inactive:'Not active — automated PR gates running.' },
+    8: { inactive:'Not active during code review.' },
+    9: { inactive:'Not active — CICD is running automatically.' },
+    10: { type:'card', title:'Available for QA sign-off questions', desc:'Available if QA needs business context for edge case decisions.',
+      tags:[t('Slack',C.slack)],
+      who:'PM / Product Manager',
+      what:'PM is available to answer business-context questions that arise during QA edge case testing — scenarios that require a business judgment call.',
+      what_ai:'AI has already handled all functional testing. PM involvement in QA is limited to genuine business judgment questions, not ambiguous AC clarification.',
+      why_shift:'PM is not in a reactive loop during QA. They are available only for the decisions that genuinely require business judgment.' },
+    11: { type:'card', title:'Approves production deploy', desc:'Final PM sign-off before production release.',
+      tags:[t('Zoho Sprints',C.zoho),t('Slack',C.slack)],
+      who:'PM / Product Manager',
+      what:'PM gives final approval for the production deployment after all automated gates pass, QA signs off, and client approval is confirmed.',
+      what_ai:'Because all quality gates are automated and logged, PM sign-off is a review of verified results — not a judgment call made on incomplete information.',
+      why_shift:'Production approval is based on verifiable gate results, not a verbal check-in. Every sign-off has a paper trail.' },
+  },
+  SA: {
+    1: { inactive:'Not active at intake — structured form eliminates pre-SA clarification work.' },
+    2: { type:'card', title:'On standby — AI is running feasibility', desc:'AI pre-analyzes the codebase. SA reviews findings, not raw requests.',
+      tags:[t('Claude',C.claude)],
+      who:'Solutions Architect',
+      what:'SA is available if Claude surfaces a question requiring architectural judgment during the feasibility check. Otherwise SA is not actively required until Phase 3 review.',
+      what_ai:'Claude runs the feasibility check against the codebase autonomously. SA no longer investigates from scratch — they review a pre-analyzed plan.',
+      why_shift:'SA bottleneck (up to 1 week) is eliminated. SA is available for architectural judgment, not grunt-level feasibility investigation.' },
+    3: { type:'shift', title:'Reviews ADR — approves in minutes', desc:'SA reviews AI-generated ADR after 2-3 Claude iterations. Role: approver, not investigator.',
+      tags:[t('Claude',C.claude),t('GitHub',C.gh)],
+      who:'Solutions Architect',
+      what:'SA reviews the AI-generated ADR and approves or requests changes. By the time SA sees it, Claude has already iterated on it 2-3 times and it\'s technically sound. SA review takes minutes.',
+      what_ai:'Claude has already analyzed feasibility, written the technical decisions, and structured the implementation plan. SA validates architectural soundness, not starting from zero.',
+      why_shift:'SA role shifts from bottleneck investigator (days of manual work) to approver (minutes of review). The constraint is removed from the critical path.' },
+    4: { type:'shift', title:'Approves requirements — minutes not days', desc:'SA approves the ADR for development. Gating role, not investigative role.',
+      tags:[t('Zoho Sprints',C.zoho)],
+      who:'Solutions Architect',
+      what:'SA gives formal approval for the ADR to move into development. This is a structured gate, not a free-form review.',
+      what_ai:'The ADR contains the AI-generated feasibility analysis, implementation path, and technical decisions. SA approves rather than generates.',
+      why_shift:'What used to be the biggest bottleneck in the process is now a minutes-long approval step.' },
+    5: { inactive:'Not active during prototype phase.' },
+    6: { inactive:'Available for architectural questions only — Claude is handling execution.' },
+    7: { inactive:'Not active — automated gates running. SA notified only if gate fails.' },
+    8: { type:'card', title:'Available for architectural consultation', desc:'Consulted only if code review surfaces a significant architectural decision.',
+      tags:[t('GitHub',C.gh)],
+      who:'Solutions Architect',
+      what:'SA is available to consult if a developer\'s 10-minute code review surfaces a genuinely significant architectural question that requires SA judgment.',
+      what_ai:'Because Claude wrote the code using the ADR as context, architectural surprises during code review are rare. SA consultation is the exception, not the rule.',
+      why_shift:'SA is no longer routinely pulled into code review. Their expertise is reserved for genuine architectural decisions.' },
+    9: { inactive:'Not active — CICD running automatically.' },
+    10: { inactive:'Not active during QA edge case testing.' },
+    11: { inactive:'Not active for production deploy.' },
+  },
+  AI: {
+    1: { type:'ai', title:'Validates, routes, and creates ticket — automatically', desc:'AI Agent validates all required fields, confirms request category, creates Zoho ticket, assigns billing epic, moves Basecamp card, tags team in Slack, notifies requestor. All at once.',
+      tags:[t('Claude',C.claude),t('Zoho Sprints',C.zoho),t('Basecamp 4','#1B6B3A'),t('Slack','#E8722A')],
+      who:'AI Agent (Claude)',
+      what:'Once the client submits the Basecamp intake form, the AI Agent takes over: validates all required fields are complete for the selected request type, confirms the category (New Request vs. Production Issue), assigns a severity level for production issues, creates the Zoho Sprints ticket against the correct billing epic, moves the Basecamp card to the appropriate column, tags the assigned team in Slack, and sends a confirmation to the requestor. If required fields are missing, the agent notifies the requestor and holds the item until gaps are resolved. Human oversight confirms ticket accuracy before advancing.',
+      what_ai:'Every action the PDM was doing manually -- field validation, categorization, epic assignment, ticket creation, card moves, Slack tagging, requestor notification -- runs automatically in seconds. The Ticket > Epic > Budget > Insight chain is enforced at creation, not patched up after the fact.',
+      why_shift:'What took a PDM 15-30 minutes of manual coordination across four tools now happens instantly. Budget tracking is accurate from the moment a request enters the system. No billing epic is ever missing.' },
+    2: { type:'ai', title:'Runs feasibility check against codebase', desc:'Reads the codebase, checks complexity, identifies implementation path and dependencies.',
+      tags:[t('Claude Code',C.claude),t('GitHub',C.gh)],
+      who:'Claude (AI)',
+      what:'Claude reads the full codebase, evaluates the implementation path for the request, estimates complexity, identifies dependencies and risks, and produces a feasibility summary. This takes minutes, not days.',
+      what_ai:'Claude has access to the full codebase context and runs it against the intake request. No human needs to manually trace through code to answer "is this feasible?"',
+      why_shift:'Replaces up to 1 week of manual SA investigation with a minutes-long automated analysis.' },
+    3: { type:'ai', title:'Generates ADR with full context', desc:'Writes Architecture Decision Record with user stories, AC, tech decisions, business rules. Lives in the codebase. Iterates 2-3x.',
+      tags:[t('Claude Code',C.claude),t('ADRs',C.adrs),t('GitHub',C.gh)],
+      who:'Claude (AI)',
+      what:'Claude generates the ADR containing: user stories, acceptance criteria (BDD format), technical decisions, business rules, implementation plan, and edge cases. The ADR is committed to the codebase and is always in sync with the code. Claude iterates 2-3 rounds to refine before SA review.',
+      what_ai:'The ADR is the single source of truth for the entire development effort. Because it lives in the codebase, Claude always has full context when writing code in later phases.',
+      why_shift:'Requirements go from being written by PMs (vague, disconnected from code) to being generated by AI (specific, living in the codebase, always current).' },
+    4: { inactive:'Not active — SA and client approval is a human gate.' },
+    5: { type:'ai', title:'Generates Figma prototype + iterates on feedback', desc:'Creates prototype from intake form + design library. Updates instantly when client gives feedback in the session.',
+      tags:[t('Claude',C.claude),t('Figma',C.figma)],
+      who:'Claude (AI)',
+      what:'Claude generates a Figma prototype by combining the intake requirements, existing design component library, and screenshots of the live product. When the client gives feedback, Claude updates the prototype in the same conversation session.',
+      what_ai:'Claude can create and iterate on designs without a designer being in the loop for initial mockups. The design library grows with each project as new components are added.',
+      why_shift:'Prototype creation and iteration that used to span multiple sessions now happens in one. The design library compounds in value over time.' },
+    6: { type:'ai', title:'Writes code across 3-4 parallel worktrees', desc:'Executes 3-4 features simultaneously in isolated git worktrees. Full ADR context loaded. No merge conflicts.',
+      tags:[t('Claude Code',C.claude),t('GitHub',C.gh),t('Worktrees',C.adrs)],
+      who:'Claude (AI)',
+      what:'Claude works across 3-4 parallel git worktrees simultaneously — each feature in its own isolated branch. The ADR is loaded as context for every code session. Developer reviews the plan before execution starts (plan mode).',
+      what_ai:'Parallel worktrees mean 3-4x throughput with zero merge conflicts. Claude\'s plan mode forces an explicit plan review before any code is generated — developer is always in control of what gets built.',
+      why_shift:'Sequential development (one task at a time) is replaced by parallel execution. Developer throughput multiplies without additional headcount.' },
+    7: { type:'ai', title:'Auto-runs PR gates on every commit', desc:'Unit tests, linting, build checks trigger automatically when PR is opened. No human trigger needed.',
+      tags:[t('GitHub Actions',C.actions),t('Claude',C.claude)],
+      who:'Claude + GitHub Actions (Automated)',
+      what:'When a PR is opened, GitHub Actions automatically runs the full gate suite: unit tests, linting, build validation, and dependency checks. Results are reported to the developer before any human review begins.',
+      what_ai:'Gates run on every commit automatically. Developers never have to remember to run tests. Quality is enforced by the pipeline, not by memory.',
+      why_shift:'Manual test execution is replaced by automatic gates. Quality issues surface in minutes, not after a 2-3 hour manual review.' },
+    8: { type:'ai', title:'Tracks all diffs — cross-branch consistency check', desc:'After 4 worktrees merge to develop, Claude checks that the combined changes are coherent and conflict-free.',
+      tags:[t('Claude Code',C.claude),t('GitHub',C.gh)],
+      who:'Claude (AI)',
+      what:'After 4 parallel development branches are merged to develop, Claude analyzes all diffs together, checks for cross-branch conflicts, and verifies that the combined changes behave as intended. Produces a summary for the developer\'s 10-minute review.',
+      what_ai:'Claude eliminates the need for the code reviewer to manually reconstruct context across multiple PRs. They receive a pre-analyzed summary.',
+      why_shift:'Cross-branch consistency checking that a human reviewer would spend hours on is done in seconds by Claude.' },
+    9: { type:'ai', title:'CICD runs full test suite while QA is being allocated', desc:'Full test suite runs automatically on staging merge (10-40 min). Tests complete before QA even picks up the ticket.',
+      tags:[t('GitHub Actions',C.actions),t('CICD',C.auto)],
+      who:'Claude + GitHub Actions + CICD (Automated)',
+      what:'On merge to staging, CICD immediately triggers the full automated test suite — unit tests, integration tests, and smoke tests (10-40 minutes). This runs entirely in the background while QA is still being formally allocated to the ticket. By the time QA picks it up, the automated surface has already been validated and results are waiting.',
+      what_ai:'The key shift: CICD tests run in the window that used to be dead time (waiting for QA resource allocation). Time that was previously lost to queue waiting is now productive automated testing time.',
+      why_shift:'Gabriel\'s exact insight: "When I\'m waiting for QA resource allocation, it\'s already testing by itself." Dead queue time becomes automated test execution. QA arrives to a pre-validated build and focuses only on what automation cannot cover.' },
+    10: { type:'ai', title:'Runs integration tests — third-party flows', desc:'Automated integration tests for TransUnion, Experian, and other critical API flows.',
+      tags:[t('GitHub Actions',C.actions),t('Claude',C.claude)],
+      who:'Claude + GitHub Actions (Automated)',
+      what:'Claude-generated integration tests run against all critical third-party API flows (TransUnion, Experian, payment processors). Results logged before human QA edge case testing begins.',
+      what_ai:'Integration tests that previously required manual QA execution are now automated. QA can trust that the data flows through correctly before they run physical device tests.',
+      why_shift:'Third-party integration testing is removed from manual QA scope, freeing QA for what only humans can test: real-device behavior.' },
+    11: { type:'ai', title:'Auto-deploys after all gates pass', desc:'Production deploy triggers automatically when all gates are green and human approvals are in.',
+      tags:[t('GitHub Actions',C.actions),t('CICD',C.auto)],
+      who:'Claude + GitHub Actions + CICD (Automated)',
+      what:'Once all automated gates pass, SA approves, and PM gives final sign-off, the production deploy triggers automatically. Monitoring watches for anomalies post-deploy.',
+      what_ai:'The deploy is a deterministic outcome of gates passing — not a manual action requiring developer attention. Rollback can be triggered automatically if monitoring alerts fire.',
+      why_shift:'Manual production releases are replaced by automatic gates-based deploys. Developer mental overhead at release is near zero.' },
+  },
+  DEV: {
+    1: { inactive:'Not active at intake — structured form handles input.' },
+    2: { type:'card', title:'Adds technical workflow context', desc:'Contributes developer perspective before AI runs feasibility analysis.',
+      tags:[t('Claude',C.claude)],
+      who:'Developer',
+      what:'Developer adds their technical workflow perspective to the intake form before Claude runs the feasibility check. This gives Claude context about the existing implementation patterns and technical constraints.',
+      what_ai:'Developer expertise enriches the AI analysis rather than driving a manual feasibility investigation from scratch.',
+      why_shift:'Developer input comes earlier in the process (context-adding) rather than later (bug-fixing unclear requirements).' },
+    3: { type:'card', title:'ADR accessible in codebase from day one', desc:'Reads the AI-generated ADR as the source of truth. No separate requirements doc to track.',
+      tags:[t('GitHub',C.gh),t('ADRs',C.adrs)],
+      who:'Developer',
+      what:'Developer reads the ADR in the codebase. The ADR contains everything needed to understand the feature: business context, acceptance criteria, technical decisions, and edge cases.',
+      what_ai:'Because the ADR lives in the codebase, it is always current and in sync with the code. Developer never needs to dig through Zoho tickets for requirements context.',
+      why_shift:'Requirements are no longer disconnected from code. The ADR and code evolve together, eliminating the "the ticket said X but the code does Y" confusion.' },
+    4: { inactive:'Not active during approval phase.' },
+    5: { inactive:'Not active during prototype phase.' },
+    6: { type:'card', title:'Orchestrates AI agents — reviews plans before execution', desc:'Developer directs Claude, not writes code. Uses Whisper Flow + plan mode. Reviews every plan before AI executes.',
+      tags:[t('Claude Code',C.claude),t('Whisper Flow',C.whisper),t('GitHub',C.gh)],
+      who:'Developer',
+      what:'Developer uses voice (Whisper Flow) or text to direct Claude. Claude runs in plan mode — presenting a full implementation plan for developer review before writing any code. Developer reviews and approves the plan, then Claude executes across all worktrees.',
+      what_ai:'Developer role shifts from code author to technical orchestrator. Every Claude action is reviewed and approved by the developer before execution.',
+      why_shift:'Developer throughput multiplies without additional headcount. Developer expertise is applied to decisions and plans, not manual code typing.' },
+    7: { type:'card', title:'Reviews gate results', desc:'Checks automated test results. Fixes failures. No manual test execution needed.',
+      tags:[t('GitHub',C.gh),t('GitHub Actions',C.actions)],
+      who:'Developer',
+      what:'Developer reviews the automated gate results when a PR is opened. If gates pass, code moves forward. If gates fail, developer addresses the failure.',
+      what_ai:'Gate results are automatically aggregated and presented. Developer doesn\'t need to run tests manually — just review the results and act on failures.',
+      why_shift:'Test execution is removed from developer workflow. Developer reviews results, not runs tests.' },
+    8: { type:'shift', title:'10-minute code review — not 2-3 hours', desc:'Reviews Claude\'s pre-analyzed diff summary. Sanity check, not deep investigation.',
+      tags:[t('GitHub',C.gh),t('Claude',C.claude)],
+      who:'Senior Developer',
+      what:'Developer reviews Claude\'s cross-branch diff summary. This is a 10-minute sanity check confirming that the implementation aligns with the ADR and no architectural problems were introduced.',
+      what_ai:'Claude has already analyzed all diffs, checked cross-branch consistency, and summarized the key decisions made. Developer validates, not investigates.',
+      why_shift:'Code review drops from 2-3 hours to 10 minutes. The bottleneck is removed from the critical path.' },
+    9: { type:'card', title:'Manual BDD validation', desc:'Developer manually validates all features against BDD acceptance criteria before staging sign-off.',
+      tags:[t('Claude',C.claude),t('GitHub',C.gh)],
+      who:'Developer',
+      what:'Developer manually walks through each feature against the BDD acceptance criteria in the ADR. This is the developer\'s personal quality check before handing off to QA.',
+      what_ai:'The BDD acceptance criteria were generated by Claude in the ADR. Developer is validating against a clear, pre-written checklist rather than interpreting vague AC.',
+      why_shift:'Developer validation is structured around pre-written BDD criteria rather than informal self-testing against vague requirements.' },
+    10: { type:'card', title:'Available for QA bug fixes', desc:'Responds to QA findings. Context is preserved — no cold context-switching.',
+      tags:[t('Slack',C.slack),t('GitHub',C.gh)],
+      who:'Developer',
+      what:'Developer responds to QA bug reports. Because the ADR and Claude\'s full context are available, re-engaging with the feature is quick — no cold context reconstruction.',
+      what_ai:'Claude retains the full ADR context and can quickly regenerate fixes for bugs found by QA. Developer reviews and approves the fix rather than writing it from scratch.',
+      why_shift:'Context-switching cost is dramatically reduced because Claude maintains the full project context. Bug fixes are faster.' },
+    11: { type:'card', title:'Monitors deployment', desc:'Monitors auto-deploy. Ready for rollback if monitoring flags issues.',
+      tags:[t('GitHub Actions',C.actions),t('GitHub',C.gh)],
+      who:'Developer',
+      what:'Developer monitors the automated production deployment and is on standby if monitoring alerts trigger a rollback need.',
+      what_ai:'The deployment itself is automated. Developer attention is reserved for monitoring and exception handling, not manually executing release steps.',
+      why_shift:'Developer release overhead drops from an active manual process to passive monitoring.' },
+  },
+  QA: {
+    1: { inactive:'Not active at intake.' },
+    2: { inactive:'Not active during AI feasibility check.' },
+    3: { type:'card', title:'Reviews AC in ADR during generation', desc:'QA validates acceptance criteria in the ADR as Claude generates it — not at the end.',
+      tags:[t('Claude',C.claude),t('ADRs',C.adrs)],
+      who:'QA',
+      what:'QA reviews the acceptance criteria as Claude generates the ADR. This is an early-stage validation — QA ensures the AC is testable, complete, and covers edge cases before the ADR is finalized.',
+      what_ai:'QA input at requirements generation stage (not testing stage) is a fundamental shift. Edge cases are caught before development begins.',
+      why_shift:'QA involvement moves from the end of the process (testing finished code) to the beginning (validating requirements before code is written).' },
+    4: { inactive:'Not active during approval phase.' },
+    5: { inactive:'Not active during prototype phase.' },
+    6: { type:'card', title:'Builds automation test cases from ADR AC', desc:'Uses ADR acceptance criteria to build automation scripts while development is happening in parallel.',
+      tags:[t('Maestro',C.maestro),t('GitHub Actions',C.actions)],
+      who:'QA',
+      what:'While developers are working in parallel worktrees, QA uses the ADR acceptance criteria to build automation test scripts. By the time development completes, automation tests are ready to run.',
+      what_ai:'ADR AC is in BDD format — directly usable for automation script generation. QA doesn\'t have to reverse-engineer test cases from vague requirements.',
+      why_shift:'QA test creation happens in parallel with development, not after. The QA bottleneck is eliminated.' },
+    7: { inactive:'Not active — automated PR gates running.' },
+    8: { inactive:'Not active during code review.' },
+    9: { type:'card', title:'Device catalog: iOS/Android simulators', desc:'Automated simulator testing across all iOS/Android versions in the device catalog.',
+      tags:[t('Maestro',C.maestro),t('GitHub Actions',C.actions)],
+      who:'QA',
+      what:'QA-defined device catalog is run automatically using simulators across all major iOS and Android versions. This is triggered as part of the staging test phase.',
+      what_ai:'Maestro or equivalent tool runs scripted flows across all simulator versions. QA defines the catalog and scripts once; automation executes them on every release.',
+      why_shift:'Multi-device compatibility that previously required manual testing across physical devices is now automated for standard device configurations.' },
+    10: { type:'shift', title:'Real device testing — what AI can\'t simulate', desc:'Battery behavior, WiFi drops, physical device anomalies. Human judgment required. This is QA\'s core value.',
+      tags:[t('Real Devices',C.maestro),t('Device Lab',C.auto)],
+      who:'QA',
+      what:'QA focuses on what only humans on real devices can test: battery drain behavior, intermittent connectivity, real-world physical anomalies, accessibility in edge conditions, and cross-device quirks that simulators miss.',
+      what_ai:'AI has handled all functional testing, regression testing, and integration testing. QA applies human judgment to the testing that genuinely requires physical context.',
+      why_shift:'QA role transforms from manual regression tester (doing work AI can do) to edge-case specialist (doing work only humans can do). This is QA\'s highest-value contribution.' },
+    11: { type:'shift', title:'Signs off after edge case testing', desc:'Formal QA sign-off that the feature has passed all human-only validation.',
+      tags:[t('Slack',C.slack)],
+      who:'QA',
+      what:'QA issues formal sign-off after completing real-device edge case testing. This sign-off carries more weight because it covers the testing that only QA can do.',
+      what_ai:'Automated testing has already cleared the functional and regression surface. QA sign-off is now specifically about the human-only testing dimension.',
+      why_shift:'QA sign-off is meaningful and specific — it certifies edge cases, not functional regression. QA is no longer a bottleneck; they are a specialized final quality gate.' },
+  },
+};
+
+function render() {
+  const n = PHASES.length;
+  const d = document.getElementById('diagram');
+
+  // Header
+  let h = `<div class="phase-header" style="grid-template-columns:48px repeat(${n},minmax(155px,1fr))">`;
+  h += `<div class="role-label-header"></div>`;
+  PHASES.forEach(p => {
+    h += `<div class="phase-col-header">
+      <div style="display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:4px">
+        <span class="phase-badge">${p.num}</span>
+        <span class="phase-icon">${p.icon}</span>
+      </div>
+      <div class="phase-name">${p.name.replace('\n','<br>')}</div>
+    </div>`;
+  });
+  h += `</div>`;
+
+  // Rows
+  let g = `<div class="swimlane-grid">`;
+  ROLES.forEach(role => {
+    g += `<div class="swimlane-row${role.ai ? ' ai-row' : ''}" style="grid-template-columns:48px repeat(${n},minmax(155px,1fr))">`;
+    g += `<div class="role-label-cell${role.ai ? ' ai-label' : ''}"><span class="role-label-text${role.ai ? ' ai-text' : ''}">${role.label}</span></div>`;
+    PHASES.forEach(ph => {
+      const c = GRID[role.key]?.[ph.num];
+      g += `<div class="phase-cell">`;
+      if (!c) {
+        g += '';
+      } else if (c.inactive) {
+        g += `<div class="inactive">${c.inactive}</div>`;
+      } else if (c.auto_gate) {
+        g += `<div class="auto-gate">⚡ ${c.auto_gate}</div>`;
+      } else {
+        const id = `${role.key}_${ph.num}`;
+        let cls = 'card';
+        if (c.type === 'ai') cls = 'card ai';
+        if (c.type === 'shift') cls = 'card shift';
+        let lbl = '';
+        if (c.type === 'ai') lbl = '<div class="ai-label">✨ AI Action</div>';
+        if (c.type === 'shift') lbl = '<div class="shift-label">🔄 Role Shift</div>';
+        g += `<div class="${cls}">
+          ${lbl}
+          <div class="card-title">${c.title}</div>
+          <div class="card-desc">${c.desc}</div>
+          <div class="details-link" onclick="openModal('${id}')">🖱 Click for details</div>
+          <div class="tags">${c.tags.map(t=>`<span class="tag" style="background:${t.color}">${t.label}</span>`).join('')}</div>
+        </div>`;
+      }
+      g += `</div>`;
+    });
+    g += `</div>`;
+  });
+  g += `</div>`;
+
+  d.innerHTML = h + g;
+}
+
+function openModal(id) {
+  const [rk, pn] = id.split('_');
+  const c = GRID[rk]?.[parseInt(pn)];
+  if (!c || c.inactive) return;
+  document.getElementById('modal-title').textContent = c.title;
+  const aiRow = rk === 'AI' || c.type === 'ai' || c.type === 'shift';
+  document.getElementById('modal-body').innerHTML = `
+    ${aiRow ? '<div class="ai-banner">🤖 AI-enhanced step — humans govern the decision, AI handles the execution.</div>' : ''}
+    <div class="modal-sec">
+      <div class="modal-sec-label"><span>👤</span> WHO</div>
+      <div class="modal-sec-text">${c.who}</div>
+    </div>
+    <div class="modal-hr"></div>
+    <div class="modal-sec">
+      <div class="modal-sec-label"><span>⚡</span> WHAT HAPPENS</div>
+      <div class="modal-sec-text">${c.what}</div>
+    </div>
+    <div class="modal-hr"></div>
+    <div class="modal-sec">
+      <div class="modal-sec-label"><span>🤖</span> HOW AI CHANGES THIS</div>
+      <div class="modal-sec-text">${c.what_ai}</div>
+    </div>
+    <div class="modal-hr"></div>
+    <div class="modal-sec">
+      <div class="modal-sec-label"><span>🔄</span> THE SHIFT</div>
+      <div class="modal-sec-text">${c.why_shift}</div>
+    </div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeOverlay(e) { if (e.target.id === 'overlay') closeModal(); }
+function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+
+render();
+</script>
+</body>
+</html>
