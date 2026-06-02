@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concepta — AI-Enhanced SDLC: MVP</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F0EDE6; min-height: 100vh; }
+
+.top-nav { background: #0d1b2a; display: flex; align-items: center; padding: 0 16px; height: 44px; position: sticky; top: 0; z-index: 100; gap: 2px; }
+.top-nav .logo { color: white; font-size: 11px; font-weight: 800; letter-spacing: 2px; margin-right: 16px; text-transform: uppercase; }
+.nav-tab { color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 600; padding: 0 14px; height: 44px; display: flex; align-items: center; cursor: pointer; text-decoration: none; letter-spacing: 0.5px; border-bottom: 3px solid transparent; text-transform: uppercase; white-space: nowrap; }
+.nav-tab:hover { color: white; background: rgba(255,255,255,0.07); }
+.nav-tab.active { color: white; border-bottom-color: #D97706; }
+
+.page-banner { background: #162236; padding: 10px 20px; display: flex; align-items: center; gap: 12px; }
+.page-banner .badge { background: #D97706; color: white; font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 10px; }
+.page-banner .title { color: white; font-size: 13px; font-weight: 700; }
+.page-banner .sub { color: rgba(255,255,255,0.45); font-size: 11px; }
+
+.diagram-wrapper { overflow-x: auto; padding-bottom: 40px; }
+
+.phase-header { display: grid; position: sticky; top: 44px; z-index: 50; background: #1a2744; border-bottom: 2px solid rgba(255,255,255,0.08); }
+.role-label-header { background: #0d1b2a; min-width: 48px; width: 48px; }
+.phase-col-header { background: #1a2744; color: white; padding: 10px 8px 8px; text-align: center; border-left: 1px solid rgba(255,255,255,0.08); min-width: 155px; }
+.phase-badge { display: inline-flex; align-items: center; justify-content: center; width: 22px; height: 22px; border-radius: 50%; background: rgba(217,119,6,0.5); font-size: 10px; font-weight: 800; margin-bottom: 5px; }
+.phase-icon { font-size: 16px; display: block; margin-bottom: 3px; }
+.phase-name { font-size: 9.5px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; line-height: 1.3; color: rgba(255,255,255,0.9); }
+
+.swimlane-grid { display: flex; flex-direction: column; }
+.swimlane-row { display: grid; border-top: 1px solid #DDD8D0; min-height: 110px; }
+.role-label-cell { width: 48px; min-width: 48px; background: white; border-right: 1px solid #DDD8D0; display: flex; align-items: center; justify-content: center; padding: 6px 0; }
+.role-label-text { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 8.5px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #666; white-space: nowrap; }
+
+.phase-cell { min-width: 155px; padding: 10px; border-left: 1px solid #DDD8D0; background: #F0EDE6; vertical-align: top; }
+.phase-cell.zero { background: #FFF8ED; border-left: 2px solid #D97706; }
+
+.card { background: white; border-radius: 6px; padding: 10px 10px 9px; border: 1px solid #E2DED9; box-shadow: 0 1px 3px rgba(0,0,0,0.05); height: 100%; }
+.card.ai-assist { border-color: #FCD34D; background: #FFFBEB; }
+.ai-assist-label { font-size: 8.5px; font-weight: 800; color: #92400E; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 5px; display: flex; align-items: center; gap: 3px; }
+.card-title { font-size: 11.5px; font-weight: 700; color: #111; line-height: 1.3; margin-bottom: 4px; }
+.card-desc { font-size: 10.5px; color: #777; line-height: 1.45; margin-bottom: 7px; }
+.details-link { display: flex; align-items: center; gap: 4px; font-size: 10px; color: #999; cursor: pointer; margin-bottom: 7px; }
+.details-link:hover { color: #444; }
+.tags { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 2px; }
+.tag { padding: 2px 7px; border-radius: 10px; font-size: 9px; font-weight: 700; color: white; letter-spacing: 0.2px; }
+
+.inactive { font-size: 10px; color: #B0A898; font-style: italic; line-height: 1.45; padding: 2px 0; }
+
+.modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: white; border-radius: 10px; padding: 28px; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; position: relative; box-shadow: 0 24px 80px rgba(0,0,0,0.22); }
+.modal-close { position: absolute; top: 12px; right: 14px; font-size: 18px; cursor: pointer; color: #888; background: none; border: none; line-height: 1; padding: 4px; }
+.modal-title { font-size: 15px; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #111; margin-bottom: 20px; padding-right: 28px; line-height: 1.3; }
+.modal-sec { margin-bottom: 0; }
+.modal-sec-label { display: flex; align-items: center; gap: 5px; font-size: 9.5px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin-bottom: 6px; }
+.modal-sec-text { font-size: 13px; color: #333; line-height: 1.65; }
+.modal-hr { border: none; border-top: 1px solid #f0f0f0; margin: 14px 0; }
+.mvp-banner { background: linear-gradient(135deg,#D97706,#F59E0B); color: white; border-radius: 6px; padding: 8px 12px; margin-bottom: 16px; font-size: 11px; font-weight: 600; }
+
+/* Operating Standards section */
+.standards-section { background: #fff; border-top: 3px solid #D97706; padding: 48px 32px 64px; }
+.standards-header { max-width: 960px; margin: 0 auto 40px; }
+.standards-header .section-eyebrow { font-size: 10px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: #D97706; margin-bottom: 10px; }
+.standards-header h2 { font-size: 22px; font-weight: 800; color: #0d1b2a; margin-bottom: 10px; line-height: 1.25; }
+.standards-header p { font-size: 14px; color: #555; line-height: 1.7; max-width: 720px; }
+
+.standards-grid { max-width: 960px; margin: 0 auto; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+.std-card { background: #F9F8F6; border: 1px solid #E8E3DC; border-radius: 10px; padding: 20px 20px 18px; }
+.std-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: #D97706; color: white; font-size: 11px; font-weight: 800; margin-bottom: 12px; }
+.std-title { font-size: 13px; font-weight: 800; color: #0d1b2a; margin-bottom: 8px; letter-spacing: 0.2px; }
+.std-rule { font-size: 12px; color: #444; line-height: 1.6; margin-bottom: 10px; }
+.std-gate { background: #FFF8ED; border: 1px solid #FCD34D; border-radius: 6px; padding: 7px 10px; font-size: 11px; color: #92400E; font-weight: 600; line-height: 1.5; }
+.std-gate .gate-label { font-size: 9.5px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; color: #D97706; margin-bottom: 3px; }
+
+.impl-section { max-width: 960px; margin: 48px auto 0; }
+.impl-section h3 { font-size: 16px; font-weight: 800; color: #0d1b2a; margin-bottom: 24px; letter-spacing: 0.2px; }
+.impl-steps { display: flex; flex-direction: column; gap: 0; }
+.impl-step { display: flex; gap: 16px; align-items: flex-start; padding-bottom: 24px; position: relative; }
+.impl-step:not(:last-child)::before { content: ''; position: absolute; left: 15px; top: 32px; bottom: 0; width: 2px; background: #E8E3DC; }
+.impl-step-num { flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; background: #0d1b2a; color: white; font-size: 12px; font-weight: 800; display: flex; align-items: center; justify-content: center; position: relative; z-index: 1; }
+.impl-step-body { padding-top: 4px; }
+.impl-step-title { font-size: 13px; font-weight: 800; color: #0d1b2a; margin-bottom: 4px; }
+.impl-step-desc { font-size: 12px; color: #555; line-height: 1.6; }
+.impl-step-owner { display: inline-block; margin-top: 6px; font-size: 10px; font-weight: 700; color: #D97706; background: #FFF8ED; border: 1px solid #FCD34D; border-radius: 10px; padding: 2px 8px; }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <span class="logo">Concepta</span>
+  <a class="nav-tab" href="SDLC_Current_State.html">📋 Current State</a>
+  <a class="nav-tab active" href="SDLC_MVP.html">⚡ AI-Enhanced MVP</a>
+  <a class="nav-tab" href="SDLC_AI_Enhanced.html">🤖 Future State</a>
+  <a class="nav-tab" href="Prompt_Library.html">📚 Prompt Library</a>
+</nav>
+
+<div class="page-banner">
+  <span class="badge">MVP · Active Now</span>
+  <span class="title">SDLC: AI-Enhanced — How We Operate Effective Immediately</span>
+  <span class="sub">Claude as a collaborative tool at every stage. Humans govern every decision. The codebase is mapped first, requirements are AI-generated and human-validated, and developers build in partnership with Claude -- not alone.</span>
+</div>
+
+<div class="diagram-wrapper">
+  <div id="diagram"></div>
+</div>
+
+<section class="standards-section">
+  <div class="standards-header">
+    <div class="section-eyebrow">MVP Operating Standards</div>
+    <h2>How We Operate -- The Rules That Make This Work</h2>
+    <p>Nine standards that govern every step of the MVP process. Each one has a clear owner, a defined gate, and an exception path. These are not guidelines -- they are the process. Skipping a gate does not save time; it moves the cost downstream where it is more expensive to fix.</p>
+  </div>
+
+  <div class="standards-grid">
+
+    <div class="std-card">
+      <div class="std-num">1</div>
+      <div class="std-title">Codebase Mapping</div>
+      <div class="std-rule">Run once before the first AI-assisted PRD on any codebase. Re-run after major architectural changes, significant dependency upgrades, and quarterly at minimum. Concurrent self-validation pass required before output is used. Output lives in the repo <code>/docs</code> folder, linked from the Zoho project. Mapping must cover: architecture, business rules, domain/entity model, API surface, third-party integrations, auth model, key dependencies.</div>
+      <div class="std-gate"><div class="gate-label">Owner</div>Assigned dev per account. Dev confirms mapping is current before any new PRD generation begins.</div>
+    </div>
+
+    <div class="std-card">
+      <div class="std-num">2</div>
+      <div class="std-title">Intake Completeness Gate</div>
+      <div class="std-rule">Seven fields required before PM can prompt Claude -- no exceptions: <strong>What</strong> (feature description), <strong>Why</strong> (business rationale), <strong>Who</strong> (affected user roles), <strong>AC</strong> (minimum 3), <strong>Happy path</strong> (1 complete flow), <strong>Negative path</strong> (at least 2 failure scenarios), <strong>Constraints</strong> (technical, timeline, budget). If any field is missing, PM returns to client before proceeding.</div>
+      <div class="std-gate"><div class="gate-label">Hard Gate</div>Partial intakes do not advance to PRD generation. The quality of the Claude output depends entirely on the completeness of the intake.</div>
+    </div>
+
+    <div class="std-card">
+      <div class="std-num">3</div>
+      <div class="std-title">Prompt Library + PRD Template</div>
+      <div class="std-rule">Three core prompt templates: new feature, bug fix, integration/API. Each template specifies: context to load (codebase mapping + complete intake + dev technical note), what to ask Claude to produce (user story, BDD AC, happy/negative path narratives, technical considerations, explicit out-of-scope section, open questions), and a quality checklist to run before sending to SA. Templates live in Notion, maintained by PM + dev, reviewed after every project.</div>
+      <div class="std-gate"><div class="gate-label">Owner</div>PM + Dev jointly. PM runs the prompt; dev contributes the technical context note before PM starts.</div>
+    </div>
+
+    <div class="std-card">
+      <div class="std-num">4</div>
+      <div class="std-title">PRD Quality Rubric</div>
+      <div class="std-rule">Before SA touches a PRD, PM checks six things: (1) User story in standard format. (2) Minimum 3 AC in BDD Given/When/Then format covering happy path, at least 1 negative path, at least 1 edge case. (3) Explicit out-of-scope section. (4) No ambiguous language ("as needed," "etc.," "as appropriate"). (5) Technical dependencies identified. (6) Open questions flagged. If any item fails, PM revises before SA review begins.</div>
+      <div class="std-gate"><div class="gate-label">Hard Gate</div>PRD does not go to SA if it fails the rubric. PM owns the quality check -- not SA.</div>
+    </div>
+
+    <div class="std-card">
+      <div class="std-num">5</div>
+      <div class="std-title">SA Review Protocol</div>
+      <div class="std-rule">Time targets: 30 min for Low complexity, 2 hours for Medium, half-day for High. SA assigns the complexity rating. SA sign-off is a written Zoho comment or status change -- not verbal. If SA rejects, written feedback is required and re-review happens within 24 hours. SA also reviews the PRD from a delivery scope and budget fit perspective alongside the DM before it goes to the client.</div>
+      <div class="std-gate"><div class="gate-label">Owner</div>SA. The complexity rating SA assigns at this stage is the basis for the DM's delivery estimate.</div>
+    </div>
+
+    <div class="std-card">
+      <div class="std-num">6</div>
+      <div class="std-title">Client Sign-off Protocol</div>
+      <div class="std-rule">PRD sent via agreed channel. Client has 48 hours to respond. Approval must be explicit -- silence is not approval. If client requests changes: minor UI feedback = dev fixes without reopening PRD. Functional gap = new ticket, new PRD. Scope change = budget conversation before anything else. Written client approval must be documented in Zoho before development begins.</div>
+      <div class="std-gate"><div class="gate-label">Hard Gate</div>No development begins without written client approval in Zoho. This is the single most important gate in the MVP process.</div>
+    </div>
+
+    <div class="std-card">
+      <div class="std-num">7</div>
+      <div class="std-title">Development with Claude</div>
+      <div class="std-rule">Branch created from the PRD ticket (branch name includes ticket number). PRD loaded as context at session start. Developer reviews and approves every Claude output before committing. Developer is responsible for all committed code -- Claude is a tool, not an author. Developer testing runs in parallel with the build, not after. No PR opened without developer having validated the happy path locally.</div>
+      <div class="std-gate"><div class="gate-label">Owner</div>Developer. Dev testing happens during the build -- not as a separate phase after code is "done."</div>
+    </div>
+
+    <div class="std-card">
+      <div class="std-num">8</div>
+      <div class="std-title">Demo Protocol</div>
+      <div class="std-rule">Demo is a working feature in staging -- not a mockup or screenshot. PM presents via screen share or async Loom. Client has 24 hours to respond: Approved / Change Requested / Question. Change Requested: minor UI = dev fixes without reopening PRD; functional gap = new ticket with new PRD; scope change = budget conversation first. Demo approval documented in Zoho before QA begins.</div>
+      <div class="std-gate"><div class="gate-label">Hard Gate</div>QA does not begin until client demo approval is documented. Demo feedback is not a QA issue -- it is a requirements issue.</div>
+    </div>
+
+    <div class="std-card">
+      <div class="std-num">9</div>
+      <div class="std-title">QA Completion Criteria</div>
+      <div class="std-rule">Feature testing: every PRD AC marked pass/fail in Zoho. Regression testing: core user flows validated across all affected areas. Bug severity: P1 blocks release, P2 requires fix before release, P3 is post-release. No P1 or P2 bugs open at time of release. QA sign-off is a written Zoho status change -- not verbal. Both feature and regression testing are required at every release.</div>
+      <div class="std-gate"><div class="gate-label">Owner</div>QA. Sign-off must reference the PRD ticket. No production deploy without documented QA pass.</div>
+    </div>
+
+  </div>
+
+  <div class="impl-section">
+    <h3>Implementation Sequence -- How to Get This Live</h3>
+    <div class="impl-steps">
+
+      <div class="impl-step">
+        <div class="impl-step-num">1</div>
+        <div class="impl-step-body">
+          <div class="impl-step-title">Ratify these 9 standards with the full team</div>
+          <div class="impl-step-desc">One meeting. Walk through each standard, surface objections, agree on any modifications. The team needs to own this -- not just be told about it. Document the ratified version in Notion.</div>
+          <span class="impl-step-owner">Owner: Anne / Leo</span>
+        </div>
+      </div>
+
+      <div class="impl-step">
+        <div class="impl-step-num">2</div>
+        <div class="impl-step-body">
+          <div class="impl-step-title">Build the 3 core prompt templates</div>
+          <div class="impl-step-desc">PM + dev in one working session. Template 1: new feature. Template 2: bug fix. Template 3: integration/API. Each template includes context loading instructions, required inputs, expected Claude output format, and quality checklist. Store in Notion.</div>
+          <span class="impl-step-owner">Owner: PM + Dev (1 session)</span>
+        </div>
+      </div>
+
+      <div class="impl-step">
+        <div class="impl-step-num">3</div>
+        <div class="impl-step-body">
+          <div class="impl-step-title">Choose the first dogfood account and run codebase mapping</div>
+          <div class="impl-step-desc">Select one account to run this process end-to-end first. Run the code analysis script. Complete the concurrent self-validation pass. Confirm SA reviews and approves the mapping output before using it for PRD generation.</div>
+          <span class="impl-step-owner">Owner: Dev + SA</span>
+        </div>
+      </div>
+
+      <div class="impl-step">
+        <div class="impl-step-num">4</div>
+        <div class="impl-step-body">
+          <div class="impl-step-title">Run the first end-to-end PRD generation cycle</div>
+          <div class="impl-step-desc">Take a real pending request from the dogfood account. PM runs the Claude prompt using the template. SA reviews the output. Document how long SA review took vs. current state baseline. Capture what the prompt template missed.</div>
+          <span class="impl-step-owner">Owner: PM + SA</span>
+        </div>
+      </div>
+
+      <div class="impl-step">
+        <div class="impl-step-num">5</div>
+        <div class="impl-step-body">
+          <div class="impl-step-title">Iterate the prompt template based on SA feedback</div>
+          <div class="impl-step-desc">SA documents what the first PRD got wrong or missed. PM + dev update the prompt template to address those gaps. Run a second PRD generation pass. Repeat until SA review time is consistently under the target thresholds.</div>
+          <span class="impl-step-owner">Owner: PM + Dev + SA</span>
+        </div>
+      </div>
+
+      <div class="impl-step">
+        <div class="impl-step-num">6</div>
+        <div class="impl-step-body">
+          <div class="impl-step-title">Complete one full cycle end-to-end on the dogfood account</div>
+          <div class="impl-step-desc">PRD generation → SA review → client sign-off → dev with Claude → code review → demo → QA → production. Document the time at each stage. Compare against current state baseline. This is your proof of concept and your team alignment moment.</div>
+          <span class="impl-step-owner">Owner: Full team</span>
+        </div>
+      </div>
+
+      <div class="impl-step">
+        <div class="impl-step-num">7</div>
+        <div class="impl-step-body">
+          <div class="impl-step-title">Roll out to the next account after one validated cycle</div>
+          <div class="impl-step-desc">Do not expand to all accounts at once. One validated cycle proves the process works. Run codebase mapping on the next account. Apply the refined prompt templates. The process scales -- but only after it has been validated end-to-end on one account first.</div>
+          <span class="impl-step-owner">Owner: PM + Dev</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="modal-overlay" id="overlay" onclick="closeOverlay(event)">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-title" id="modal-title"></div>
+    <div id="modal-body"></div>
+  </div>
+</div>
+
+<script>
+const PHASES = [
+  { num:0, icon:'🗺', name:'Codebase\nMapping', zero: true },
+  { num:1, icon:'📥', name:'Request\nIntake' },
+  { num:2, icon:'📝', name:'PRD\nGeneration' },
+  { num:3, icon:'🔍', name:'SA\nReview' },
+  { num:4, icon:'✅', name:'Client\nSign-off' },
+  { num:5, icon:'🗓', name:'Sprint\nPlanning' },
+  { num:6, icon:'💻', name:'Development\n(+ Claude)' },
+  { num:7, icon:'👀', name:'Code\nReview' },
+  { num:8, icon:'🎯', name:'Demo /\nPrototype' },
+  { num:9, icon:'🧪', name:'QA\nTesting' },
+  { num:10, icon:'🚀', name:'Production\nDeploy' },
+];
+
+const ROLES = [
+  { key:'CLIENT', label:'CLIENT /\nREQUESTOR' },
+  { key:'PM', label:'PM /\nPRODUCT' },
+  { key:'DM', label:'DELIVERY\nMANAGER' },
+  { key:'SA', label:'SA' },
+  { key:'DEV', label:'DEVELOPER' },
+  { key:'QA', label:'QA' },
+];
+
+function t(label, color) { return { label, color }; }
+const C = { slack:'#E8722A', zoho:'#2A6496', gh:'#24292E', claude:'#D97706', bc:'#1B6B3A', smartsheet:'#00897B', manual:'#8B6914' };
+
+const GRID = {
+  CLIENT: {
+    0: { inactive:'Not active during codebase mapping.' },
+    1: { type:'card', title:'Submits request via Basecamp 4', desc:'Structured intake form captures what, why, priority, affected users, and constraints.',
+      tags:[t('Basecamp 4',C.bc),t('Slack',C.slack)],
+      who:'Client requestor or internal stakeholder',
+      what:'Client submits via the Basecamp 4 Request Board using the structured intake form. The form captures all context needed for the product strategist to prompt Claude effectively.',
+      what_changes:'The intake form now explicitly asks for AC context, happy path, and known edge cases -- because this information goes directly into Claude to generate the PRD. The quality of the prompt depends on the quality of the intake.',
+      why:'A structured intake with complete context means the PM can prompt Claude without a back-and-forth clarification loop with the client first.' },
+    2: { inactive:'Not active -- product strategist is generating the PRD with Claude.' },
+    3: { inactive:'Not active during SA review.' },
+    4: { type:'card', title:'Reviews and formally approves requirements', desc:'Receives the SA-approved PRD for formal sign-off before development begins.',
+      tags:[t('Basecamp 4',C.bc),t('Slack',C.slack)],
+      who:'Client requestor',
+      what:'Client reviews the Claude-generated, SA-approved PRD and formally signs off before any development work begins. This replaces informal verbal sign-off.',
+      what_changes:'The PRD the client reviews is structured and readable -- generated by Claude from their own intake submission, not rewritten from scratch by a PM. Expectations are locked in before dev starts.',
+      why:'Formal client approval before dev eliminates the "that\'s not what I asked for" problem at QA.' },
+    5: { inactive:'Not active during sprint planning.' },
+    6: { inactive:'Available for urgent clarification only.' },
+    7: { inactive:'Not active during code review.' },
+    8: { type:'card', title:'Reviews demo or prototype', desc:'Sees the working feature or prototype before QA begins. Provides final feedback.',
+      tags:[t('Slack',C.slack)],
+      who:'Client requestor',
+      what:'Client reviews a demo or working prototype of the feature. This is the final client-facing check before QA sign-off and production release.',
+      what_changes:'Client sees a working demo instead of a Slack message saying "we think it\'s done." Feedback at this stage is about the build -- not about requirements.',
+      why:'Demo review separates "does it work?" (QA) from "is this what we wanted?" (client). Catching client misalignment before QA saves rework cycles.' },
+    9: { inactive:'Not involved in QA testing.' },
+    10: { type:'card', title:'Receives structured release notes', desc:'Notified of production release with a summary of what shipped and what to validate.',
+      tags:[t('Slack',C.slack)],
+      who:'Client requestor',
+      what:'Client receives a structured release note summarizing what shipped, tied back to the PRD they signed off on. They know exactly what changed and what to test.',
+      what_changes:'Release communication is structured and traceable to the original requirements -- not a one-line Slack message.',
+      why:'Closing the loop with structured release notes builds client confidence and reduces post-launch follow-up questions.' },
+  },
+  PM: {
+    0: { inactive:'Not active -- dev is running the codebase mapping.' },
+    1: { type:'card', title:'Validates and routes request -- creates Zoho ticket', desc:'Reviews Basecamp submission, creates Zoho ticket, confirms budget bucket with DM.',
+      tags:[t('Basecamp 4',C.bc),t('Zoho Sprints',C.zoho),t('Smartsheet',C.smartsheet)],
+      who:'PDM / Product Strategist',
+      what:'PM reviews the Basecamp intake submission, confirms it is complete enough to prompt Claude, creates the Zoho ticket, and confirms the budget bucket with the DM before moving forward.',
+      what_changes:'PM is now evaluating completeness through a different lens: is there enough context here to generate a useful PRD with Claude? If not, they go back to the client before wasting SA time.',
+      why:'The PM\'s intake validation now serves a dual purpose -- it gates the process AND prepares the Claude prompt.' },
+    2: { type:'ai-assist', title:'Prompts Claude to generate PRD', desc:'Loads codebase context + intake form + AC + happy path + negative path. Claude generates structured PRD.',
+      tags:[t('Claude',C.claude),t('GitHub',C.gh),t('Zoho Sprints',C.zoho)],
+      who:'PDM / Product Strategist',
+      what:'PM prompts Claude with: the intake form contents, codebase context (from the mapping phase), the feature request with full what+why, acceptance criteria, happy path scenarios, and negative path scenarios. Claude generates a structured PRD-level document.',
+      what_changes:'PM role shifts from writing requirements to directing Claude to generate them. The codebase mapping means Claude already understands the architecture -- the PM\'s job is to provide the right business and behavioral context.',
+      why:'Claude-generated PRDs based on complete context are more consistent and more complete than PM-authored requirements documents. SA review time drops because the document is already well-structured.' },
+    3: { type:'card', title:'Reviews PRD with SA -- confirms business accuracy', desc:'Reviews Claude\'s output alongside SA. Validates business rules and requirements accuracy before sign-off.',
+      tags:[t('Claude',C.claude),t('Zoho Sprints',C.zoho)],
+      who:'PDM / Product Strategist',
+      what:'PM reviews the Claude-generated PRD alongside the SA for business accuracy. PM validates that the AC, business rules, and behavioral requirements correctly reflect what the client actually asked for.',
+      what_changes:'PM is reviewing and validating a structured document rather than writing one. The SA is simultaneously checking technical feasibility. Both happen in the same review cycle.',
+      why:'Joint PM + SA review in one pass is faster than sequential reviews with loops between them.' },
+    4: { type:'card', title:'Sends PRD to client for formal sign-off', desc:'Submits the SA-approved PRD to the client for review and approval before development begins.',
+      tags:[t('Basecamp 4',C.bc),t('Slack',C.slack)],
+      who:'PDM / Product Strategist',
+      what:'PM sends the SA-approved PRD to the client through the agreed channel and waits for formal written sign-off before any development work begins.',
+      what_changes:'This is a formal gate, not a casual Slack message. The client is signing off on a structured document that was generated from their own intake submission.',
+      why:'Client sign-off before dev is the single biggest change in the MVP. It eliminates late-stage rework caused by requirement misalignment.' },
+    5: { type:'card', title:'Prioritizes and moves to sprint', desc:'Reviews AC-complete tickets against capacity. Moves approved, signed-off tickets into the sprint.',
+      tags:[t('Zoho Sprints',C.zoho)],
+      who:'PDM / Product Strategist',
+      what:'PM reviews the backlog of client-approved PRD tickets alongside the DM, assesses developer capacity for the sprint, and moves selected tickets into the active sprint.',
+      what_changes:'Tickets entering the sprint have complete PRDs with AC, happy paths, and negative paths already documented -- reducing sprint planning clarification loops.',
+      why:'A well-scoped PRD makes sprint planning faster because the developer already has the context they need before they start.' },
+    6: { type:'card', title:'Available for clarification during build', desc:'Available if developer needs business context on requirements edge cases during active development.',
+      tags:[t('Slack',C.slack),t('Zoho Sprints',C.zoho)],
+      who:'PDM / Product Strategist',
+      what:'PM is available reactively if the developer or Claude surfaces a business logic question not covered by the PRD during development.',
+      what_changes:'Because the PRD was generated from complete intake context, the volume of clarification questions during dev drops significantly compared to current state.',
+      why:'Fewer mid-build interruptions means fewer context switches and faster delivery.' },
+    7: { inactive:'Not active during code review.' },
+    8: { type:'card', title:'Compiles demo or prototype for client review', desc:'Works with developer to package the completed feature as a demo or working prototype for client review.',
+      tags:[t('Slack',C.slack),t('Zoho Sprints',C.zoho)],
+      who:'PDM / Product Strategist',
+      what:'PM coordinates with the developer to compile a demo or prototype of the completed feature. This is sent to the client before QA begins.',
+      what_changes:'Demo packaging is now a defined step in the process -- not an afterthought. Claude can assist in generating any supporting documentation or release summary.',
+      why:'Putting the demo in front of the client before QA means any client-side feedback is addressed before the QA cycle, not after.' },
+    9: { type:'card', title:'Available for QA business questions', desc:'Available if QA surfaces an edge case requiring a business judgment call.',
+      tags:[t('Slack',C.slack)],
+      who:'PDM / Product Strategist',
+      what:'PM answers business-context questions from QA that require a judgment call -- scenarios not explicitly covered in the PRD.',
+      what_changes:'QA has a Claude-generated PRD to reference, which reduces the number of ambiguous AC situations compared to current state.',
+      why:'PM involvement in QA is reactive and limited to genuine business decisions -- not AC clarification that should have been resolved earlier.' },
+    10: { type:'card', title:'Signs off and sends structured release notes', desc:'Final PM approval for production deploy. Prepares structured release communication for client.',
+      tags:[t('Zoho Sprints',C.zoho),t('Slack',C.slack)],
+      who:'PDM / Product Strategist',
+      what:'PM gives final sign-off for the production deployment and sends structured release notes to the client summarizing what shipped, tied back to the PRD they signed off on.',
+      what_changes:'Release notes are structured and traceable to the original requirements -- Claude can assist in drafting them from the PRD and Zoho ticket.',
+      why:'Structured release communication closes the loop for the client and builds accountability into every release.' },
+  },
+  DM: {
+    0: { type:'card', title:'Scopes and approves codebase mapping effort', desc:'Confirms the mapping task is budgeted and scoped. Sets expectations for time and resource use.',
+      tags:[t('Zoho Sprints',C.zoho),t('Smartsheet',C.smartsheet)],
+      who:'Delivery Manager',
+      what:'DM confirms that the codebase mapping task (running the code analysis script with concurrent agents) is scoped, budgeted, and assigned before it begins. Mapping is treated as a billable foundational task.',
+      what_changes:'Codebase mapping is now a defined, funded phase -- not informal prep work. DM owns the scoping decision.',
+      why:'Without DM oversight, mapping can expand in scope or run over budget. A defined gate prevents this.' },
+    1: { type:'card', title:'Reviews request for budget and scope fit', desc:'Confirms the incoming request is within authorized scope and remaining client budget before the PRD is generated.',
+      tags:[t('Zoho Sprints',C.zoho),t('Smartsheet',C.smartsheet)],
+      who:'Delivery Manager',
+      what:'DM reviews the intake request alongside the PM to confirm it falls within the client\'s authorized budget and scope before any SA or Claude time is spent on PRD generation.',
+      what_changes:'DM\'s budget gate moves earlier -- before PRD generation rather than after SA review.',
+      why:'Catching budget misalignment before PRD generation saves SA review time and prevents client expectations from being set prematurely.' },
+    2: { inactive:'Not active during PRD generation.' },
+    3: { type:'card', title:'Reviews PRD for delivery timeline fit', desc:'Confirms the scoped work can be delivered within the client\'s budget and timeline before sign-off.',
+      tags:[t('Zoho Sprints',C.zoho),t('Smartsheet',C.smartsheet)],
+      who:'Delivery Manager',
+      what:'DM reviews the Claude-generated PRD from a delivery and budget perspective -- confirming the scope is achievable within the client\'s authorized hours and timeline before the client sees it.',
+      what_changes:'DM reviews the PRD before it goes to the client, not after. Scope expansions are caught here, not after client expectations are set.',
+      why:'Early budget review prevents the awkward mid-sprint scope conversation with the client.' },
+    4: { inactive:'Not active during client sign-off.' },
+    5: { type:'card', title:'Reviews and approves sprint capacity and budget', desc:'Confirms which tickets are funded, developer capacity is available, and sprint scope is within budget.',
+      tags:[t('Zoho Sprints',C.zoho),t('Smartsheet',C.smartsheet)],
+      who:'Delivery Manager',
+      what:'DM participates in sprint planning to confirm available developer hours against client budget and approves the sprint scope before development begins.',
+      what_changes:'Sprint planning now happens with complete PRDs -- so DM is evaluating clearly scoped, client-approved work rather than vague tickets.',
+      why:'Approving a sprint with complete PRDs is faster and less likely to result in scope creep mid-sprint.' },
+    6: { type:'card', title:'Monitors development hours against estimate', desc:'Tracks hours being logged against the PRD estimate in real time.',
+      tags:[t('Zoho Sprints',C.zoho),t('Smartsheet',C.smartsheet)],
+      who:'Delivery Manager',
+      what:'DM monitors hours logged during development against the estimate. If the build is running over, DM flags it before the sprint closes.',
+      what_changes:'Real-time hour tracking -- not end-of-sprint reconciliation.',
+      why:'Catching overruns mid-sprint allows a conversation before the client sees the invoice.' },
+    7: { inactive:'Not active during code review.' },
+    8: { inactive:'Not active during demo compilation.' },
+    9: { type:'card', title:'Monitors QA timeline against budget', desc:'Tracks QA time against estimate. Flags if bug rework is threatening the delivery timeline.',
+      tags:[t('Zoho Sprints',C.zoho),t('Smartsheet',C.smartsheet)],
+      who:'Delivery Manager',
+      what:'DM monitors QA hours and tracks whether bug-rework cycles are threatening the delivery timeline or budget.',
+      what_changes:'DM is aware of QA rework as it happens -- not after the sprint closes.',
+      why:'Rework is the most common source of budget overrun. Early visibility gives DM a chance to intervene.' },
+    10: { type:'card', title:'Confirms delivery and closes budget tracking', desc:'Reviews hours logged vs. estimate. Prepares budget summary for client conversation.',
+      tags:[t('Zoho Sprints',C.zoho),t('Smartsheet',C.smartsheet)],
+      who:'Delivery Manager',
+      what:'DM reviews total hours logged against the PRD estimate before production release. Prepares budget actuals summary for the client communication.',
+      what_changes:'Delivery closeout is a defined step -- not a billing afterthought.',
+      why:'Budget reconciliation at delivery -- not at the next invoice cycle -- enables proactive client conversations.' },
+  },
+  SA: {
+    0: { type:'card', title:'Scopes and validates codebase mapping', desc:'Reviews what the code analysis script will cover. Confirms the output is comprehensive enough to support PRD generation.',
+      tags:[t('GitHub',C.gh),t('Claude',C.claude)],
+      who:'Solutions Architect',
+      what:'SA reviews the scope of the codebase mapping task -- confirming which repos are covered, what the script will surface, and that the output will give Claude enough context to generate accurate PRDs.',
+      what_changes:'SA involvement at the mapping stage means the foundational context Claude uses for PRD generation is architecturally sound from the start.',
+      why:'A poorly scoped mapping means Claude works from incomplete context, which leads to inaccurate PRDs and SA rework downstream.' },
+    1: { inactive:'Not active at intake.' },
+    2: { inactive:'Not active during PRD generation -- standing by for review.' },
+    3: { type:'card', title:'Reviews Claude PRD for technical feasibility', desc:'SA reviews the AI-generated PRD. Role: approver and accuracy checker -- not investigator.',
+      tags:[t('Claude',C.claude),t('Zoho Sprints',C.zoho)],
+      who:'Solutions Architect',
+      what:'SA reviews the Claude-generated PRD for technical feasibility, architectural accuracy, and implementation soundness. Because Claude generated the PRD from a mapped codebase, SA is reviewing a pre-analyzed document rather than starting from scratch.',
+      what_changes:'SA review time drops dramatically. SA is reviewing a structured, codebase-aware PRD -- not a vague ticket requiring manual investigation.',
+      why:'SA bandwidth is no longer the primary bottleneck. They apply expertise to validation and approval, not raw investigation.' },
+    4: { type:'card', title:'Signs off on PRD before client sees it', desc:'Formal SA approval gates the document before it goes to the client.',
+      tags:[t('Zoho Sprints',C.zoho)],
+      who:'Solutions Architect',
+      what:'SA gives formal sign-off that the PRD is technically sound and feasible before it is sent to the client for approval.',
+      what_changes:'SA approval is a hard gate before client sign-off -- protecting both the team and the client from agreeing to something that can\'t be built as described.',
+      why:'Getting SA approval before the client sees the PRD means the client is never asked to sign off on something that will require a scope change after the fact.' },
+    5: { inactive:'Not active in sprint planning.' },
+    6: { type:'card', title:'Available for architectural questions during build', desc:'Available if developer or Claude surfaces an architectural edge case not covered in the PRD.',
+      tags:[t('Slack',C.slack)],
+      who:'Solutions Architect',
+      what:'SA is available reactively if unexpected architectural complexity surfaces during development that requires judgment beyond what the PRD covers.',
+      what_changes:'Because the PRD was generated from a mapped codebase, architectural surprises during dev are less frequent.',
+      why:'SA reactive involvement during dev is the exception rather than the rule in the MVP.' },
+    7: { type:'card', title:'Reviews flagged PR issues', desc:'Automated code review runs first. SA reviews only the PRs where the automated layer flags a significant architectural concern.',
+      tags:[t('GitHub',C.gh),t('Claude',C.claude)],
+      who:'Solutions Architect',
+      what:'The automated code review layer (Claude-assisted) flags PRs with significant architectural concerns. SA reviews those flagged PRs -- not all PRs.',
+      what_changes:'SA is no longer randomly pulled into code reviews. Automated flagging means SA attention goes to the PRs that genuinely need it.',
+      why:'Targeted SA code review is faster and less disruptive than blanket SA involvement in every PR.' },
+    8: { inactive:'Not active during demo compilation.' },
+    9: { inactive:'Not active during QA testing.' },
+    10: { inactive:'Not active for production deploy.' },
+  },
+  DEV: {
+    0: { type:'ai-assist', title:'Runs code analysis script -- maps codebase with Claude', desc:'Runs the code analysis script. Concurrent Claude agents map the codebase and self-validate the mapping for accuracy.',
+      tags:[t('Claude',C.claude),t('GitHub',C.gh)],
+      who:'Developer (Gabriel / assigned dev)',
+      what:'Developer runs the code analysis script against the target codebase. Multiple concurrent Claude agents map the architecture, business rules, domain logic, and dependencies. A separate validation pass runs concurrently to verify the mapping accuracy against the codebase itself.',
+      what_changes:'The codebase is no longer a black box that SA must manually investigate for every new request. The mapping is a shared foundation that Claude uses for all subsequent PRD generation on this codebase.',
+      why:'Every subsequent PRD Claude generates on this codebase benefits from this mapping. The investment in mapping compounds with every feature request.' },
+    1: { inactive:'Not active at intake.' },
+    2: { type:'card', title:'Provides technical context for Claude PRD prompt', desc:'Contributes developer perspective to the PM\'s Claude prompt before PRD generation.',
+      tags:[t('Claude',C.claude)],
+      who:'Developer',
+      what:'Developer adds technical context to the PM\'s Claude prompt -- flagging known implementation constraints, edge cases in the current architecture, and any technical debt that affects this feature.',
+      what_changes:'Developer input comes at the front of the process (context-adding) rather than the back (bug-fixing misunderstood requirements).',
+      why:'Developer-enriched prompts produce more technically accurate PRDs from Claude, reducing SA rework at review.' },
+    3: { inactive:'Not active during SA review.' },
+    4: { inactive:'Not active during client sign-off.' },
+    5: { type:'card', title:'Reviews sprint PRDs before development begins', desc:'Reads the approved PRDs for sprint tickets. Raises any technical questions before the sprint starts.',
+      tags:[t('Zoho Sprints',C.zoho),t('Claude',C.claude)],
+      who:'Developer',
+      what:'Developer reviews the client-approved PRDs for all sprint tickets. Raises any remaining technical questions at sprint planning rather than mid-build.',
+      what_changes:'Developer enters the sprint with complete, approved PRDs rather than vague tickets. Sprint planning becomes a confirmation, not a clarification session.',
+      why:'Questions surfaced at sprint planning cost far less than questions surfaced mid-build.' },
+    6: { type:'ai-assist', title:'Builds feature in conjunction with Claude', desc:'New branch with PRD as context. Developer directs Claude, reviews every output, owns the code.',
+      tags:[t('Claude',C.claude),t('GitHub',C.gh)],
+      who:'Developer',
+      what:'Developer creates a new branch with the approved PRD loaded as context. Developer directs Claude to implement the feature, reviewing and approving each code block before it is committed. Developer does developer testing in conjunction with Claude as the build progresses.',
+      what_changes:'Developer is no longer coding alone. Claude handles implementation from the PRD; developer handles direction, review, and judgment calls. The developer owns every line of code -- Claude is a tool, not an autonomous agent.',
+      why:'Claude-assisted development with PRD context is faster and produces more consistent code than manual solo implementation -- without removing developer control.' },
+    7: { type:'ai-assist', title:'Code review with automated Claude-assisted layer', desc:'Claude reviews the PR first, flags issues, summarizes changes. Developer and SA review Claude\'s summary.',
+      tags:[t('Claude',C.claude),t('GitHub',C.gh)],
+      who:'Developer',
+      what:'When the PR is opened, Claude runs an automated review -- flagging potential issues, summarizing changes, and checking the implementation against the PRD\'s AC. Developer reviews Claude\'s summary alongside their own review. SA reviews only flagged architectural concerns.',
+      what_changes:'Code review goes from 2-3 hours of manual context reconstruction to a developer reviewing a Claude-generated summary of their own PR.',
+      why:'Automated review assists human review -- it does not replace it. Every PR still has human eyes on it.' },
+    8: { type:'ai-assist', title:'Compiles demo or prototype with Claude assistance', desc:'Packages the completed feature as a working demo or prototype for client review.',
+      tags:[t('Claude',C.claude),t('GitHub',C.gh)],
+      who:'Developer',
+      what:'Developer compiles the completed feature into a working demo or prototype for client review. Claude assists in generating supporting documentation or a demo script from the PRD.',
+      what_changes:'Demo packaging is a defined step -- not an afterthought after QA.',
+      why:'A working demo reviewed by the client before QA separates client-side feedback from QA functional testing.' },
+    9: { type:'card', title:'Available for QA bug fixes', desc:'Responds to QA findings. Claude context is available to assist with rapid fixes.',
+      tags:[t('Slack',C.slack),t('GitHub',C.gh)],
+      who:'Developer',
+      what:'Developer responds to QA bug reports. Because Claude has the full PRD context from the build, re-engaging with the feature for a bug fix is faster than a cold context switch.',
+      what_changes:'Claude retains the PRD and build context, so bug fixes are assisted rather than manual cold re-engagement.',
+      why:'Faster bug fix turnaround means QA cycles complete faster.' },
+    10: { type:'card', title:'Deploys to production', desc:'Triggers production deployment after all sign-offs. Documents what shipped.',
+      tags:[t('GitHub',C.gh)],
+      who:'Developer',
+      what:'Developer triggers the production deployment after QA sign-off, SA sign-off, PM sign-off, and client approval. Claude assists in generating structured release notes from the PRD.',
+      what_changes:'Claude-assisted release notes are generated from the PRD -- not written from scratch by the developer.',
+      why:'Structured release documentation closes the loop for the client and creates a traceable record of every release.' },
+  },
+  QA: {
+    0: { inactive:'Not active during codebase mapping.' },
+    1: { inactive:'Not active at intake.' },
+    2: { type:'card', title:'Reviews AC in PRD during generation', desc:'QA validates acceptance criteria as Claude generates the PRD -- not at the end of dev.',
+      tags:[t('Claude',C.claude)],
+      who:'QA',
+      what:'QA reviews the acceptance criteria and edge case scenarios as Claude generates the PRD. This is an early-stage gate -- QA ensures the AC is testable, covers happy path and negative path, and will be executable during QA.',
+      what_changes:'QA involvement moves from the testing phase to the requirements phase. Edge cases are documented in the PRD before a line of code is written.',
+      why:'AC gaps caught at PRD generation cost far less to fix than AC gaps caught during QA.' },
+    3: { inactive:'Not active during SA review.' },
+    4: { inactive:'Not active during client sign-off.' },
+    5: { inactive:'Not active in sprint planning.' },
+    6: { inactive:'Not active during development.' },
+    7: { inactive:'Not active during code review.' },
+    8: { type:'card', title:'Reviews demo before formal QA begins', desc:'QA reviews the client-approved demo before starting formal testing. Confirms scope matches PRD.',
+      tags:[t('Slack',C.slack)],
+      who:'QA',
+      what:'QA reviews the demo alongside the client sign-off and confirms the scope of testing matches the PRD AC before formal QA begins.',
+      what_changes:'QA has a clear picture of what to test before testing starts -- reducing ambiguity during the QA cycle.',
+      why:'Reviewing the demo before QA means QA enters the testing cycle with no surprises.' },
+    9: { type:'card', title:'Feature testing AND end-to-end regression', desc:'Both. QA tests the new feature against PRD AC and runs E2E regression to catch any regressions introduced.',
+      tags:[t('Manual',C.manual)],
+      who:'QA',
+      what:'QA executes both feature testing (validating the new feature against the PRD\'s acceptance criteria, happy path, and negative path scenarios) and end-to-end regression testing (ensuring existing functionality is not broken). Claude-generated AC in the PRD provides a clear test checklist.',
+      what_changes:'QA now has a structured AC checklist from the PRD rather than interpreting vague tickets. Testing is faster and more complete.',
+      why:'Feature testing confirms what was built matches the PRD. Regression testing protects what was already working. Both are required at MVP stage.' },
+    10: { type:'card', title:'Signs off on production release', desc:'Formal QA sign-off that feature testing and regression are complete and the build is ready for production.',
+      tags:[t('Slack',C.slack),t('Zoho Sprints',C.zoho)],
+      who:'QA',
+      what:'QA issues formal sign-off after completing both feature testing and regression testing. Sign-off is documented in Zoho before the production deploy is triggered.',
+      what_changes:'QA sign-off is explicitly tied to both feature and regression testing -- not just a Slack message.',
+      why:'A documented QA sign-off creates a traceable quality gate before every production release.' },
+  },
+};
+
+function render() {
+  const n = PHASES.length;
+  const d = document.getElementById('diagram');
+
+  // Header
+  let h = `<div class="phase-header" style="grid-template-columns:48px repeat(${n},minmax(155px,1fr))">`;
+  h += `<div class="role-label-header"></div>`;
+  PHASES.forEach(p => {
+    h += `<div class="phase-col-header">
+      <div style="display:flex;align-items:center;justify-content:center;gap:5px;margin-bottom:4px">
+        <span class="phase-badge" style="${p.zero ? 'background:rgba(217,119,6,0.7)' : ''}">${p.zero ? '0' : p.num}</span>
+        <span class="phase-icon">${p.icon}</span>
+      </div>
+      <div class="phase-name">${p.name.replace('\n','<br>')}</div>
+    </div>`;
+  });
+  h += `</div>`;
+
+  // Rows
+  let g = `<div class="swimlane-grid">`;
+  ROLES.forEach(role => {
+    g += `<div class="swimlane-row" style="grid-template-columns:48px repeat(${n},minmax(155px,1fr))">`;
+    g += `<div class="role-label-cell"><span class="role-label-text">${role.label}</span></div>`;
+    PHASES.forEach(ph => {
+      const c = GRID[role.key]?.[ph.num];
+      const isZero = ph.zero;
+      g += `<div class="phase-cell${isZero ? ' zero' : ''}">`;
+      if (!c) {
+        g += '';
+      } else if (c.inactive) {
+        g += `<div class="inactive">${c.inactive}</div>`;
+      } else {
+        const id = `${role.key}_${ph.num}`;
+        const cls = c.type === 'ai-assist' ? 'card ai-assist' : 'card';
+        const lbl = c.type === 'ai-assist' ? '<div class="ai-assist-label">🤖 Claude Assists</div>' : '';
+        g += `<div class="${cls}">
+          ${lbl}
+          <div class="card-title">${c.title}</div>
+          <div class="card-desc">${c.desc}</div>
+          <div class="details-link" onclick="openModal('${id}')">🖱 Click for details</div>
+          <div class="tags">${c.tags.map(t=>`<span class="tag" style="background:${t.color}">${t.label}</span>`).join('')}</div>
+        </div>`;
+      }
+      g += `</div>`;
+    });
+    g += `</div>`;
+  });
+  g += `</div>`;
+
+  d.innerHTML = h + g;
+}
+
+function openModal(id) {
+  const [rk, pn] = id.split('_');
+  const c = GRID[rk]?.[parseInt(pn)];
+  if (!c || c.inactive) return;
+  document.getElementById('modal-title').textContent = c.title;
+  const isAI = c.type === 'ai-assist';
+  document.getElementById('modal-body').innerHTML = `
+    ${isAI ? '<div class="mvp-banner">🤖 Claude assists this step -- the human directs, reviews, and owns the outcome.</div>' : ''}
+    <div class="modal-sec">
+      <div class="modal-sec-label"><span>👤</span> WHO</div>
+      <div class="modal-sec-text">${c.who}</div>
+    </div>
+    <div class="modal-hr"></div>
+    <div class="modal-sec">
+      <div class="modal-sec-label"><span>⚡</span> WHAT HAPPENS</div>
+      <div class="modal-sec-text">${c.what}</div>
+    </div>
+    <div class="modal-hr"></div>
+    <div class="modal-sec">
+      <div class="modal-sec-label"><span>🔄</span> WHAT CHANGES FROM TODAY</div>
+      <div class="modal-sec-text">${c.what_changes}</div>
+    </div>
+    <div class="modal-hr"></div>
+    <div class="modal-sec">
+      <div class="modal-sec-label"><span>💡</span> WHY THIS MATTERS</div>
+      <div class="modal-sec-text">${c.why}</div>
+    </div>`;
+  document.getElementById('overlay').classList.add('open');
+}
+
+function closeOverlay(e) { if (e.target.id === 'overlay') closeModal(); }
+function closeModal() { document.getElementById('overlay').classList.remove('open'); }
+
+render();
+</script>
+</body>
+</html>

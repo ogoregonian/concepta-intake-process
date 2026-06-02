@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concepta — Claude Prompt Library</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #F0EDE6; min-height: 100vh; }
+
+.top-nav { background: #0d1b2a; display: flex; align-items: center; padding: 0 16px; height: 44px; position: sticky; top: 0; z-index: 100; gap: 2px; }
+.top-nav .logo { color: white; font-size: 11px; font-weight: 800; letter-spacing: 2px; margin-right: 16px; text-transform: uppercase; }
+.nav-tab { color: rgba(255,255,255,0.6); font-size: 11px; font-weight: 600; padding: 0 14px; height: 44px; display: flex; align-items: center; cursor: pointer; text-decoration: none; letter-spacing: 0.5px; border-bottom: 3px solid transparent; text-transform: uppercase; white-space: nowrap; }
+.nav-tab:hover { color: white; background: rgba(255,255,255,0.07); }
+.nav-tab.active { color: white; border-bottom-color: #D97706; }
+
+.page-banner { background: #162236; padding: 10px 20px; display: flex; align-items: center; gap: 12px; }
+.page-banner .badge { background: #D97706; color: white; font-size: 9px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border-radius: 10px; }
+.page-banner .title { color: white; font-size: 13px; font-weight: 700; }
+.page-banner .sub { color: rgba(255,255,255,0.45); font-size: 11px; }
+
+.page-body { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; }
+
+.intro { background: white; border-radius: 10px; padding: 24px 28px; margin-bottom: 32px; border: 1px solid #E8E3DC; }
+.intro h2 { font-size: 16px; font-weight: 800; color: #0d1b2a; margin-bottom: 10px; }
+.intro p { font-size: 13px; color: #555; line-height: 1.7; margin-bottom: 10px; }
+.intro p:last-child { margin-bottom: 0; }
+.intro strong { color: #0d1b2a; }
+
+.how-to { background: #FFF8ED; border: 1px solid #FCD34D; border-radius: 8px; padding: 14px 18px; margin-top: 14px; }
+.how-to-title { font-size: 10px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #92400E; margin-bottom: 8px; }
+.how-to ol { padding-left: 18px; }
+.how-to ol li { font-size: 12.5px; color: #78350F; line-height: 1.7; margin-bottom: 3px; }
+
+.template-nav { display: flex; gap: 8px; margin-bottom: 28px; flex-wrap: wrap; }
+.template-nav a { display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px; background: white; border: 1px solid #DDD8D0; border-radius: 20px; font-size: 11px; font-weight: 700; color: #444; text-decoration: none; letter-spacing: 0.3px; transition: all 0.15s; }
+.template-nav a:hover { background: #0d1b2a; color: white; border-color: #0d1b2a; }
+
+.template-card { background: white; border-radius: 12px; border: 1px solid #E8E3DC; margin-bottom: 32px; overflow: hidden; }
+.template-header { padding: 20px 24px 16px; border-bottom: 1px solid #F0EDE6; display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+.template-header-left { flex: 1; }
+.template-num { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; font-size: 11px; font-weight: 800; color: white; margin-bottom: 8px; }
+.template-title { font-size: 17px; font-weight: 800; color: #0d1b2a; margin-bottom: 4px; }
+.template-subtitle { font-size: 12px; color: #777; line-height: 1.5; }
+.copy-btn { flex-shrink: 0; display: flex; align-items: center; gap: 6px; padding: 8px 14px; background: #0d1b2a; color: white; border: none; border-radius: 6px; font-size: 11px; font-weight: 700; cursor: pointer; letter-spacing: 0.5px; white-space: nowrap; }
+.copy-btn:hover { background: #1a2e4a; }
+.copy-btn.copied { background: #1D6A39; }
+
+.template-body { padding: 20px 24px 24px; }
+
+.section-label { font-size: 9.5px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #999; margin-bottom: 8px; margin-top: 18px; }
+.section-label:first-child { margin-top: 0; }
+
+.role-box { background: #F0F4FF; border: 1px solid #C7D2FE; border-radius: 6px; padding: 10px 14px; font-size: 12.5px; color: #3730A3; font-style: italic; line-height: 1.6; }
+
+.inputs-list { display: flex; flex-direction: column; gap: 6px; }
+.input-item { display: flex; align-items: flex-start; gap: 10px; }
+.input-tag { flex-shrink: 0; font-size: 10px; font-weight: 700; color: #D97706; background: #FFF8ED; border: 1px solid #FCD34D; border-radius: 4px; padding: 2px 7px; font-family: 'SF Mono', monospace; white-space: nowrap; margin-top: 1px; }
+.input-desc { font-size: 12px; color: #555; line-height: 1.6; }
+
+.cot-box { background: #F0FFF8; border: 1px solid #A7F3D0; border-radius: 6px; padding: 10px 14px; font-size: 12.5px; color: #065F46; font-style: italic; line-height: 1.6; }
+
+.output-list { display: flex; flex-direction: column; gap: 5px; }
+.output-item { display: flex; align-items: flex-start; gap: 10px; }
+.output-num { flex-shrink: 0; width: 20px; height: 20px; border-radius: 50%; background: #F0EDE6; font-size: 10px; font-weight: 800; color: #666; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+.output-text { font-size: 12px; color: #333; line-height: 1.6; }
+.output-text strong { color: #0d1b2a; }
+.output-text .sub-items { margin-top: 3px; padding-left: 12px; }
+.output-text .sub-items li { font-size: 11.5px; color: #555; margin-bottom: 2px; list-style: disc; }
+
+.checklist { display: flex; flex-direction: column; gap: 5px; }
+.checklist-item { display: flex; align-items: flex-start; gap: 8px; font-size: 12px; color: #444; line-height: 1.6; }
+.checklist-item::before { content: '□'; flex-shrink: 0; color: #D97706; font-size: 13px; margin-top: 1px; }
+
+.prompt-raw { display: none; }
+
+.divider { height: 1px; background: #F0EDE6; margin: 16px 0; }
+
+.tag-pill { display: inline-flex; align-items: center; gap: 4px; padding: 3px 9px; border-radius: 10px; font-size: 10px; font-weight: 700; letter-spacing: 0.3px; }
+.tag-new { background: #EDE9FE; color: #5B21B6; }
+.tag-bug { background: #FEE2E2; color: #991B1B; }
+.tag-integration { background: #D1FAE5; color: #065F46; }
+.tag-maintenance { background: #FEF3C7; color: #92400E; }
+</style>
+</head>
+<body>
+
+<nav class="top-nav">
+  <span class="logo">Concepta</span>
+  <a class="nav-tab" href="SDLC_Current_State.html">📋 Current State</a>
+  <a class="nav-tab" href="SDLC_MVP.html">⚡ AI-Enhanced MVP</a>
+  <a class="nav-tab" href="SDLC_AI_Enhanced.html">🤖 Future State</a>
+  <a class="nav-tab active" href="Prompt_Library.html">📚 Prompt Library</a>
+</nav>
+
+<div class="page-banner">
+  <span class="badge">Prompt Library</span>
+  <span class="title">Claude Prompt Templates — MVP Operating Standard</span>
+  <span class="sub">Four templates for new features, bug investigation, integrations, and maintenance. Built on Anthropic best practices. Load your codebase context first. Copy, fill in the bracketed fields, and prompt.</span>
+</div>
+
+<div class="page-body">
+
+  <div class="intro">
+    <h2>How to use these templates</h2>
+    <p>Each template follows the same structure: <strong>role</strong> (who Claude is), <strong>context inputs</strong> (what Claude needs to know), <strong>thinking instruction</strong> (what to reason through before writing), and <strong>output format</strong> (exactly what Claude produces). This structure is based on Anthropic's published prompt engineering best practices and adapted for Concepta's MVP process.</p>
+    <p>These templates assume Phase 0 (codebase mapping) has been completed. The <code>&lt;codebase_context&gt;</code> field is the mapped output from the code analysis script. Without it, Claude is guessing at architecture. With it, the output is codebase-aware and SA review time drops significantly.</p>
+    <div class="how-to">
+      <div class="how-to-title">Before you copy any template</div>
+      <ol>
+        <li>Confirm codebase mapping has been run and validated for this account.</li>
+        <li>Have the complete intake form ready (all 7 required fields).</li>
+        <li>Get the developer technical context note before prompting.</li>
+        <li>Copy the template, fill every bracketed <code>[field]</code>, then paste into Claude.</li>
+        <li>Run the quality rubric checklist on the output before sending to SA.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="template-nav">
+    <a href="#t1">✨ New Feature PRD</a>
+    <a href="#t2">🐛 Bug Fix / Root Cause</a>
+    <a href="#t3">🔌 Integration / API</a>
+    <a href="#t4">🔧 Maintenance Audit</a>
+  </div>
+
+  <!-- TEMPLATE 1: NEW FEATURE -->
+  <div class="template-card" id="t1">
+    <div class="template-header">
+      <div class="template-header-left">
+        <div class="template-num" style="background:#5B21B6;">1</div>
+        <div class="template-title">New Feature PRD Generation <span class="tag-pill tag-new">New Feature</span></div>
+        <div class="template-subtitle">Use when: a new client request needs to be converted into a structured PRD for SA review and client sign-off before development begins.</div>
+      </div>
+      <button class="copy-btn" onclick="copyTemplate('t1-raw', this)">📋 Copy Template</button>
+    </div>
+    <div class="template-body">
+
+      <div class="section-label">Role Assignment</div>
+      <div class="role-box">You are a senior product manager and solutions architect at a custom software agency. You have deep experience writing PRDs for development teams working on existing production codebases. You prioritize clarity, testability, quality and technical feasibility. You never write vague requirements and you don't want to over engineer the specs. Where the development work for a new feature naturally touches areas with existing technical debt, you identify and surface low-risk, quick-win improvements that can be folded into the same effort and estimated upfront -- deliberately chipping away at the old framework without creating separate projects.</div>
+
+      <div class="section-label">Context Inputs (paste each section with its tag)</div>
+      <div class="inputs-list">
+        <div class="input-item"><span class="input-tag">&lt;codebase_context&gt;</span><span class="input-desc">Full output from the Phase 0 code analysis script for this account. Includes architecture overview, business rules, domain model, API surface, third-party integrations, auth model, and key dependencies.</span></div>
+        <div class="input-item"><span class="input-tag">&lt;intake_request&gt;</span><span class="input-desc">The complete intake form: what (feature description), why (business rationale), who (affected user roles), AC (minimum 3), happy path (1 complete flow), negative path (at least 2 failure scenarios), constraints (technical, timeline, budget).</span></div>
+        <div class="input-item"><span class="input-tag">&lt;developer_notes&gt;</span><span class="input-desc">Technical context from the developer: known implementation constraints, architectural edge cases, relevant existing patterns in the codebase, any technical debt that affects this feature.</span></div>
+        <div class="input-item"><span class="input-tag">&lt;client_context&gt;</span><span class="input-desc">Relevant client background: prior related features, known preferences, any constraints from previous conversations or agreements.</span></div>
+      </div>
+
+      <div class="section-label">Thinking Instruction</div>
+      <div class="cot-box">Before writing the PRD, think through: (1) How does this feature interact with the existing codebase architecture? (2) What are the most likely implementation risks? (3) What edge cases does the intake form not explicitly cover? (4) Is there anything in the codebase context that would make this more complex than the client expects? Write your analysis in a &lt;thinking&gt; block before producing the PRD.</div>
+
+      <div class="section-label">Required Output — Produce Each Section in Order</div>
+      <div class="output-list">
+        <div class="output-item"><div class="output-num">1</div><div class="output-text"><strong>User Story</strong> — "As a [role], I want [capability] so that [measurable business outcome]." One sentence. No compound stories.</div></div>
+        <div class="output-item"><div class="output-num">2</div><div class="output-text"><strong>Acceptance Criteria</strong> — BDD format (Given / When / Then). Minimum 3: one covering the full happy path, at least one negative path, at least one edge case. Each AC must be independently testable and unambiguous.</div></div>
+        <div class="output-item"><div class="output-num">3</div><div class="output-text"><strong>Happy Path Narrative</strong> — Full end-to-end description of what happens when everything works correctly. Written for a QA engineer to follow step by step.</div></div>
+        <div class="output-item"><div class="output-num">4</div><div class="output-text"><strong>Negative Path Scenarios</strong> — Minimum 2. What happens when: input is invalid, a service is unavailable, permissions are missing, data is malformed. Each scenario includes expected system behavior.</div></div>
+        <div class="output-item"><div class="output-num">5</div><div class="output-text"><strong>Technical Considerations</strong> — Dependencies on existing modules, APIs, or services. Architectural decisions this feature requires. Performance implications. Data model changes. Security surface changes.</div></div>
+        <div class="output-item"><div class="output-num">6</div><div class="output-text"><strong>Opportunistic Tech Debt Reduction</strong> <em style="font-size:10px;color:#D97706;">(Optional -- developer's call)</em> — Areas this feature touches that have low-risk, quick-win improvement potential. For each: what the improvement is, estimated time to implement (must be under 2 hours to qualify), why it is low risk, and what it improves. If included, it is folded into the development estimate and explicitly called out in the PR. If deferred, it is logged as a tech debt item in Zoho. If no opportunities exist, state that clearly.</div></div>
+        <div class="output-item"><div class="output-num">7</div><div class="output-text"><strong>Explicitly Out of Scope</strong> — List everything this feature does NOT cover. If it could be assumed to be in scope, it must appear here.</div></div>
+        <div class="output-item"><div class="output-num">8</div><div class="output-text"><strong>Open Questions</strong> — Everything that must be resolved before development begins. Each question has a named owner (Client / PM / SA / Dev) and a required-by date.</div></div>
+        <div class="output-item"><div class="output-num">9</div><div class="output-text"><strong>Complexity Rating</strong> — Low / Medium / High. Include one-paragraph rationale. This rating drives the SA review time target and the DM delivery estimate.</div></div>
+        <div class="output-item"><div class="output-num">10</div><div class="output-text"><strong>Estimated Effort</strong> — Hour range broken down by phase: SA review, development (including any folded-in tech debt), code review, QA. Flag any dependencies that could extend these estimates.</div></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-label">PM Quality Checklist — Run Before Sending to SA</div>
+      <div class="checklist">
+        <div class="checklist-item">User story is one sentence in standard format with a measurable outcome</div>
+        <div class="checklist-item">All AC are in BDD format and independently testable (can be marked pass/fail)</div>
+        <div class="checklist-item">Happy path narrative is step-by-step enough for QA to follow without clarification</div>
+        <div class="checklist-item">At least 2 negative path scenarios with defined expected behavior</div>
+        <div class="checklist-item">No ambiguous language: "as needed," "as appropriate," "etc.," "and/or" are not acceptable</div>
+        <div class="checklist-item">Out of scope section is explicit -- not empty</div>
+        <div class="checklist-item">Every open question has a named owner and a required-by date</div>
+        <div class="checklist-item">Complexity rating includes written rationale</div>
+      </div>
+    </div>
+    <textarea class="prompt-raw" id="t1-raw">You are a senior product manager and solutions architect at a custom software agency. You have deep experience writing PRDs for development teams working on existing production codebases. You prioritize clarity, testability, quality and technical feasibility. You never write vague requirements and you don't want to over engineer the specs. Where the development work for a new feature naturally touches areas with existing technical debt, you identify and surface low-risk, quick-win improvements that can be folded into the same effort and estimated upfront -- deliberately chipping away at the old framework without creating separate projects.
+
+<codebase_context>
+[PASTE FULL CODE ANALYSIS SCRIPT OUTPUT FOR THIS ACCOUNT HERE]
+</codebase_context>
+
+<intake_request>
+What: [feature description]
+Why: [business rationale]
+Who: [affected user roles]
+Acceptance Criteria: [minimum 3 items]
+Happy Path: [1 complete flow]
+Negative Paths: [at least 2 failure scenarios]
+Constraints: [technical, timeline, budget]
+</intake_request>
+
+<developer_notes>
+[PASTE DEVELOPER TECHNICAL CONTEXT NOTE HERE - known implementation constraints, relevant existing patterns, technical debt affecting this feature]
+</developer_notes>
+
+<client_context>
+[PASTE RELEVANT CLIENT BACKGROUND - prior related features, known preferences, constraints from previous conversations]
+</client_context>
+
+Before writing the PRD, think through the following in a <thinking> block:
+1. How does this feature interact with the existing codebase architecture?
+2. What are the most likely implementation risks?
+3. What edge cases does the intake form not explicitly cover?
+4. Is there anything in the codebase context that would make this more complex than the client expects?
+
+Then produce the following sections in order:
+
+**1. User Story**
+As a [role], I want [capability] so that [measurable business outcome]. One sentence. No compound stories.
+
+**2. Acceptance Criteria**
+BDD format (Given / When / Then). Minimum 3: one covering the full happy path, at least one negative path, at least one edge case. Each AC must be independently testable and unambiguous.
+
+**3. Happy Path Narrative**
+Full end-to-end description of what happens when everything works correctly. Written for a QA engineer to follow step by step.
+
+**4. Negative Path Scenarios**
+Minimum 2. What happens when: input is invalid, a service is unavailable, permissions are missing, data is malformed. Each scenario includes expected system behavior.
+
+**5. Technical Considerations**
+Dependencies on existing modules, APIs, or services. Architectural decisions this feature requires. Performance implications. Data model changes. Security surface changes.
+
+**6. Opportunistic Tech Debt Reduction (Optional -- developer's call)**
+Areas this feature touches that have low-risk, quick-win improvement potential. For each: what the improvement is, estimated time (must be under 2 hours to qualify), why it is low risk, and what it improves. If included, fold into the development estimate and call it out explicitly in the PR. If deferred, log as a tech debt item in Zoho. If no opportunities exist, state that clearly.
+
+**7. Explicitly Out of Scope**
+List everything this feature does NOT cover. If it could be assumed to be in scope, it must appear here.
+
+**8. Open Questions**
+Everything that must be resolved before development begins. Each question has a named owner (Client / PM / SA / Dev) and a required-by date.
+
+**9. Complexity Rating**
+Low / Medium / High. Include one-paragraph rationale. This drives the SA review time target and the DM delivery estimate.
+
+**10. Estimated Effort**
+Hour range broken down by phase: SA review, development (including any folded-in tech debt), code review, QA. Flag any dependencies that could extend these estimates.</textarea>
+  </div>
+
+  <!-- TEMPLATE 2: BUG FIX -->
+  <div class="template-card" id="t2">
+    <div class="template-header">
+      <div class="template-header-left">
+        <div class="template-num" style="background:#991B1B;">2</div>
+        <div class="template-title">Bug Fix / Root Cause Investigation <span class="tag-pill tag-bug">Bug Fix</span></div>
+        <div class="template-subtitle">Use when: a bug has been reported and needs systematic root cause analysis before a fix is proposed. Do not skip to the fix.</div>
+      </div>
+      <button class="copy-btn" onclick="copyTemplate('t2-raw', this)">📋 Copy Template</button>
+    </div>
+    <div class="template-body">
+
+      <div class="section-label">Role Assignment</div>
+      <div class="role-box">You are a senior developer with deep experience debugging and maintaining both modern and legacy production codebases. Your primary job is to identify the root cause and deliver a targeted, pragmatic fix that works within the existing architecture. You do not propose full rewrites or major refactors as the solution to a bug. However, if during your investigation you identify a low-risk, quick-win refactor in the affected area -- one the developer can fold into the same PR without broadening scope -- you surface it explicitly as an optional improvement. To qualify it must be: low risk, clearly scoped, and under 2 hours to implement. These are deliberate chips at the old framework. You always consider what else could be affected by both the bug fix and any included refactor.</div>
+
+      <div class="section-label">Context Inputs</div>
+      <div class="inputs-list">
+        <div class="input-item"><span class="input-tag">&lt;codebase_context&gt;</span><span class="input-desc">Full output from the Phase 0 code analysis script. Especially relevant: existing error handling patterns, relevant modules, third-party integration points.</span></div>
+        <div class="input-item"><span class="input-tag">&lt;bug_report&gt;</span><span class="input-desc">What was reported, by whom, when, in which environment (production / staging / dev), and how frequently it occurs.</span></div>
+        <div class="input-item"><span class="input-tag">&lt;reproduction_steps&gt;</span><span class="input-desc">Exact steps to reproduce the bug. If reproduction is intermittent, document the conditions under which it appears.</span></div>
+        <div class="input-item"><span class="input-tag">&lt;expected_behavior&gt;</span><span class="input-desc">What should happen according to the original requirements or PRD.</span></div>
+        <div class="input-item"><span class="input-tag">&lt;actual_behavior&gt;</span><span class="input-desc">What is actually happening. Be specific -- not "it doesn't work."</span></div>
+        <div class="input-item"><span class="input-tag">&lt;error_logs&gt;</span><span class="input-desc">Relevant log output, error messages, stack traces, network responses. Include timestamps where available.</span></div>
+        <div class="input-item"><span class="input-tag">&lt;recent_changes&gt;</span><span class="input-desc">Any deployments, dependency updates, or code changes made in the 72 hours before the bug was first reported.</span></div>
+      </div>
+
+      <div class="section-label">Thinking Instruction</div>
+      <div class="cot-box">Before writing your analysis, think through: (1) What are the 3 most likely root causes based on the error logs and codebase context? (2) Which of these can be ruled out and why? (3) What is the most probable cause? (4) What is the minimal change that fixes it without introducing new risk? Write your reasoning in a &lt;thinking&gt; block before producing the report.</div>
+
+      <div class="section-label">Required Output — Produce Each Section in Order</div>
+      <div class="output-list">
+        <div class="output-item"><div class="output-num">1</div><div class="output-text"><strong>Root Cause Analysis</strong> — What is actually causing this bug. Cite the specific code path, error, or condition. State your confidence level (High / Medium / Low) and explain why.</div></div>
+        <div class="output-item"><div class="output-num">2</div><div class="output-text"><strong>Affected Scope</strong> — What else could be affected by this bug right now, and what could be affected by the proposed fix. Think broadly: other features, other clients, other environments.</div></div>
+        <div class="output-item"><div class="output-num">3</div><div class="output-text"><strong>Proposed Fix</strong> — Specific, minimal change to resolve the root cause. Describe the approach, the files/functions affected, and why this fix addresses the cause rather than the symptom.</div></div>
+        <div class="output-item"><div class="output-num">4</div><div class="output-text"><strong>Tier Assessment</strong> — Classify this bug fix using the three-tier framework before recommending a fix path:
+          <div class="sub-items">
+            <li><strong>Tier 1 -- Fix and ship:</strong> The fix is targeted, low risk, and the surrounding code is maintainable. Proceed with the proposed fix. Opportunistic improvement optional.</li>
+            <li><strong>Tier 2 -- Fix + modernization candidate:</strong> The fix works but the affected area is degrading. Fix now, document the area as a modernization candidate for planned tech stack work. Log in Zoho tech debt backlog with a severity rating.</li>
+            <li><strong>Tier 3 -- Alternative approach required:</strong> The fix would cause more harm than good. The code is so tightly coupled, unpredictable, or structurally compromised that a targeted fix is not viable. Do NOT proceed with a band-aid. Escalate to SA and leadership for an alternative approach discussion -- parallel build, module rewrite, or architectural replacement -- while the business maintains continuity on the existing system.</li>
+          </div>
+          Tier 3 indicators: fixing introduces 2+ new risks, SA cannot confidently predict behavior after the fix, the module has no test coverage and is tightly coupled to unrelated systems, or there is a security exposure that cannot be contained within the existing structure. State the tier clearly and explain the rationale.</div></div>
+        <div class="output-item"><div class="output-num">5</div><div class="output-text"><strong>Opportunistic Improvement</strong> <em style="font-size:10px;color:#D97706;">(Tier 1 and 2 only -- developer's call)</em> — If a low-risk, quick-win refactor was identified in the affected area during investigation: describe it, estimate the time (must be under 2 hours), explain why it is low risk, and note what it improves. It is the developer's call to include it in the same PR or defer it to the tech debt backlog. If included, explicitly called out in the PR description. Not applicable if Tier 3.</div></div>
+        <div class="output-item"><div class="output-num">6</div><div class="output-text"><strong>Testing Plan</strong> — How to verify the fix works: exact steps to reproduce the original bug and confirm it is resolved, plus regression test cases for the affected scope. If an opportunistic improvement was included, add test coverage for it too. If Tier 3, document what testing would be required for the alternative approach.</div></div>
+        <div class="output-item"><div class="output-num">7</div><div class="output-text"><strong>Risk Assessment</strong> — What could go wrong with this fix and any included opportunistic improvement. Rate risk: Low / Medium / High. If Medium or High, describe the mitigation. If Tier 3, document the risk of proceeding with any fix at all.</div></div>
+        <div class="output-item"><div class="output-num">8</div><div class="output-text"><strong>Rollback Plan</strong> — How to revert if the fix causes unexpected issues in production. Must be executable in under 15 minutes.</div></div>
+        <div class="output-item"><div class="output-num">9</div><div class="output-text"><strong>Related Technical Debt</strong> — Underlying issues or fragile patterns surfaced during investigation. Tier 1: log as minor debt. Tier 2: log as modernization candidate with severity rating. Tier 3: escalate as alternative approach item. All findings feed the planned tech stack modernization.</div></div>
+        <div class="output-item"><div class="output-num">10</div><div class="output-text"><strong>Severity</strong> — P1 (production down / data loss / security), P2 (major feature broken, workaround exists), P3 (minor issue, low impact). Include rationale.</div></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-label">PM / SA Quality Checklist</div>
+      <div class="checklist">
+        <div class="checklist-item">Root cause is specific -- not "an error occurred" or "something failed"</div>
+        <div class="checklist-item">Tier Assessment is clearly stated (1, 2, or 3) with rationale</div>
+        <div class="checklist-item">Tier 3 findings are escalated to SA and leadership -- never band-aided</div>
+        <div class="checklist-item">Proposed fix addresses the root cause, not just the symptom</div>
+        <div class="checklist-item">Affected scope includes both current impact and fix impact</div>
+        <div class="checklist-item">Testing plan includes regression coverage for affected scope</div>
+        <div class="checklist-item">Rollback plan is concrete and executable</div>
+        <div class="checklist-item">Tech debt findings logged in Zoho with correct tier classification</div>
+        <div class="checklist-item">Severity rating is documented and agreed before work begins</div>
+      </div>
+    </div>
+    <textarea class="prompt-raw" id="t2-raw">You are a senior developer with deep experience debugging and maintaining both modern and legacy production codebases. Your primary job is to identify the root cause and deliver a targeted, pragmatic fix that works within the existing architecture. You do not propose full rewrites or major refactors as the solution to a bug. However, if during your investigation you identify a low-risk, quick-win refactor in the affected area -- one the developer can fold into the same PR without broadening scope -- you surface it explicitly as an optional improvement. To qualify it must be: low risk, clearly scoped, and under 2 hours to implement. These are deliberate chips at the old framework. You always consider what else could be affected by both the bug fix and any included refactor.
+
+<codebase_context>
+[PASTE FULL CODE ANALYSIS SCRIPT OUTPUT FOR THIS ACCOUNT HERE]
+</codebase_context>
+
+<bug_report>
+Reported by: [name / role]
+When: [date and time]
+Environment: [production / staging / dev]
+Frequency: [always / intermittent / specific conditions]
+Description: [what was reported]
+</bug_report>
+
+<reproduction_steps>
+[EXACT STEPS TO REPRODUCE - numbered list]
+</reproduction_steps>
+
+<expected_behavior>
+[WHAT SHOULD HAPPEN according to the original requirements or PRD]
+</expected_behavior>
+
+<actual_behavior>
+[WHAT IS ACTUALLY HAPPENING - be specific]
+</actual_behavior>
+
+<error_logs>
+[PASTE RELEVANT LOG OUTPUT, ERROR MESSAGES, STACK TRACES, NETWORK RESPONSES - include timestamps]
+</error_logs>
+
+<recent_changes>
+[ANY DEPLOYMENTS, DEPENDENCY UPDATES, OR CODE CHANGES IN THE LAST 72 HOURS]
+</recent_changes>
+
+Before writing your analysis, think through the following in a <thinking> block:
+1. What are the 3 most likely root causes based on the error logs and codebase context?
+2. Which of these can be ruled out and why?
+3. What is the most probable cause?
+4. What is the minimal change that fixes it without introducing new risk?
+
+Then produce the following sections in order:
+
+**1. Root Cause Analysis**
+What is actually causing this bug. Cite the specific code path, error, or condition. State your confidence level (High / Medium / Low) and explain why.
+
+**2. Affected Scope**
+What else could be affected by this bug right now, and what could be affected by the proposed fix. Think broadly: other features, other clients, other environments.
+
+**3. Proposed Fix**
+Specific, minimal change to resolve the root cause. Describe the approach, the files/functions affected, and why this fix addresses the cause rather than the symptom.
+
+**4. Testing Plan**
+How to verify the fix works: exact steps to reproduce the original bug and confirm it is resolved, plus regression test cases for the affected scope.
+
+**4. Tier Assessment**
+Classify this bug fix using the three-tier framework before recommending a fix path:
+
+- Tier 1 -- Fix and ship: The fix is targeted, low risk, and the surrounding code is maintainable. Proceed with the proposed fix.
+- Tier 2 -- Fix + modernization candidate: The fix works but the affected area is degrading. Fix now, document as a modernization candidate for planned tech stack work. Log in Zoho with a severity rating and target quarter.
+- Tier 3 -- Alternative approach required: The fix would cause more harm than good. The code is so tightly coupled, unpredictable, or structurally compromised that a targeted fix is not viable. Do NOT proceed with a band-aid. Escalate to SA and leadership for an alternative approach discussion -- parallel build, module rewrite, or architectural replacement -- while the business maintains continuity on the existing system.
+
+Tier 3 indicators: fixing introduces 2+ new risks, SA cannot confidently predict behavior after the fix, the module has no test coverage and is tightly coupled to unrelated systems, or there is a security exposure that cannot be contained within the existing structure. State the tier and explain the rationale.
+
+**5. Opportunistic Improvement (Tier 1 and 2 only -- developer's call)**
+If a low-risk, quick-win refactor was identified in the affected area during investigation: describe it, estimate the time (must be under 2 hours to qualify), explain why it is low risk, and note what it improves. It is the developer's call to include in the same PR or defer to the tech debt backlog. If included, it must be explicitly called out in the PR description. If no opportunity exists, state that clearly. Not applicable if Tier 3.
+
+**5. Testing Plan**
+How to verify the fix works: exact steps to reproduce the original bug and confirm it is resolved, plus regression test cases for the affected scope. If an opportunistic improvement was included, add test coverage for that too.
+
+**6. Risk Assessment**
+What could go wrong with this fix and any included opportunistic improvement. Rate risk: Low / Medium / High. If Medium or High, describe the mitigation.
+
+**7. Rollback Plan**
+How to revert if the fix causes unexpected issues in production. Must be executable in under 15 minutes.
+
+**8. Related Technical Debt**
+Any underlying issues or fragile patterns surfaced during investigation that should be logged as tech debt, even if not addressed in this fix. This feeds the modernization backlog.
+
+**9. Severity**
+P1 (production down / data loss / security), P2 (major feature broken, workaround exists), P3 (minor issue, low impact). Include rationale.</textarea>
+  </div>
+
+  <!-- TEMPLATE 3: INTEGRATION/API -->
+  <div class="template-card" id="t3">
+    <div class="template-header">
+      <div class="template-header-left">
+        <div class="template-num" style="background:#065F46;">3</div>
+        <div class="template-title">Integration / API Feature <span class="tag-pill tag-integration">Integration</span></div>
+        <div class="template-subtitle">Use when: connecting to a new third-party service, API, or external data source -- or significantly changing an existing integration.</div>
+      </div>
+      <button class="copy-btn" onclick="copyTemplate('t3-raw', this)">📋 Copy Template</button>
+    </div>
+    <div class="template-body">
+
+      <div class="section-label">Role Assignment</div>
+      <div class="role-box">You are a senior solutions architect specializing in third-party integrations for production web and mobile applications. You prioritize security, reliability, and error handling above speed. You always design for the failure case first. You have deep experience with both modern and old frameworks including SOAP, REST, webhooks, data transformation pipelines.</div>
+
+      <div class="section-label">Context Inputs</div>
+      <div class="inputs-list">
+        <div class="input-item"><span class="input-tag">&lt;codebase_context&gt;</span><span class="input-desc">Full mapping output. Especially relevant: existing integration patterns in this codebase, current auth model, existing third-party services already connected, data handling conventions.</span></div>
+        <div class="input-item"><span class="input-tag">&lt;integration_target&gt;</span><span class="input-desc">Name of the service/API being integrated. Version being used. Link to official API documentation. Authentication method (API key / OAuth / JWT / other). Rate limits and quotas.</span></div>
+        <div class="input-item"><span class="input-tag">&lt;intake_request&gt;</span><span class="input-desc">What the integration needs to accomplish: data flowing in, data flowing out, triggers, frequency, user-facing behavior.</span></div>
+        <div class="input-item"><span class="input-tag">&lt;data_requirements&gt;</span><span class="input-desc">What data fields are needed from the external service. What data fields are sent to it. Any PII involved. Data transformation or mapping requirements.</span></div>
+        <div class="input-item"><span class="input-tag">&lt;environment_info&gt;</span><span class="input-desc">Available sandbox/test environment for the integration. Existing credentials or access. Any IP allowlisting or network requirements.</span></div>
+      </div>
+
+      <div class="section-label">Thinking Instruction</div>
+      <div class="cot-box">Before writing the spec, think through: (1) How does this integration fit with the existing patterns in the codebase? (2) What are the failure modes -- network errors, API changes, rate limits, credential expiry, malformed responses? (3) What data is crossing a trust boundary and what are the security implications? (4) How would you test this without hitting the production API? Write your analysis in a &lt;thinking&gt; block first.</div>
+
+      <div class="section-label">Required Output — Produce Each Section in Order</div>
+      <div class="output-list">
+        <div class="output-item"><div class="output-num">1</div><div class="output-text"><strong>Integration Overview</strong> — What connects to what, why, and what user-facing behavior it enables.</div></div>
+        <div class="output-item"><div class="output-num">2</div><div class="output-text"><strong>Technical Approach</strong> — Authentication method and credential storage. API pattern (REST / GraphQL / webhook / polling). Request/response lifecycle. Where this lives in the application architecture.</div></div>
+        <div class="output-item"><div class="output-num">3</div><div class="output-text"><strong>Endpoint Mapping</strong> — For each API endpoint used: endpoint URL, method, purpose, required parameters, expected response shape.</div></div>
+        <div class="output-item"><div class="output-num">4</div><div class="output-text"><strong>Data Mapping</strong> — Field-by-field: what comes in, what gets stored, what gets displayed. Any transformations or normalization required. PII fields identified explicitly.</div></div>
+        <div class="output-item"><div class="output-num">5</div><div class="output-text"><strong>Error Handling Requirements</strong> — Every failure scenario: network timeout, API error, rate limit hit, invalid response, credential expiry, service outage. For each: retry logic, fallback behavior, user-facing message, logging requirement.</div></div>
+        <div class="output-item"><div class="output-num">6</div><div class="output-text"><strong>Security Considerations</strong> — Credential storage (no secrets in code). Data in transit (TLS). Data at rest if stored. PII handling and retention. Principle of least privilege for API scope.</div></div>
+        <div class="output-item"><div class="output-num">7</div><div class="output-text"><strong>Acceptance Criteria</strong> — BDD format. Must cover: successful data flow (happy path), API error response handling, rate limit behavior, credential expiry or rotation, PII data not logged.</div></div>
+        <div class="output-item"><div class="output-num">8</div><div class="output-text"><strong>Testing Plan</strong> — Sandbox/test environment setup. Mock strategy for unit tests. E2E verification steps. How to confirm PII is not exposed in logs or error responses.</div></div>
+        <div class="output-item"><div class="output-num">9</div><div class="output-text"><strong>Explicitly Out of Scope</strong></div></div>
+        <div class="output-item"><div class="output-num">10</div><div class="output-text"><strong>Open Questions</strong> — Each with named owner and required-by date.</div></div>
+        <div class="output-item"><div class="output-num">11</div><div class="output-text"><strong>Complexity Rating + Estimated Effort</strong></div></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-label">SA / Security Quality Checklist</div>
+      <div class="checklist">
+        <div class="checklist-item">No credentials hardcoded -- storage method specified</div>
+        <div class="checklist-item">All failure modes documented with explicit fallback behavior</div>
+        <div class="checklist-item">PII fields explicitly identified and handling documented</div>
+        <div class="checklist-item">Rate limit behavior is handled in code, not assumed to be fine</div>
+        <div class="checklist-item">Sandbox/test environment confirmed available before dev begins</div>
+        <div class="checklist-item">AC covers failure scenarios, not just happy path</div>
+        <div class="checklist-item">Credential rotation plan documented</div>
+      </div>
+    </div>
+    <textarea class="prompt-raw" id="t3-raw">You are a senior solutions architect specializing in third-party integrations for production web and mobile applications. You prioritize security, reliability, and error handling above speed. You always design for the failure case first. You have deep experience with both modern and old frameworks including SOAP, REST, webhooks, data transformation pipelines.
+
+<codebase_context>
+[PASTE FULL CODE ANALYSIS SCRIPT OUTPUT FOR THIS ACCOUNT HERE]
+[Pay special attention to: existing integration patterns, current auth model, existing third-party services, data handling conventions]
+</codebase_context>
+
+<integration_target>
+Service/API name: [name]
+Version: [version being used]
+Documentation: [link to official API docs]
+Authentication method: [API key / OAuth 2.0 / JWT / other]
+Rate limits: [requests per minute/hour/day]
+Sandbox available: [yes / no / partial]
+</integration_target>
+
+<intake_request>
+What this integration needs to do: [description]
+Data flowing IN from external service: [fields/data]
+Data flowing OUT to external service: [fields/data]
+Triggers: [what initiates the integration - user action / schedule / webhook]
+Frequency: [real-time / batch / on-demand]
+User-facing behavior: [what the user sees/experiences]
+</intake_request>
+
+<data_requirements>
+Fields needed from external service: [list]
+Fields sent to external service: [list]
+PII involved: [yes/no -- if yes, list which fields]
+Transformations required: [any data mapping, normalization, or conversion]
+</data_requirements>
+
+<environment_info>
+Sandbox/test environment: [available / not available / limited]
+Existing credentials: [available / need to request]
+Network requirements: [IP allowlisting / VPN / other]
+</environment_info>
+
+Before writing the spec, think through the following in a <thinking> block:
+1. How does this integration fit with the existing patterns in the codebase?
+2. What are the failure modes -- network errors, API changes, rate limits, credential expiry, malformed responses?
+3. What data is crossing a trust boundary and what are the security implications?
+4. How would you test this without hitting the production API?
+
+Then produce the following sections in order:
+
+**1. Integration Overview**
+What connects to what, why, and what user-facing behavior it enables.
+
+**2. Technical Approach**
+Authentication method and credential storage. API pattern (REST / GraphQL / webhook / polling). Request/response lifecycle. Where this lives in the application architecture.
+
+**3. Endpoint Mapping**
+For each API endpoint used: endpoint URL, method, purpose, required parameters, expected response shape.
+
+**4. Data Mapping**
+Field-by-field: what comes in, what gets stored, what gets displayed. Any transformations or normalization. PII fields identified explicitly.
+
+**5. Error Handling Requirements**
+Every failure scenario: network timeout, API error, rate limit hit, invalid response, credential expiry, service outage. For each: retry logic, fallback behavior, user-facing message, logging requirement.
+
+**6. Security Considerations**
+Credential storage (no secrets in code). Data in transit (TLS). Data at rest if stored. PII handling and retention. Principle of least privilege for API scope.
+
+**7. Acceptance Criteria**
+BDD format. Must cover: successful data flow (happy path), API error response handling, rate limit behavior, credential expiry or rotation, PII data not logged.
+
+**8. Testing Plan**
+Sandbox/test environment setup. Mock strategy for unit tests. E2E verification steps. How to confirm PII is not exposed in logs or error responses.
+
+**9. Explicitly Out of Scope**
+
+**10. Open Questions**
+Each with named owner and required-by date.
+
+**11. Complexity Rating + Estimated Effort**</textarea>
+  </div>
+
+  <!-- TEMPLATE 4: MAINTENANCE AUDIT -->
+  <div class="template-card" id="t4">
+    <div class="template-header">
+      <div class="template-header-left">
+        <div class="template-num" style="background:#92400E;">4</div>
+        <div class="template-title">Maintenance Audit <span class="tag-pill tag-maintenance">Maintenance</span></div>
+        <div class="template-subtitle">Use when: running a proactive maintenance sweep -- dependencies, third-party integrations, runtime versions, OS updates, security posture, IAM. Run quarterly at minimum. Run after any major feature release.</div>
+      </div>
+      <button class="copy-btn" onclick="copyTemplate('t4-raw', this)">📋 Copy Template</button>
+    </div>
+    <div class="template-body">
+
+      <div class="section-label">Role Assignment</div>
+      <div class="role-box">You are a senior platform engineer conducting a proactive maintenance audit for a production software application at a custom software agency. The codebase may be running on older frameworks and technology. You evaluate health across dependencies, third-party services, runtime environment, and security posture. You classify every finding using a three-tier framework: Tier 1 (chip away -- quick wins folded into ongoing work), Tier 2 (modernization candidate -- document and plan incremental replacement while the business keeps shipping), and Tier 3 (alternative approach required -- the code has crossed the threshold where maintaining it causes more harm than good, requiring a parallel build, module rewrite, or architectural replacement while the business maintains continuity). You never recommend a full system rewrite. You do flag specific modules for alternative approaches when the evidence demands it. The business must keep delivering throughout any modernization effort.</div>
+
+      <div class="section-label">Context Inputs</div>
+      <div class="inputs-list">
+        <div class="input-item"><span class="input-tag">&lt;codebase_context&gt;</span><span class="input-desc">Current mapping output from the code analysis script. Especially relevant: tech stack details, all third-party integrations, known dependencies, current versions of key libraries and runtimes.</span></div>
+        <div class="input-item"><span class="input-tag">&lt;dependency_manifest&gt;</span><span class="input-desc">Raw contents of package.json / requirements.txt / Gemfile / pom.xml (whichever applies). Include both direct and transitive dependencies if available.</span></div>
+        <div class="input-item"><span class="input-tag">&lt;third_party_services&gt;</span><span class="input-desc">List of all external services and APIs in use: service name, current API version being used, authentication method (API key / OAuth), last known credential rotation date, known rate limits or quotas.</span></div>
+        <div class="input-item"><span class="input-tag">&lt;runtime_environment&gt;</span><span class="input-desc">Current runtime versions: Node.js / Python / Java / Ruby version. OS or container base image and version. CI/CD runner image version. Database version. SSL certificate expiration dates if known.</span></div>
+        <div class="input-item"><span class="input-tag">&lt;last_audit&gt;</span><span class="input-desc">Date of last maintenance audit. Any findings from the last audit and their current status (resolved / in progress / deferred).</span></div>
+        <div class="input-item"><span class="input-tag">&lt;known_issues&gt;</span><span class="input-desc">Any open tech debt items, flagged vulnerabilities, or deferred maintenance from the current backlog.</span></div>
+      </div>
+
+      <div class="section-label">Thinking Instruction</div>
+      <div class="cot-box">Before writing the audit report, systematically evaluate each category: (1) Which dependencies have known CVEs or are past EOL? (2) Which third-party integrations are using deprecated API versions or have stale credentials? (3) Is the runtime environment current with active LTS versions? (4) What is the current security exposure -- secrets, IAM, OWASP? (5) What new technical debt has accumulated since the last audit? Write your evaluation in a &lt;thinking&gt; block before producing the report.</div>
+
+      <div class="section-label">Required Output — Produce Each Section in Order</div>
+      <div class="output-list">
+        <div class="output-item"><div class="output-num">1</div><div class="output-text"><strong>Dependency Audit</strong>
+          <div class="sub-items"><li><strong>CRITICAL:</strong> Packages with active CVEs, severity High or Critical</li><li><strong>HIGH:</strong> Deprecated packages, packages past EOL date</li><li><strong>MEDIUM:</strong> Packages more than 2 major versions behind current stable</li><li><strong>HEALTHY:</strong> Summary count only</li><li>For each non-healthy item: package name, current version, recommended version, risk description, remediation action</li></div>
+        </div></div>
+        <div class="output-item"><div class="output-num">2</div><div class="output-text"><strong>Third-Party Integration Health</strong>
+          <div class="sub-items"><li>API version currency: are we on a deprecated or sunset version of any external API?</li><li>Credential rotation status: which credentials are overdue for rotation (flag anything older than 90 days)?</li><li>Rate limit exposure: are any services approaching usage limits?</li><li>Service stability: any known service issues, upcoming deprecations, or pricing/terms changes announced?</li><li>For each issue: service name, problem, risk, recommended action and timeline</li></div>
+        </div></div>
+        <div class="output-item"><div class="output-num">3</div><div class="output-text"><strong>Runtime and Environment Health</strong>
+          <div class="sub-items"><li>Runtime versions vs. current LTS -- flag anything EOL or approaching EOL within 6 months</li><li>OS / container base image -- flag if more than 6 months behind current stable</li><li>Database version -- flag if approaching EOL</li><li>SSL certificate expiration -- flag anything expiring within 60 days</li><li>CI/CD runner images -- flag if outdated</li></div>
+        </div></div>
+        <div class="output-item"><div class="output-num">4</div><div class="output-text"><strong>Security Posture Review</strong>
+          <div class="sub-items"><li>Secrets in version control: any credentials, API keys, or env vars committed? (Flag as CRITICAL immediately)</li><li>IAM access review: any accounts or roles with over-broad permissions? Any departed team member access not revoked?</li><li>OWASP Top 10 quick scan: flag any known exposure based on codebase context</li><li>AI agent permissions: if Stargate or any agent has production access, confirm it is scoped and logged</li></div>
+        </div></div>
+        <div class="output-item"><div class="output-num">5</div><div class="output-text"><strong>Technical Debt Snapshot</strong>
+          <div class="sub-items"><li>New debt surfaced since the last audit (not previously logged)</li><li>Status of items flagged in the last audit (resolved / still open / worsened)</li><li>Any patterns indicating systemic debt accumulation</li></div>
+        </div></div>
+        <div class="output-item"><div class="output-num">6</div><div class="output-text"><strong>Three-Tier Code Health Classification</strong> — For each finding across all sections above, assign a tier:
+          <div class="sub-items">
+            <li><strong>Tier 1 -- Chip away:</strong> Low-risk, quick-win improvement. Fold into ongoing feature or bug fix work. No separate project needed. Flag the specific item and the recommended quick win.</li>
+            <li><strong>Tier 2 -- Modernization candidate:</strong> Degrading but not yet a crisis. Business keeps shipping on the existing code while a replacement is planned incrementally (Strangler Fig approach). Document the item, the risk trajectory if left unaddressed, and the recommended modernization approach. Log in Zoho with a target quarter for resolution.</li>
+            <li><strong>Tier 3 -- Alternative approach required:</strong> The code has crossed the threshold. Maintaining it causes more harm than good. A targeted fix or quick refactor is not sufficient -- a parallel build, module rewrite, or architectural replacement is needed. Surface for leadership discussion immediately. Document: what specifically makes this Tier 3, what the alternative approach options are, how the business maintains continuity during the transition, and the estimated effort and timeline for the alternative approach.</li>
+          </div>
+          Every finding must be assigned a tier. Tier 3 items do not go into the regular sprint backlog -- they are escalated to leadership as a separate conversation about approach and investment.</div></div>
+        <div class="output-item"><div class="output-num">7</div><div class="output-text"><strong>Prioritized Remediation Plan</strong>
+          <div class="sub-items"><li>CRITICAL: Must be resolved within 48 hours. Name the item, the tier, the action, and the owner.</li><li>HIGH: Must be resolved within the next sprint. Name the item, the tier, the action, and the owner.</li><li>MEDIUM: Schedule within the next 30 days. Name the item, the tier, and the action.</li><li>LOW: Monitor. Log for next audit.</li><li>TIER 3 ESCALATIONS: Listed separately. These go to leadership, not the sprint backlog.</li></div>
+        </div></div>
+        <div class="output-item"><div class="output-num">8</div><div class="output-text"><strong>Estimated Remediation Effort</strong> — Total hour estimate for all Critical and High Tier 1 and Tier 2 items, broken down by item. Tier 3 items need a separate effort estimate for the alternative approach discussion. Both feed into DM sprint planning and budget conversations.</div></div>
+        <div class="output-item"><div class="output-num">9</div><div class="output-text"><strong>Next Audit Recommendation</strong> — Recommended date for the next full audit and any triggers that should prompt an unscheduled review before then.</div></div>
+      </div>
+
+      <div class="divider"></div>
+      <div class="section-label">SA / Dev Quality Checklist</div>
+      <div class="checklist">
+        <div class="checklist-item">Every CRITICAL item has a named owner and a 48-hour deadline</div>
+        <div class="checklist-item">Every finding has a tier classification (1, 2, or 3) with rationale</div>
+        <div class="checklist-item">Tier 3 items are listed separately and escalated to leadership -- not put in the sprint backlog</div>
+        <div class="checklist-item">Credential rotation status reviewed -- nothing older than 90 days without a documented reason</div>
+        <div class="checklist-item">SSL certificate expiration checked -- nothing expiring within 60 days without a plan</div>
+        <div class="checklist-item">Secrets-in-version-control scan completed -- any finding here is immediate P1</div>
+        <div class="checklist-item">IAM access review completed -- departed team member access confirmed revoked</div>
+        <div class="checklist-item">Tier 1 and 2 remediation effort estimate passed to DM for sprint planning</div>
+        <div class="checklist-item">Tier 3 alternative approach effort estimate prepared for leadership conversation</div>
+        <div class="checklist-item">All findings documented in Zoho with tier classification</div>
+        <div class="checklist-item">Next audit date confirmed and added to team calendar</div>
+      </div>
+    </div>
+    <textarea class="prompt-raw" id="t4-raw">You are a senior platform engineer conducting a proactive maintenance audit for a production software application at a custom software agency. The codebase may be running on older frameworks and technology. You evaluate health across dependencies, third-party services, runtime environment, and security posture. You classify every finding using a three-tier framework: Tier 1 (chip away -- quick wins folded into ongoing work), Tier 2 (modernization candidate -- document and plan incremental replacement while the business keeps shipping), and Tier 3 (alternative approach required -- the code has crossed the threshold where maintaining it causes more harm than good, requiring a parallel build, module rewrite, or architectural replacement while the business maintains continuity). You never recommend a full system rewrite. You do flag specific modules for alternative approaches when the evidence demands it. The business must keep delivering throughout any modernization effort.
+
+<codebase_context>
+[PASTE FULL CODE ANALYSIS SCRIPT OUTPUT FOR THIS ACCOUNT HERE]
+[Pay special attention to: tech stack details, all third-party integrations, known dependencies, current versions]
+</codebase_context>
+
+<dependency_manifest>
+[PASTE RAW CONTENTS OF package.json / requirements.txt / Gemfile / pom.xml HERE]
+</dependency_manifest>
+
+<third_party_services>
+[LIST ALL EXTERNAL SERVICES AND APIs IN USE]
+Service name | Current API version | Auth method | Last credential rotation | Rate limits
+[one row per service]
+</third_party_services>
+
+<runtime_environment>
+Runtime: [Node.js / Python / Java / Ruby] version [X.X.X]
+OS / Container base image: [image name and version]
+CI/CD runner: [runner image and version]
+Database: [database name and version]
+SSL certificate expiration: [date or "unknown"]
+</runtime_environment>
+
+<last_audit>
+Date of last audit: [date or "never"]
+Previous findings and current status:
+- [finding]: [resolved / in progress / deferred]
+</last_audit>
+
+<known_issues>
+[ANY OPEN TECH DEBT ITEMS, FLAGGED VULNERABILITIES, OR DEFERRED MAINTENANCE FROM THE CURRENT BACKLOG]
+</known_issues>
+
+Before writing the audit report, systematically evaluate each category in a <thinking> block:
+1. Which dependencies have known CVEs or are past EOL?
+2. Which third-party integrations are using deprecated API versions or have stale credentials?
+3. Is the runtime environment current with active LTS versions?
+4. What is the current security exposure -- secrets, IAM, OWASP?
+5. What new technical debt has accumulated since the last audit?
+
+Then produce the following sections in order:
+
+**1. Dependency Audit**
+- CRITICAL: Packages with active CVEs, severity High or Critical
+- HIGH: Deprecated packages, packages past EOL date
+- MEDIUM: Packages more than 2 major versions behind current stable
+- HEALTHY: Summary count only
+For each non-healthy item: package name, current version, recommended version, risk description, remediation action.
+
+**2. Third-Party Integration Health**
+- API version currency: are we on a deprecated or sunset version of any external API?
+- Credential rotation status: flag anything older than 90 days
+- Rate limit exposure: are any services approaching usage limits?
+- Service stability: known issues, upcoming deprecations, pricing/terms changes
+For each issue: service name, problem, risk, recommended action and timeline.
+
+**3. Runtime and Environment Health**
+- Runtime versions vs. current LTS -- flag anything EOL or within 6 months of EOL
+- OS / container base image -- flag if more than 6 months behind current stable
+- Database version -- flag if approaching EOL
+- SSL certificate expiration -- flag anything expiring within 60 days
+- CI/CD runner images -- flag if outdated
+
+**4. Security Posture Review**
+- Secrets in version control: any credentials, API keys, or env vars committed? (CRITICAL if yes)
+- IAM access review: over-broad permissions? Departed team member access not revoked?
+- OWASP Top 10 quick scan: any known exposure based on codebase context
+- AI agent permissions: if any agent has production access, confirm scoped and logged
+
+**5. Technical Debt Snapshot**
+- New debt surfaced since the last audit
+- Status of items flagged in the last audit
+- Any patterns indicating systemic debt accumulation
+
+**6. Three-Tier Code Health Classification**
+For every finding across all sections above, assign a tier:
+
+- Tier 1 -- Chip away: Low-risk, quick-win improvement. Fold into ongoing feature or bug fix work. No separate project needed. Identify the item and the quick win.
+- Tier 2 -- Modernization candidate: Degrading but not yet a crisis. Business keeps shipping on existing code while a replacement is planned incrementally (Strangler Fig approach). Document the item, the risk trajectory if left unaddressed, the recommended modernization approach, and a target quarter for resolution. Log in Zoho.
+- Tier 3 -- Alternative approach required: The code has crossed the threshold. Maintaining it causes more harm than good. A targeted fix or quick refactor is not sufficient. Surface for leadership discussion immediately. Document: what specifically makes this Tier 3, the alternative approach options (parallel build / module rewrite / architectural replacement), how the business maintains continuity during the transition, and estimated effort and timeline for the alternative approach.
+
+Every finding must be assigned a tier. Tier 3 items do not go into the sprint backlog -- they are escalated to leadership as a separate conversation about approach and investment.
+
+**7. Prioritized Remediation Plan**
+- CRITICAL: Resolve within 48 hours. Name the item, tier, action, and owner.
+- HIGH: Resolve within the next sprint. Name the item, tier, action, and owner.
+- MEDIUM: Schedule within 30 days. Name the item, tier, and action.
+- LOW: Monitor. Log for next audit.
+- TIER 3 ESCALATIONS: Listed separately. These go to leadership, not the sprint backlog.
+
+**8. Estimated Remediation Effort**
+Total hour estimate for all Critical and High Tier 1 and Tier 2 items, broken down by item. Tier 3 items need a separate effort estimate for the alternative approach discussion. Both feed into DM sprint planning and leadership budget conversations.
+
+**9. Next Audit Recommendation**
+Recommended date for the next full audit and any triggers that should prompt an unscheduled review.</textarea>
+  </div>
+
+</div>
+
+<script>
+function copyTemplate(id, btn) {
+  const el = document.getElementById(id);
+  const text = el.value;
+  navigator.clipboard.writeText(text).then(() => {
+    const orig = btn.innerHTML;
+    btn.innerHTML = '✅ Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.innerHTML = orig;
+      btn.classList.remove('copied');
+    }, 2000);
+  });
+}
+</script>
+</body>
+</html>
