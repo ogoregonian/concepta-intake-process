@@ -60,19 +60,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .mvp-banner { background: linear-gradient(135deg,#D97706,#F59E0B); color: white; border-radius: 6px; padding: 8px 12px; margin-bottom: 16px; font-size: 11px; font-weight: 600; }
 
 /* Team Already Here section */
-.team-here { background: #0d1b2a; padding: 40px 32px; }
-.team-here-inner { max-width: 960px; margin: 0 auto; }
-.team-here-eyebrow { font-size: 10px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: #D97706; margin-bottom: 12px; }
-.team-here-title { font-size: 24px; font-weight: 800; color: white; margin-bottom: 10px; line-height: 1.25; }
-.team-here-sub { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.7; max-width: 680px; margin-bottom: 32px; }
-.team-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
-.team-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 18px 20px; }
-.team-card-name { font-size: 13px; font-weight: 800; color: #F59E0B; margin-bottom: 2px; }
-.team-card-role { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
-.team-card-body { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.6; }
-.team-card-highlight { display: inline-block; margin-top: 10px; font-size: 10px; font-weight: 700; color: #D97706; background: rgba(217,119,6,0.12); border: 1px solid rgba(217,119,6,0.3); border-radius: 10px; padding: 3px 9px; }
-.team-insight { background: rgba(217,119,6,0.08); border: 1px solid rgba(217,119,6,0.25); border-radius: 8px; padding: 14px 18px; margin-top: 24px; font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.7; }
-.team-insight strong { color: #F59E0B; }
+.team-here { background: #0d1b2a; padding: 18px 32px; border-bottom: 1px solid rgba(255,255,255,0.07); }
+.team-here-inner { max-width: 1200px; margin: 0 auto; display: flex; align-items: flex-start; gap: 20px; flex-wrap: wrap; }
+.team-here-label { font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; color: #D97706; white-space: nowrap; padding-top: 2px; flex-shrink: 0; }
+.team-chips { display: flex; flex-wrap: wrap; gap: 8px; flex: 1; }
+.team-chip { display: flex; align-items: flex-start; gap: 7px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08); border-radius: 6px; padding: 6px 10px; }
+.team-chip-name { font-size: 11px; font-weight: 700; color: #F59E0B; white-space: nowrap; flex-shrink: 0; }
+.team-chip-insight { font-size: 11px; color: rgba(255,255,255,0.45); line-height: 1.45; }
+.team-chip-tag { display: inline-block; font-size: 9px; font-weight: 700; color: #D97706; background: rgba(217,119,6,0.12); border-radius: 8px; padding: 1px 6px; margin-left: 4px; white-space: nowrap; }
 
 /* Operating Standards section */
 .standards-section { background: #fff; border-top: 3px solid #D97706; padding: 48px 32px 64px; }
@@ -119,17 +114,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
 <div class="team-here">
   <div class="team-here-inner">
-    <div class="team-here-eyebrow">What We Heard — May 2026 AI Insight Survey</div>
-    <div class="team-here-title">The team is starting from a stronger place than expected.</div>
-    <div class="team-here-sub">Based on the May 2026 survey, several team members are already incorporating AI tools into their daily workflow in meaningful ways. What follows are the highlights from their responses -- not a claim about consistent practice, but evidence that the capability and the instinct are already there. The goal now is to take these individual approaches and move them into a shared, structured process.</div>
-    <div class="team-cards">
-      <div class="team-card"><div class="team-card-name">Kauan Guesser</div><div class="team-card-role">Developer</div><div class="team-card-body">Reported using AI to create an implementation plan in the terminal before writing any code -- and reviewing that plan against ticket intent before starting. Also using Playwright MCP for visual and E2E validation and giving agents read-only PostgreSQL access to validate database side effects during testing.</div><span class="team-card-highlight">Ahead of MVP on testing</span></div>
-      <div class="team-card"><div class="team-card-name">Christiano Higuto</div><div class="team-card-role">Lead Frontend Developer</div><div class="team-card-body">Breaking tickets into vertical slices, feeding fresh context per slice to reduce drift, and running automated QA through Claude Code. Called out directly: "Tickets need to be more clear than ever." Also proposed Zoho webhook → automated discovery trigger -- which maps exactly to what this process is being built to support.</div><span class="team-card-highlight">MVP-aligned approach</span></div>
-      <div class="team-card"><div class="team-card-name">Bruno Lessa Azzi</div><div class="team-card-role">Frontend Developer</div><div class="team-card-body">Using AI for code generation and debugging daily. SFC already uses a gradual rollout deployment (1% → 2% → 5% → 10% → 20% → 50% → 100% day by day). Identified lack of automated testing as the primary pain point for faster, less stressful releases.</div><span class="team-card-highlight">Rollout deploy already live</span></div>
-      <div class="team-card"><div class="team-card-name">Andre</div><div class="team-card-role">Developer</div><div class="team-card-body">Plan with AI → develop → review with AI → manual test → automated → QA. Identified legacy code and fear of breaking existing integrations as the primary barrier -- not tooling or skill. "The only pain point of my job is the client and the legacy code that make us afraid of making bigger changes."</div><span class="team-card-highlight">Legacy code is the blocker</span></div>
-      <div class="team-card"><div class="team-card-name">Rodrigo Suleiman</div><div class="team-card-role">Solutions Architect</div><div class="team-card-body">Using AI to validate implementation details and as a secondary check on requirements before sign-off. Already using Codacy for static analysis alongside code review. Specifically proposed integrating the code analysis script into GitLab Actions -- a CI/CD gate that would run automatically on every PR.</div><span class="team-card-highlight">Wants code analysis in CI/CD</span></div>
+    <div class="team-here-label">May 2026 Survey</div>
+    <div class="team-chips">
+      <div class="team-chip"><div class="team-chip-name">Kauan</div><div class="team-chip-insight">Already running Playwright MCP + PostgreSQL agent validation. Multi-agent QA live.<span class="team-chip-tag">Ahead of MVP</span></div></div>
+      <div class="team-chip"><div class="team-chip-name">Christiano</div><div class="team-chip-insight">Vertical slice approach + Claude Code automated QA. "Tickets need to be more clear than ever."<span class="team-chip-tag">MVP-aligned</span></div></div>
+      <div class="team-chip"><div class="team-chip-name">Bruno</div><div class="team-chip-insight">AI-assisted dev daily. SFC rollout already live (1%→100%). Needs automated tests.<span class="team-chip-tag">Rollout live</span></div></div>
+      <div class="team-chip"><div class="team-chip-name">Andre</div><div class="team-chip-insight">Plan→build→review with AI. Legacy code and fear of regressions are the primary barrier.<span class="team-chip-tag">MVP-aligned</span></div></div>
+      <div class="team-chip"><div class="team-chip-name">Rodrigo</div><div class="team-chip-insight">AI-assisted SA review + Codacy. Wants code analysis script in GitLab Actions CI/CD.<span class="team-chip-tag">SA aligned</span></div></div>
     </div>
-    <div class="team-insight"><strong>What this means:</strong> The instinct and the tools are there. What's missing is a shared structure -- consistent intake quality, a defined prompt approach, and agreed gates before code ships. That is exactly what this MVP process is designed to provide. Individual approaches become a team standard.</div>
   </div>
 </div>
 
