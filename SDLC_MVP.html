@@ -59,6 +59,21 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .modal-hr { border: none; border-top: 1px solid #f0f0f0; margin: 14px 0; }
 .mvp-banner { background: linear-gradient(135deg,#D97706,#F59E0B); color: white; border-radius: 6px; padding: 8px 12px; margin-bottom: 16px; font-size: 11px; font-weight: 600; }
 
+/* Team Already Here section */
+.team-here { background: #0d1b2a; padding: 40px 32px; }
+.team-here-inner { max-width: 960px; margin: 0 auto; }
+.team-here-eyebrow { font-size: 10px; font-weight: 800; letter-spacing: 2.5px; text-transform: uppercase; color: #D97706; margin-bottom: 12px; }
+.team-here-title { font-size: 24px; font-weight: 800; color: white; margin-bottom: 10px; line-height: 1.25; }
+.team-here-sub { font-size: 14px; color: rgba(255,255,255,0.5); line-height: 1.7; max-width: 680px; margin-bottom: 32px; }
+.team-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+.team-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 18px 20px; }
+.team-card-name { font-size: 13px; font-weight: 800; color: #F59E0B; margin-bottom: 2px; }
+.team-card-role { font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.35); letter-spacing: 1px; text-transform: uppercase; margin-bottom: 10px; }
+.team-card-body { font-size: 12px; color: rgba(255,255,255,0.6); line-height: 1.6; }
+.team-card-highlight { display: inline-block; margin-top: 10px; font-size: 10px; font-weight: 700; color: #D97706; background: rgba(217,119,6,0.12); border: 1px solid rgba(217,119,6,0.3); border-radius: 10px; padding: 3px 9px; }
+.team-insight { background: rgba(217,119,6,0.08); border: 1px solid rgba(217,119,6,0.25); border-radius: 8px; padding: 14px 18px; margin-top: 24px; font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.7; }
+.team-insight strong { color: #F59E0B; }
+
 /* Operating Standards section */
 .standards-section { background: #fff; border-top: 3px solid #D97706; padding: 48px 32px 64px; }
 .standards-header { max-width: 960px; margin: 0 auto 40px; }
@@ -102,6 +117,22 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <span class="sub">Claude as a collaborative tool at every stage. Humans govern every decision. The codebase is mapped first, requirements are AI-generated and human-validated, and developers build in partnership with Claude -- not alone.</span>
 </div>
 
+<div class="team-here">
+  <div class="team-here-inner">
+    <div class="team-here-eyebrow">What We Heard — May 2026 AI Insight Survey</div>
+    <div class="team-here-title">The team is starting from a stronger place than expected.</div>
+    <div class="team-here-sub">Based on the May 2026 survey, several team members are already incorporating AI tools into their daily workflow in meaningful ways. What follows are the highlights from their responses -- not a claim about consistent practice, but evidence that the capability and the instinct are already there. The goal now is to take these individual approaches and move them into a shared, structured process.</div>
+    <div class="team-cards">
+      <div class="team-card"><div class="team-card-name">Kauan Guesser</div><div class="team-card-role">Developer</div><div class="team-card-body">Reported using AI to create an implementation plan in the terminal before writing any code -- and reviewing that plan against ticket intent before starting. Also using Playwright MCP for visual and E2E validation and giving agents read-only PostgreSQL access to validate database side effects during testing.</div><span class="team-card-highlight">Ahead of MVP on testing</span></div>
+      <div class="team-card"><div class="team-card-name">Christiano Higuto</div><div class="team-card-role">Lead Frontend Developer</div><div class="team-card-body">Breaking tickets into vertical slices, feeding fresh context per slice to reduce drift, and running automated QA through Claude Code. Called out directly: "Tickets need to be more clear than ever." Also proposed Zoho webhook → automated discovery trigger -- which maps exactly to what this process is being built to support.</div><span class="team-card-highlight">MVP-aligned approach</span></div>
+      <div class="team-card"><div class="team-card-name">Bruno Lessa Azzi</div><div class="team-card-role">Frontend Developer</div><div class="team-card-body">Using AI for code generation and debugging daily. SFC already uses a gradual rollout deployment (1% → 2% → 5% → 10% → 20% → 50% → 100% day by day). Identified lack of automated testing as the primary pain point for faster, less stressful releases.</div><span class="team-card-highlight">Rollout deploy already live</span></div>
+      <div class="team-card"><div class="team-card-name">Andre</div><div class="team-card-role">Developer</div><div class="team-card-body">Plan with AI → develop → review with AI → manual test → automated → QA. Identified legacy code and fear of breaking existing integrations as the primary barrier -- not tooling or skill. "The only pain point of my job is the client and the legacy code that make us afraid of making bigger changes."</div><span class="team-card-highlight">Legacy code is the blocker</span></div>
+      <div class="team-card"><div class="team-card-name">Rodrigo Suleiman</div><div class="team-card-role">Solutions Architect</div><div class="team-card-body">Using AI to validate implementation details and as a secondary check on requirements before sign-off. Already using Codacy for static analysis alongside code review. Specifically proposed integrating the code analysis script into GitLab Actions -- a CI/CD gate that would run automatically on every PR.</div><span class="team-card-highlight">Wants code analysis in CI/CD</span></div>
+    </div>
+    <div class="team-insight"><strong>What this means:</strong> The instinct and the tools are there. What's missing is a shared structure -- consistent intake quality, a defined prompt approach, and agreed gates before code ships. That is exactly what this MVP process is designed to provide. Individual approaches become a team standard.</div>
+  </div>
+</div>
+
 <div class="diagram-wrapper">
   <div id="diagram"></div>
 </div>
@@ -118,15 +149,15 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="std-card">
       <div class="std-num">1</div>
       <div class="std-title">Codebase Mapping</div>
-      <div class="std-rule">Run once before the first AI-assisted PRD on any codebase. Re-run after major architectural changes, significant dependency upgrades, and quarterly at minimum. Concurrent self-validation pass required before output is used. Output lives in the repo <code>/docs</code> folder, linked from the Zoho project. Mapping must cover: architecture, business rules, domain/entity model, API surface, third-party integrations, auth model, key dependencies.</div>
-      <div class="std-gate"><div class="gate-label">Owner</div>Assigned dev per account. Dev confirms mapping is current before any new PRD generation begins.</div>
+      <div class="std-rule">Run once before the first AI-assisted PRD on any codebase. <strong>Full re-map triggers:</strong> major framework upgrade, new service or external integration added, significant database schema change, security refactor. <strong>Incremental re-map</strong> (affected modules only): after any significant feature touching a specific area. <strong>Scheduled:</strong> quarterly as part of the maintenance audit, and before working on any module dormant 6+ months. Concurrent self-validation pass required. Output lives in the repo /docs folder, linked from Zoho.</div>
+      <div class="std-gate"><div class="gate-label">Owner</div>Assigned dev per account. SA confirms mapping is current and sufficient before PRD generation begins on any codebase area.</div>
     </div>
 
     <div class="std-card">
       <div class="std-num">2</div>
       <div class="std-title">Intake Completeness Gate</div>
-      <div class="std-rule">Seven fields required before PM can prompt Claude -- no exceptions: <strong>What</strong> (feature description), <strong>Why</strong> (business rationale), <strong>Who</strong> (affected user roles), <strong>AC</strong> (minimum 3), <strong>Happy path</strong> (1 complete flow), <strong>Negative path</strong> (at least 2 failure scenarios), <strong>Constraints</strong> (technical, timeline, budget). If any field is missing, PM returns to client before proceeding.</div>
-      <div class="std-gate"><div class="gate-label">Hard Gate</div>Partial intakes do not advance to PRD generation. The quality of the Claude output depends entirely on the completeness of the intake.</div>
+      <div class="std-rule">Seven fields required before PM can prompt Claude -- no exceptions: <strong>What</strong> (feature description), <strong>Why</strong> (business rationale), <strong>Who</strong> (affected user roles), <strong>AC</strong> (minimum 3), <strong>Happy path</strong> (1 complete flow), <strong>Negative path</strong> (at least 2 failure scenarios), <strong>Constraints</strong> (technical, timeline, budget). If any field is missing, PM returns to client before proceeding. <strong>For Medium or High complexity tickets:</strong> PM + SA do a brief 15-minute pre-screen of the intake together before Claude is prompted -- confirming technical assumptions are sound before generating a PRD that may need significant rework.</div>
+      <div class="std-gate"><div class="gate-label">Hard Gate</div>Partial intakes do not advance. For complex tickets, SA pre-screens the intake alongside PM before Claude is prompted. Human-in-the-loop validation at the point where it costs the least.</div>
     </div>
 
     <div class="std-card">
@@ -146,8 +177,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="std-card">
       <div class="std-num">5</div>
       <div class="std-title">SA Review Protocol</div>
-      <div class="std-rule">Time targets: 30 min for Low complexity, 2 hours for Medium, half-day for High. SA assigns the complexity rating. SA sign-off is a written Zoho comment or status change -- not verbal. If SA rejects, written feedback is required and re-review happens within 24 hours. SA also reviews the PRD from a delivery scope and budget fit perspective alongside the DM before it goes to the client.</div>
-      <div class="std-gate"><div class="gate-label">Owner</div>SA. The complexity rating SA assigns at this stage is the basis for the DM's delivery estimate.</div>
+      <div class="std-rule">PM and SA review the Claude-generated PRD together in a single session -- PM validates business accuracy, SA validates technical feasibility. Both sign off before it goes to the client. Review time targets: 30 min Low / 2 hours Medium / half-day High. SA assigns complexity. Sign-off is written Zoho comment -- not verbal. If SA rejects, written feedback required and re-review within 24 hours.</div>
+      <div class="std-gate"><div class="gate-label">Owner</div>Joint: PM + SA. Reviewing together catches both business and technical gaps in one pass. SA's complexity rating drives the DM's delivery estimate.</div>
     </div>
 
     <div class="std-card">
@@ -189,7 +220,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
         <div class="impl-step-body">
           <div class="impl-step-title">Ratify these 9 standards with the full team</div>
           <div class="impl-step-desc">One meeting. Walk through each standard, surface objections, agree on any modifications. The team needs to own this -- not just be told about it. Document the ratified version in Notion.</div>
-          <span class="impl-step-owner">Owner: Anne / Leo</span>
+          <span class="impl-step-owner">Owner: Full team alignment session</span>
         </div>
       </div>
 
