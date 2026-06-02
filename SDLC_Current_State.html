@@ -85,11 +85,12 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 <div class="pain-banner">
   <div class="pain-banner-inner">
     <div class="pain-banner-label">⚠ Where Time Goes</div>
-    <div class="pain-stat"><div class="pain-stat-num">3</div><div class="pain-stat-text"><strong>Resourcing Gates</strong>SA · QA · Dev allocation. Every ticket waits at each.</div></div>
-    <div class="pain-stat"><div class="pain-stat-num">1wk</div><div class="pain-stat-text"><strong>SA Review Alone</strong>Up to 1 week of queue wait + investigation for complex requests.</div></div>
-    <div class="pain-stat"><div class="pain-stat-num">2–3h</div><div class="pain-stat-text"><strong>Manual Code Review</strong>Every PR rebuilt from scratch. No automated diff summary.</div></div>
-    <div class="pain-stat"><div class="pain-stat-num">0</div><div class="pain-stat-text"><strong>Automated Tests</strong>Manual testing is the sole quality gate. No regression coverage.</div></div>
-    <div class="pain-stat"><div class="pain-stat-num">∞</div><div class="pain-stat-text"><strong>Back-and-Forth Loops</strong>Requirement gaps resurface at SA, AC, dev, and QA.</div></div>
+    <div class="pain-stat"><div class="pain-stat-num">0</div><div class="pain-stat-text"><strong>Full-Time Roles</strong>No SA, QA, or developer is dedicated to any single account. All capacity is shared across the portfolio.</div></div>
+    <div class="pain-stat"><div class="pain-stat-num">#1</div><div class="pain-stat-text"><strong>QA is the Biggest Bottleneck</strong>Shared pool, manual-only testing, duplicate staging runs. QA creates the longest tail in every delivery cycle.</div></div>
+    <div class="pain-stat"><div class="pain-stat-num">⬆</div><div class="pain-stat-text"><strong>Largest Accounts Win</strong>When capacity is constrained, the biggest accounts absorb available SA and QA time. Smaller accounts wait — indefinitely.</div></div>
+    <div class="pain-stat"><div class="pain-stat-num">3</div><div class="pain-stat-text"><strong>Hard Resourcing Gates</strong>SA allocation · QA allocation · Dev allocation. Every ticket waits at all three — in sequence.</div></div>
+    <div class="pain-stat"><div class="pain-stat-num">1wk</div><div class="pain-stat-text"><strong>SA Review Queue Alone</strong>Up to 1 week of wait + manual investigation per complex request — before a single line is written.</div></div>
+    <div class="pain-stat"><div class="pain-stat-num">2–3h</div><div class="pain-stat-text"><strong>Manual Code Review</strong>Every PR rebuilt from scratch. No automated diff summary. Senior dev time consumed on every merge.</div></div>
   </div>
 </div>
 
@@ -218,7 +219,7 @@ const GRID = {
       tags:[t('Zoho Sprints',C.zoho),t('Slack',C.slack),t('⚠ Bottleneck',C.pain)],
       who:'Delivery Manager',
       what:'Once the PDM moves a ticket to "Ready for SA Review," the DM formally assigns an SA to it. This requires knowing current SA workload across all accounts and making a priority call when multiple tickets are competing for the same SA.',
-      why:'SA time is the scarcest shared resource. The DM cannot add SA hours without increasing budget. When multiple accounts have concurrent SA needs, someone waits -- and the DM decides who. This decision is made without automated workload visibility, relying on manual tracking.' },
+      why:'SA time is the scarcest shared resource. No SA is dedicated to any single account. When multiple accounts have concurrent SA needs, someone waits -- and the DM decides who. In practice, the largest accounts get priority. Smaller accounts are deprioritized without a formal policy -- it happens by default. This decision is made without automated workload visibility, relying on manual tracking.' },
     4:  { pain:false, title:'Monitors SA review time against budget', desc:'Tracks hours spent in SA review vs. estimate. Available if scope changes surface a budget conversation.',
       tags:[t('Zoho Sprints',C.zoho),t('Smartsheet',C.smartsheet)],
       who:'Delivery Managelivery Manager',
@@ -331,11 +332,11 @@ const GRID = {
       tags:[t('Zoho Sprints',C.zoho),t('Manual',C.manual),t('⚠ Bottleneck',C.pain)],
       who:'QA',
       what:'The ticket is in the "Ready for AC" queue. QA must be formally allocated before writing can begin. Once available, QA writes acceptance criteria scenarios based on the initial requirements and SA review notes. There is back and forth here too — gaps in the requirements mean QA has to loop back to the PDM for clarification.',
-      why:'A ticket that already waited for SA allocation now waits for QA allocation. AC quality depends entirely on QA having enough context from the initial requirements and SA notes. Gaps at intake compound here.' },
+      why:'A ticket that already waited for SA allocation now waits for QA allocation. No role is full-time on any account -- QA is shared across the entire portfolio. When a larger account needs QA, smaller accounts fall to the back of the queue. The result: a ticket that was ready moves, but nothing else does.' },
     6:  { inactive:'Not active in sprint planning.' },
     7:  { inactive:'Not active during development.' },
     8:  { inactive:'Not active during code review.' },
-    9:  { pain:true, title:'Manual testing only — sole quality gate', desc:'No automation. No device catalog. No integration test coverage. QA is the only thing standing between staging and production.',
+    9:  { pain:true, title:'Manual testing only — sole quality gate', desc:'No automation. No device catalog. No integration test coverage. QA is shared across all accounts -- when a large account absorbs QA capacity, all other tickets wait. The sole quality gate before production.',
       tags:[t('Manual',C.manual),t('⚠ Bottleneck',C.pain)],
       who:'QA',
       what:'QA performs manual functional testing against the AC scenarios they wrote. There are no automated regression tests, no device catalog for cross-platform testing, and no integration test coverage for third-party flows such as TransUnion or Experian. QA is the sole quality gate before staging.',
