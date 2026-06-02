@@ -62,8 +62,9 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 
 <nav class="top-nav">
   <span class="logo">Concepta</span>
-  <a class="nav-tab active" href="SDLC_Current_State.html">📋 Current State SDLC</a>
-  <a class="nav-tab" href="SDLC_AI_Enhanced.html">🤖 AI-Enhanced SDLC</a>
+  <a class="nav-tab active" href="SDLC_Current_State.html">📋 Current State</a>
+  <a class="nav-tab" href="SDLC_MVP.html">⚡ AI-Enhanced MVP</a>
+  <a class="nav-tab" href="SDLC_AI_Enhanced.html">🤖 Future State</a>
 </nav>
 
 <div class="page-banner">
@@ -200,7 +201,7 @@ const GRID = {
       why:'SA time is the scarcest shared resource. The DM cannot add SA hours without increasing budget. When multiple accounts have concurrent SA needs, someone waits -- and the DM decides who. This decision is made without automated workload visibility, relying on manual tracking.' },
     4:  { pain:false, title:'Monitors SA review time against budget', desc:'Tracks hours spent in SA review vs. estimate. Available if scope changes surface a budget conversation.',
       tags:[t('Zoho Sprints',C.zoho),t('Smartsheet',C.smartsheet)],
-      who:'Delivery Manager',
+      who:'Delivery Managelivery Manager',
       what:'DM monitors the clock on SA review. If a "simple" ticket is taking longer than estimated, DM is the first to know and must decide whether to expand the budget estimate or constrain scope.',
       why:'SA review time is often underestimated, especially for complex requests. When the review runs long, the budget impact accumulates silently unless the DM is actively tracking. No automated alert exists for estimate overruns.' },
     5:  { pain:true, title:'Allocates QA to write AC -- second resourcing gate', desc:'DM assigns a QA resource to the ticket once SA has cleared it. Same shared-resource constraint as the SA gate.',
