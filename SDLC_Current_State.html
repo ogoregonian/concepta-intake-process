@@ -90,7 +90,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="pain-stat"><div class="pain-stat-num">⬆</div><div class="pain-stat-text"><strong>Largest Accounts Win</strong>When capacity is constrained, the biggest accounts absorb available SA and QA time. Smaller accounts wait — indefinitely.</div></div>
     <div class="pain-stat"><div class="pain-stat-num">3</div><div class="pain-stat-text"><strong>Hard Resourcing Gates</strong>SA allocation · QA allocation · Dev allocation. Every ticket waits at all three — in sequence.</div></div>
     <div class="pain-stat"><div class="pain-stat-num">1wk</div><div class="pain-stat-text"><strong>SA Review Queue Alone</strong>Up to 1 week of wait + manual investigation per complex request — before a single line is written.</div></div>
-    <div class="pain-stat"><div class="pain-stat-num">4–10h+</div><div class="pain-stat-text"><strong>Dev Testing + Code Review</strong>Manual dev testing + PR review per ticket, 4 to 10+ hours depending on complexity. No automation, no context carry-over.</div></div>
+    <div class="pain-stat"><div class="pain-stat-num">2–15h+</div><div class="pain-stat-text"><strong>Dev Testing + Code Review</strong>Manual dev testing + PR review per ticket, 2 to 15+ hours depending on complexity. No automation, no context carry-over.</div></div>
       <div class="pain-stat"><div class="pain-stat-num">💸</div><div class="pain-stat-text"><strong>Tight Budget, No Slack</strong>Every resource decision is a trade-off. Getting SA, QA, and dev aligned under a constrained budget means someone is always waiting for someone else.</div></div>
   </div>
 </div>
@@ -303,7 +303,7 @@ const GRID = {
       who:'Developer',
       what:'A sprint-ready ticket with complete AC still has to wait for a developer to be allocated. Budget constraints limit development capacity. Once allocated, the developer writes code manually — one task at a time, no parallel worktrees, no AI assistance, no automated test generation.',
       why:'Third resourcing gate in the process — after SA queue and AC queue. Every task is a clean-slate manual effort. There is no way to increase throughput without increasing headcount.' },
-    8:  { pain:true, title:'2-3 hour manual code review', desc:'Reviewer must manually rebuild context for every PR. One PR at a time. No automated diff summary.',
+    8:  { pain:true, title:'2-15+ hour manual code review', desc:'Reviewer must manually rebuild context for every PR. One PR at a time. No automated diff summary. Ranges from 2 hours for simple changes to 15+ hours for complex, cross-cutting work.',
       tags:[t('GitHub',C.gh),t('⚠ Slow',C.pain)],
       who:'Senior Developer',
       what:'Code review requires a senior developer to manually read all changed files, rebuild the business context from the ticket, verify the implementation against AC, and check for bugs. Each PR takes 2-3 focused hours.',
