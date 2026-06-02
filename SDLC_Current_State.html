@@ -29,11 +29,11 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .phase-name { font-size: 9.5px; font-weight: 700; letter-spacing: 0.8px; text-transform: uppercase; line-height: 1.3; color: rgba(255,255,255,0.9); }
 
 .swimlane-grid { display: flex; flex-direction: column; }
-.swimlane-row { display: grid; border-top: 1px solid #DDD8D0; min-height: 110px; }
+.swimlane-row { display: grid; border-top: 1px solid #DDD8D0; min-height: 145px; }
 .role-label-cell { width: 48px; min-width: 48px; background: white; border-right: 1px solid #DDD8D0; display: flex; align-items: center; justify-content: center; padding: 6px 0; }
 .role-label-text { writing-mode: vertical-rl; transform: rotate(180deg); font-size: 8.5px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #666; white-space: nowrap; }
 
-.phase-cell { min-width: 155px; padding: 10px; border-left: 1px solid #DDD8D0; background: #F0EDE6; vertical-align: top; }
+.phase-cell { min-width: 155px; padding: 14px 10px 10px; border-left: 1px solid #DDD8D0; background: #F0EDE6; vertical-align: top; }
 
 .card { background: white; border-radius: 6px; padding: 10px 10px 9px; border: 1px solid #E2DED9; box-shadow: 0 1px 3px rgba(0,0,0,0.05); height: 100%; }
 .card.pain { border-color: #F5C0BA; background: #FFF6F5; }
@@ -90,7 +90,8 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
     <div class="pain-stat"><div class="pain-stat-num">⬆</div><div class="pain-stat-text"><strong>Largest Accounts Win</strong>When capacity is constrained, the biggest accounts absorb available SA and QA time. Smaller accounts wait — indefinitely.</div></div>
     <div class="pain-stat"><div class="pain-stat-num">3</div><div class="pain-stat-text"><strong>Hard Resourcing Gates</strong>SA allocation · QA allocation · Dev allocation. Every ticket waits at all three — in sequence.</div></div>
     <div class="pain-stat"><div class="pain-stat-num">1wk</div><div class="pain-stat-text"><strong>SA Review Queue Alone</strong>Up to 1 week of wait + manual investigation per complex request — before a single line is written.</div></div>
-    <div class="pain-stat"><div class="pain-stat-num">2–3h</div><div class="pain-stat-text"><strong>Manual Code Review</strong>Every PR rebuilt from scratch. No automated diff summary. Senior dev time consumed on every merge.</div></div>
+    <div class="pain-stat"><div class="pain-stat-num">4–10h+</div><div class="pain-stat-text"><strong>Dev Testing + Code Review</strong>Manual dev testing + PR review per ticket, 4 to 10+ hours depending on complexity. No automation, no context carry-over.</div></div>
+      <div class="pain-stat"><div class="pain-stat-num">💸</div><div class="pain-stat-text"><strong>Tight Budget, No Slack</strong>Every resource decision is a trade-off. Getting SA, QA, and dev aligned under a constrained budget means someone is always waiting for someone else.</div></div>
   </div>
 </div>
 
