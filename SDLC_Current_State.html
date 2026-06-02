@@ -56,6 +56,14 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
 .modal-sec-label { display: flex; align-items: center; gap: 5px; font-size: 9.5px; font-weight: 800; letter-spacing: 1.5px; text-transform: uppercase; color: #999; margin-bottom: 6px; }
 .modal-sec-text { font-size: 13px; color: #333; line-height: 1.65; }
 .modal-hr { border: none; border-top: 1px solid #f0f0f0; margin: 14px 0; }
+
+.pain-banner { background: #1a0a0a; border-bottom: 3px solid #C0392B; }
+.pain-banner-inner { display: flex; align-items: stretch; overflow-x: auto; }
+.pain-banner-label { background: #C0392B; color: white; font-size: 9px; font-weight: 800; letter-spacing: 2px; text-transform: uppercase; padding: 10px 16px; display: flex; align-items: center; white-space: nowrap; flex-shrink: 0; }
+.pain-stat { display: flex; align-items: center; gap: 10px; padding: 10px 20px; border-right: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; }
+.pain-stat-num { font-size: 22px; font-weight: 800; color: #F87171; line-height: 1; }
+.pain-stat-text { font-size: 11px; color: rgba(255,255,255,0.55); line-height: 1.4; max-width: 140px; }
+.pain-stat-text strong { color: rgba(255,255,255,0.85); display: block; }
 </style>
 </head>
 <body>
@@ -65,6 +73,7 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <a class="nav-tab active" href="SDLC_Current_State.html">📋 Current State</a>
   <a class="nav-tab" href="SDLC_MVP.html">⚡ AI-Enhanced MVP</a>
   <a class="nav-tab" href="SDLC_AI_Enhanced.html">🤖 Future State</a>
+  <a class="nav-tab" href="Prompt_Library.html">📚 Prompt Library</a>
 </nav>
 
 <div class="page-banner">
@@ -73,7 +82,18 @@ body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; b
   <span class="sub">Time, budget, and resource capacity are being lost to a reactive, lean operating model that was never designed to scale. The result: ambiguity, rework, and client budgets spent on coordination overhead instead of meaningful outcomes.</span>
 </div>
 
-<div class="diagram-wrapper">
+<div class="pain-banner">
+  <div class="pain-banner-inner">
+    <div class="pain-banner-label">⚠ Where Time Goes</div>
+    <div class="pain-stat"><div class="pain-stat-num">3</div><div class="pain-stat-text"><strong>Resourcing Gates</strong>SA · QA · Dev allocation. Every ticket waits at each.</div></div>
+    <div class="pain-stat"><div class="pain-stat-num">1wk</div><div class="pain-stat-text"><strong>SA Review Alone</strong>Up to 1 week of queue wait + investigation for complex requests.</div></div>
+    <div class="pain-stat"><div class="pain-stat-num">2–3h</div><div class="pain-stat-text"><strong>Manual Code Review</strong>Every PR rebuilt from scratch. No automated diff summary.</div></div>
+    <div class="pain-stat"><div class="pain-stat-num">0</div><div class="pain-stat-text"><strong>Automated Tests</strong>Manual testing is the sole quality gate. No regression coverage.</div></div>
+    <div class="pain-stat"><div class="pain-stat-num">∞</div><div class="pain-stat-text"><strong>Back-and-Forth Loops</strong>Requirement gaps resurface at SA, AC, dev, and QA.</div></div>
+  </div>
+</div>
+
+<div class="diagram-wrapper" style="padding-top:8px;">
   <div id="diagram"></div>
 </div>
 
